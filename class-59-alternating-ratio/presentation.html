@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 59: Alternating Series & Ratio Test | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        :root {
+            --theme-color: #4f46e5;
+            --theme-light: #e0e7ff;
+            --theme-dark: #3730a3;
+        }
+        .unit-badge {
+            background: var(--theme-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .formula-box {
+            background: var(--theme-light);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+            font-size: 1.75rem;
+        }
+        .example-box {
+            background: #f8fafc;
+            border: 2px solid var(--theme-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            width: 100%;
+        }
+        .column {
+            padding: 1rem;
+        }
+        .test-box {
+            background: white;
+            border: 2px solid var(--theme-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        .test-box h3 {
+            color: var(--theme-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        .converge {
+            color: #059669;
+            font-weight: bold;
+        }
+        .diverge {
+            color: #dc2626;
+            font-weight: bold;
+        }
+        .viz-container {
+            width: 100%;
+            max-width: 700px;
+            height: 400px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Title Slide -->
+        <div class="slide slide-title active" data-slide="0" data-title="Alternating & Ratio Tests">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 10: Infinite Series</span>
+                <h1>Alternating Series & Ratio Test</h1>
+                <h2>Class 59 | CED Topics 10.7, 10.8</h2>
+                <p style="font-size: 1.25rem; color: #64748b; margin-top: 2rem;">
+                    More Convergence Tests for Series
+                </p>
+            </div>
+        </div>
+
+        <!-- Warm-Up -->
+        <div class="slide slide-statement" data-slide="1" data-title="Warm-Up">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 1.5rem;">
+                    Does \( \sum_{n=1}^{\infty} \frac{(-1)^n}{n} \) converge or diverge?
+                </p>
+                <p style="font-size: 1.5rem; color: #64748b; margin-top: 2rem;">
+                    We know \( \sum \frac{1}{n} \) diverges (harmonic series)...<br>
+                    But does the alternating sign change things?
+                </p>
+            </div>
+        </div>
+
+        <!-- Alternating Series -->
+        <div class="slide slide-statement" data-slide="2" data-title="Alternating Series">
+            <div class="slide-content">
+                <h2>Alternating Series</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    A series with terms that alternate in sign:
+                </p>
+                <div class="formula-box" style="text-align: center;">
+                    \( \sum_{n=1}^{\infty} (-1)^{n+1} a_n = a_1 - a_2 + a_3 - a_4 + \ldots \)
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 2rem; color: #64748b;">
+                    where \( a_n > 0 \) for all \( n \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Alternating Series Test -->
+        <div class="slide slide-content" data-slide="3" data-title="AST">
+            <div class="slide-content">
+                <h2>Alternating Series Test (AST)</h2>
+                <p style="font-size: 1.5rem;">
+                    The alternating series \( \sum (-1)^{n+1} a_n \) <span class="converge">converges</span> if:
+                </p>
+                <div class="test-box">
+                    <p style="font-size: 1.5rem;"><strong>1.</strong> \( a_n > 0 \) for all \( n \)</p>
+                    <p style="font-size: 1.5rem; margin-top: 1rem;"><strong>2.</strong> \( a_{n+1} \leq a_n \) (decreasing)</p>
+                    <p style="font-size: 1.5rem; margin-top: 1rem;"><strong>3.</strong> \( \lim_{n \to \infty} a_n = 0 \)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visualization -->
+        <div class="slide slide-visual" data-slide="4" data-title="Visualization">
+            <div class="slide-content">
+                <h2>Alternating Harmonic Series</h2>
+                <div class="viz-container" id="alternating-viz"></div>
+                <p style="font-size: 1.25rem; color: #64748b; margin-top: 0.5rem;">
+                    Partial sums oscillate but converge to \( \ln 2 \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Example 1 -->
+        <div class="slide slide-content" data-slide="5" data-title="Example 1">
+            <div class="slide-content">
+                <h2>Example 1: Alternating Harmonic</h2>
+                <p style="font-size: 1.5rem;">
+                    Does \( \sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n} = 1 - \frac{1}{2} + \frac{1}{3} - \frac{1}{4} + \ldots \) converge?
+                </p>
+                <div class="example-box" style="font-size: 1.5rem;">
+                    <p>Check: \( a_n = \frac{1}{n} > 0 \) ✓</p>
+                    <p style="margin-top: 0.5rem;">Check: \( \frac{1}{n+1} < \frac{1}{n} \) (decreasing) ✓</p>
+                    <p style="margin-top: 0.5rem;">Check: \( \lim_{n \to \infty} \frac{1}{n} = 0 \) ✓</p>
+                </div>
+                <p style="font-size: 1.75rem; margin-top: 1rem; color: var(--theme-dark);">
+                    By AST: <span class="converge">Converges</span> (to \( \ln 2 \))
+                </p>
+            </div>
+        </div>
+
+        <!-- Error Bound -->
+        <div class="slide slide-statement" data-slide="6" data-title="Error Bound">
+            <div class="slide-content">
+                <h2>Alternating Series Error Bound</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 1.5rem;">
+                    If \( S_n \) is the \( n \)th partial sum of a convergent alternating series:
+                </p>
+                <div class="formula-box" style="font-size: 2rem; text-align: center;">
+                    \( |S - S_n| \leq a_{n+1} \)
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 2rem; color: #64748b;">
+                    The error is at most the first omitted term!
+                </p>
+            </div>
+        </div>
+
+        <!-- Error Example -->
+        <div class="slide slide-content" data-slide="7" data-title="Error Example">
+            <div class="slide-content">
+                <h2>Example: Error Bound</h2>
+                <p style="font-size: 1.5rem;">
+                    Approximate \( \sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n^2} \) with error < 0.01.
+                </p>
+                <p style="font-size: 1.35rem; margin-top: 1rem;">
+                    Need \( a_{n+1} = \frac{1}{(n+1)^2} < 0.01 \)
+                </p>
+                <p style="font-size: 1.35rem; margin-top: 0.5rem;">
+                    \( (n+1)^2 > 100 \) → \( n+1 > 10 \) → \( n \geq 10 \)
+                </p>
+                <div class="formula-box" style="font-size: 1.5rem;">
+                    \( S_{10} = 1 - \frac{1}{4} + \frac{1}{9} - \frac{1}{16} + \ldots + \frac{1}{100} \approx 0.8203 \)
+                </div>
+            </div>
+        </div>
+
+        <!-- Ratio Test -->
+        <div class="slide slide-statement" data-slide="8" data-title="Ratio Test">
+            <div class="slide-content">
+                <h2>The Ratio Test</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 1.5rem;">
+                    For series \( \sum a_n \), let \( L = \lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| \)
+                </p>
+                <div class="test-box" style="font-size: 1.5rem;">
+                    <p>• If \( L < 1 \): <span class="converge">Converges absolutely</span></p>
+                    <p style="margin-top: 0.5rem;">• If \( L > 1 \) or \( L = \infty \): <span class="diverge">Diverges</span></p>
+                    <p style="margin-top: 0.5rem;">• If \( L = 1 \): <strong>Inconclusive</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- When to Use Ratio -->
+        <div class="slide slide-content" data-slide="9" data-title="When to Use">
+            <div class="slide-content">
+                <h2>When to Use the Ratio Test</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 1.5rem;">
+                    The Ratio Test works best when \( a_n \) contains:
+                </p>
+                <div class="example-box" style="font-size: 1.5rem;">
+                    <p>• <strong>Factorials:</strong> \( n! \)</p>
+                    <p style="margin-top: 0.5rem;">• <strong>Exponentials:</strong> \( r^n \)</p>
+                    <p style="margin-top: 0.5rem;">• <strong>Products of both:</strong> \( \frac{n!}{3^n} \)</p>
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 1.5rem; color: #64748b;">
+                    Not useful for simple powers like \( \frac{1}{n^p} \) (gives \( L = 1 \))
+                </p>
+            </div>
+        </div>
+
+        <!-- Example 2 -->
+        <div class="slide slide-content" data-slide="10" data-title="Example 2">
+            <div class="slide-content">
+                <h2>Example 2: Ratio Test</h2>
+                <p style="font-size: 1.5rem;">
+                    Test \( \sum_{n=1}^{\infty} \frac{n!}{3^n} \) for convergence.
+                </p>
+                <div class="formula-box" style="font-size: 1.35rem;">
+                    \( \left| \frac{a_{n+1}}{a_n} \right| = \frac{(n+1)!}{3^{n+1}} \cdot \frac{3^n}{n!} = \frac{n+1}{3} \)
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 1rem;">
+                    \( L = \lim_{n \to \infty} \frac{n+1}{3} = \infty > 1 \)
+                </p>
+                <p style="font-size: 1.75rem; margin-top: 1rem; color: var(--theme-dark);">
+                    By Ratio Test: <span class="diverge">Diverges</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Example 3 -->
+        <div class="slide slide-content" data-slide="11" data-title="Example 3">
+            <div class="slide-content">
+                <h2>Example 3: Ratio Test</h2>
+                <p style="font-size: 1.5rem;">
+                    Test \( \sum_{n=1}^{\infty} \frac{n^2}{2^n} \) for convergence.
+                </p>
+                <div class="formula-box" style="font-size: 1.35rem;">
+                    \( \left| \frac{a_{n+1}}{a_n} \right| = \frac{(n+1)^2}{2^{n+1}} \cdot \frac{2^n}{n^2} = \frac{(n+1)^2}{2n^2} \)
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 1rem;">
+                    \( L = \lim_{n \to \infty} \frac{(n+1)^2}{2n^2} = \frac{1}{2} < 1 \)
+                </p>
+                <p style="font-size: 1.75rem; margin-top: 1rem; color: var(--theme-dark);">
+                    By Ratio Test: <span class="converge">Converges</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Root Test -->
+        <div class="slide slide-statement" data-slide="12" data-title="Root Test">
+            <div class="slide-content">
+                <h2>The Root Test</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 1.5rem;">
+                    For series \( \sum a_n \), let \( L = \lim_{n \to \infty} \sqrt[n]{|a_n|} \)
+                </p>
+                <div class="test-box" style="font-size: 1.5rem;">
+                    <p>• If \( L < 1 \): <span class="converge">Converges absolutely</span></p>
+                    <p style="margin-top: 0.5rem;">• If \( L > 1 \): <span class="diverge">Diverges</span></p>
+                    <p style="margin-top: 0.5rem;">• If \( L = 1 \): <strong>Inconclusive</strong></p>
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 1.5rem; color: #64748b;">
+                    Best when \( a_n \) has form \( (\text{something})^n \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Practice 1 -->
+        <div class="slide slide-exercise" data-slide="13" data-title="Practice 1">
+            <div class="slide-content">
+                <h2>Practice Problem 1</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    Determine convergence: \( \sum_{n=1}^{\infty} \frac{(-1)^n \cdot n}{n^2 + 1} \)
+                </p>
+                <div class="example-box">
+                    <p style="font-size: 1.5rem;"><strong>Hint:</strong> Check conditions for AST</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice 2 -->
+        <div class="slide slide-exercise" data-slide="14" data-title="Practice 2">
+            <div class="slide-content">
+                <h2>Practice Problem 2</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    Use the Ratio Test: \( \sum_{n=1}^{\infty} \frac{5^n}{n!} \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Practice 3 -->
+        <div class="slide slide-exercise" data-slide="15" data-title="Practice 3">
+            <div class="slide-content">
+                <h2>Practice Problem 3</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    How many terms of \( \sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n^3} \) are needed
+                    for error < 0.001?
+                </p>
+            </div>
+        </div>
+
+        <!-- Exit Ticket -->
+        <div class="slide slide-statement" data-slide="16" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    1. What are the three conditions for AST?
+                </p>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    2. When is the Ratio Test most useful?
+                </p>
+                <p style="font-size: 1.5rem;">
+                    3. What does it mean when \( L = 1 \) in the Ratio Test?
+                </p>
+            </div>
+        </div>
+
+        <!-- Closing -->
+        <div class="slide slide-title" data-slide="17" data-title="Closing">
+            <div class="slide-content">
+                <h2>Key Takeaways</h2>
+                <p style="font-size: 1.5rem; text-align: left; max-width: 800px; margin: 0 auto;">
+                    • AST: alternating + decreasing + limit 0 → converges<br><br>
+                    • AST Error Bound: \( |S - S_n| \leq a_{n+1} \)<br><br>
+                    • Ratio Test: \( L = \lim |a_{n+1}/a_n| \)<br>
+                    &nbsp;&nbsp;\( L < 1 \): converges, \( L > 1 \): diverges<br><br>
+                    • Ratio Test best for factorials and exponentials<br><br>
+                    • \( L = 1 \) is inconclusive — try another test!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-arrows">
+        <button class="nav-arrow" id="prevBtn">←</button>
+        <span class="slide-counter"><span id="currentSlide">1</span>/<span id="totalSlides">18</span></span>
+        <button class="nav-arrow" id="nextBtn">→</button>
+    </div>
+
+    <script src="../shared/presentation.js"></script>
+    <script>
+        function drawAlternatingViz() {
+            const container = document.getElementById('alternating-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+            const innerWidth = width - margin.left - margin.right;
+            const innerHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Compute partial sums
+            const N = 20;
+            const partialSums = [];
+            let sum = 0;
+            for (let n = 1; n <= N; n++) {
+                sum += Math.pow(-1, n + 1) / n;
+                partialSums.push({ n, sum });
+            }
+
+            const xScale = d3.scaleLinear().domain([1, N]).range([0, innerWidth]);
+            const yScale = d3.scaleLinear().domain([0.4, 1.1]).range([innerHeight, 0]);
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${innerHeight})`)
+                .call(d3.axisBottom(xScale).ticks(10))
+                .style('font-size', '1rem');
+
+            g.append('g')
+                .call(d3.axisLeft(yScale))
+                .style('font-size', '1rem');
+
+            // Limit line (ln 2)
+            const ln2 = Math.log(2);
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', innerWidth)
+                .attr('y1', yScale(ln2))
+                .attr('y2', yScale(ln2))
+                .attr('stroke', '#059669')
+                .attr('stroke-dasharray', '5,5')
+                .attr('stroke-width', 2);
+
+            g.append('text')
+                .attr('x', innerWidth - 10)
+                .attr('y', yScale(ln2) - 10)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#059669')
+                .text('ln(2) ≈ 0.693');
+
+            // Draw points and connecting lines
+            const line = d3.line()
+                .x(d => xScale(d.n))
+                .y(d => yScale(d.sum));
+
+            g.append('path')
+                .datum(partialSums)
+                .attr('fill', 'none')
+                .attr('stroke', '#4f46e5')
+                .attr('stroke-width', 2)
+                .attr('d', line);
+
+            partialSums.forEach(d => {
+                g.append('circle')
+                    .attr('cx', xScale(d.n))
+                    .attr('cy', yScale(d.sum))
+                    .attr('r', 4)
+                    .attr('fill', d.n % 2 === 1 ? '#4f46e5' : '#818cf8');
+            });
+
+            // Labels
+            g.append('text')
+                .attr('x', innerWidth / 2)
+                .attr('y', innerHeight + 40)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .text('n');
+
+            g.append('text')
+                .attr('transform', 'rotate(-90)')
+                .attr('x', -innerHeight / 2)
+                .attr('y', -45)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .text('Sₙ');
+        }
+
+        const originalGoToSlide = window.Presentation.goToSlide;
+        window.Presentation.goToSlide = function(n) {
+            originalGoToSlide(n);
+            if (n === 4) setTimeout(drawAlternatingViz, 300);
+        };
+    </script>
+</body>
+</html>

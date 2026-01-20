@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 60: Absolute & Conditional Convergence | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        :root {
+            --theme-color: #4f46e5;
+            --theme-light: #e0e7ff;
+            --theme-dark: #3730a3;
+        }
+        .unit-badge {
+            background: var(--theme-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .formula-box {
+            background: var(--theme-light);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+            font-size: 1.75rem;
+        }
+        .example-box {
+            background: #f8fafc;
+            border: 2px solid var(--theme-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            width: 100%;
+        }
+        .column {
+            padding: 1rem;
+        }
+        .concept-box {
+            background: white;
+            border: 2px solid var(--theme-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        .concept-box h3 {
+            color: var(--theme-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        .converge {
+            color: #059669;
+            font-weight: bold;
+        }
+        .diverge {
+            color: #dc2626;
+            font-weight: bold;
+        }
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        .flowchart-item {
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            font-size: 1.35rem;
+        }
+        .flowchart-arrow {
+            font-size: 2rem;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Title Slide -->
+        <div class="slide slide-title active" data-slide="0" data-title="Convergence Types">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 10: Infinite Series</span>
+                <h1>Absolute & Conditional Convergence</h1>
+                <h2>Class 60 | CED Topic 10.9</h2>
+                <p style="font-size: 1.25rem; color: #64748b; margin-top: 2rem;">
+                    Understanding How Series Converge
+                </p>
+            </div>
+        </div>
+
+        <!-- Warm-Up -->
+        <div class="slide slide-statement" data-slide="1" data-title="Warm-Up">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 1.5rem;">
+                    We know \( \sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n} \) converges (by AST).
+                </p>
+                <p style="font-size: 1.5rem;">
+                    But what about \( \sum_{n=1}^{\infty} \left| \frac{(-1)^{n+1}}{n} \right| = \sum_{n=1}^{\infty} \frac{1}{n} \)?
+                </p>
+                <p style="font-size: 1.5rem; margin-top: 2rem; color: #64748b;">
+                    The second series diverges! Does this matter?
+                </p>
+            </div>
+        </div>
+
+        <!-- Absolute Convergence -->
+        <div class="slide slide-statement" data-slide="2" data-title="Absolute Convergence">
+            <div class="slide-content">
+                <h2>Absolute Convergence</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    A series \( \sum a_n \) <strong>converges absolutely</strong> if:
+                </p>
+                <div class="formula-box" style="text-align: center; font-size: 2rem;">
+                    \( \sum |a_n| \) converges
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 2rem; color: #64748b;">
+                    The series of absolute values must converge.
+                </p>
+            </div>
+        </div>
+
+        <!-- Conditional Convergence -->
+        <div class="slide slide-statement" data-slide="3" data-title="Conditional Convergence">
+            <div class="slide-content">
+                <h2>Conditional Convergence</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    A series \( \sum a_n \) <strong>converges conditionally</strong> if:
+                </p>
+                <div class="example-box" style="font-size: 1.5rem;">
+                    <p>1. \( \sum a_n \) converges, BUT</p>
+                    <p style="margin-top: 1rem;">2. \( \sum |a_n| \) diverges</p>
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 2rem;">
+                    Example: Alternating harmonic series \( \sum \frac{(-1)^{n+1}}{n} \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Key Theorem -->
+        <div class="slide slide-statement" data-slide="4" data-title="Key Theorem">
+            <div class="slide-content">
+                <h2>Absolute Convergence Theorem</h2>
+                <div class="formula-box" style="font-size: 1.75rem; text-align: center;">
+                    If \( \sum |a_n| \) converges, then \( \sum a_n \) converges.
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 2rem;">
+                    <span class="converge">Absolute convergence implies convergence!</span>
+                </p>
+                <p style="font-size: 1.5rem; margin-top: 1.5rem; color: #64748b;">
+                    The converse is NOT true (conditional convergence exists).
+                </p>
+            </div>
+        </div>
+
+        <!-- Classification -->
+        <div class="slide slide-content" data-slide="5" data-title="Classification">
+            <div class="slide-content">
+                <h2>Classifying Series</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 1.5rem;">Every series falls into one category:</p>
+                <div class="two-column">
+                    <div class="concept-box" style="background: #dcfce7;">
+                        <h3 style="color: #059669;">Absolutely Convergent</h3>
+                        <p style="font-size: 1.35rem;">\( \sum a_n \) converges<br>\( \sum |a_n| \) converges</p>
+                    </div>
+                    <div class="concept-box" style="background: #fef3c7;">
+                        <h3 style="color: #d97706;">Conditionally Convergent</h3>
+                        <p style="font-size: 1.35rem;">\( \sum a_n \) converges<br>\( \sum |a_n| \) diverges</p>
+                    </div>
+                </div>
+                <div class="concept-box" style="background: #fee2e2; max-width: 300px; margin: 1rem auto;">
+                    <h3 style="color: #dc2626;">Divergent</h3>
+                    <p style="font-size: 1.35rem;">\( \sum a_n \) diverges</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 1 -->
+        <div class="slide slide-content" data-slide="6" data-title="Example 1">
+            <div class="slide-content">
+                <h2>Example 1</h2>
+                <p style="font-size: 1.5rem;">
+                    Classify: \( \sum_{n=1}^{\infty} \frac{(-1)^n}{n^2} \)
+                </p>
+                <p style="font-size: 1.35rem; margin-top: 1rem;">
+                    <strong>Step 1:</strong> Check \( \sum |a_n| = \sum \frac{1}{n^2} \)
+                </p>
+                <p style="font-size: 1.35rem; margin-top: 0.5rem;">
+                    This is a p-series with \( p = 2 > 1 \) → <span class="converge">converges</span>
+                </p>
+                <div class="formula-box" style="margin-top: 1.5rem;">
+                    Since \( \sum |a_n| \) converges: <span class="converge">Absolutely convergent</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 2 -->
+        <div class="slide slide-content" data-slide="7" data-title="Example 2">
+            <div class="slide-content">
+                <h2>Example 2</h2>
+                <p style="font-size: 1.5rem;">
+                    Classify: \( \sum_{n=1}^{\infty} \frac{(-1)^n}{\sqrt{n}} \)
+                </p>
+                <p style="font-size: 1.35rem; margin-top: 1rem;">
+                    <strong>Step 1:</strong> Check \( \sum |a_n| = \sum \frac{1}{\sqrt{n}} \)
+                </p>
+                <p style="font-size: 1.35rem; margin-top: 0.5rem;">
+                    p-series with \( p = \frac{1}{2} < 1 \) → <span class="diverge">diverges</span>
+                </p>
+                <p style="font-size: 1.35rem; margin-top: 1rem;">
+                    <strong>Step 2:</strong> Check \( \sum a_n \) using AST → <span class="converge">converges</span>
+                </p>
+                <div class="formula-box" style="margin-top: 1rem;">
+                    <span style="color: #d97706; font-weight: bold;">Conditionally convergent</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testing Strategy -->
+        <div class="slide slide-content" data-slide="8" data-title="Strategy">
+            <div class="slide-content">
+                <h2>Testing Strategy</h2>
+                <div class="flowchart">
+                    <div class="flowchart-item" style="background: #e0e7ff;">
+                        Start: Given \( \sum a_n \)
+                    </div>
+                    <div class="flowchart-arrow">↓</div>
+                    <div class="flowchart-item" style="background: #dcfce7;">
+                        Test \( \sum |a_n| \) — does it converge?
+                    </div>
+                    <div class="flowchart-arrow">↓</div>
+                    <div class="flowchart-item" style="background: white; border: 2px solid #4f46e5;">
+                        Yes → <span class="converge">Absolutely convergent</span><br>
+                        No → Test \( \sum a_n \) directly (AST, etc.)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Convergence Toolkit -->
+        <div class="slide slide-content" data-slide="9" data-title="Toolkit">
+            <div class="slide-content">
+                <h2>Series Convergence Toolkit</h2>
+                <div class="example-box" style="font-size: 1.35rem;">
+                    <p><strong>For \( \sum |a_n| \):</strong></p>
+                    <p style="margin-top: 0.5rem;">• p-series test</p>
+                    <p>• Geometric series test</p>
+                    <p>• Ratio/Root test</p>
+                    <p>• Comparison tests</p>
+                    <p style="margin-top: 1rem;"><strong>For \( \sum a_n \):</strong></p>
+                    <p style="margin-top: 0.5rem;">• Alternating Series Test</p>
+                    <p>• Divergence Test</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why It Matters -->
+        <div class="slide slide-content" data-slide="10" data-title="Why It Matters">
+            <div class="slide-content">
+                <h2>Why Does This Matter?</h2>
+                <div class="example-box" style="font-size: 1.5rem;">
+                    <p><strong>Absolutely convergent series:</strong></p>
+                    <p style="margin-top: 0.5rem;">• Can be rearranged without changing the sum</p>
+                    <p>• Better behaved for manipulation</p>
+                    <p style="margin-top: 1rem;"><strong>Conditionally convergent series:</strong></p>
+                    <p style="margin-top: 0.5rem;">• Rearrangement can change the sum!</p>
+                    <p>• Can even make it sum to any value (Riemann series theorem)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice 1 -->
+        <div class="slide slide-exercise" data-slide="11" data-title="Practice 1">
+            <div class="slide-content">
+                <h2>Practice Problem 1</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    Classify as absolutely convergent, conditionally convergent, or divergent:
+                </p>
+                <p style="font-size: 1.75rem;">
+                    \( \sum_{n=1}^{\infty} \frac{(-1)^n}{n^3} \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Practice 2 -->
+        <div class="slide slide-exercise" data-slide="12" data-title="Practice 2">
+            <div class="slide-content">
+                <h2>Practice Problem 2</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    Classify:
+                </p>
+                <p style="font-size: 1.75rem;">
+                    \( \sum_{n=1}^{\infty} \frac{\cos(n\pi)}{n \ln n} \)
+                </p>
+                <p style="font-size: 1.35rem; color: #64748b; margin-top: 1.5rem;">
+                    Hint: \( \cos(n\pi) = (-1)^n \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Practice 3 -->
+        <div class="slide slide-exercise" data-slide="13" data-title="Practice 3">
+            <div class="slide-content">
+                <h2>Practice Problem 3</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    Classify:
+                </p>
+                <p style="font-size: 1.75rem;">
+                    \( \sum_{n=1}^{\infty} \frac{(-1)^n \cdot n!}{3^n} \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Exit Ticket -->
+        <div class="slide slide-statement" data-slide="14" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    1. What is the difference between absolute and conditional convergence?
+                </p>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    2. If \( \sum |a_n| \) converges, what can we conclude about \( \sum a_n \)?
+                </p>
+                <p style="font-size: 1.5rem;">
+                    3. Give an example of a conditionally convergent series.
+                </p>
+            </div>
+        </div>
+
+        <!-- Closing -->
+        <div class="slide slide-title" data-slide="15" data-title="Closing">
+            <div class="slide-content">
+                <h2>Key Takeaways</h2>
+                <p style="font-size: 1.5rem; text-align: left; max-width: 800px; margin: 0 auto;">
+                    • Absolute convergence: \( \sum |a_n| \) converges<br><br>
+                    • Conditional convergence: \( \sum a_n \) converges but \( \sum |a_n| \) diverges<br><br>
+                    • Absolute convergence → convergence (but not vice versa)<br><br>
+                    • Test \( \sum |a_n| \) first, then test \( \sum a_n \) if needed<br><br>
+                    • Absolute convergence is "stronger" and better behaved
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-arrows">
+        <button class="nav-arrow" id="prevBtn">←</button>
+        <span class="slide-counter"><span id="currentSlide">1</span>/<span id="totalSlides">16</span></span>
+        <button class="nav-arrow" id="nextBtn">→</button>
+    </div>
+
+    <script src="../shared/presentation.js"></script>
+</body>
+</html>

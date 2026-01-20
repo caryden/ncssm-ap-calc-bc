@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 62: Taylor and Maclaurin Series | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        :root {
+            --theme-color: #4f46e5;
+            --theme-light: #e0e7ff;
+            --theme-dark: #3730a3;
+        }
+        .unit-badge {
+            background: var(--theme-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .formula-box {
+            background: var(--theme-light);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+            font-size: 1.75rem;
+        }
+        .example-box {
+            background: #f8fafc;
+            border: 2px solid var(--theme-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        .series-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.35rem;
+        }
+        .series-table th, .series-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        .series-table th {
+            background: var(--theme-light);
+            color: var(--theme-dark);
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            width: 100%;
+        }
+        .column {
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Title Slide -->
+        <div class="slide slide-title active" data-slide="0" data-title="Taylor & Maclaurin Series">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 10: Infinite Series</span>
+                <h1>Taylor and Maclaurin Series</h1>
+                <h2>Class 62 | CED Topic 10.14</h2>
+                <p style="font-size: 1.25rem; color: #64748b; margin-top: 2rem;">
+                    From Polynomials to Infinite Series
+                </p>
+            </div>
+        </div>
+
+        <!-- Warm-Up -->
+        <div class="slide slide-statement" data-slide="1" data-title="Warm-Up">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 1.5rem;">
+                    Write the first 5 terms of the Taylor polynomial for \( e^x \) at \( a = 0 \).
+                </p>
+                <div class="formula-box">
+                    \( 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \ldots \)
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 2rem; color: #64748b;">
+                    What if we let \( n \to \infty \)?
+                </p>
+            </div>
+        </div>
+
+        <!-- From Polynomial to Series -->
+        <div class="slide slide-statement" data-slide="2" data-title="To Series">
+            <div class="slide-content">
+                <h2>Taylor Series</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    If we take the limit as \( n \to \infty \), we get the <strong>Taylor series</strong>:
+                </p>
+                <div class="formula-box" style="font-size: 1.5rem; text-align: center;">
+                    \( f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x-a)^n \)
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 2rem; color: #64748b;">
+                    Maclaurin series: Taylor series at \( a = 0 \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Key Series: e^x -->
+        <div class="slide slide-statement" data-slide="3" data-title="Series: e^x">
+            <div class="slide-content">
+                <h2>Maclaurin Series for \( e^x \)</h2>
+                <div class="formula-box" style="font-size: 2rem; text-align: center;">
+                    \( e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \ldots \)
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 2rem;">
+                    Converges for all \( x \in (-\infty, \infty) \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Key Series: sin(x) -->
+        <div class="slide slide-statement" data-slide="4" data-title="Series: sin(x)">
+            <div class="slide-content">
+                <h2>Maclaurin Series for \( \sin x \)</h2>
+                <div class="formula-box" style="font-size: 1.75rem; text-align: center;">
+                    \( \sin x = \sum_{n=0}^{\infty} \frac{(-1)^n x^{2n+1}}{(2n+1)!} = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \ldots \)
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 2rem;">
+                    Converges for all \( x \in (-\infty, \infty) \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Key Series: cos(x) -->
+        <div class="slide slide-statement" data-slide="5" data-title="Series: cos(x)">
+            <div class="slide-content">
+                <h2>Maclaurin Series for \( \cos x \)</h2>
+                <div class="formula-box" style="font-size: 1.75rem; text-align: center;">
+                    \( \cos x = \sum_{n=0}^{\infty} \frac{(-1)^n x^{2n}}{(2n)!} = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \ldots \)
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 2rem;">
+                    Converges for all \( x \in (-\infty, \infty) \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Key Series: 1/(1-x) -->
+        <div class="slide slide-statement" data-slide="6" data-title="Series: Geometric">
+            <div class="slide-content">
+                <h2>Geometric Series</h2>
+                <div class="formula-box" style="font-size: 2rem; text-align: center;">
+                    \( \frac{1}{1-x} = \sum_{n=0}^{\infty} x^n = 1 + x + x^2 + x^3 + \ldots \)
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 2rem;">
+                    Converges for \( |x| < 1 \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Key Series: ln(1+x) -->
+        <div class="slide slide-statement" data-slide="7" data-title="Series: ln(1+x)">
+            <div class="slide-content">
+                <h2>Maclaurin Series for \( \ln(1+x) \)</h2>
+                <div class="formula-box" style="font-size: 1.75rem; text-align: center;">
+                    \( \ln(1+x) = \sum_{n=1}^{\infty} \frac{(-1)^{n+1} x^n}{n} = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \ldots \)
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 2rem;">
+                    Converges for \( -1 < x \leq 1 \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Summary Table -->
+        <div class="slide slide-content" data-slide="8" data-title="Summary Table">
+            <div class="slide-content">
+                <h2>Essential Maclaurin Series (Memorize!)</h2>
+                <table class="series-table" style="font-size: 1.25rem;">
+                    <tr>
+                        <th>Function</th>
+                        <th>Series</th>
+                        <th>Interval</th>
+                    </tr>
+                    <tr>
+                        <td>\( e^x \)</td>
+                        <td>\( \sum \frac{x^n}{n!} \)</td>
+                        <td>\( (-\infty, \infty) \)</td>
+                    </tr>
+                    <tr>
+                        <td>\( \sin x \)</td>
+                        <td>\( \sum \frac{(-1)^n x^{2n+1}}{(2n+1)!} \)</td>
+                        <td>\( (-\infty, \infty) \)</td>
+                    </tr>
+                    <tr>
+                        <td>\( \cos x \)</td>
+                        <td>\( \sum \frac{(-1)^n x^{2n}}{(2n)!} \)</td>
+                        <td>\( (-\infty, \infty) \)</td>
+                    </tr>
+                    <tr>
+                        <td>\( \frac{1}{1-x} \)</td>
+                        <td>\( \sum x^n \)</td>
+                        <td>\( (-1, 1) \)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Creating New Series -->
+        <div class="slide slide-content" data-slide="9" data-title="Creating Series">
+            <div class="slide-content">
+                <h2>Creating New Series</h2>
+                <p style="font-size: 1.5rem;">
+                    Use known series to build new ones:
+                </p>
+                <div class="example-box" style="font-size: 1.35rem;">
+                    <p><strong>Substitution:</strong> \( e^{-x^2} \) → replace \( x \) with \( -x^2 \) in \( e^x \) series</p>
+                    <p style="margin-top: 1rem;"><strong>Multiplication:</strong> \( x^2\sin x \) → multiply each term by \( x^2 \)</p>
+                    <p style="margin-top: 1rem;"><strong>Differentiation:</strong> \( \frac{d}{dx}[\sin x] = \cos x \)</p>
+                    <p style="margin-top: 1rem;"><strong>Integration:</strong> \( \int \frac{1}{1+x^2} dx = \arctan x \)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example: Substitution -->
+        <div class="slide slide-content" data-slide="10" data-title="Example: Substitution">
+            <div class="slide-content">
+                <h2>Example: Find series for \( e^{-x^2} \)</h2>
+                <p style="font-size: 1.5rem;">
+                    Start with: \( e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \ldots \)
+                </p>
+                <p style="font-size: 1.35rem; margin-top: 1rem;">
+                    Substitute \( x \to -x^2 \):
+                </p>
+                <div class="formula-box" style="font-size: 1.5rem;">
+                    \( e^{-x^2} = 1 + (-x^2) + \frac{(-x^2)^2}{2!} + \frac{(-x^2)^3}{3!} + \ldots \)
+                </div>
+                <div class="formula-box" style="font-size: 1.5rem; margin-top: 1rem;">
+                    \( = 1 - x^2 + \frac{x^4}{2!} - \frac{x^6}{3!} + \ldots \)
+                </div>
+            </div>
+        </div>
+
+        <!-- Example: Integration -->
+        <div class="slide slide-content" data-slide="11" data-title="Example: Integration">
+            <div class="slide-content">
+                <h2>Example: Series for \( \arctan x \)</h2>
+                <p style="font-size: 1.5rem;">
+                    We know: \( \frac{1}{1+x^2} = 1 - x^2 + x^4 - x^6 + \ldots \)
+                </p>
+                <p style="font-size: 1.35rem; margin-top: 1rem;">
+                    Integrate term by term:
+                </p>
+                <div class="formula-box" style="font-size: 1.5rem;">
+                    \( \arctan x = \int \frac{1}{1+x^2} dx = x - \frac{x^3}{3} + \frac{x^5}{5} - \frac{x^7}{7} + \ldots \)
+                </div>
+            </div>
+        </div>
+
+        <!-- Finding Coefficients -->
+        <div class="slide slide-content" data-slide="12" data-title="Finding Coefficients">
+            <div class="slide-content">
+                <h2>Finding Specific Coefficients</h2>
+                <p style="font-size: 1.5rem;">
+                    For \( f(x) = \sum c_n x^n \), the coefficient \( c_n = \frac{f^{(n)}(0)}{n!} \)
+                </p>
+                <p style="font-size: 1.5rem; margin-top: 1.5rem;">
+                    <strong>Example:</strong> Find the coefficient of \( x^4 \) in \( e^x \sin x \)
+                </p>
+                <p style="font-size: 1.35rem; margin-top: 1rem; color: #64748b;">
+                    Method: Multiply series and collect the \( x^4 \) term,<br>
+                    or compute \( \frac{f^{(4)}(0)}{4!} \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Practice 1 -->
+        <div class="slide slide-exercise" data-slide="13" data-title="Practice 1">
+            <div class="slide-content">
+                <h2>Practice Problem 1</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    Write the first 4 non-zero terms of the Maclaurin series for:
+                </p>
+                <p style="font-size: 1.75rem;">
+                    \( f(x) = e^{2x} \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Practice 2 -->
+        <div class="slide slide-exercise" data-slide="14" data-title="Practice 2">
+            <div class="slide-content">
+                <h2>Practice Problem 2</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    Find the Maclaurin series for \( f(x) = \frac{1}{1+x^2} \)
+                </p>
+                <p style="font-size: 1.35rem; color: #64748b;">
+                    Hint: Start with \( \frac{1}{1-u} = \sum u^n \) and substitute \( u = -x^2 \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Practice 3 -->
+        <div class="slide slide-exercise" data-slide="15" data-title="Practice 3">
+            <div class="slide-content">
+                <h2>Practice Problem 3</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    Find the first 3 non-zero terms of the series for \( x^2 \cos x \).
+                </p>
+            </div>
+        </div>
+
+        <!-- Exit Ticket -->
+        <div class="slide slide-statement" data-slide="16" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    1. Write the Maclaurin series for \( e^x \) in sigma notation.
+                </p>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    2. What is the interval of convergence for \( \frac{1}{1-x} \)?
+                </p>
+                <p style="font-size: 1.5rem;">
+                    3. How do you find the series for \( \sin(2x) \)?
+                </p>
+            </div>
+        </div>
+
+        <!-- Closing -->
+        <div class="slide slide-title" data-slide="17" data-title="Closing">
+            <div class="slide-content">
+                <h2>Key Takeaways</h2>
+                <p style="font-size: 1.5rem; text-align: left; max-width: 800px; margin: 0 auto;">
+                    • Taylor series: infinite version of Taylor polynomial<br><br>
+                    • MEMORIZE: \( e^x \), \( \sin x \), \( \cos x \), \( \frac{1}{1-x} \), \( \ln(1+x) \)<br><br>
+                    • Build new series by substitution, multiplication, differentiation, integration<br><br>
+                    • Each series has an interval of convergence<br><br>
+                    • Term-by-term operations preserve convergence within interval
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-arrows">
+        <button class="nav-arrow" id="prevBtn">←</button>
+        <span class="slide-counter"><span id="currentSlide">1</span>/<span id="totalSlides">18</span></span>
+        <button class="nav-arrow" id="nextBtn">→</button>
+    </div>
+
+    <script src="../shared/presentation.js"></script>
+</body>
+</html>
