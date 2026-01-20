@@ -31,7 +31,7 @@
             font-size: 1.75rem;
         }
         .example-box {
-            background: #f8fafc;
+            background: var(--bg-tertiary);
             border: 2px solid var(--theme-color);
             border-radius: 0.75rem;
             padding: 1.5rem;
@@ -47,7 +47,7 @@
             padding: 1rem;
         }
         .concept-box {
-            background: white;
+            background: var(--bg-secondary);
             border: 2px solid var(--theme-color);
             border-radius: 0.75rem;
             padding: 1.5rem;
@@ -169,16 +169,16 @@
                 <h2>Classifying Series</h2>
                 <p style="font-size: 1.5rem; margin-bottom: 1.5rem;">Every series falls into one category:</p>
                 <div class="two-column">
-                    <div class="concept-box" style="background: #dcfce7;">
+                    <div class="concept-box" style="background: var(--bg-tertiary);">
                         <h3 style="color: #059669;">Absolutely Convergent</h3>
                         <p style="font-size: 1.35rem;">\( \sum a_n \) converges<br>\( \sum |a_n| \) converges</p>
                     </div>
-                    <div class="concept-box" style="background: #fef3c7;">
+                    <div class="concept-box" style="background: var(--bg-tertiary);">
                         <h3 style="color: #d97706;">Conditionally Convergent</h3>
                         <p style="font-size: 1.35rem;">\( \sum a_n \) converges<br>\( \sum |a_n| \) diverges</p>
                     </div>
                 </div>
-                <div class="concept-box" style="background: #fee2e2; max-width: 300px; margin: 1rem auto;">
+                <div class="concept-box" style="background: var(--bg-tertiary); max-width: 300px; margin: 1rem auto;">
                     <h3 style="color: #dc2626;">Divergent</h3>
                     <p style="font-size: 1.35rem;">\( \sum a_n \) diverges</p>
                 </div>
@@ -231,15 +231,15 @@
             <div class="slide-content">
                 <h2>Testing Strategy</h2>
                 <div class="flowchart">
-                    <div class="flowchart-item" style="background: #e0e7ff;">
+                    <div class="flowchart-item" style="background: var(--bg-tertiary);">
                         Start: Given \( \sum a_n \)
                     </div>
                     <div class="flowchart-arrow">↓</div>
-                    <div class="flowchart-item" style="background: #dcfce7;">
+                    <div class="flowchart-item" style="background: var(--bg-tertiary);">
                         Test \( \sum |a_n| \) — does it converge?
                     </div>
                     <div class="flowchart-arrow">↓</div>
-                    <div class="flowchart-item" style="background: white; border: 2px solid #4f46e5;">
+                    <div class="flowchart-item" style="background: var(--bg-secondary); border: 2px solid #4f46e5;">
                         Yes → <span class="converge">Absolutely convergent</span><br>
                         No → Test \( \sum a_n \) directly (AST, etc.)
                     </div>

@@ -48,7 +48,7 @@
         }
 
         .definition-box {
-            background: linear-gradient(135deg, #ecfeff, #cffafe);
+            background: var(--bg-secondary);
             border-left: 4px solid var(--theme-color);
             padding: 1.5rem;
             border-radius: 0 8px 8px 0;
@@ -61,7 +61,7 @@
         }
 
         .formula-box {
-            background: white;
+            background: var(--bg-secondary);
             border: 2px solid var(--theme-color);
             border-radius: 8px;
             padding: 1.5rem;
@@ -78,7 +78,7 @@
         }
 
         .example-card {
-            background: #f8f9fa;
+            background: var(--bg-tertiary);
             border-radius: 8px;
             padding: 1rem;
             border-left: 4px solid var(--theme-color);
@@ -197,7 +197,7 @@
         .comparison-table td {
             padding: 0.75rem;
             text-align: center;
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--bg-tertiary);
         }
 
         .comparison-table th {
@@ -206,7 +206,7 @@
         }
 
         .comparison-table tr:nth-child(even) {
-            background: #f0fdfa;
+            background: var(--bg-tertiary);
         }
     </style>
 </head>
@@ -345,7 +345,7 @@
                             <li>\(\dfrac{dy}{dt} = 2\)</li>
                             <li>\(\dfrac{dy}{dx} = \dfrac{2}{2t} = \dfrac{1}{t}\)</li>
                         </ul>
-                        <p style="margin-top: 1rem; padding: 0.75rem; background: #f0fdfa; border-radius: 4px;">
+                        <p style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 4px;">
                             At \(t = 1\): slope \(= 1\)<br>
                             At \(t = 2\): slope \(= \frac{1}{2}\)
                         </p>
@@ -367,7 +367,7 @@
                             <li>\(\dfrac{dy}{dt} = \cos t\)</li>
                             <li>\(\dfrac{dy}{dx} = \dfrac{\cos t}{-\sin t} = -\cot t\)</li>
                         </ul>
-                        <p style="margin-top: 1rem; padding: 0.75rem; background: #f0fdfa; border-radius: 4px;">
+                        <p style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 4px;">
                             At \(t = \frac{\pi}{4}\): slope \(= -1\)<br>
                             At \(t = \frac{\pi}{2}\): slope \(= 0\)
                         </p>
@@ -423,10 +423,10 @@
                         <p><strong>Given:</strong> \(x = t^3 - 3t, \quad y = t^2 - 4\)</p>
                         <p style="margin-top: 1rem;">\(\dfrac{dx}{dt} = 3t^2 - 3 = 3(t-1)(t+1)\)</p>
                         <p>\(\dfrac{dy}{dt} = 2t\)</p>
-                        <div style="margin-top: 1rem; padding: 0.75rem; background: #fef3c7; border-radius: 4px;">
+                        <div style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 4px;">
                             <strong>Vertical:</strong> \(t = \pm 1\) (where \(\frac{dx}{dt} = 0\))
                         </div>
-                        <div style="margin-top: 0.5rem; padding: 0.75rem; background: #d1fae5; border-radius: 4px;">
+                        <div style="margin-top: 0.5rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 4px;">
                             <strong>Horizontal:</strong> \(t = 0\) (where \(\frac{dy}{dt} = 0\))
                         </div>
                     </div>
@@ -465,7 +465,7 @@
                             <li>\(\dfrac{d}{dt}\left(\dfrac{3t}{2}\right) = \dfrac{3}{2}\)</li>
                             <li>\(\dfrac{d^2y}{dx^2} = \dfrac{3/2}{2t} = \dfrac{3}{4t}\)</li>
                         </ul>
-                        <p style="margin-top: 1rem; padding: 0.75rem; background: #f0fdfa; border-radius: 4px;">
+                        <p style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 4px;">
                             <strong>Concavity:</strong><br>
                             \(t > 0\): concave up<br>
                             \(t < 0\): concave down
@@ -564,7 +564,7 @@
                         <li>Analyze concavity using second derivative</li>
                     </ul>
                 </div>
-                <div style="margin-top: 1.5rem; padding: 1rem; background: #fef3c7; border-radius: 8px;">
+                <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-tertiary); border-radius: 8px;">
                     <p style="font-size: 1.2rem;"><strong>Remember:</strong> Always divide by \(\frac{dx}{dt}\), not \(\frac{dt}{dx}\)!</p>
                 </div>
             </div>

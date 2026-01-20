@@ -47,7 +47,7 @@
         }
 
         .definition-box {
-            background: linear-gradient(135deg, #ecfeff, #cffafe);
+            background: var(--bg-secondary);
             border-left: 4px solid var(--theme-color);
             padding: 1.5rem;
             border-radius: 0 8px 8px 0;
@@ -60,7 +60,7 @@
         }
 
         .formula-box {
-            background: white;
+            background: var(--bg-secondary);
             border: 2px solid var(--theme-color);
             border-radius: 8px;
             padding: 1.5rem;
@@ -70,12 +70,12 @@
         }
 
         .formula-box.highlight {
-            background: linear-gradient(135deg, #ecfeff, #ffffff);
+            background: var(--bg-secondary);
             border-width: 3px;
         }
 
         .derivation-steps {
-            background: #f8f9fa;
+            background: var(--bg-tertiary);
             border-radius: 8px;
             padding: 1.5rem;
             margin: 1rem 0;
@@ -103,7 +103,7 @@
         }
 
         .example-card {
-            background: #f8f9fa;
+            background: var(--bg-tertiary);
             border-radius: 8px;
             padding: 1rem;
             border-left: 4px solid var(--theme-color);
@@ -186,7 +186,7 @@
         }
 
         .info-panel {
-            background: #f0fdfa;
+            background: var(--bg-tertiary);
             border-radius: 8px;
             padding: 1rem;
             text-align: center;
@@ -237,7 +237,7 @@
         .comparison-table td {
             padding: 0.75rem;
             text-align: center;
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--bg-tertiary);
         }
 
         .comparison-table th {
@@ -246,7 +246,7 @@
         }
 
         .comparison-table tr:nth-child(even) {
-            background: #f0fdfa;
+            background: var(--bg-tertiary);
         }
     </style>
 </head>
@@ -408,7 +408,7 @@
                             <li>\(\sqrt{1 + 4t^2}\)</li>
                             <li>\(L = \int_0^1 \sqrt{1 + 4t^2} \, dt\)</li>
                         </ul>
-                        <div style="margin-top: 1rem; padding: 0.75rem; background: #f0fdfa; border-radius: 4px;">
+                        <div style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 4px;">
                             <p>Using substitution or table:</p>
                             <p>\(L = \frac{\sqrt{5}}{2} + \frac{\ln(2 + \sqrt{5})}{4} \approx 1.479\)</p>
                         </div>
@@ -499,7 +499,7 @@
                         <li>Integrate from \(t = a\) to \(t = b\)</li>
                     </ul>
                 </div>
-                <div style="margin-top: 1rem; padding: 1rem; background: #fef3c7; border-radius: 8px;">
+                <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-tertiary); border-radius: 8px;">
                     <p style="font-size: 1.15rem;"><strong>Tip:</strong> Many arc length integrals require a calculator. Focus on setting up the integral correctly!</p>
                 </div>
             </div>
@@ -627,7 +627,7 @@
                         <li>Compare distance traveled vs. displacement</li>
                     </ul>
                 </div>
-                <div style="margin-top: 1.5rem; padding: 1rem; background: #fef3c7; border-radius: 8px;">
+                <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-tertiary); border-radius: 8px;">
                     <p style="font-size: 1.15rem;"><strong>Remember:</strong> Speed is under the radical; don't forget to integrate for total distance!</p>
                 </div>
             </div>

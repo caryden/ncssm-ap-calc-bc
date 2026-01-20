@@ -47,7 +47,7 @@
         }
 
         .definition-box {
-            background: linear-gradient(135deg, #ecfeff, #cffafe);
+            background: var(--bg-secondary);
             border-left: 4px solid var(--theme-color);
             padding: 1.5rem;
             border-radius: 0 8px 8px 0;
@@ -60,7 +60,7 @@
         }
 
         .formula-box {
-            background: white;
+            background: var(--bg-secondary);
             border: 2px solid var(--theme-color);
             border-radius: 8px;
             padding: 1.5rem;
@@ -70,7 +70,7 @@
         }
 
         .formula-box.highlight {
-            background: linear-gradient(135deg, #ecfeff, #ffffff);
+            background: var(--bg-secondary);
             border-width: 3px;
         }
 
@@ -82,7 +82,7 @@
         }
 
         .example-card {
-            background: #f8f9fa;
+            background: var(--bg-tertiary);
             border-radius: 8px;
             padding: 1rem;
             border-left: 4px solid var(--theme-color);
@@ -165,7 +165,7 @@
         }
 
         .vector-notation {
-            background: #f0fdfa;
+            background: var(--bg-tertiary);
             padding: 1rem;
             border-radius: 8px;
             text-align: center;
@@ -210,7 +210,7 @@
         .comparison-table td {
             padding: 0.75rem;
             text-align: center;
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--bg-tertiary);
         }
 
         .comparison-table th {
@@ -219,7 +219,7 @@
         }
 
         .comparison-table tr:nth-child(even) {
-            background: #f0fdfa;
+            background: var(--bg-tertiary);
         }
 
         .three-column {
@@ -230,7 +230,7 @@
         }
 
         .info-box {
-            background: white;
+            background: var(--bg-secondary);
             border-radius: 8px;
             padding: 1rem;
             text-align: center;
@@ -460,7 +460,7 @@
                             <li>\(y(t) = e^t \Rightarrow y'(t) = e^t\)</li>
                             <li>\(\vec{v}(t) = \langle 2t, e^t \rangle\)</li>
                         </ul>
-                        <div style="margin-top: 1rem; padding: 0.75rem; background: #f0fdfa; border-radius: 4px;">
+                        <div style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 4px;">
                             <p>At \(t = 1\):</p>
                             <p>\(\vec{v}(1) = \langle 2, e \rangle\)</p>
                             <p>Speed \(= \sqrt{4 + e^2} \approx 2.90\)</p>
