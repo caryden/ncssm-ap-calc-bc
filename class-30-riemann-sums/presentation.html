@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accumulation of Change and Riemann Sums | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <style>
+        :root {
+            --theme-color: #eab308;
+            --theme-color-light: #facc15;
+            --theme-color-dark: #ca8a04;
+            --riemann-left: #3b82f6;
+            --riemann-right: #ef4444;
+            --riemann-mid: #22c55e;
+            --riemann-trap: #a855f7;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+            color: #000;
+        }
+
+        .slide-title h1 {
+            color: var(--theme-color);
+        }
+
+        .viz-container {
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viz-container svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .concept-card {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.25rem;
+            border-radius: 0 8px 8px 0;
+            text-align: left;
+        }
+
+        .concept-card h4 {
+            color: var(--theme-color);
+            margin: 0 0 0.5rem 0;
+            font-size: 1.25rem;
+        }
+
+        .concept-card p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .controls-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--theme-color);
+            color: #000;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .control-btn:hover {
+            background: var(--theme-color-light);
+        }
+
+        .control-btn.active {
+            background: var(--theme-color-dark);
+            color: #fff;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .slider-container label {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .slider-container input[type="range"] {
+            width: 200px;
+        }
+
+        .slider-value {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            color: var(--theme-color);
+            min-width: 40px;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        .formula-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--theme-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem auto;
+            max-width: 800px;
+        }
+
+        .formula-box h4 {
+            color: var(--theme-color);
+            margin: 0 0 1rem 0;
+            font-size: 1.25rem;
+        }
+
+        .example-steps {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .example-steps .step {
+            margin: 1rem 0;
+            padding: 0.75rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            font-size: 1.2rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            max-width: 900px;
+            margin: 1rem auto;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.75rem 1rem;
+            text-align: center;
+            border: 1px solid var(--bg-tertiary);
+            font-size: 1.1rem;
+        }
+
+        .comparison-table th {
+            background: var(--theme-color);
+            color: #000;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+
+        <!-- Slide 0: Title -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 6: Integration</span>
+                <h1>Accumulation of Change</h1>
+                <p class="subtitle">& Riemann Sums</p>
+                <p class="meta">Class 30 | CED Topics 6.1, 6.2</p>
+            </div>
+        </section>
+
+        <!-- Slide 1: Warm-Up -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="exercise-box">
+                    <p>A car travels at a constant speed of 60 mph for 2 hours.</p>
+                    <p style="margin-top: 1rem;"><strong>Question:</strong> How do you find the total distance traveled?</p>
+                    <hr style="margin: 1.5rem 0; border-color: var(--bg-tertiary);">
+                    <p><strong>Follow-up:</strong> What if the speed is NOT constant?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: The Big Idea -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>The Big Idea: Accumulation</h2>
+                <div class="statement-box">
+                    <p>When quantity changes at a varying rate, we can approximate the <strong>total accumulated change</strong> by breaking it into small pieces.</p>
+                </div>
+                <p class="math-display">\[\text{Total Change} \approx \sum (\text{rate}) \times (\text{small time interval})\]</p>
+            </div>
+        </section>
+
+        <!-- Slide 3: Velocity Example -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Area Under a Velocity Curve</h2>
+                <div id="velocity-area-viz" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.25rem; margin-top: 1rem;">
+                    The <strong style="color: var(--theme-color);">area</strong> under the velocity curve equals the <strong>displacement</strong>
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 4: Riemann Sum Introduction -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Riemann Sums</h2>
+                <div class="statement-box">
+                    <p><strong>Riemann Sum:</strong> An approximation of the area under a curve using rectangles.</p>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <p class="math-display">\[\sum_{i=1}^{n} f(x_i^*) \cdot \Delta x\]</p>
+                    <p style="font-size: 1.25rem; color: var(--text-secondary);">
+                        where \(\Delta x = \dfrac{b-a}{n}\) and \(x_i^*\) is a sample point in the \(i\)th subinterval
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Left Riemann Sum -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Left Riemann Sum</h2>
+                <div class="formula-box">
+                    <p>\(L_n = \sum_{i=0}^{n-1} f(x_i) \cdot \Delta x = \Delta x \cdot [f(x_0) + f(x_1) + \cdots + f(x_{n-1})]\)</p>
+                </div>
+                <div id="left-riemann-viz" class="viz-container" style="height: 350px;"></div>
+                <div class="slider-container">
+                    <label>Rectangles (n):</label>
+                    <input type="range" id="left-n-slider" min="2" max="20" value="4">
+                    <span class="slider-value" id="left-n-value">4</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Right Riemann Sum -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Right Riemann Sum</h2>
+                <div class="formula-box">
+                    <p>\(R_n = \sum_{i=1}^{n} f(x_i) \cdot \Delta x = \Delta x \cdot [f(x_1) + f(x_2) + \cdots + f(x_n)]\)</p>
+                </div>
+                <div id="right-riemann-viz" class="viz-container" style="height: 350px;"></div>
+                <div class="slider-container">
+                    <label>Rectangles (n):</label>
+                    <input type="range" id="right-n-slider" min="2" max="20" value="4">
+                    <span class="slider-value" id="right-n-value">4</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Midpoint Riemann Sum -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Midpoint Riemann Sum</h2>
+                <div class="formula-box">
+                    <p>\(M_n = \sum_{i=1}^{n} f\left(\dfrac{x_{i-1} + x_i}{2}\right) \cdot \Delta x\)</p>
+                </div>
+                <div id="mid-riemann-viz" class="viz-container" style="height: 350px;"></div>
+                <div class="slider-container">
+                    <label>Rectangles (n):</label>
+                    <input type="range" id="mid-n-slider" min="2" max="20" value="4">
+                    <span class="slider-value" id="mid-n-value">4</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Trapezoidal Sum -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Trapezoidal Sum</h2>
+                <div class="formula-box">
+                    <p>\(T_n = \dfrac{\Delta x}{2}[f(x_0) + 2f(x_1) + 2f(x_2) + \cdots + 2f(x_{n-1}) + f(x_n)]\)</p>
+                </div>
+                <div id="trap-riemann-viz" class="viz-container" style="height: 350px;"></div>
+                <div class="slider-container">
+                    <label>Trapezoids (n):</label>
+                    <input type="range" id="trap-n-slider" min="2" max="20" value="4">
+                    <span class="slider-value" id="trap-n-value">4</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Compare All Methods -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Comparing Approximation Methods</h2>
+                <div id="compare-viz" class="viz-container" style="height: 380px;"></div>
+                <div class="controls-container">
+                    <button class="control-btn active" data-method="left">Left</button>
+                    <button class="control-btn" data-method="right">Right</button>
+                    <button class="control-btn" data-method="mid">Midpoint</button>
+                    <button class="control-btn" data-method="trap">Trapezoid</button>
+                </div>
+                <div class="slider-container">
+                    <label>n =</label>
+                    <input type="range" id="compare-n-slider" min="2" max="30" value="6">
+                    <span class="slider-value" id="compare-n-value">6</span>
+                    <span style="margin-left: 2rem;">Exact: <strong id="exact-value">4.667</strong></span>
+                    <span style="margin-left: 1rem;">Approx: <strong id="approx-value" style="color: var(--theme-color);">--</strong></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Over/Underestimates -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Over and Underestimates</h2>
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <h4>Increasing Function</h4>
+                        <p>Left sum: <strong>Underestimate</strong></p>
+                        <p>Right sum: <strong>Overestimate</strong></p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Decreasing Function</h4>
+                        <p>Left sum: <strong>Overestimate</strong></p>
+                        <p>Right sum: <strong>Underestimate</strong></p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Concave Up</h4>
+                        <p>Midpoint: <strong>Underestimate</strong></p>
+                        <p>Trapezoid: <strong>Overestimate</strong></p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Concave Down</h4>
+                        <p>Midpoint: <strong>Overestimate</strong></p>
+                        <p>Trapezoid: <strong>Underestimate</strong></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: Table Data Example -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Riemann Sum from a Table</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>\(t\) (hours)</th>
+                        <th>0</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>4</th>
+                        <th>6</th>
+                    </tr>
+                    <tr>
+                        <td>\(v(t)\) (mph)</td>
+                        <td>0</td>
+                        <td>30</td>
+                        <td>50</td>
+                        <td>55</td>
+                        <td>40</td>
+                    </tr>
+                </table>
+                <div style="margin-top: 1.5rem; text-align: left; max-width: 800px; margin-left: auto; margin-right: auto;">
+                    <p style="font-size: 1.25rem;"><strong>Find the Left Riemann Sum:</strong></p>
+                    <p class="math-display" style="font-size: 1.5rem;">\[L = v(0) \cdot 1 + v(1) \cdot 1 + v(2) \cdot 2 + v(4) \cdot 2\]</p>
+                    <p class="math-display" style="font-size: 1.5rem;">\[L = 0(1) + 30(1) + 50(2) + 55(2) = 240 \text{ miles}\]</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: Unequal Subintervals -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Unequal Subintervals</h2>
+                <div class="statement-box">
+                    <p>When \(\Delta x\) varies, multiply each function value by its <strong>own width</strong>.</p>
+                </div>
+                <p class="math-display">\[\sum_{i=1}^{n} f(x_i^*) \cdot \Delta x_i\]</p>
+                <p style="font-size: 1.25rem; color: var(--text-secondary); margin-top: 1rem;">
+                    Note: This is common with table data where measurements aren't evenly spaced.
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 13: Limit Definition Preview -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>From Approximation to Exact</h2>
+                <div class="statement-box">
+                    <p>As \(n \to \infty\), the Riemann sum approaches the <strong>exact area</strong>.</p>
+                </div>
+                <p class="math-display">\[\lim_{n \to \infty} \sum_{i=1}^{n} f(x_i^*) \cdot \Delta x = \int_a^b f(x)\, dx\]</p>
+                <p style="font-size: 1.5rem; margin-top: 1.5rem; color: var(--theme-color);">
+                    This limit is the <strong>Definite Integral</strong>
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 14: Accumulation Function -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Accumulation Function</h2>
+                <div id="accumulation-viz" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.25rem; margin-top: 0.5rem;">
+                    \(A(x) = \int_a^x f(t)\, dt\) accumulates area from \(a\) to \(x\)
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 15: Sigma Notation Practice -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Writing Riemann Sums</h2>
+                <div class="exercise-box">
+                    <p>Write the Left Riemann Sum with \(n = 4\) subintervals for:</p>
+                    <p class="math-display">\[\int_0^2 x^2 \, dx\]</p>
+                    <hr style="margin: 1.5rem 0; border-color: var(--bg-tertiary);">
+                    <p style="font-size: 1.1rem; color: var(--text-secondary);">
+                        Hint: \(\Delta x = \dfrac{2-0}{4} = 0.5\) and endpoints are \(0, 0.5, 1, 1.5, 2\)
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 16: Solution -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Solution</h2>
+                <div class="example-steps">
+                    <div class="step">\(\Delta x = 0.5\), Left endpoints: \(x_0=0, x_1=0.5, x_2=1, x_3=1.5\)</div>
+                    <div class="step">\(L_4 = 0.5[f(0) + f(0.5) + f(1) + f(1.5)]\)</div>
+                    <div class="step">\(L_4 = 0.5[0 + 0.25 + 1 + 2.25]\)</div>
+                    <div class="step">\(L_4 = 0.5(3.5) = \boxed{1.75}\)</div>
+                </div>
+                <p style="margin-top: 1rem; font-size: 1.1rem; color: var(--text-secondary);">
+                    Exact value: \(\displaystyle\int_0^2 x^2\, dx = \dfrac{8}{3} \approx 2.667\)
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 17: Practice Problems -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Practice Problems</h2>
+                <div class="exercise-box">
+                    <ol style="font-size: 1.2rem; line-height: 2.2; text-align: left; max-width: 700px; margin: 0 auto;">
+                        <li>Use a Right Riemann Sum with \(n=4\) to approximate \(\displaystyle\int_1^5 \sqrt{x}\, dx\)</li>
+                        <li>Use a Midpoint Riemann Sum with \(n=3\) to approximate \(\displaystyle\int_0^3 (x^2+1)\, dx\)</li>
+                        <li>Is your answer to #1 an overestimate or underestimate? Why?</li>
+                        <li>Use Trapezoidal Rule with \(n=4\) for \(\displaystyle\int_0^4 e^{-x}\, dx\)</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 18: Exit Ticket -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="exercise-box">
+                    <table class="comparison-table" style="max-width: 500px;">
+                        <tr>
+                            <th>\(x\)</th>
+                            <th>0</th>
+                            <th>2</th>
+                            <th>5</th>
+                            <th>8</th>
+                        </tr>
+                        <tr>
+                            <td>\(f(x)\)</td>
+                            <td>3</td>
+                            <td>7</td>
+                            <td>11</td>
+                            <td>9</td>
+                        </tr>
+                    </table>
+                    <p style="margin-top: 1.5rem;">Use a Left Riemann Sum to approximate \(\displaystyle\int_0^8 f(x)\, dx\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 19: Looking Ahead -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <h2>Looking Ahead</h2>
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--theme-color);">Next: Definite Integrals</h3>
+                    <ul style="font-size: 1.35rem; line-height: 2; list-style: none; padding: 0; margin-top: 1.5rem;">
+                        <li>The limit of Riemann sums</li>
+                        <li>Integral notation \(\displaystyle\int_a^b f(x)\, dx\)</li>
+                        <li>Properties of definite integrals</li>
+                        <li>Geometric interpretations</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="slide-nav">
+        <button id="prevBtn" aria-label="Previous slide">←</button>
+        <span id="slideCounter">1 / 20</span>
+        <button id="nextBtn" aria-label="Next slide">→</button>
+        <button id="tocBtn" aria-label="Table of contents">☰</button>
+    </nav>
+
+    <!-- Table of Contents -->
+    <div id="toc" class="toc-overlay">
+        <div class="toc-content">
+            <h3>Contents</h3>
+            <ul id="tocList"></ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <script src="../shared/presentation.js"></script>
+
+    <script>
+        const visualizationSlides = {
+            3: drawVelocityAreaViz,
+            5: drawLeftRiemannViz,
+            6: drawRightRiemannViz,
+            7: drawMidRiemannViz,
+            8: drawTrapRiemannViz,
+            9: drawCompareViz,
+            14: drawAccumulationViz
+        };
+
+        let lastSlide = -1;
+        let compareMethod = 'left';
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Helper: draw function curve
+        function drawCurve(svg, xScale, yScale, fn, xMin, xMax, color, strokeWidth = 3) {
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const data = d3.range(xMin, xMax + 0.01, 0.05).map(x => ({ x, y: fn(x) }));
+
+            svg.append('path')
+                .datum(data)
+                .attr('fill', 'none')
+                .attr('stroke', color)
+                .attr('stroke-width', strokeWidth)
+                .attr('d', line);
+        }
+
+        // Helper: draw axes
+        function drawAxes(svg, xScale, yScale, width, height, margin) {
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 2);
+        }
+
+        // Velocity Area Visualization
+        function drawVelocityAreaViz() {
+            const container = d3.select('#velocity-area-viz');
+            container.selectAll('*').remove();
+
+            const width = 700, height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([0, 6]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([0, 80]).range([height - margin.bottom, margin.top]);
+
+            const fn = t => 20 + 40 * Math.sin(t * 0.8);
+
+            // Shaded area
+            const areaGen = d3.area()
+                .x(d => xScale(d.x))
+                .y0(yScale(0))
+                .y1(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const areaData = d3.range(0, 5.01, 0.05).map(x => ({ x, y: fn(x) }));
+
+            svg.append('path')
+                .datum(areaData)
+                .attr('fill', 'rgba(234, 179, 8, 0.3)')
+                .attr('d', areaGen);
+
+            drawAxes(svg, xScale, yScale, width, height, margin);
+            drawCurve(svg, xScale, yScale, fn, 0, 6, '#eab308');
+
+            // Labels
+            svg.append('text').attr('x', width - margin.right).attr('y', yScale(0) + 35)
+                .attr('text-anchor', 'end').attr('fill', '#fff').attr('font-size', '1.1rem').text('t (hours)');
+            svg.append('text').attr('x', margin.left - 10).attr('y', margin.top)
+                .attr('text-anchor', 'end').attr('fill', '#fff').attr('font-size', '1.1rem').text('v(t)');
+            svg.append('text').attr('x', xScale(2.5)).attr('y', yScale(30))
+                .attr('text-anchor', 'middle').attr('fill', '#eab308').attr('font-size', '1.25rem').text('Area = Distance');
+        }
+
+        // Riemann sum visualization helper
+        function drawRiemannSum(containerId, sliderId, valueId, type) {
+            const container = d3.select(containerId);
+            container.selectAll('*').remove();
+
+            const width = 600, height = 300;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const n = parseInt(document.getElementById(sliderId.replace('#', '')).value) || 4;
+            const a = 0, b = 4;
+            const dx = (b - a) / n;
+            const fn = x => 0.5 * x * x + 1;
+
+            const xScale = d3.scaleLinear().domain([-0.5, 5]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([0, 10]).range([height - margin.bottom, margin.top]);
+
+            // Draw rectangles or trapezoids
+            const colors = { left: '#3b82f6', right: '#ef4444', mid: '#22c55e', trap: '#a855f7' };
+
+            for (let i = 0; i < n; i++) {
+                const x0 = a + i * dx;
+                const x1 = a + (i + 1) * dx;
+
+                if (type === 'trap') {
+                    const points = [
+                        [xScale(x0), yScale(0)],
+                        [xScale(x0), yScale(fn(x0))],
+                        [xScale(x1), yScale(fn(x1))],
+                        [xScale(x1), yScale(0)]
+                    ];
+                    svg.append('polygon')
+                        .attr('points', points.map(p => p.join(',')).join(' '))
+                        .attr('fill', colors[type])
+                        .attr('fill-opacity', 0.4)
+                        .attr('stroke', colors[type])
+                        .attr('stroke-width', 1.5);
+                } else {
+                    let h;
+                    if (type === 'left') h = fn(x0);
+                    else if (type === 'right') h = fn(x1);
+                    else h = fn((x0 + x1) / 2);
+
+                    svg.append('rect')
+                        .attr('x', xScale(x0))
+                        .attr('y', yScale(h))
+                        .attr('width', xScale(x1) - xScale(x0))
+                        .attr('height', yScale(0) - yScale(h))
+                        .attr('fill', colors[type])
+                        .attr('fill-opacity', 0.4)
+                        .attr('stroke', colors[type])
+                        .attr('stroke-width', 1.5);
+                }
+            }
+
+            drawAxes(svg, xScale, yScale, width, height, margin);
+            drawCurve(svg, xScale, yScale, fn, -0.5, 5, '#eab308');
+
+            // Event listener
+            const slider = document.getElementById(sliderId.replace('#', ''));
+            const valueSpan = document.getElementById(valueId.replace('#', ''));
+
+            slider.oninput = function() {
+                valueSpan.textContent = this.value;
+                drawRiemannSum(containerId, sliderId, valueId, type);
+            };
+        }
+
+        function drawLeftRiemannViz() {
+            drawRiemannSum('#left-riemann-viz', '#left-n-slider', '#left-n-value', 'left');
+        }
+
+        function drawRightRiemannViz() {
+            drawRiemannSum('#right-riemann-viz', '#right-n-slider', '#right-n-value', 'right');
+        }
+
+        function drawMidRiemannViz() {
+            drawRiemannSum('#mid-riemann-viz', '#mid-n-slider', '#mid-n-value', 'mid');
+        }
+
+        function drawTrapRiemannViz() {
+            drawRiemannSum('#trap-riemann-viz', '#trap-n-slider', '#trap-n-value', 'trap');
+        }
+
+        // Compare visualization
+        function drawCompareViz() {
+            const container = d3.select('#compare-viz');
+            container.selectAll('*').remove();
+
+            const width = 650, height = 340;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const n = parseInt(document.getElementById('compare-n-slider').value) || 6;
+            const a = 0, b = 2;
+            const dx = (b - a) / n;
+            const fn = x => x * x + 1;
+            const exactValue = 14 / 3; // integral of x^2 + 1 from 0 to 2
+
+            const xScale = d3.scaleLinear().domain([-0.3, 2.5]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([0, 6]).range([height - margin.bottom, margin.top]);
+
+            const colors = { left: '#3b82f6', right: '#ef4444', mid: '#22c55e', trap: '#a855f7' };
+            let approxSum = 0;
+
+            for (let i = 0; i < n; i++) {
+                const x0 = a + i * dx;
+                const x1 = a + (i + 1) * dx;
+
+                if (compareMethod === 'trap') {
+                    const points = [
+                        [xScale(x0), yScale(0)],
+                        [xScale(x0), yScale(fn(x0))],
+                        [xScale(x1), yScale(fn(x1))],
+                        [xScale(x1), yScale(0)]
+                    ];
+                    svg.append('polygon')
+                        .attr('points', points.map(p => p.join(',')).join(' '))
+                        .attr('fill', colors[compareMethod])
+                        .attr('fill-opacity', 0.4)
+                        .attr('stroke', colors[compareMethod])
+                        .attr('stroke-width', 1.5);
+                    approxSum += (fn(x0) + fn(x1)) / 2 * dx;
+                } else {
+                    let h;
+                    if (compareMethod === 'left') { h = fn(x0); approxSum += h * dx; }
+                    else if (compareMethod === 'right') { h = fn(x1); approxSum += h * dx; }
+                    else { h = fn((x0 + x1) / 2); approxSum += h * dx; }
+
+                    svg.append('rect')
+                        .attr('x', xScale(x0))
+                        .attr('y', yScale(h))
+                        .attr('width', xScale(x1) - xScale(x0))
+                        .attr('height', yScale(0) - yScale(h))
+                        .attr('fill', colors[compareMethod])
+                        .attr('fill-opacity', 0.4)
+                        .attr('stroke', colors[compareMethod])
+                        .attr('stroke-width', 1.5);
+                }
+            }
+
+            drawAxes(svg, xScale, yScale, width, height, margin);
+            drawCurve(svg, xScale, yScale, fn, -0.3, 2.5, '#eab308');
+
+            document.getElementById('exact-value').textContent = exactValue.toFixed(3);
+            document.getElementById('approx-value').textContent = approxSum.toFixed(3);
+
+            // Event listeners
+            document.querySelectorAll('.control-btn[data-method]').forEach(btn => {
+                btn.onclick = function() {
+                    compareMethod = this.dataset.method;
+                    document.querySelectorAll('.control-btn[data-method]').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    drawCompareViz();
+                };
+            });
+
+            const slider = document.getElementById('compare-n-slider');
+            slider.oninput = function() {
+                document.getElementById('compare-n-value').textContent = this.value;
+                drawCompareViz();
+            };
+        }
+
+        // Accumulation visualization
+        function drawAccumulationViz() {
+            const container = d3.select('#accumulation-viz');
+            container.selectAll('*').remove();
+
+            const width = 700, height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([0, 6]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-1, 4]).range([height - margin.bottom, margin.top]);
+
+            const fn = x => Math.sin(x) + 1;
+            const xEnd = 4;
+
+            // Shaded accumulation
+            const areaGen = d3.area()
+                .x(d => xScale(d.x))
+                .y0(yScale(0))
+                .y1(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const areaData = d3.range(0, xEnd + 0.01, 0.05).map(x => ({ x, y: fn(x) }));
+
+            svg.append('path')
+                .datum(areaData)
+                .attr('fill', 'rgba(234, 179, 8, 0.3)')
+                .attr('d', areaGen);
+
+            // Boundary line at x = xEnd
+            svg.append('line')
+                .attr('x1', xScale(xEnd))
+                .attr('x2', xScale(xEnd))
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(fn(xEnd)))
+                .attr('stroke', '#eab308')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,5');
+
+            drawAxes(svg, xScale, yScale, width, height, margin);
+            drawCurve(svg, xScale, yScale, fn, 0, 6, '#60a5fa');
+
+            // Labels
+            svg.append('text').attr('x', xScale(0)).attr('y', yScale(0) + 25)
+                .attr('text-anchor', 'middle').attr('fill', '#fff').attr('font-size', '1rem').text('a');
+            svg.append('text').attr('x', xScale(xEnd)).attr('y', yScale(0) + 25)
+                .attr('text-anchor', 'middle').attr('fill', '#eab308').attr('font-size', '1rem').text('x');
+            svg.append('text').attr('x', xScale(xEnd / 2)).attr('y', yScale(0.8))
+                .attr('text-anchor', 'middle').attr('fill', '#eab308').attr('font-size', '1.1rem').text('A(x)');
+        }
+    </script>
+</body>
+</html>

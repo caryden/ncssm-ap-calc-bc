@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 29: Optimization | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #14b8a6;
+            --theme-color-light: #2dd4bf;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .strategy-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 800px;
+        }
+
+        .strategy-box h4 {
+            color: var(--theme-color-light);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .strategy-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.6rem 0;
+            font-size: 1.15rem;
+        }
+
+        .strategy-step .number {
+            background: var(--theme-color);
+            color: var(--bg-primary);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .concept-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            border-radius: 0 8px 8px 0;
+            max-width: 850px;
+            text-align: left;
+        }
+
+        .concept-box h4 {
+            color: var(--theme-color-light);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .problem-type {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin: 0.75rem 0;
+        }
+
+        .problem-type h5 {
+            color: var(--accent-secondary);
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-display {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-family: var(--font-mono);
+            font-size: 1.15rem;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .slider-control label {
+            font-size: 1.25rem;
+            font-family: var(--font-display);
+        }
+
+        .slider-control input[type="range"] {
+            width: 250px;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--theme-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Optimization">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 5: Analytical Applications of Differentiation</div>
+                <h1>Optimization Problems</h1>
+                <p class="subtitle">Finding Maximum and Minimum Values</p>
+                <p class="meta">Class 29 | CED Topics 5.10, 5.11 | AP Calculus BC | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: Opening Question -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="Opening Question">
+            <div class="slide-content">
+                <p class="statement">What dimensions make the biggest box?</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Warm-Up -->
+        <div class="slide slide-exercise" data-slide="2" data-section="Opening" data-title="Warm-Up">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="prompt">
+                    <p>A farmer has 100 meters of fencing to enclose a rectangular garden against a barn wall.</p>
+                    <p style="margin-top: 1rem;">What's the maximum area she can enclose if she only needs to fence three sides?</p>
+                </div>
+                <div class="instructions" style="margin-top: 1.5rem;">
+                    <p style="font-size: 1.1rem; color: var(--text-secondary);">Hint: Let x = width (perpendicular to barn)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: What is Optimization? -->
+        <div class="slide slide-visual" data-slide="3" data-section="Strategy" data-title="What is Optimization?">
+            <div class="slide-content">
+                <h2>What is Optimization?</h2>
+                <div class="concept-box">
+                    <h4>Definition</h4>
+                    <p style="font-size: 1.25rem;">Optimization is the process of finding the <strong>maximum</strong> or <strong>minimum</strong> value of a quantity subject to given constraints.</p>
+                    <div class="problem-type" style="margin-top: 1.5rem;">
+                        <h5>Real-World Applications</h5>
+                        <p>Maximize profit, minimize cost, maximize area, minimize material, optimize routes, maximize efficiency</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: The Strategy -->
+        <div class="slide slide-visual" data-slide="4" data-section="Strategy" data-title="Problem-Solving Strategy">
+            <div class="slide-content">
+                <h2>The Optimization Strategy</h2>
+                <div class="strategy-box">
+                    <h4>Five-Step Process</h4>
+                    <div class="strategy-step"><span class="number">1</span> Draw a diagram and identify variables</div>
+                    <div class="strategy-step"><span class="number">2</span> Write what you want to optimize (objective function)</div>
+                    <div class="strategy-step"><span class="number">3</span> Use constraints to write in terms of ONE variable</div>
+                    <div class="strategy-step"><span class="number">4</span> Find the critical points (set derivative = 0)</div>
+                    <div class="strategy-step"><span class="number">5</span> Verify it's a max/min (Second Derivative or endpoints)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Classic Example - Box -->
+        <div class="slide slide-example" data-slide="5" data-section="Examples" data-title="Box Problem">
+            <div class="slide-content">
+                <h2>Example: Open-Top Box</h2>
+                <div class="problem">
+                    <p>A sheet of cardboard is 24 cm by 24 cm. Equal squares are cut from each corner and the sides are folded up to make an open box. What size square maximizes the volume?</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>Let \( x \) = side of cut square. Box dimensions: \( (24-2x) \times (24-2x) \times x \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>Volume: \( V = x(24-2x)^2 = x(576 - 96x + 4x^2) = 4x^3 - 96x^2 + 576x \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Box Example Continued -->
+        <div class="slide slide-example" data-slide="6" data-section="Examples" data-title="Box Continued">
+            <div class="slide-content">
+                <h2>Open-Top Box (Continued)</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( V'(x) = 12x^2 - 192x + 576 = 12(x^2 - 16x + 48) = 12(x-4)(x-12) \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>Critical points: \( x = 4 \) and \( x = 12 \). Domain: \( 0 < x < 12 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">5</span>
+                        <span>\( V''(x) = 24x - 192 \). At \( x = 4 \): \( V''(4) = -96 < 0 \) (max!)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">6</span>
+                        <span>Maximum volume: \( V(4) = 4(16)^2 = 1024 \) cm\(^3\)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Box Visualization -->
+        <div class="slide slide-visual" data-slide="7" data-section="Examples" data-title="Box Visualization">
+            <div class="slide-content">
+                <h2>Volume vs. Cut Size</h2>
+                <div id="box-viz" class="visualization"></div>
+                <div class="info-display">
+                    <div class="info-item">Max at x = 4 cm</div>
+                    <div class="info-item">V = 1024 cm<sup>3</sup></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Distance Problem -->
+        <div class="slide slide-example" data-slide="8" data-section="Examples" data-title="Distance Problem">
+            <div class="slide-content">
+                <h2>Example: Minimum Distance</h2>
+                <div class="problem">
+                    <p>Find the point on the parabola \( y = x^2 \) that is closest to the point \( (0, 1) \).</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>Distance: \( D = \sqrt{(x-0)^2 + (x^2-1)^2} \). Minimize \( D^2 \) instead.</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>\( f(x) = x^2 + (x^2-1)^2 = x^2 + x^4 - 2x^2 + 1 = x^4 - x^2 + 1 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( f'(x) = 4x^3 - 2x = 2x(2x^2 - 1) = 0 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>Critical: \( x = 0, \pm\frac{1}{\sqrt{2}} \). Points: \( \left(\pm\frac{1}{\sqrt{2}}, \frac{1}{2}\right) \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Distance Visualization -->
+        <div class="slide slide-visual" data-slide="9" data-section="Examples" data-title="Distance Visualization">
+            <div class="slide-content">
+                <h2>Minimum Distance to Parabola</h2>
+                <div id="distance-viz" class="visualization"></div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Applied Problem -->
+        <div class="slide slide-example" data-slide="10" data-section="Applications" data-title="Applied Problem">
+            <div class="slide-content">
+                <h2>Example: Cost Minimization</h2>
+                <div class="problem">
+                    <p>A cylindrical can must hold 1000 cm\(^3\). The material for the top and bottom costs 2 cents per cm\(^2\), and for the side costs 1 cent per cm\(^2\). Find dimensions that minimize cost.</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>Constraint: \( V = \pi r^2 h = 1000 \), so \( h = \frac{1000}{\pi r^2} \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>Cost: \( C = 2(2\pi r^2) + 1(2\pi r h) = 4\pi r^2 + \frac{2000}{r} \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Cost Problem Continued -->
+        <div class="slide slide-example" data-slide="11" data-section="Applications" data-title="Cost Continued">
+            <div class="slide-content">
+                <h2>Cost Minimization (Continued)</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( C'(r) = 8\pi r - \frac{2000}{r^2} = 0 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>\( 8\pi r = \frac{2000}{r^2} \implies r^3 = \frac{250}{\pi} \implies r = \sqrt[3]{\frac{250}{\pi}} \approx 4.30 \) cm</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">5</span>
+                        <span>\( h = \frac{1000}{\pi r^2} \approx 17.21 \) cm</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Common Problem Types -->
+        <div class="slide slide-visual" data-slide="12" data-section="Applications" data-title="Problem Types">
+            <div class="slide-content">
+                <h2>Common Optimization Problems</h2>
+                <div class="concept-box">
+                    <div class="problem-type">
+                        <h5>Geometric</h5>
+                        <p>Maximize area/volume, minimize surface area/perimeter</p>
+                    </div>
+                    <div class="problem-type">
+                        <h5>Distance</h5>
+                        <p>Minimize distance to a curve or between points</p>
+                    </div>
+                    <div class="problem-type">
+                        <h5>Economic</h5>
+                        <p>Maximize profit/revenue, minimize cost</p>
+                    </div>
+                    <div class="problem-type">
+                        <h5>Physical</h5>
+                        <p>Minimize time (related rates), maximize range</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Key Insight -->
+        <div class="slide slide-statement" data-slide="13" data-section="Applications" data-title="Key Insight">
+            <div class="slide-content">
+                <p class="statement">Always verify your answer makes sense in context!</p>
+                <p style="font-size: 1.25rem; color: var(--text-secondary); margin-top: 2rem;">Check that your critical point is in the domain and produces a realistic answer.</p>
+            </div>
+        </div>
+
+        <!-- Slide 14: Practice 1 -->
+        <div class="slide slide-exercise" data-slide="14" data-section="Practice" data-title="Practice 1">
+            <div class="slide-content">
+                <h2>Your Turn</h2>
+                <div class="prompt">
+                    <p>A rectangle has its base on the x-axis and its upper two vertices on the parabola \( y = 12 - x^2 \).</p>
+                    <p style="margin-top: 1rem;">What is the maximum area of such a rectangle?</p>
+                </div>
+                <div class="instructions" style="margin-top: 1.5rem;">
+                    <p style="font-size: 1.1rem; color: var(--text-secondary);">Use symmetry! Let the vertex be at \( (x, 12-x^2) \)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Practice 2 -->
+        <div class="slide slide-exercise" data-slide="15" data-section="Practice" data-title="Practice 2">
+            <div class="slide-content">
+                <h2>Your Turn: AP Style</h2>
+                <div class="prompt">
+                    <p>A window has the shape of a rectangle with a semicircle on top. The perimeter is fixed at 12 meters.</p>
+                    <p style="margin-top: 1rem;">Find the dimensions that maximize the amount of light (area) through the window.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Summary -->
+        <div class="slide slide-visual" data-slide="16" data-section="Closing" data-title="Key Takeaways">
+            <div class="slide-content">
+                <h2>Optimization Summary</h2>
+                <div class="strategy-box" style="border-color: var(--accent-secondary);">
+                    <p style="font-size: 1.15rem; margin-bottom: 0.75rem;"><strong>1.</strong> Identify variables and draw a diagram</p>
+                    <p style="font-size: 1.15rem; margin-bottom: 0.75rem;"><strong>2.</strong> Write objective function + constraint</p>
+                    <p style="font-size: 1.15rem; margin-bottom: 0.75rem;"><strong>3.</strong> Reduce to one variable using constraint</p>
+                    <p style="font-size: 1.15rem; margin-bottom: 0.75rem;"><strong>4.</strong> Find critical points in the domain</p>
+                    <p style="font-size: 1.15rem;"><strong>5.</strong> Verify max/min and interpret in context</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="17" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p>A printed poster has margins of 4 cm on each side. The printed area is 400 cm\(^2\).</p>
+                    <p style="margin-top: 1rem;">Find the dimensions of the poster that minimize the total paper used.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Looking Ahead -->
+        <div class="slide slide-statement" data-slide="18" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Coming Up Next:</p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    Unit 6: Integration<br>
+                    Riemann Sums and Accumulation
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 19</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 29: Optimization</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Box Volume Visualization (Slide 7) =====
+        function drawBoxViz() {
+            const container = document.getElementById('box-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 30, right: 40, bottom: 50, left: 70 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const V = x => x * Math.pow(24 - 2*x, 2);
+
+            const xScale = d3.scaleLinear().domain([0, 12]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([0, 1200]).range([plotHeight, 0]);
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(0, 1300, 200))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', 0)
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Axis labels
+            g.append('text')
+                .attr('x', plotWidth / 2)
+                .attr('y', plotHeight + 40)
+                .attr('text-anchor', 'middle')
+                .attr('fill', 'var(--text-secondary)')
+                .attr('font-size', '1.25rem')
+                .text('x (cut size in cm)');
+
+            g.append('text')
+                .attr('transform', 'rotate(-90)')
+                .attr('x', -plotHeight / 2)
+                .attr('y', -50)
+                .attr('text-anchor', 'middle')
+                .attr('fill', 'var(--text-secondary)')
+                .attr('font-size', '1.25rem')
+                .text('V (volume in cm³)');
+
+            // Curve
+            const xValues = d3.range(0.1, 11.9, 0.1);
+            const line = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(V(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Maximum point
+            g.append('circle')
+                .attr('cx', xScale(4))
+                .attr('cy', yScale(V(4)))
+                .attr('r', 8)
+                .attr('fill', 'var(--color-error)');
+
+            g.append('line')
+                .attr('x1', xScale(4))
+                .attr('x2', xScale(4))
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(V(4)))
+                .attr('stroke', 'var(--color-error)')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,5');
+
+            // X-axis ticks
+            [0, 2, 4, 6, 8, 10, 12].forEach(x => {
+                g.append('text')
+                    .attr('x', xScale(x))
+                    .attr('y', plotHeight + 20)
+                    .attr('text-anchor', 'middle')
+                    .attr('fill', 'var(--text-secondary)')
+                    .attr('font-size', '1rem')
+                    .text(x);
+            });
+
+            // Y-axis ticks
+            [0, 200, 400, 600, 800, 1000, 1200].forEach(y => {
+                g.append('text')
+                    .attr('x', -10)
+                    .attr('y', yScale(y) + 5)
+                    .attr('text-anchor', 'end')
+                    .attr('fill', 'var(--text-secondary)')
+                    .attr('font-size', '1rem')
+                    .text(y);
+            });
+        }
+
+        // ===== Distance Visualization (Slide 9) =====
+        function drawDistanceViz() {
+            const container = document.getElementById('distance-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-2, 2]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-0.5, 3]).range([plotHeight, 0]);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Parabola
+            const xValues = d3.range(-1.7, 1.71, 0.05);
+            const parabola = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(d * d))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', parabola);
+
+            // Point (0, 1)
+            g.append('circle')
+                .attr('cx', xScale(0))
+                .attr('cy', yScale(1))
+                .attr('r', 8)
+                .attr('fill', 'var(--accent-secondary)');
+
+            g.append('text')
+                .attr('x', xScale(0) + 15)
+                .attr('y', yScale(1) + 5)
+                .attr('fill', 'var(--text-primary)')
+                .attr('font-size', '1.25rem')
+                .text('(0, 1)');
+
+            // Closest points
+            const sqrtHalf = 1 / Math.sqrt(2);
+            [sqrtHalf, -sqrtHalf].forEach(x => {
+                const y = x * x;
+
+                g.append('circle')
+                    .attr('cx', xScale(x))
+                    .attr('cy', yScale(y))
+                    .attr('r', 6)
+                    .attr('fill', 'var(--color-derivative)');
+
+                g.append('line')
+                    .attr('x1', xScale(x))
+                    .attr('x2', xScale(0))
+                    .attr('y1', yScale(y))
+                    .attr('y2', yScale(1))
+                    .attr('stroke', 'var(--color-derivative)')
+                    .attr('stroke-width', 2)
+                    .attr('stroke-dasharray', '5,5');
+            });
+
+            // Label
+            g.append('text')
+                .attr('x', plotWidth - 10)
+                .attr('y', yScale(2.5))
+                .attr('text-anchor', 'end')
+                .attr('fill', 'var(--color-function)')
+                .attr('font-size', '1.25rem')
+                .text('y = x²');
+        }
+
+        // ===== Visualization Trigger =====
+        const visualizationSlides = {
+            7: drawBoxViz,
+            9: drawDistanceViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

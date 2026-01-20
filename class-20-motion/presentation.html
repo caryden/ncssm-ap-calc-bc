@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 20: Position, Velocity, and Acceleration | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #10b981;
+            --theme-color-light: #34d399;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .motion-chain {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            font-size: 1.75rem;
+        }
+
+        .motion-chain .box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            text-align: center;
+        }
+
+        .motion-chain .box.position { border-color: var(--color-function); }
+        .motion-chain .box.velocity { border-color: var(--color-derivative); }
+        .motion-chain .box.acceleration { border-color: var(--color-limit); }
+
+        .motion-chain .arrow {
+            font-size: 2rem;
+            color: var(--text-tertiary);
+        }
+
+        .motion-chain .label {
+            font-size: 1rem;
+            color: var(--text-tertiary);
+            margin-top: 0.5rem;
+        }
+
+        .sign-table {
+            width: 100%;
+            max-width: 800px;
+            margin: 1rem auto;
+            border-collapse: collapse;
+            font-size: 1.25rem;
+        }
+
+        .sign-table th,
+        .sign-table td {
+            padding: 1rem 1.5rem;
+            text-align: center;
+            border: 1px solid var(--bg-tertiary);
+        }
+
+        .sign-table th {
+            background: var(--bg-secondary);
+            font-family: var(--font-display);
+            font-weight: 600;
+        }
+
+        .sign-table .speed-up {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--success);
+        }
+
+        .sign-table .slow-down {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .slider-control label {
+            font-size: 1.25rem;
+            font-family: var(--font-display);
+        }
+
+        .slider-control input[type="range"] {
+            width: 350px;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--theme-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .info-display {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+        }
+
+        .info-item {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+        }
+
+        .motion-legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .concept-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            border-radius: 0 8px 8px 0;
+            max-width: 800px;
+            text-align: left;
+        }
+
+        .concept-box h4 {
+            color: var(--theme-color-light);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .number-line-container {
+            position: relative;
+            height: 100px;
+            margin: 2rem auto;
+            max-width: 700px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Motion: Position, Velocity, Acceleration">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 4: Contextual Applications of Differentiation</div>
+                <h1>Position, Velocity, and Acceleration</h1>
+                <p class="subtitle">Motion Along a Line</p>
+                <p class="meta">Class 20 | CED Topic 4.2 | AP Calculus BC | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: Opening Question -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="The Connection">
+            <div class="slide-content">
+                <p class="statement">How does calculus describe <em>motion</em>?</p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    Position, velocity, and acceleration are connected by derivatives.
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Warm-Up -->
+        <div class="slide slide-exercise" data-slide="2" data-section="Opening" data-title="Warm-Up">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="prompt">
+                    <p>A particle moves along a line with position \( s(t) = t^3 - 6t^2 + 9t \) meters at time \( t \) seconds.</p>
+                </div>
+                <div class="instructions" style="text-align: left; max-width: 700px; margin: 1.5rem auto 0;">
+                    <ol style="list-style-position: inside; font-size: 1.25rem;">
+                        <li style="padding: 0.5rem 0;">Find \( s'(t) \)</li>
+                        <li style="padding: 0.5rem 0;">When is \( s'(t) = 0 \)?</li>
+                        <li style="padding: 0.5rem 0;">What does \( s'(t) \) represent physically?</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: The Derivative Chain -->
+        <div class="slide slide-visual" data-slide="3" data-section="Core Concepts" data-title="The Derivative Chain">
+            <div class="slide-content">
+                <h2>Position, Velocity, Acceleration</h2>
+                <div class="motion-chain">
+                    <div class="box position">
+                        <div>\( s(t) \)</div>
+                        <div class="label">Position</div>
+                    </div>
+                    <div class="arrow">
+                        <div>\(\xrightarrow{\frac{d}{dt}}\)</div>
+                    </div>
+                    <div class="box velocity">
+                        <div>\( v(t) = s'(t) \)</div>
+                        <div class="label">Velocity</div>
+                    </div>
+                    <div class="arrow">
+                        <div>\(\xrightarrow{\frac{d}{dt}}\)</div>
+                    </div>
+                    <div class="box acceleration">
+                        <div>\( a(t) = v'(t) = s''(t) \)</div>
+                        <div class="label">Acceleration</div>
+                    </div>
+                </div>
+                <p style="text-align: center; font-size: 1.25rem; color: var(--text-secondary); margin-top: 2rem;">
+                    Each derivative tells us the rate of change of the previous quantity
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Velocity Definition -->
+        <div class="slide slide-two-part" data-slide="4" data-section="Core Concepts" data-title="Velocity">
+            <div class="slide-content">
+                <p class="primary" style="color: var(--color-derivative);">Velocity = Rate of Change of Position</p>
+                <div class="math-display">
+                    \[ v(t) = \frac{ds}{dt} = s'(t) \]
+                </div>
+                <div class="concept-box">
+                    <h4>Key Insight</h4>
+                    <p style="font-size: 1.25rem;">Velocity tells us <strong>how fast</strong> and <strong>in what direction</strong> an object is moving.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Velocity vs Speed -->
+        <div class="slide slide-comparison" data-slide="5" data-section="Core Concepts" data-title="Velocity vs Speed">
+            <div class="slide-content">
+                <h2>Velocity vs. Speed</h2>
+                <div class="columns">
+                    <div class="column" style="border-top: 3px solid var(--color-derivative);">
+                        <h3 style="color: var(--color-derivative);">Velocity \( v(t) \)</h3>
+                        <ul style="list-style: none; padding: 0; text-align: left;">
+                            <li style="padding: 0.5rem 0; font-size: 1.25rem;">Can be positive or negative</li>
+                            <li style="padding: 0.5rem 0; font-size: 1.25rem;">Indicates direction</li>
+                            <li style="padding: 0.5rem 0; font-size: 1.25rem;">\( v > 0 \): moving right/up</li>
+                            <li style="padding: 0.5rem 0; font-size: 1.25rem;">\( v < 0 \): moving left/down</li>
+                        </ul>
+                    </div>
+                    <div class="column" style="border-top: 3px solid var(--accent-secondary);">
+                        <h3 style="color: var(--accent-secondary);">Speed \( |v(t)| \)</h3>
+                        <ul style="list-style: none; padding: 0; text-align: left;">
+                            <li style="padding: 0.5rem 0; font-size: 1.25rem;">Always non-negative</li>
+                            <li style="padding: 0.5rem 0; font-size: 1.25rem;">Magnitude only</li>
+                            <li style="padding: 0.5rem 0; font-size: 1.25rem;">"How fast" without direction</li>
+                            <li style="padding: 0.5rem 0; font-size: 1.25rem;">\( |v| = 0 \): at rest</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Acceleration Definition -->
+        <div class="slide slide-two-part" data-slide="6" data-section="Core Concepts" data-title="Acceleration">
+            <div class="slide-content">
+                <p class="primary" style="color: var(--color-limit);">Acceleration = Rate of Change of Velocity</p>
+                <div class="math-display">
+                    \[ a(t) = \frac{dv}{dt} = v'(t) = s''(t) \]
+                </div>
+                <div class="concept-box" style="border-left-color: var(--color-limit);">
+                    <h4 style="color: var(--color-limit);">Key Insight</h4>
+                    <p style="font-size: 1.25rem;">Acceleration tells us how velocity is changing: speeding up, slowing down, or changing direction.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Sign Analysis -->
+        <div class="slide slide-visual" data-slide="7" data-section="Core Concepts" data-title="Speeding Up vs Slowing Down">
+            <div class="slide-content">
+                <h2>Speeding Up vs. Slowing Down</h2>
+                <table class="sign-table">
+                    <thead>
+                        <tr>
+                            <th>\( v(t) \)</th>
+                            <th>\( a(t) \)</th>
+                            <th>Motion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>+</td>
+                            <td>+</td>
+                            <td class="speed-up">Speeding up (right)</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td class="speed-up">Speeding up (left)</td>
+                        </tr>
+                        <tr>
+                            <td>+</td>
+                            <td>-</td>
+                            <td class="slow-down">Slowing down (moving right)</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>+</td>
+                            <td class="slow-down">Slowing down (moving left)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="text-align: center; font-size: 1.35rem; color: var(--accent-secondary); margin-top: 1.5rem;">
+                    <strong>Same signs = speeding up | Opposite signs = slowing down</strong>
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 8: Motion Visualization -->
+        <div class="slide slide-visual" data-slide="8" data-section="Visualization" data-title="Motion Animation">
+            <div class="slide-content">
+                <h2>Visualizing Motion</h2>
+                <div id="motion-viz" class="visualization"></div>
+                <div class="slider-control">
+                    <label>t = </label>
+                    <input type="range" id="time-slider" min="0" max="5" step="0.05" value="0">
+                    <span id="time-display" style="font-family: var(--font-mono); font-size: 1.25rem; min-width: 80px;">t = 0.00</span>
+                </div>
+                <div class="info-display">
+                    <div class="info-item" id="pos-display">s = 0.00 m</div>
+                    <div class="info-item" id="vel-display">v = 9.00 m/s</div>
+                    <div class="info-item" id="acc-display">a = -12.00 m/s^2</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Graphs Visualization -->
+        <div class="slide slide-visual" data-slide="9" data-section="Visualization" data-title="Motion Graphs">
+            <div class="slide-content">
+                <h2>Position, Velocity, Acceleration Graphs</h2>
+                <div id="graphs-viz" class="visualization"></div>
+                <div class="motion-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-function);"></div>
+                        <span>Position \( s(t) \)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-derivative);"></div>
+                        <span>Velocity \( v(t) \)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-limit);"></div>
+                        <span>Acceleration \( a(t) \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Example Problem -->
+        <div class="slide slide-example" data-slide="10" data-section="Examples" data-title="Example 1">
+            <div class="slide-content">
+                <h2>Example: Particle Motion</h2>
+                <div class="problem">
+                    <p>A particle moves along a line with position \( s(t) = t^3 - 6t^2 + 9t \) for \( t \geq 0 \).</p>
+                    <p style="margin-top: 0.5rem;">Find when the particle is at rest, and when it's moving right.</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>\( v(t) = s'(t) = 3t^2 - 12t + 9 = 3(t^2 - 4t + 3) = 3(t-1)(t-3) \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>At rest when \( v(t) = 0 \): \( t = 1 \) and \( t = 3 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>Moving right when \( v(t) > 0 \): \( 0 \leq t < 1 \) or \( t > 3 \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Example Continued -->
+        <div class="slide slide-example" data-slide="11" data-section="Examples" data-title="Example 1 Continued">
+            <div class="slide-content">
+                <h2>Example: Speeding Up or Slowing Down?</h2>
+                <div class="problem">
+                    <p>Same particle: \( s(t) = t^3 - 6t^2 + 9t \). When is the particle speeding up?</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>\( a(t) = v'(t) = 6t - 12 = 6(t - 2) \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>\( a(t) = 0 \) when \( t = 2 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>Speeding up when \( v(t) \) and \( a(t) \) have the same sign</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>Answer: \( 1 < t < 2 \) or \( t > 3 \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Sign Chart Visualization -->
+        <div class="slide slide-visual" data-slide="12" data-section="Examples" data-title="Sign Analysis">
+            <div class="slide-content">
+                <h2>Sign Analysis for Motion</h2>
+                <div id="sign-chart-viz" class="visualization"></div>
+                <p class="caption">Track the signs of velocity and acceleration to determine motion behavior</p>
+            </div>
+        </div>
+
+        <!-- Slide 13: Total Distance -->
+        <div class="slide slide-two-part" data-slide="13" data-section="Applications" data-title="Total Distance">
+            <div class="slide-content">
+                <p class="primary">Displacement vs. Total Distance</p>
+                <div class="columns" style="max-width: 900px; margin: 0 auto;">
+                    <div class="column" style="border-top: 3px solid var(--color-function);">
+                        <h3 style="color: var(--color-function);">Displacement</h3>
+                        <p style="font-size: 1.5rem; margin: 1rem 0;">\[ s(b) - s(a) \]</p>
+                        <p style="font-size: 1.15rem; color: var(--text-secondary);">Net change in position</p>
+                        <p style="font-size: 1.15rem; color: var(--text-tertiary);">Can be negative</p>
+                    </div>
+                    <div class="column" style="border-top: 3px solid var(--accent-secondary);">
+                        <h3 style="color: var(--accent-secondary);">Total Distance</h3>
+                        <p style="font-size: 1.5rem; margin: 1rem 0;">\[ \int_a^b |v(t)| \, dt \]</p>
+                        <p style="font-size: 1.15rem; color: var(--text-secondary);">Sum of all distances traveled</p>
+                        <p style="font-size: 1.15rem; color: var(--text-tertiary);">Always positive</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Distance Example -->
+        <div class="slide slide-example" data-slide="14" data-section="Applications" data-title="Distance Example">
+            <div class="slide-content">
+                <h2>Example: Total Distance</h2>
+                <div class="problem">
+                    <p>For \( s(t) = t^3 - 6t^2 + 9t \), find the total distance traveled from \( t = 0 \) to \( t = 4 \).</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>Particle changes direction at \( t = 1, 3 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>\( s(0) = 0 \), \( s(1) = 4 \), \( s(3) = 0 \), \( s(4) = 4 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>Distance = \( |4 - 0| + |0 - 4| + |4 - 0| = 4 + 4 + 4 = 12 \) meters</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Free Fall -->
+        <div class="slide slide-example" data-slide="15" data-section="Applications" data-title="Free Fall">
+            <div class="slide-content">
+                <h2>Special Case: Free Fall</h2>
+                <div class="concept-box">
+                    <h4>Near Earth's Surface (ignoring air resistance)</h4>
+                    <p style="font-size: 1.25rem; margin-top: 0.5rem;">
+                        \[ s(t) = s_0 + v_0 t - \frac{1}{2}gt^2 \]
+                    </p>
+                    <p style="font-size: 1.25rem; margin-top: 0.5rem;">
+                        \[ v(t) = v_0 - gt \]
+                    </p>
+                    <p style="font-size: 1.25rem; margin-top: 0.5rem;">
+                        \[ a(t) = -g \approx -9.8 \text{ m/s}^2 \text{ or } -32 \text{ ft/s}^2 \]
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Practice Problem 1 -->
+        <div class="slide slide-exercise" data-slide="16" data-section="Practice" data-title="Practice 1">
+            <div class="slide-content">
+                <h2>Your Turn</h2>
+                <div class="prompt">
+                    <p>A ball is thrown upward from ground level with initial velocity 48 ft/s.</p>
+                    <p style="margin-top: 0.5rem;">\[ s(t) = 48t - 16t^2 \]</p>
+                </div>
+                <div class="instructions" style="text-align: left; max-width: 700px; margin: 1.5rem auto 0;">
+                    <ol style="list-style-position: inside; font-size: 1.25rem;">
+                        <li style="padding: 0.5rem 0;">Find the velocity function \( v(t) \)</li>
+                        <li style="padding: 0.5rem 0;">When does the ball reach its maximum height?</li>
+                        <li style="padding: 0.5rem 0;">What is the maximum height?</li>
+                        <li style="padding: 0.5rem 0;">When does the ball hit the ground?</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Practice Problem 2 -->
+        <div class="slide slide-exercise" data-slide="17" data-section="Practice" data-title="Practice 2">
+            <div class="slide-content">
+                <h2>Analyze the Motion</h2>
+                <div class="prompt">
+                    <p>A particle moves with position \( s(t) = t^4 - 4t^3 \) for \( t \geq 0 \).</p>
+                </div>
+                <div class="instructions" style="text-align: left; max-width: 700px; margin: 1.5rem auto 0;">
+                    <ol style="list-style-position: inside; font-size: 1.25rem;">
+                        <li style="padding: 0.5rem 0;">Find \( v(t) \) and \( a(t) \)</li>
+                        <li style="padding: 0.5rem 0;">When is the particle at rest?</li>
+                        <li style="padding: 0.5rem 0;">When is the particle speeding up?</li>
+                        <li style="padding: 0.5rem 0;">When is the particle slowing down?</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Summary -->
+        <div class="slide slide-list" data-slide="18" data-section="Closing" data-title="Key Takeaways">
+            <div class="slide-content">
+                <h2>Key Takeaways</h2>
+                <ul>
+                    <li>Velocity = \( s'(t) \), Acceleration = \( v'(t) = s''(t) \)</li>
+                    <li>Speed = \( |v(t)| \) (magnitude of velocity)</li>
+                    <li>At rest when \( v(t) = 0 \)</li>
+                    <li>Speeding up when \( v \) and \( a \) have the same sign</li>
+                    <li>Slowing down when \( v \) and \( a \) have opposite signs</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 19: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="19" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p>A particle's velocity is given by \( v(t) = t^2 - 4t + 3 = (t-1)(t-3) \)</p>
+                </div>
+                <div class="instructions" style="text-align: left; max-width: 700px; margin: 1.5rem auto 0;">
+                    <ol style="list-style-position: inside; font-size: 1.25rem;">
+                        <li style="padding: 0.5rem 0;">When is the particle at rest?</li>
+                        <li style="padding: 0.5rem 0;">When is the particle moving to the right?</li>
+                        <li style="padding: 0.5rem 0;">Find \( a(t) \) and determine when the particle is speeding up</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Looking Ahead -->
+        <div class="slide slide-statement" data-slide="20" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Next: <em>Related Rates</em></p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    When two quantities are changing together,<br>
+                    how are their rates related?
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 21</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 20: Position, Velocity, and Acceleration</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // Position function: s(t) = t^3 - 6t^2 + 9t
+        const s = t => t*t*t - 6*t*t + 9*t;
+        const v = t => 3*t*t - 12*t + 9;
+        const a = t => 6*t - 12;
+
+        // ===== Motion Visualization (Slide 8) =====
+        function drawMotionViz() {
+            const container = document.getElementById('motion-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 750;
+            const height = 300;
+            const margin = { top: 40, right: 40, bottom: 40, left: 40 };
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Number line
+            const xScale = d3.scaleLinear().domain([-2, 10]).range([margin.left, width - margin.right]);
+            const lineY = 120;
+
+            // Draw number line
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', lineY)
+                .attr('y2', lineY)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Tick marks
+            d3.range(-2, 11, 2).forEach(tick => {
+                svg.append('line')
+                    .attr('x1', xScale(tick))
+                    .attr('x2', xScale(tick))
+                    .attr('y1', lineY - 8)
+                    .attr('y2', lineY + 8)
+                    .attr('stroke', 'var(--text-secondary)')
+                    .attr('stroke-width', 1);
+
+                svg.append('text')
+                    .attr('x', xScale(tick))
+                    .attr('y', lineY + 25)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1rem')
+                    .attr('fill', 'var(--text-tertiary)')
+                    .text(tick);
+            });
+
+            // Axis label
+            svg.append('text')
+                .attr('x', width - margin.right + 20)
+                .attr('y', lineY + 5)
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('s (m)');
+
+            // Particle
+            const particle = svg.append('circle')
+                .attr('cy', lineY)
+                .attr('r', 15)
+                .attr('fill', 'var(--theme-color)');
+
+            // Velocity arrow
+            const velocityArrow = svg.append('g');
+
+            velocityArrow.append('line')
+                .attr('class', 'vel-line')
+                .attr('stroke', 'var(--color-derivative)')
+                .attr('stroke-width', 3)
+                .attr('marker-end', 'url(#vel-arrow)');
+
+            // Arrow marker
+            svg.append('defs').append('marker')
+                .attr('id', 'vel-arrow')
+                .attr('viewBox', '0 -5 10 10')
+                .attr('refX', 8)
+                .attr('refY', 0)
+                .attr('markerWidth', 6)
+                .attr('markerHeight', 6)
+                .attr('orient', 'auto')
+                .append('path')
+                .attr('d', 'M0,-5L10,0L0,5')
+                .attr('fill', 'var(--color-derivative)');
+
+            // Path trace
+            const pathData = [];
+            const pathLine = svg.append('path')
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 2)
+                .attr('opacity', 0.5);
+
+            // Position vs time graph area
+            const graphY = 200;
+            const graphHeight = 80;
+            const graphXScale = d3.scaleLinear().domain([0, 5]).range([margin.left, width - margin.right]);
+            const graphYScale = d3.scaleLinear().domain([-2, 6]).range([graphY + graphHeight, graphY]);
+
+            // Graph axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', graphY + graphHeight/2)
+                .attr('y2', graphY + graphHeight/2)
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Trace point on mini graph
+            const tracePoint = svg.append('circle')
+                .attr('r', 5)
+                .attr('fill', 'var(--accent-secondary)');
+
+            function update(t) {
+                const pos = s(t);
+                const vel = v(t);
+
+                particle.attr('cx', xScale(pos));
+
+                // Velocity arrow
+                const arrowScale = 10;
+                const arrowLen = vel * arrowScale;
+                velocityArrow.select('.vel-line')
+                    .attr('x1', xScale(pos))
+                    .attr('y1', lineY - 35)
+                    .attr('x2', xScale(pos) + arrowLen)
+                    .attr('y2', lineY - 35);
+
+                // Update trace
+                tracePoint
+                    .attr('cx', graphXScale(t))
+                    .attr('cy', graphYScale(pos));
+
+                // Update displays
+                document.getElementById('time-display').textContent = `t = ${t.toFixed(2)}`;
+                document.getElementById('pos-display').textContent = `s = ${pos.toFixed(2)} m`;
+                document.getElementById('vel-display').textContent = `v = ${vel.toFixed(2)} m/s`;
+                document.getElementById('acc-display').textContent = `a = ${a(t).toFixed(2)} m/s\u00B2`;
+            }
+
+            update(0);
+
+            const slider = document.getElementById('time-slider');
+            if (slider) {
+                slider.addEventListener('input', function(e) {
+                    update(parseFloat(e.target.value));
+                });
+            }
+        }
+
+        // ===== Graphs Visualization (Slide 9) =====
+        function drawGraphsViz() {
+            const container = document.getElementById('graphs-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 800;
+            const height = 400;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const xScale = d3.scaleLinear().domain([0, 5]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-15, 15]).range([plotHeight, 0]);
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-15, 20, 5))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Labels
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height - 5)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('t (seconds)');
+
+            const xValues = d3.range(0, 5.01, 0.05);
+
+            // Position curve
+            const posLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(s(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', posLine);
+
+            // Velocity curve
+            const velLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(v(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-derivative)')
+                .attr('stroke-width', 3)
+                .attr('d', velLine);
+
+            // Acceleration curve
+            const accLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(a(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-limit)')
+                .attr('stroke-width', 3)
+                .attr('d', accLine);
+
+            // Mark critical points
+            [1, 3].forEach(t => {
+                g.append('circle')
+                    .attr('cx', xScale(t))
+                    .attr('cy', yScale(v(t)))
+                    .attr('r', 6)
+                    .attr('fill', 'var(--color-derivative)');
+
+                g.append('line')
+                    .attr('x1', xScale(t))
+                    .attr('x2', xScale(t))
+                    .attr('y1', 0)
+                    .attr('y2', plotHeight)
+                    .attr('stroke', 'var(--text-tertiary)')
+                    .attr('stroke-width', 1)
+                    .attr('stroke-dasharray', '4,4');
+            });
+        }
+
+        // ===== Sign Chart Visualization (Slide 12) =====
+        function drawSignChartViz() {
+            const container = document.getElementById('sign-chart-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 800;
+            const height = 300;
+            const margin = { top: 30, right: 40, bottom: 30, left: 80 };
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([0, 5]).range([margin.left, width - margin.right]);
+
+            // Critical points
+            const criticalV = [1, 3];
+            const criticalA = [2];
+
+            // Draw number line for t
+            const lineY1 = 60;
+            const lineY2 = 130;
+            const lineY3 = 200;
+
+            // t axis
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', lineY1)
+                .attr('y2', lineY1)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            svg.append('text')
+                .attr('x', margin.left - 40)
+                .attr('y', lineY1 + 5)
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('t');
+
+            // v(t) sign line
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', lineY2)
+                .attr('y2', lineY2)
+                .attr('stroke', 'var(--color-derivative)')
+                .attr('stroke-width', 2);
+
+            svg.append('text')
+                .attr('x', margin.left - 50)
+                .attr('y', lineY2 + 5)
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--color-derivative)')
+                .text('v(t)');
+
+            // a(t) sign line
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', lineY3)
+                .attr('y2', lineY3)
+                .attr('stroke', 'var(--color-limit)')
+                .attr('stroke-width', 2);
+
+            svg.append('text')
+                .attr('x', margin.left - 50)
+                .attr('y', lineY3 + 5)
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--color-limit)')
+                .text('a(t)');
+
+            // Mark critical points on t axis
+            [0, 1, 2, 3, 4, 5].forEach(t => {
+                svg.append('line')
+                    .attr('x1', xScale(t))
+                    .attr('x2', xScale(t))
+                    .attr('y1', lineY1 - 8)
+                    .attr('y2', lineY1 + 8)
+                    .attr('stroke', 'var(--text-secondary)')
+                    .attr('stroke-width', 1);
+
+                svg.append('text')
+                    .attr('x', xScale(t))
+                    .attr('y', lineY1 + 25)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1rem')
+                    .attr('fill', 'var(--text-tertiary)')
+                    .text(t);
+            });
+
+            // Velocity signs
+            const vSigns = [
+                { x1: 0, x2: 1, sign: '+', color: 'var(--success)' },
+                { x1: 1, x2: 3, sign: '-', color: 'var(--danger)' },
+                { x1: 3, x2: 5, sign: '+', color: 'var(--success)' }
+            ];
+
+            vSigns.forEach(s => {
+                svg.append('text')
+                    .attr('x', xScale((s.x1 + s.x2) / 2))
+                    .attr('y', lineY2 - 15)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1.5rem')
+                    .attr('fill', s.color)
+                    .text(s.sign);
+            });
+
+            // Acceleration signs
+            const aSigns = [
+                { x1: 0, x2: 2, sign: '-', color: 'var(--danger)' },
+                { x1: 2, x2: 5, sign: '+', color: 'var(--success)' }
+            ];
+
+            aSigns.forEach(s => {
+                svg.append('text')
+                    .attr('x', xScale((s.x1 + s.x2) / 2))
+                    .attr('y', lineY3 - 15)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1.5rem')
+                    .attr('fill', s.color)
+                    .text(s.sign);
+            });
+
+            // Mark zeros
+            criticalV.forEach(t => {
+                svg.append('circle')
+                    .attr('cx', xScale(t))
+                    .attr('cy', lineY2)
+                    .attr('r', 6)
+                    .attr('fill', 'var(--color-derivative)');
+
+                svg.append('line')
+                    .attr('x1', xScale(t))
+                    .attr('x2', xScale(t))
+                    .attr('y1', lineY1)
+                    .attr('y2', lineY3 + 30)
+                    .attr('stroke', 'var(--text-tertiary)')
+                    .attr('stroke-width', 1)
+                    .attr('stroke-dasharray', '4,4');
+            });
+
+            criticalA.forEach(t => {
+                svg.append('circle')
+                    .attr('cx', xScale(t))
+                    .attr('cy', lineY3)
+                    .attr('r', 6)
+                    .attr('fill', 'var(--color-limit)');
+            });
+
+            // Motion description
+            const motions = [
+                { x1: 0, x2: 1, text: 'Slowing', y: lineY3 + 45 },
+                { x1: 1, x2: 2, text: 'Speeding up', y: lineY3 + 45 },
+                { x1: 2, x2: 3, text: 'Slowing', y: lineY3 + 45 },
+                { x1: 3, x2: 5, text: 'Speeding up', y: lineY3 + 45 }
+            ];
+
+            motions.forEach(m => {
+                svg.append('text')
+                    .attr('x', xScale((m.x1 + m.x2) / 2))
+                    .attr('y', m.y)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1rem')
+                    .attr('fill', 'var(--accent-secondary)')
+                    .text(m.text);
+            });
+        }
+
+        // ===== Visualization Trigger =====
+        const visualizationSlides = {
+            8: drawMotionViz,
+            9: drawGraphsViz,
+            12: drawSignChartViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

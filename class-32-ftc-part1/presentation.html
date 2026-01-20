@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamental Theorem of Calculus Part 1 | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <style>
+        :root {
+            --theme-color: #eab308;
+            --theme-color-light: #facc15;
+            --theme-color-dark: #ca8a04;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+            color: #000;
+        }
+
+        .slide-title h1 {
+            color: var(--theme-color);
+        }
+
+        .viz-container {
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viz-container svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .theorem-box {
+            background: var(--bg-secondary);
+            border: 3px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 850px;
+        }
+
+        .theorem-box h3 {
+            color: var(--theme-color);
+            margin: 0 0 1rem 0;
+            font-size: 1.5rem;
+        }
+
+        .theorem-box .statement {
+            font-size: 1.3rem;
+            line-height: 1.8;
+        }
+
+        .connection-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            font-size: 1.5rem;
+        }
+
+        .connection-item {
+            background: var(--bg-secondary);
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .connection-arrow {
+            color: var(--theme-color);
+            font-size: 2rem;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .slider-container label {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .slider-container input[type="range"] {
+            width: 250px;
+        }
+
+        .slider-value {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            color: var(--theme-color);
+            min-width: 50px;
+        }
+
+        .example-box {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem auto;
+            max-width: 800px;
+            text-align: left;
+        }
+
+        .example-box h4 {
+            color: var(--theme-color);
+            margin: 0 0 1rem 0;
+        }
+
+        .step-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-list li {
+            padding: 0.5rem 0;
+            font-size: 1.2rem;
+        }
+
+        .step-list li::before {
+            content: '→ ';
+            color: var(--theme-color);
+        }
+
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .property-card {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.25rem;
+            border-radius: 0 8px 8px 0;
+            text-align: left;
+        }
+
+        .property-card h4 {
+            color: var(--theme-color);
+            margin: 0 0 0.75rem 0;
+            font-size: 1.2rem;
+        }
+
+        .key-insight {
+            background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(234, 179, 8, 0.05));
+            border: 2px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .key-insight p {
+            font-size: 1.4rem;
+            margin: 0;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 4px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+
+        <!-- Slide 0: Title -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 6: Integration</span>
+                <h1>Fundamental Theorem</h1>
+                <p class="subtitle">of Calculus, Part 1</p>
+                <p class="meta">Class 32 | CED Topics 6.4, 6.5</p>
+            </div>
+        </section>
+
+        <!-- Slide 1: Warm-Up -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="exercise-box">
+                    <p>Let \(A(x) = \displaystyle\int_0^x t^2\, dt\)</p>
+                    <div style="height: 1rem;"></div>
+                    <p><strong>1.</strong> What does \(A(x)\) represent geometrically?</p>
+                    <p><strong>2.</strong> Calculate \(A(1)\), \(A(2)\), and \(A(3)\) using geometry or Riemann sums.</p>
+                    <p><strong>3.</strong> Can you guess what \(A'(x)\) might be?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: The Big Picture -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>The Big Picture</h2>
+                <div class="connection-box">
+                    <div class="connection-item">
+                        <p><strong>Differentiation</strong></p>
+                        <p style="font-size: 1rem; color: var(--text-secondary);">rates of change</p>
+                    </div>
+                    <span class="connection-arrow">⟷</span>
+                    <div class="connection-item">
+                        <p><strong>Integration</strong></p>
+                        <p style="font-size: 1rem; color: var(--text-secondary);">accumulation</p>
+                    </div>
+                </div>
+                <div class="key-insight">
+                    <p>The Fundamental Theorem connects these two operations!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Accumulation Function -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>The Accumulation Function</h2>
+                <div class="theorem-box" style="max-width: 700px;">
+                    <p class="math-display">\[F(x) = \int_a^x f(t)\, dt\]</p>
+                    <p style="font-size: 1.2rem; color: var(--text-secondary);">
+                        \(F(x)\) accumulates the area under \(f\) from \(a\) to \(x\).
+                    </p>
+                </div>
+                <div id="accumulation-viz" class="viz-container" style="height: 350px;"></div>
+                <div class="slider-container">
+                    <label>x =</label>
+                    <input type="range" id="accum-x-slider" min="0" max="50" value="30">
+                    <span class="slider-value" id="accum-x-value">3.0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: FTC Part 1 Statement -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>FTC Part 1</h2>
+                <div class="theorem-box">
+                    <h3>Fundamental Theorem of Calculus, Part 1</h3>
+                    <div class="statement">
+                        <p>If \(f\) is continuous on \([a, b]\), then the function</p>
+                        <p class="math-display">\[F(x) = \int_a^x f(t)\, dt\]</p>
+                        <p>is differentiable on \((a, b)\), and</p>
+                        <p class="math-display" style="font-size: 2.5rem; color: var(--theme-color);">\[\frac{d}{dx}\left[\int_a^x f(t)\, dt\right] = f(x)\]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: What FTC1 Says -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>What FTC Part 1 Says</h2>
+                <div class="key-insight">
+                    <p>The derivative of the accumulation function is the original function!</p>
+                </div>
+                <div class="property-grid" style="margin-top: 2rem;">
+                    <div class="property-card">
+                        <h4>In Words</h4>
+                        <p>The rate at which area accumulates equals the height of the function.</p>
+                    </div>
+                    <div class="property-card">
+                        <h4>In Symbols</h4>
+                        <p class="math-display" style="font-size: 1.3rem;">\[F'(x) = f(x)\]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Visual Proof Idea -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Why Is This True?</h2>
+                <div id="proof-viz" class="viz-container" style="height: 380px;"></div>
+                <div class="example-box">
+                    <p>When \(x\) increases by \(\Delta x\), the area increases by approximately \(f(x) \cdot \Delta x\).</p>
+                    <p style="margin-top: 0.5rem;">\[F'(x) = \lim_{\Delta x \to 0} \frac{F(x + \Delta x) - F(x)}{\Delta x} = \lim_{\Delta x \to 0} \frac{f(x) \cdot \Delta x}{\Delta x} = f(x)\]</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Simple Examples -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Basic Examples</h2>
+                <div class="example-box">
+                    <h4>Example 1</h4>
+                    <p>Find \(\dfrac{d}{dx}\displaystyle\int_1^x t^3\, dt\)</p>
+                    <ul class="step-list">
+                        <li>By FTC Part 1, the answer is simply \(x^3\)</li>
+                    </ul>
+                </div>
+                <div class="example-box">
+                    <h4>Example 2</h4>
+                    <p>Find \(\dfrac{d}{dx}\displaystyle\int_0^x \sin(t)\, dt\)</p>
+                    <ul class="step-list">
+                        <li>By FTC Part 1, the answer is \(\sin(x)\)</li>
+                    </ul>
+                </div>
+                <div class="example-box">
+                    <h4>Example 3</h4>
+                    <p>Find \(\dfrac{d}{dx}\displaystyle\int_2^x e^{t^2}\, dt\)</p>
+                    <ul class="step-list">
+                        <li>By FTC Part 1, the answer is \(e^{x^2}\)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Chain Rule Extension -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>FTC1 with Chain Rule</h2>
+                <div class="theorem-box">
+                    <h3>Extended Version</h3>
+                    <p class="statement">If the upper limit is a function \(g(x)\) instead of just \(x\):</p>
+                    <p class="math-display" style="font-size: 2rem;">\[\frac{d}{dx}\left[\int_a^{g(x)} f(t)\, dt\right] = f(g(x)) \cdot g'(x)\]</p>
+                </div>
+                <div class="key-insight" style="margin-top: 1.5rem;">
+                    <p>Apply the chain rule: multiply by the derivative of the upper limit!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Chain Rule Examples -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Chain Rule Examples</h2>
+                <div class="example-box">
+                    <h4>Example 1</h4>
+                    <p>Find \(\dfrac{d}{dx}\displaystyle\int_0^{x^2} \sqrt{t}\, dt\)</p>
+                    <ul class="step-list">
+                        <li>Let \(g(x) = x^2\), so \(g'(x) = 2x\)</li>
+                        <li>Answer: \(\sqrt{x^2} \cdot 2x = x \cdot 2x = 2x^2\)</li>
+                    </ul>
+                </div>
+                <div class="example-box">
+                    <h4>Example 2</h4>
+                    <p>Find \(\dfrac{d}{dx}\displaystyle\int_1^{\sin x} t^2\, dt\)</p>
+                    <ul class="step-list">
+                        <li>Let \(g(x) = \sin x\), so \(g'(x) = \cos x\)</li>
+                        <li>Answer: \(\sin^2(x) \cdot \cos(x)\)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Variable Lower Limit -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Variable in Lower Limit</h2>
+                <div class="theorem-box">
+                    <p>If the <strong>lower</strong> limit is a function:</p>
+                    <p class="math-display">\[\frac{d}{dx}\left[\int_{h(x)}^b f(t)\, dt\right] = -f(h(x)) \cdot h'(x)\]</p>
+                </div>
+                <div class="example-box">
+                    <h4>Why the Negative?</h4>
+                    <p>\(\displaystyle\int_{h(x)}^b f(t)\, dt = -\int_b^{h(x)} f(t)\, dt\)</p>
+                    <p style="margin-top: 0.5rem;">Reversing limits introduces a negative sign.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: Both Limits Variable -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Both Limits Variable</h2>
+                <div class="theorem-box">
+                    <p class="math-display">\[\frac{d}{dx}\left[\int_{h(x)}^{g(x)} f(t)\, dt\right] = f(g(x)) \cdot g'(x) - f(h(x)) \cdot h'(x)\]</p>
+                </div>
+                <div class="example-box">
+                    <h4>Example</h4>
+                    <p>Find \(\dfrac{d}{dx}\displaystyle\int_{x}^{x^2} \cos(t)\, dt\)</p>
+                    <ul class="step-list">
+                        <li>Upper: \(g(x) = x^2\), \(g'(x) = 2x\)</li>
+                        <li>Lower: \(h(x) = x\), \(h'(x) = 1\)</li>
+                        <li>Answer: \(\cos(x^2) \cdot 2x - \cos(x) \cdot 1 = 2x\cos(x^2) - \cos(x)\)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: Graphical Interpretation -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Graphical Interpretation</h2>
+                <div id="graph-interp-viz" class="viz-container"></div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #60a5fa;"></div>
+                        <span>\(f(t)\) - original function</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #eab308;"></div>
+                        <span>\(F(x) = \int_0^x f(t)\, dt\) - accumulation</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 13: Relationship Insight -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Key Relationships</h2>
+                <div class="property-grid">
+                    <div class="property-card">
+                        <h4>When \(f(x) > 0\)</h4>
+                        <p>\(F(x)\) is <strong>increasing</strong></p>
+                        <p style="font-size: 0.95rem; color: var(--text-secondary);">(Area is being added)</p>
+                    </div>
+                    <div class="property-card">
+                        <h4>When \(f(x) < 0\)</h4>
+                        <p>\(F(x)\) is <strong>decreasing</strong></p>
+                        <p style="font-size: 0.95rem; color: var(--text-secondary);">(Area is being subtracted)</p>
+                    </div>
+                    <div class="property-card">
+                        <h4>When \(f(x) = 0\)</h4>
+                        <p>\(F(x)\) has a <strong>critical point</strong></p>
+                        <p style="font-size: 0.95rem; color: var(--text-secondary);">(No area change)</p>
+                    </div>
+                    <div class="property-card">
+                        <h4>When \(f\) changes sign</h4>
+                        <p>\(F(x)\) has a <strong>local extremum</strong></p>
+                        <p style="font-size: 0.95rem; color: var(--text-secondary);">(First derivative test)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 14: Finding F(x) from Graph -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Analyzing F from Graph of f</h2>
+                <div id="analyze-viz" class="viz-container" style="height: 380px;"></div>
+                <div class="slider-container">
+                    <label>x =</label>
+                    <input type="range" id="analyze-x-slider" min="0" max="60" value="30">
+                    <span class="slider-value" id="analyze-x-value">3.0</span>
+                    <span style="margin-left: 2rem;">F(x) = <strong id="analyze-fx-value" style="color: var(--theme-color);">--</strong></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 15: Practice Problem 1 -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Practice: Evaluate</h2>
+                <div class="exercise-box">
+                    <p>Find the derivative:</p>
+                    <ol style="font-size: 1.3rem; line-height: 2.5; text-align: left; max-width: 600px; margin: 1rem auto;">
+                        <li>\(\dfrac{d}{dx}\displaystyle\int_2^x \ln(t)\, dt\)</li>
+                        <li>\(\dfrac{d}{dx}\displaystyle\int_0^{x^3} \cos(t^2)\, dt\)</li>
+                        <li>\(\dfrac{d}{dx}\displaystyle\int_x^5 e^{-t}\, dt\)</li>
+                        <li>\(\dfrac{d}{dx}\displaystyle\int_{2x}^{x^2} \sqrt{t+1}\, dt\)</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 16: Solutions -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <div class="example-box">
+                    <ol style="font-size: 1.2rem; line-height: 2.2; text-align: left;">
+                        <li>\(\dfrac{d}{dx}\displaystyle\int_2^x \ln(t)\, dt = \boxed{\ln(x)}\)</li>
+                        <li>\(\dfrac{d}{dx}\displaystyle\int_0^{x^3} \cos(t^2)\, dt = \cos((x^3)^2) \cdot 3x^2 = \boxed{3x^2\cos(x^6)}\)</li>
+                        <li>\(\dfrac{d}{dx}\displaystyle\int_x^5 e^{-t}\, dt = -e^{-x} \cdot 1 = \boxed{-e^{-x}}\)</li>
+                        <li>\(\dfrac{d}{dx}\displaystyle\int_{2x}^{x^2} \sqrt{t+1}\, dt = \sqrt{x^2+1} \cdot 2x - \sqrt{2x+1} \cdot 2\)</li>
+                        <li style="list-style: none; margin-left: 2rem;">\(= \boxed{2x\sqrt{x^2+1} - 2\sqrt{2x+1}}\)</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 17: Application -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Application Problem</h2>
+                <div class="exercise-box">
+                    <p>Let \(g(x) = \displaystyle\int_0^x f(t)\, dt\), where the graph of \(f\) is shown.</p>
+                    <div id="application-graph" class="viz-container" style="height: 200px;"></div>
+                    <p style="margin-top: 1rem;"><strong>Find:</strong></p>
+                    <ol style="font-size: 1.1rem; text-align: left; max-width: 500px; margin: 0 auto;">
+                        <li>\(g(2)\)</li>
+                        <li>\(g'(2)\)</li>
+                        <li>Where does \(g\) have a local maximum?</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 18: Exit Ticket -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="exercise-box">
+                    <p><strong>1.</strong> Find \(\dfrac{d}{dx}\displaystyle\int_1^{x^2} \sin(t^3)\, dt\)</p>
+                    <div style="height: 1.5rem;"></div>
+                    <p><strong>2.</strong> If \(F(x) = \displaystyle\int_0^x f(t)\, dt\) and \(f(3) = 5\), what is \(F'(3)\)?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 19: Looking Ahead -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <h2>Looking Ahead</h2>
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--theme-color);">Next: FTC Part 2</h3>
+                    <ul style="font-size: 1.35rem; line-height: 2; list-style: none; padding: 0; margin-top: 1.5rem;">
+                        <li>Evaluating definite integrals</li>
+                        <li>Using antiderivatives</li>
+                        <li>The Evaluation Theorem</li>
+                        <li>Applications to motion</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="slide-nav">
+        <button id="prevBtn" aria-label="Previous slide">←</button>
+        <span id="slideCounter">1 / 20</span>
+        <button id="nextBtn" aria-label="Next slide">→</button>
+        <button id="tocBtn" aria-label="Table of contents">☰</button>
+    </nav>
+
+    <!-- Table of Contents -->
+    <div id="toc" class="toc-overlay">
+        <div class="toc-content">
+            <h3>Contents</h3>
+            <ul id="tocList"></ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <script src="../shared/presentation.js"></script>
+
+    <script>
+        const visualizationSlides = {
+            3: drawAccumulationViz,
+            6: drawProofViz,
+            12: drawGraphInterpViz,
+            14: drawAnalyzeViz,
+            17: drawApplicationGraph
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Helper functions
+        function drawAxes(svg, xScale, yScale, width, height, margin) {
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 2);
+        }
+
+        function drawCurve(svg, xScale, yScale, fn, xMin, xMax, color, strokeWidth = 3) {
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const data = d3.range(xMin, xMax + 0.01, 0.05).map(x => ({ x, y: fn(x) }));
+
+            svg.append('path')
+                .datum(data)
+                .attr('fill', 'none')
+                .attr('stroke', color)
+                .attr('stroke-width', strokeWidth)
+                .attr('d', line);
+        }
+
+        // Accumulation visualization
+        function drawAccumulationViz() {
+            const container = d3.select('#accumulation-viz');
+            container.selectAll('*').remove();
+
+            const width = 650, height = 300;
+            const margin = { top: 20, right: 30, bottom: 50, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const fn = t => 0.3 * t + 1;
+            const a = 0;
+            const xVal = parseFloat(document.getElementById('accum-x-slider').value) / 10;
+
+            const xScale = d3.scaleLinear().domain([-0.5, 6]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([0, 4]).range([height - margin.bottom, margin.top]);
+
+            // Shaded area
+            if (xVal > a) {
+                const areaGen = d3.area()
+                    .x(d => xScale(d.x))
+                    .y0(yScale(0))
+                    .y1(d => yScale(d.y))
+                    .curve(d3.curveNatural);
+
+                const areaData = d3.range(a, xVal + 0.01, 0.05).map(x => ({ x, y: fn(x) }));
+
+                svg.append('path')
+                    .datum(areaData)
+                    .attr('fill', 'rgba(234, 179, 8, 0.4)')
+                    .attr('d', areaGen);
+            }
+
+            // Vertical line at x
+            svg.append('line')
+                .attr('x1', xScale(xVal)).attr('x2', xScale(xVal))
+                .attr('y1', yScale(0)).attr('y2', yScale(fn(xVal)))
+                .attr('stroke', '#eab308').attr('stroke-width', 2).attr('stroke-dasharray', '5,5');
+
+            drawAxes(svg, xScale, yScale, width, height, margin);
+            drawCurve(svg, xScale, yScale, fn, -0.5, 6, '#60a5fa');
+
+            // Labels
+            svg.append('text').attr('x', xScale(a)).attr('y', yScale(0) + 20)
+                .attr('text-anchor', 'middle').attr('fill', '#fff').attr('font-size', '1rem').text('a');
+            svg.append('text').attr('x', xScale(xVal)).attr('y', yScale(0) + 20)
+                .attr('text-anchor', 'middle').attr('fill', '#eab308').attr('font-size', '1rem').text('x');
+
+            document.getElementById('accum-x-value').textContent = xVal.toFixed(1);
+
+            // Slider event
+            document.getElementById('accum-x-slider').oninput = function() {
+                drawAccumulationViz();
+            };
+        }
+
+        // Proof visualization
+        function drawProofViz() {
+            const container = d3.select('#proof-viz');
+            container.selectAll('*').remove();
+
+            const width = 650, height = 340;
+            const margin = { top: 20, right: 30, bottom: 50, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const fn = t => 0.2 * t * t + 1;
+            const x = 2.5, dx = 0.5;
+
+            const xScale = d3.scaleLinear().domain([0, 5]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([0, 4]).range([height - margin.bottom, margin.top]);
+
+            // Area up to x
+            const area1 = d3.area()
+                .x(d => xScale(d.x))
+                .y0(yScale(0))
+                .y1(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            svg.append('path')
+                .datum(d3.range(0, x + 0.01, 0.05).map(t => ({ x: t, y: fn(t) })))
+                .attr('fill', 'rgba(96, 165, 250, 0.3)')
+                .attr('d', area1);
+
+            // Small rectangle approximation
+            svg.append('rect')
+                .attr('x', xScale(x))
+                .attr('y', yScale(fn(x)))
+                .attr('width', xScale(x + dx) - xScale(x))
+                .attr('height', yScale(0) - yScale(fn(x)))
+                .attr('fill', 'rgba(234, 179, 8, 0.5)')
+                .attr('stroke', '#eab308')
+                .attr('stroke-width', 2);
+
+            drawAxes(svg, xScale, yScale, width, height, margin);
+            drawCurve(svg, xScale, yScale, fn, 0, 5, '#60a5fa');
+
+            // Labels
+            svg.append('text').attr('x', xScale(x)).attr('y', yScale(0) + 20)
+                .attr('text-anchor', 'middle').attr('fill', '#fff').attr('font-size', '1rem').text('x');
+            svg.append('text').attr('x', xScale(x + dx)).attr('y', yScale(0) + 20)
+                .attr('text-anchor', 'middle').attr('fill', '#eab308').attr('font-size', '1rem').text('x + Δx');
+            svg.append('text').attr('x', xScale(x + dx / 2)).attr('y', yScale(fn(x) / 2))
+                .attr('text-anchor', 'middle').attr('fill', '#eab308').attr('font-size', '0.9rem').text('f(x)·Δx');
+
+            // Height label
+            svg.append('line')
+                .attr('x1', xScale(x + dx) + 10).attr('x2', xScale(x + dx) + 10)
+                .attr('y1', yScale(0)).attr('y2', yScale(fn(x)))
+                .attr('stroke', '#eab308').attr('stroke-width', 1);
+            svg.append('text').attr('x', xScale(x + dx) + 25).attr('y', yScale(fn(x) / 2))
+                .attr('text-anchor', 'start').attr('fill', '#eab308').attr('font-size', '1rem').text('f(x)');
+        }
+
+        // Graph interpretation visualization
+        function drawGraphInterpViz() {
+            const container = d3.select('#graph-interp-viz');
+            container.selectAll('*').remove();
+
+            const width = 700, height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const f = t => Math.sin(t);
+            // F(x) = integral of sin from 0 to x = 1 - cos(x)
+            const F = x => 1 - Math.cos(x);
+
+            const xScale = d3.scaleLinear().domain([0, 2 * Math.PI]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-1.5, 2.5]).range([height - margin.bottom, margin.top]);
+
+            drawAxes(svg, xScale, yScale, width, height, margin);
+
+            // f(t) - blue
+            drawCurve(svg, xScale, yScale, f, 0, 2 * Math.PI, '#60a5fa');
+
+            // F(x) - gold
+            drawCurve(svg, xScale, yScale, F, 0, 2 * Math.PI, '#eab308');
+
+            // X-axis labels
+            svg.append('text').attr('x', xScale(Math.PI)).attr('y', yScale(0) + 25)
+                .attr('text-anchor', 'middle').attr('fill', '#fff').attr('font-size', '1rem').text('π');
+            svg.append('text').attr('x', xScale(2 * Math.PI)).attr('y', yScale(0) + 25)
+                .attr('text-anchor', 'middle').attr('fill', '#fff').attr('font-size', '1rem').text('2π');
+        }
+
+        // Analyze visualization
+        function drawAnalyzeViz() {
+            const container = d3.select('#analyze-viz');
+            container.selectAll('*').remove();
+
+            const width = 700, height = 340;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const f = t => 2 - 0.5 * (t - 3) * (t - 3);
+            const xVal = parseFloat(document.getElementById('analyze-x-slider').value) / 10;
+
+            const xScale = d3.scaleLinear().domain([0, 6]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-3, 4]).range([height - margin.bottom, margin.top]);
+
+            // Calculate F(x) numerically
+            let Fx = 0;
+            const dx = 0.01;
+            for (let t = 0; t < xVal; t += dx) {
+                Fx += f(t) * dx;
+            }
+
+            // Shaded area
+            const areaGen = d3.area()
+                .x(d => xScale(d.x))
+                .y0(yScale(0))
+                .y1(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const posData = d3.range(0, Math.min(xVal, 6) + 0.01, 0.05)
+                .map(x => ({ x, y: Math.max(0, f(x)) }));
+            const negData = d3.range(0, Math.min(xVal, 6) + 0.01, 0.05)
+                .map(x => ({ x, y: Math.min(0, f(x)) }));
+
+            svg.append('path').datum(posData)
+                .attr('fill', 'rgba(34, 197, 94, 0.3)').attr('d', areaGen);
+            svg.append('path').datum(negData)
+                .attr('fill', 'rgba(239, 68, 68, 0.3)').attr('d', areaGen);
+
+            // Vertical line at x
+            svg.append('line')
+                .attr('x1', xScale(xVal)).attr('x2', xScale(xVal))
+                .attr('y1', yScale(-3)).attr('y2', yScale(4))
+                .attr('stroke', '#eab308').attr('stroke-width', 1.5).attr('stroke-dasharray', '5,5');
+
+            drawAxes(svg, xScale, yScale, width, height, margin);
+            drawCurve(svg, xScale, yScale, f, 0, 6, '#60a5fa');
+
+            document.getElementById('analyze-x-value').textContent = xVal.toFixed(1);
+            document.getElementById('analyze-fx-value').textContent = Fx.toFixed(2);
+
+            document.getElementById('analyze-x-slider').oninput = function() {
+                drawAnalyzeViz();
+            };
+        }
+
+        // Application graph
+        function drawApplicationGraph() {
+            const container = d3.select('#application-graph');
+            container.selectAll('*').remove();
+
+            const width = 400, height = 180;
+            const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Piecewise linear function
+            const points = [[0, 2], [2, 2], [3, 0], [4, -1], [5, 0]];
+
+            const xScale = d3.scaleLinear().domain([0, 5]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-2, 3]).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#fff').attr('stroke-width', 1.5);
+            svg.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#fff').attr('stroke-width', 1.5);
+
+            // Line
+            const line = d3.line().x(d => xScale(d[0])).y(d => yScale(d[1]));
+            svg.append('path')
+                .datum(points)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 2.5)
+                .attr('d', line);
+
+            // Points
+            points.forEach(p => {
+                svg.append('circle')
+                    .attr('cx', xScale(p[0]))
+                    .attr('cy', yScale(p[1]))
+                    .attr('r', 4)
+                    .attr('fill', '#60a5fa');
+            });
+
+            // X labels
+            [0, 1, 2, 3, 4, 5].forEach(x => {
+                svg.append('text')
+                    .attr('x', xScale(x))
+                    .attr('y', yScale(0) + 15)
+                    .attr('text-anchor', 'middle')
+                    .attr('fill', '#888')
+                    .attr('font-size', '0.8rem')
+                    .text(x);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Euler's Method | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <style>
+        :root {
+            --theme-color: #f97316;
+            --theme-color-light: #fb923c;
+            --theme-color-dark: #ea580c;
+            --euler-approx: #3b82f6;
+            --exact-solution: #22c55e;
+            --error-color: #ef4444;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .bc-badge {
+            background: #1e40af;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+
+        .slide-title h1 {
+            color: var(--theme-color);
+        }
+
+        .viz-container {
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viz-container svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .definition-box h3 {
+            color: var(--theme-color);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .formula-box {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .formula-box .formula {
+            font-size: 1.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .example-box {
+            background: #f8fafc;
+            border: 2px solid var(--theme-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .step-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 1.1rem;
+        }
+
+        .step-table th,
+        .step-table td {
+            padding: 0.6rem 0.8rem;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .step-table th {
+            background: var(--theme-color);
+            color: white;
+        }
+
+        .step-table tr:nth-child(even) {
+            background: #fff7ed;
+        }
+
+        .step-table .highlight {
+            background: #fef3c7;
+            font-weight: bold;
+        }
+
+        .controls-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .control-btn {
+            background: var(--theme-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .control-btn:hover {
+            background: var(--theme-color-dark);
+        }
+
+        .control-btn.active {
+            background: var(--theme-color-dark);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .error-analysis {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .error-analysis h4 {
+            color: #ef4444;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .algorithm-steps {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .algorithm-step {
+            display: flex;
+            align-items: flex-start;
+            margin: 1rem 0;
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: 4px;
+        }
+
+        .step-number {
+            background: var(--theme-color);
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .comparison-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .comparison-card h4 {
+            margin: 0 0 0.75rem 0;
+        }
+
+        .comparison-card.euler h4 {
+            color: var(--euler-approx);
+        }
+
+        .comparison-card.exact h4 {
+            color: var(--exact-solution);
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .slider-container input[type="range"] {
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+
+        <!-- Slide 0: Title -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 7: Differential Equations</span>
+                <span class="bc-badge">BC Only</span>
+                <h1>Euler's Method</h1>
+                <p class="subtitle">Numerical Approximation of Solutions</p>
+                <p class="meta">Class 41 | CED Topic 7.5</p>
+            </div>
+        </section>
+
+        <!-- Slide 1: Warm-Up -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="exercise-box">
+                    <p>Consider \(\dfrac{dy}{dx} = y\) with \(y(0) = 1\).</p>
+                    <ol style="margin-top: 1rem; font-size: 1.25rem; line-height: 2;">
+                        <li>What is the slope at (0, 1)?</li>
+                        <li>If we move a tiny step \(\Delta x = 0.1\) to the right, starting at (0, 1) and following the tangent line, what is our new y-value?</li>
+                        <li>What is the slope at this new point?</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: The Big Idea -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>The Big Idea</h2>
+                <div class="definition-box">
+                    <h3>Euler's Method</h3>
+                    <p><strong>Euler's Method</strong> approximates solutions to differential equations by following the tangent line at each step.</p>
+                </div>
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <p style="font-size: 1.35rem;">Instead of finding an exact formula, we build the solution <strong>point by point</strong>.</p>
+                </div>
+                <div class="formula-box" style="margin-top: 1.5rem;">
+                    <p>At each point, we use:</p>
+                    <p class="formula">\[y_{\text{new}} = y_{\text{old}} + (\text{slope}) \cdot \Delta x\]</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: The Algorithm -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Euler's Method Algorithm</h2>
+                <div class="algorithm-steps">
+                    <div class="algorithm-step">
+                        <span class="step-number">1</span>
+                        <div>
+                            <strong>Start</strong> with the initial condition \((x_0, y_0)\)
+                        </div>
+                    </div>
+                    <div class="algorithm-step">
+                        <span class="step-number">2</span>
+                        <div>
+                            <strong>Calculate</strong> the slope: \(m = f(x_n, y_n)\) using the differential equation
+                        </div>
+                    </div>
+                    <div class="algorithm-step">
+                        <span class="step-number">3</span>
+                        <div>
+                            <strong>Step forward:</strong>
+                            <div style="margin-top: 0.5rem;">
+                                \(x_{n+1} = x_n + \Delta x\)
+                            </div>
+                            <div>
+                                \(y_{n+1} = y_n + m \cdot \Delta x\)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="algorithm-step">
+                        <span class="step-number">4</span>
+                        <div>
+                            <strong>Repeat</strong> until you reach the desired x-value
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Visual Introduction -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Euler's Method Visualized</h2>
+                <div id="euler-intro-viz" class="viz-container"></div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--exact-solution);"></div>
+                        <span>Exact solution</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--euler-approx);"></div>
+                        <span>Euler approximation</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Worked Example -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example: \(\frac{dy}{dx} = y\), \(y(0) = 1\)</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <p><strong>Use \(\Delta x = 0.5\) to approximate \(y(2)\)</strong></p>
+                        <table class="step-table">
+                            <tr>
+                                <th>n</th>
+                                <th>\(x_n\)</th>
+                                <th>\(y_n\)</th>
+                                <th>slope</th>
+                                <th>\(\Delta y\)</th>
+                            </tr>
+                            <tr>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>0.5</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>0.5</td>
+                                <td>1.5</td>
+                                <td>1.5</td>
+                                <td>0.75</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>1.0</td>
+                                <td>2.25</td>
+                                <td>2.25</td>
+                                <td>1.125</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>1.5</td>
+                                <td>3.375</td>
+                                <td>3.375</td>
+                                <td>1.6875</td>
+                            </tr>
+                            <tr class="highlight">
+                                <td>4</td>
+                                <td>2.0</td>
+                                <td>5.0625</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="column">
+                        <div class="example-box">
+                            <p><strong>Exact solution:</strong></p>
+                            <p>\(y = e^x\)</p>
+                            <p>\(y(2) = e^2 \approx 7.389\)</p>
+                        </div>
+                        <div class="error-analysis">
+                            <h4>Error</h4>
+                            <p>Euler: 5.0625</p>
+                            <p>Exact: 7.389</p>
+                            <p>Error: \(\approx 31.5\%\)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Interactive Step-by-Step -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Step Through Euler's Method</h2>
+                <div id="euler-step-viz" class="viz-container"></div>
+                <div class="controls-container">
+                    <button class="control-btn" id="stepBack">← Back</button>
+                    <button class="control-btn" id="stepForward">Step →</button>
+                    <button class="control-btn" id="resetSteps">Reset</button>
+                    <span style="margin-left: 1rem;" id="stepInfo">Step 0 of 4</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Effect of Step Size -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Step Size Matters</h2>
+                <div class="definition-box">
+                    <h3>Key Principle</h3>
+                    <p><strong>Smaller step size</strong> = <strong>Better approximation</strong></p>
+                    <p style="margin-top: 0.5rem;">But also means more calculations!</p>
+                </div>
+                <div class="comparison-grid" style="margin-top: 1.5rem;">
+                    <div class="comparison-card">
+                        <h4 style="color: var(--error-color);">Large Step Size</h4>
+                        <ul>
+                            <li>Fewer calculations</li>
+                            <li>Larger error</li>
+                            <li>May miss features</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card">
+                        <h4 style="color: var(--exact-solution);">Small Step Size</h4>
+                        <ul>
+                            <li>More calculations</li>
+                            <li>Smaller error</li>
+                            <li>Better accuracy</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Step Size Comparison Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Effect of Step Size</h2>
+                <div id="step-size-viz" class="viz-container"></div>
+                <div class="controls-container">
+                    <span>Step size Δx = </span>
+                    <button class="control-btn" data-dx="1.0">1.0</button>
+                    <button class="control-btn" data-dx="0.5">0.5</button>
+                    <button class="control-btn active" data-dx="0.25">0.25</button>
+                    <button class="control-btn" data-dx="0.1">0.1</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Error Analysis -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Understanding Error</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <div class="definition-box">
+                            <h3>Local Error</h3>
+                            <p>Error in a single step is proportional to \((\Delta x)^2\)</p>
+                        </div>
+                        <div class="definition-box">
+                            <h3>Global Error</h3>
+                            <p>Accumulated error over many steps is proportional to \(\Delta x\)</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="example-box">
+                            <p><strong>For \(\frac{dy}{dx} = y\), \(y(0) = 1\):</strong></p>
+                            <table class="step-table" style="font-size: 1rem;">
+                                <tr>
+                                    <th>\(\Delta x\)</th>
+                                    <th>Euler y(2)</th>
+                                    <th>Error</th>
+                                </tr>
+                                <tr>
+                                    <td>1.0</td>
+                                    <td>4.000</td>
+                                    <td>45.9%</td>
+                                </tr>
+                                <tr>
+                                    <td>0.5</td>
+                                    <td>5.063</td>
+                                    <td>31.5%</td>
+                                </tr>
+                                <tr>
+                                    <td>0.25</td>
+                                    <td>6.103</td>
+                                    <td>17.4%</td>
+                                </tr>
+                                <tr>
+                                    <td>0.1</td>
+                                    <td>6.727</td>
+                                    <td>9.0%</td>
+                                </tr>
+                            </table>
+                            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Exact: \(e^2 \approx 7.389\)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Another Example -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example: \(\frac{dy}{dx} = x + y\), \(y(0) = 1\)</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <p><strong>Use \(\Delta x = 0.2\) to approximate \(y(1)\)</strong></p>
+                        <table class="step-table" style="font-size: 1rem;">
+                            <tr>
+                                <th>\(x_n\)</th>
+                                <th>\(y_n\)</th>
+                                <th>slope</th>
+                                <th>\(y_{n+1}\)</th>
+                            </tr>
+                            <tr>
+                                <td>0</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1.2</td>
+                            </tr>
+                            <tr>
+                                <td>0.2</td>
+                                <td>1.2</td>
+                                <td>1.4</td>
+                                <td>1.48</td>
+                            </tr>
+                            <tr>
+                                <td>0.4</td>
+                                <td>1.48</td>
+                                <td>1.88</td>
+                                <td>1.856</td>
+                            </tr>
+                            <tr>
+                                <td>0.6</td>
+                                <td>1.856</td>
+                                <td>2.456</td>
+                                <td>2.347</td>
+                            </tr>
+                            <tr>
+                                <td>0.8</td>
+                                <td>2.347</td>
+                                <td>3.147</td>
+                                <td>2.977</td>
+                            </tr>
+                            <tr class="highlight">
+                                <td>1.0</td>
+                                <td>2.977</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="column">
+                        <div id="euler-xy-viz" class="viz-container" style="height: 320px;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: When Euler Works Well -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>When Does Euler's Method Work Well?</h2>
+                <div class="comparison-grid">
+                    <div class="comparison-card euler">
+                        <h4>Works Best When:</h4>
+                        <ul style="line-height: 1.8;">
+                            <li>Solution is relatively smooth</li>
+                            <li>Step size is small</li>
+                            <li>Not too many steps needed</li>
+                            <li>Solution doesn't grow too fast</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card" style="border-top: 4px solid var(--error-color);">
+                        <h4 style="color: var(--error-color);">Struggles When:</h4>
+                        <ul style="line-height: 1.8;">
+                            <li>Solution has rapid changes</li>
+                            <li>Solution is oscillatory</li>
+                            <li>Many steps accumulate error</li>
+                            <li>Near singularities</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: Euler with Slope Field -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Euler's Method on a Slope Field</h2>
+                <div id="euler-slope-field-viz" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.1rem;">Euler follows the slope field using straight line segments</p>
+            </div>
+        </section>
+
+        <!-- Slide 13: Calculator Practice -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Calculator/Table Practice</h2>
+                <div class="exercise-box">
+                    <p><strong>Use Euler's method with \(\Delta x = 0.1\) to approximate \(y(0.3)\)</strong></p>
+                    <p style="margin-top: 1rem;">Differential equation: \(\dfrac{dy}{dx} = x^2 + y\)</p>
+                    <p>Initial condition: \(y(0) = 2\)</p>
+                    <table class="step-table" style="margin-top: 1.5rem;">
+                        <tr>
+                            <th>Step</th>
+                            <th>\(x_n\)</th>
+                            <th>\(y_n\)</th>
+                            <th>\(\frac{dy}{dx}\)</th>
+                            <th>\(y_{n+1}\)</th>
+                        </tr>
+                        <tr>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>2</td>
+                            <td>?</td>
+                            <td>?</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>0.1</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>0.2</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>0.3</td>
+                            <td>?</td>
+                            <td>—</td>
+                            <td>—</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 14: Solution -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Solution</h2>
+                <table class="step-table" style="font-size: 1.15rem;">
+                    <tr>
+                        <th>Step</th>
+                        <th>\(x_n\)</th>
+                        <th>\(y_n\)</th>
+                        <th>\(\frac{dy}{dx} = x^2 + y\)</th>
+                        <th>\(y_{n+1} = y_n + 0.1 \cdot \frac{dy}{dx}\)</th>
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>2</td>
+                        <td>\(0 + 2 = 2\)</td>
+                        <td>\(2 + 0.2 = 2.2\)</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>0.1</td>
+                        <td>2.2</td>
+                        <td>\(0.01 + 2.2 = 2.21\)</td>
+                        <td>\(2.2 + 0.221 = 2.421\)</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>0.2</td>
+                        <td>2.421</td>
+                        <td>\(0.04 + 2.421 = 2.461\)</td>
+                        <td>\(2.421 + 0.2461 = 2.667\)</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td>3</td>
+                        <td>0.3</td>
+                        <td>2.667</td>
+                        <td>—</td>
+                        <td>—</td>
+                    </tr>
+                </table>
+                <p style="text-align: center; margin-top: 1.5rem; font-size: 1.25rem;">
+                    <strong>Answer:</strong> \(y(0.3) \approx 2.667\)
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 15: AP Exam Tips -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>AP Exam Tips for Euler's Method</h2>
+                <div class="definition-box">
+                    <h3>Common Question Types</h3>
+                    <ul style="line-height: 2;">
+                        <li>Given a table of x, y values and dy/dx, fill in the next row</li>
+                        <li>Calculate 2-3 steps of Euler's method</li>
+                        <li>Compare Euler approximation to exact value</li>
+                        <li>Explain whether Euler overestimates or underestimates</li>
+                    </ul>
+                </div>
+                <div class="error-analysis" style="margin-top: 1rem;">
+                    <h4>Watch Out For</h4>
+                    <p>The formula \(y_{n+1} = y_n + f(x_n, y_n) \cdot \Delta x\) uses values at the <strong>current</strong> point, not the next point!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 16: Overestimate vs Underestimate -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Over/Underestimate Analysis</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <div class="comparison-card euler">
+                            <h4>Euler Overestimates When:</h4>
+                            <p>The solution is <strong>concave down</strong></p>
+                            <p style="margin-top: 0.5rem; font-size: 0.95rem;">The tangent line lies above the curve</p>
+                        </div>
+                        <div class="comparison-card exact" style="margin-top: 1rem;">
+                            <h4>Euler Underestimates When:</h4>
+                            <p>The solution is <strong>concave up</strong></p>
+                            <p style="margin-top: 0.5rem; font-size: 0.95rem;">The tangent line lies below the curve</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div id="concavity-viz" class="viz-container" style="height: 350px;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 17: Practice Problems -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Practice Problems</h2>
+                <div class="exercise-box">
+                    <ol style="font-size: 1.15rem; line-height: 2.5;">
+                        <li>For \(\dfrac{dy}{dx} = 2x - y\) with \(y(0) = 3\), use \(\Delta x = 0.5\) to find \(y(1)\).</li>
+                        <li>For \(\dfrac{dy}{dx} = y^2\) with \(y(0) = 1\), use \(\Delta x = 0.25\) to find \(y(0.5)\).</li>
+                        <li>If the exact solution to problem 2 is \(y = \dfrac{1}{1-x}\), does Euler overestimate or underestimate at \(x = 0.5\)?</li>
+                        <li>How would you reduce the error in your Euler approximation?</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 18: Solutions -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <ol style="font-size: 1.1rem; line-height: 2.2;">
+                    <li>At x=0: slope = -3, y(0.5) = 3 + (-3)(0.5) = 1.5<br>
+                        At x=0.5: slope = 1 - 1.5 = -0.5, <strong>y(1) = 1.5 + (-0.5)(0.5) = 1.25</strong></li>
+                    <li>At x=0: slope = 1, y(0.25) = 1 + 1(0.25) = 1.25<br>
+                        At x=0.25: slope = 1.5625, <strong>y(0.5) = 1.25 + 1.5625(0.25) = 1.641</strong></li>
+                    <li>Exact: y(0.5) = 1/(1-0.5) = 2. Euler gives 1.641, so <strong>underestimates</strong>.<br>
+                        (Solution is concave up since y'' = 2y³ > 0)</li>
+                    <li>Use a <strong>smaller step size</strong> (e.g., Δx = 0.1 instead of 0.25)</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Slide 19: Exit Ticket -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="exercise-box">
+                    <p><strong>1.</strong> Write the Euler's method formula for finding \(y_{n+1}\).</p>
+                    <div style="height: 1.5rem;"></div>
+                    <p><strong>2.</strong> For \(\dfrac{dy}{dx} = x - y\) with \(y(1) = 0\), use one step of Euler's method with \(\Delta x = 0.5\) to approximate \(y(1.5)\).</p>
+                    <div style="height: 1.5rem;"></div>
+                    <p><strong>3.</strong> How does decreasing the step size affect the accuracy of Euler's method?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 20: Looking Ahead -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <h2>Looking Ahead</h2>
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--theme-color);">Next Class: Separation of Variables</h3>
+                    <ul style="font-size: 1.35rem; line-height: 2; list-style: none; padding: 0; margin-top: 1.5rem;">
+                        <li>Finding exact solutions analytically</li>
+                        <li>Separating x and y terms</li>
+                        <li>Integrating both sides</li>
+                        <li>Solving initial value problems</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="slide-nav">
+        <button id="prevBtn" aria-label="Previous slide">←</button>
+        <span id="slideCounter">1 / 21</span>
+        <button id="nextBtn" aria-label="Next slide">→</button>
+        <button id="tocBtn" aria-label="Table of contents">☰</button>
+    </nav>
+
+    <!-- Table of Contents -->
+    <div id="toc" class="toc-overlay">
+        <div class="toc-content">
+            <h3>Contents</h3>
+            <ul id="tocList"></ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <script src="../shared/presentation.js"></script>
+
+    <script>
+        // Visualization functions
+        const visualizationSlides = {
+            4: drawEulerIntroViz,
+            6: drawEulerStepViz,
+            8: drawStepSizeViz,
+            10: drawEulerXYViz,
+            12: drawEulerSlopeFieldViz,
+            16: drawConcavityViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Visualization 1: Euler intro - compare to exact
+        function drawEulerIntroViz() {
+            const container = d3.select('#euler-intro-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear()
+                .domain([0, 2.5])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, 10])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line.h')
+                .data(d3.range(0, 11, 2))
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Exact solution y = e^x
+            const exactLine = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const exactData = d3.range(0, 2.5, 0.05).map(x => ({ x, y: Math.exp(x) }));
+            svg.append('path')
+                .datum(exactData)
+                .attr('fill', 'none')
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 3)
+                .attr('d', exactLine);
+
+            // Euler approximation with dx = 0.5
+            const dx = 0.5;
+            const eulerPoints = [{ x: 0, y: 1 }];
+            for (let i = 0; i < 5; i++) {
+                const last = eulerPoints[eulerPoints.length - 1];
+                const slope = last.y; // dy/dx = y
+                eulerPoints.push({
+                    x: last.x + dx,
+                    y: last.y + slope * dx
+                });
+            }
+
+            // Draw Euler segments
+            const eulerLine = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y));
+
+            svg.append('path')
+                .datum(eulerPoints.filter(d => d.x <= 2.5))
+                .attr('fill', 'none')
+                .attr('stroke', '#3b82f6')
+                .attr('stroke-width', 2.5)
+                .attr('d', eulerLine);
+
+            // Euler points
+            svg.selectAll('.euler-point')
+                .data(eulerPoints.filter(d => d.x <= 2.5))
+                .enter().append('circle')
+                .attr('cx', d => xScale(d.x))
+                .attr('cy', d => yScale(d.y))
+                .attr('r', 6)
+                .attr('fill', '#3b82f6')
+                .attr('stroke', 'white')
+                .attr('stroke-width', 2);
+
+            // Labels
+            svg.append('text')
+                .attr('x', width - margin.right)
+                .attr('y', yScale(0) + 25)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1rem')
+                .text('x');
+
+            svg.append('text')
+                .attr('x', xScale(0) + 10)
+                .attr('y', margin.top + 10)
+                .attr('font-size', '1rem')
+                .text('y');
+        }
+
+        // Visualization 2: Step-by-step Euler
+        let currentStep = 0;
+        const maxSteps = 4;
+
+        function drawEulerStepViz() {
+            const container = d3.select('#euler-step-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear()
+                .domain([0, 2.5])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, 8])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line.h')
+                .data(d3.range(0, 9, 2))
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Exact solution (faded)
+            const exactLine = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const exactData = d3.range(0, 2.5, 0.05).map(x => ({ x, y: Math.exp(x) }));
+            svg.append('path')
+                .datum(exactData)
+                .attr('fill', 'none')
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 2)
+                .attr('opacity', 0.4)
+                .attr('d', exactLine);
+
+            // Euler points based on current step
+            const dx = 0.5;
+            const allPoints = [{ x: 0, y: 1 }];
+            for (let i = 0; i < 4; i++) {
+                const last = allPoints[allPoints.length - 1];
+                const slope = last.y;
+                allPoints.push({
+                    x: last.x + dx,
+                    y: last.y + slope * dx
+                });
+            }
+
+            const visiblePoints = allPoints.slice(0, currentStep + 1);
+
+            // Draw segments
+            if (visiblePoints.length > 1) {
+                const eulerLine = d3.line()
+                    .x(d => xScale(d.x))
+                    .y(d => yScale(d.y));
+
+                svg.append('path')
+                    .datum(visiblePoints)
+                    .attr('fill', 'none')
+                    .attr('stroke', '#3b82f6')
+                    .attr('stroke-width', 3)
+                    .attr('d', eulerLine);
+            }
+
+            // Draw tangent line from current point
+            if (currentStep < maxSteps) {
+                const current = visiblePoints[visiblePoints.length - 1];
+                const slope = current.y;
+                const tangentStart = { x: current.x - 0.2, y: current.y - slope * 0.2 };
+                const tangentEnd = { x: current.x + 0.7, y: current.y + slope * 0.7 };
+
+                svg.append('line')
+                    .attr('x1', xScale(tangentStart.x))
+                    .attr('y1', yScale(tangentStart.y))
+                    .attr('x2', xScale(tangentEnd.x))
+                    .attr('y2', yScale(tangentEnd.y))
+                    .attr('stroke', '#f97316')
+                    .attr('stroke-width', 2)
+                    .attr('stroke-dasharray', '5,5');
+            }
+
+            // Points
+            svg.selectAll('.euler-point')
+                .data(visiblePoints)
+                .enter().append('circle')
+                .attr('cx', d => xScale(d.x))
+                .attr('cy', d => yScale(d.y))
+                .attr('r', 8)
+                .attr('fill', (d, i) => i === visiblePoints.length - 1 ? '#f97316' : '#3b82f6')
+                .attr('stroke', 'white')
+                .attr('stroke-width', 2);
+
+            // Current point label
+            const current = visiblePoints[visiblePoints.length - 1];
+            svg.append('text')
+                .attr('x', xScale(current.x) + 15)
+                .attr('y', yScale(current.y) - 10)
+                .attr('font-size', '1rem')
+                .attr('fill', '#f97316')
+                .text(`(${current.x.toFixed(1)}, ${current.y.toFixed(2)})`);
+
+            // Update step info
+            document.getElementById('stepInfo').textContent = `Step ${currentStep} of ${maxSteps}`;
+
+            // Button handlers
+            document.getElementById('stepForward').onclick = function() {
+                if (currentStep < maxSteps) {
+                    currentStep++;
+                    drawEulerStepViz();
+                }
+            };
+
+            document.getElementById('stepBack').onclick = function() {
+                if (currentStep > 0) {
+                    currentStep--;
+                    drawEulerStepViz();
+                }
+            };
+
+            document.getElementById('resetSteps').onclick = function() {
+                currentStep = 0;
+                drawEulerStepViz();
+            };
+        }
+
+        // Visualization 3: Step size comparison
+        let selectedDx = 0.25;
+
+        function drawStepSizeViz() {
+            const container = d3.select('#step-size-viz');
+            container.selectAll('svg').remove();
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear()
+                .domain([0, 2.5])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, 10])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line.h')
+                .data(d3.range(0, 11, 2))
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Exact solution
+            const exactLine = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const exactData = d3.range(0, 2.5, 0.05).map(x => ({ x, y: Math.exp(x) }));
+            svg.append('path')
+                .datum(exactData)
+                .attr('fill', 'none')
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 3)
+                .attr('d', exactLine);
+
+            // Euler with selected step size
+            const eulerPoints = [{ x: 0, y: 1 }];
+            while (eulerPoints[eulerPoints.length - 1].x < 2.5) {
+                const last = eulerPoints[eulerPoints.length - 1];
+                const slope = last.y;
+                eulerPoints.push({
+                    x: last.x + selectedDx,
+                    y: last.y + slope * selectedDx
+                });
+            }
+
+            const eulerLine = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y));
+
+            svg.append('path')
+                .datum(eulerPoints.filter(d => d.x <= 2.5 && d.y <= 10))
+                .attr('fill', 'none')
+                .attr('stroke', '#3b82f6')
+                .attr('stroke-width', 2.5)
+                .attr('d', eulerLine);
+
+            svg.selectAll('.euler-point')
+                .data(eulerPoints.filter(d => d.x <= 2.5 && d.y <= 10))
+                .enter().append('circle')
+                .attr('cx', d => xScale(d.x))
+                .attr('cy', d => yScale(d.y))
+                .attr('r', 5)
+                .attr('fill', '#3b82f6');
+
+            // Error at x = 2
+            const eulerAtTwo = eulerPoints.find(p => Math.abs(p.x - 2) < selectedDx / 2);
+            const exactAtTwo = Math.exp(2);
+            if (eulerAtTwo) {
+                const error = ((exactAtTwo - eulerAtTwo.y) / exactAtTwo * 100).toFixed(1);
+                svg.append('text')
+                    .attr('x', width - margin.right - 10)
+                    .attr('y', margin.top + 20)
+                    .attr('text-anchor', 'end')
+                    .attr('font-size', '1rem')
+                    .text(`Error at x=2: ${error}%`);
+            }
+
+            // Button handlers
+            document.querySelectorAll('.control-btn[data-dx]').forEach(btn => {
+                btn.onclick = function() {
+                    selectedDx = parseFloat(this.dataset.dx);
+                    document.querySelectorAll('.control-btn[data-dx]').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    drawStepSizeViz();
+                };
+            });
+        }
+
+        // Visualization 4: Euler for dy/dx = x + y
+        function drawEulerXYViz() {
+            const container = d3.select('#euler-xy-viz');
+            container.selectAll('*').remove();
+
+            const width = 350;
+            const height = 300;
+            const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear()
+                .domain([0, 1.2])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, 4])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line.h')
+                .data(d3.range(0, 5))
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Euler points
+            const dx = 0.2;
+            const points = [{ x: 0, y: 1 }];
+            for (let i = 0; i < 5; i++) {
+                const last = points[points.length - 1];
+                const slope = last.x + last.y;
+                points.push({
+                    x: last.x + dx,
+                    y: last.y + slope * dx
+                });
+            }
+
+            const eulerLine = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y));
+
+            svg.append('path')
+                .datum(points)
+                .attr('fill', 'none')
+                .attr('stroke', '#3b82f6')
+                .attr('stroke-width', 2.5)
+                .attr('d', eulerLine);
+
+            svg.selectAll('.euler-point')
+                .data(points)
+                .enter().append('circle')
+                .attr('cx', d => xScale(d.x))
+                .attr('cy', d => yScale(d.y))
+                .attr('r', 5)
+                .attr('fill', '#3b82f6');
+        }
+
+        // Visualization 5: Euler on slope field
+        function drawEulerSlopeFieldViz() {
+            const container = d3.select('#euler-slope-field-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 420;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear()
+                .domain([-1, 3])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([-1, 5])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-1, 6))
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Slope field for dy/dx = 0.5y
+            for (let x = -1; x <= 3; x += 0.4) {
+                for (let y = -1; y <= 5; y += 0.4) {
+                    const slope = 0.5 * y;
+                    if (Math.abs(slope) < 10) {
+                        const angle = Math.atan(slope);
+                        const len = 0.15;
+                        const dx = len * Math.cos(angle);
+                        const dy = len * Math.sin(angle);
+
+                        svg.append('line')
+                            .attr('x1', xScale(x - dx))
+                            .attr('y1', yScale(y - dy))
+                            .attr('x2', xScale(x + dx))
+                            .attr('y2', yScale(y + dy))
+                            .attr('stroke', '#9ca3af')
+                            .attr('stroke-width', 1.5)
+                            .attr('stroke-linecap', 'round');
+                    }
+                }
+            }
+
+            // Exact solution y = e^(0.5x)
+            const exactLine = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const exactData = d3.range(0, 3, 0.05).map(x => ({ x, y: Math.exp(0.5 * x) }));
+            svg.append('path')
+                .datum(exactData)
+                .attr('fill', 'none')
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 2.5)
+                .attr('d', exactLine);
+
+            // Euler approximation
+            const stepSize = 0.5;
+            const eulerPoints = [{ x: 0, y: 1 }];
+            while (eulerPoints[eulerPoints.length - 1].x < 3) {
+                const last = eulerPoints[eulerPoints.length - 1];
+                const slope = 0.5 * last.y;
+                eulerPoints.push({
+                    x: last.x + stepSize,
+                    y: last.y + slope * stepSize
+                });
+            }
+
+            const eulerLine = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y));
+
+            svg.append('path')
+                .datum(eulerPoints)
+                .attr('fill', 'none')
+                .attr('stroke', '#3b82f6')
+                .attr('stroke-width', 2.5)
+                .attr('d', eulerLine);
+
+            svg.selectAll('.euler-point')
+                .data(eulerPoints)
+                .enter().append('circle')
+                .attr('cx', d => xScale(d.x))
+                .attr('cy', d => yScale(d.y))
+                .attr('r', 6)
+                .attr('fill', '#3b82f6')
+                .attr('stroke', 'white')
+                .attr('stroke-width', 2);
+        }
+
+        // Visualization 6: Concavity and over/underestimate
+        function drawConcavityViz() {
+            const container = d3.select('#concavity-viz');
+            container.selectAll('*').remove();
+
+            const width = 380;
+            const height = 320;
+            const margin = { top: 30, right: 20, bottom: 30, left: 40 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear()
+                .domain([0, 2])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, 4])
+                .range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 1);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 1);
+
+            // Concave up curve (y = x^2 + 1)
+            const curve = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const curveData = d3.range(0, 2, 0.05).map(x => ({ x, y: x * x + 1 }));
+            svg.append('path')
+                .datum(curveData)
+                .attr('fill', 'none')
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 3)
+                .attr('d', curve);
+
+            // Tangent line at x = 0.5
+            const x0 = 0.5;
+            const y0 = x0 * x0 + 1; // 1.25
+            const slope = 2 * x0; // 1
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('y1', yScale(y0 - slope * x0))
+                .attr('x2', xScale(1.5))
+                .attr('y2', yScale(y0 + slope * (1.5 - x0)))
+                .attr('stroke', '#3b82f6')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,5');
+
+            // Point
+            svg.append('circle')
+                .attr('cx', xScale(x0))
+                .attr('cy', yScale(y0))
+                .attr('r', 6)
+                .attr('fill', '#f97316');
+
+            // Labels
+            svg.append('text')
+                .attr('x', xScale(1.5))
+                .attr('y', yScale(3) - 10)
+                .attr('font-size', '0.9rem')
+                .attr('fill', '#22c55e')
+                .text('Exact (concave up)');
+
+            svg.append('text')
+                .attr('x', xScale(1.3))
+                .attr('y', yScale(1.7))
+                .attr('font-size', '0.9rem')
+                .attr('fill', '#3b82f6')
+                .text('Tangent line');
+
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .attr('font-weight', 'bold')
+                .text('Euler UNDERESTIMATES');
+        }
+    </script>
+</body>
+</html>

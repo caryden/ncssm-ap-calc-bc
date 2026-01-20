@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volumes by Cross Sections | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <style>
+        :root {
+            --theme-color: #f43f5e;
+            --theme-color-light: #fb7185;
+            --theme-color-dark: #e11d48;
+            --base-color: #60a5fa;
+            --cross-section-color: #22c55e;
+            --volume-color: rgba(244, 63, 94, 0.4);
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .slide-title h1 {
+            color: var(--theme-color);
+        }
+
+        .viz-container {
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viz-container svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .formula-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 850px;
+        }
+
+        .formula-box .formula-title {
+            color: var(--theme-color);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .cross-section-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .cross-section-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .cross-section-card h3 {
+            color: var(--theme-color);
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .cross-section-card .formula {
+            font-size: 1.3rem;
+            margin: 0.5rem 0;
+        }
+
+        .cross-section-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-list {
+            text-align: left;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .step-list .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .step-list .step-num {
+            background: var(--theme-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .controls-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 2px solid var(--theme-color);
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .control-btn:hover, .control-btn.active {
+            background: var(--theme-color);
+            color: white;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .slider {
+            width: 150px;
+            accent-color: var(--theme-color);
+        }
+
+        .slider-value {
+            font-family: var(--font-mono);
+            color: var(--theme-color);
+            min-width: 3rem;
+        }
+
+        .example-box {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: left;
+        }
+
+        .example-box .problem {
+            border-left: 3px solid var(--theme-color);
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .concept-box {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .concept-box h3 {
+            color: var(--theme-color);
+            margin-bottom: 0.75rem;
+        }
+
+        .diagram-container {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 1.5rem 0;
+        }
+
+        .diagram-item {
+            text-align: center;
+        }
+
+        .diagram-item svg {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+
+        <!-- Slide 0: Title -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 8: Applications of Integration</span>
+                <h1>Volumes by Cross Sections</h1>
+                <p class="subtitle">Slicing Solids with Known Cross-Sectional Areas</p>
+                <p class="meta">Class 46 | CED Topics 8.7, 8.8</p>
+            </div>
+        </section>
+
+        <!-- Slide 1: Warm-Up -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="exercise-box">
+                    <p><strong>1.</strong> Find the area between \(y = \sqrt{x}\) and the x-axis from \(x = 0\) to \(x = 4\).</p>
+                    <hr style="margin: 1.5rem 0; border-color: #2d3748;">
+                    <p><strong>2.</strong> If a square has side length \(s\), what is its area?</p>
+                    <p style="margin-top: 0.5rem;"><strong>3.</strong> If a semicircle has diameter \(d\), what is its area?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: From Area to Volume -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>From 2D Area to 3D Volume</h2>
+                <div class="statement-box">
+                    <p>Just as we found <strong>area</strong> by summing thin rectangles...</p>
+                    <p style="margin-top: 1rem;">We find <strong>volume</strong> by summing thin slices!</p>
+                </div>
+                <div style="margin-top: 2rem;">
+                    <p class="math-display">\[\text{Area} = \int_a^b f(x) \, dx \quad \longrightarrow \quad \text{Volume} = \int_a^b A(x) \, dx\]</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: The Big Idea -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>The Cross Section Method</h2>
+                <div class="formula-box">
+                    <div class="formula-title">Volume by Cross Sections</div>
+                    <p class="math-display">\[V = \int_a^b A(x) \, dx\]</p>
+                    <p style="text-align: center; margin-top: 1rem;">where \(A(x)\) is the <strong>cross-sectional area</strong> at position \(x\)</p>
+                </div>
+                <div class="concept-box" style="margin-top: 1.5rem;">
+                    <h3>Think of it as:</h3>
+                    <p style="font-size: 1.25rem;">Slicing a loaf of bread and adding up all the slice areas!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Visualization Introduction -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Visualizing Cross Sections</h2>
+                <div id="intro-viz" class="viz-container"></div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--base-color);"></div>
+                        <span>Base region</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--cross-section-color); height: 16px; width: 16px;"></div>
+                        <span>Cross section</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Common Cross Section Shapes -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Common Cross-Section Shapes</h2>
+                <div class="cross-section-grid">
+                    <div class="cross-section-card">
+                        <div class="icon">&#9632;</div>
+                        <h3>Squares</h3>
+                        <p class="formula">\(A = s^2\)</p>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Side = base width</p>
+                    </div>
+                    <div class="cross-section-card">
+                        <div class="icon">&#9650;</div>
+                        <h3>Equilateral Triangles</h3>
+                        <p class="formula">\(A = \frac{\sqrt{3}}{4}s^2\)</p>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Side = base width</p>
+                    </div>
+                    <div class="cross-section-card">
+                        <div class="icon">&#9684;</div>
+                        <h3>Semicircles</h3>
+                        <p class="formula">\(A = \frac{\pi r^2}{2}\)</p>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Diameter = base width</p>
+                    </div>
+                    <div class="cross-section-card">
+                        <div class="icon">&#9645;</div>
+                        <h3>Rectangles</h3>
+                        <p class="formula">\(A = b \cdot h\)</p>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Base = width, height given</p>
+                    </div>
+                    <div class="cross-section-card">
+                        <div class="icon">&#9651;</div>
+                        <h3>Isosceles Right</h3>
+                        <p class="formula">\(A = \frac{1}{2}s^2\)</p>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Leg = base width</p>
+                    </div>
+                    <div class="cross-section-card">
+                        <div class="icon">&#11044;</div>
+                        <h3>Circles</h3>
+                        <p class="formula">\(A = \pi r^2\)</p>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Diameter = base width</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Setting Up the Problem -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Setting Up Cross-Section Problems</h2>
+                <div class="step-list">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div>
+                            <strong>Identify the base region</strong>
+                            <p style="color: var(--text-secondary);">Sketch the 2D region in the xy-plane</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div>
+                            <strong>Determine the base width</strong>
+                            <p style="color: var(--text-secondary);">Find the distance across the base at position x (or y)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div>
+                            <strong>Write A(x) in terms of the base width</strong>
+                            <p style="color: var(--text-secondary);">Use the appropriate area formula for the cross-section shape</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">4</div>
+                        <div>
+                            <strong>Integrate!</strong>
+                            <p style="color: var(--text-secondary);">\(V = \int_a^b A(x)\,dx\)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Example 1 - Square Cross Sections -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example 1: Square Cross Sections</h2>
+                <div class="example-box">
+                    <div class="problem">
+                        <p>The base of a solid is the region bounded by \(y = \sqrt{x}\), \(y = 0\), and \(x = 4\).</p>
+                        <p>Cross sections perpendicular to the x-axis are <strong>squares</strong>. Find the volume.</p>
+                    </div>
+                </div>
+                <div id="square-viz" class="viz-container" style="height: 350px;"></div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Example 1 Solution -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example 1: Solution</h2>
+                <div class="two-column">
+                    <div>
+                        <p><strong>Step 1:</strong> Base width at x</p>
+                        <p>Width \(= \sqrt{x} - 0 = \sqrt{x}\)</p>
+
+                        <p style="margin-top: 1rem;"><strong>Step 2:</strong> Cross-section area</p>
+                        <p>Square: \(A(x) = (\sqrt{x})^2 = x\)</p>
+                    </div>
+                    <div>
+                        <p><strong>Step 3:</strong> Set up integral</p>
+                        <p class="math-display">\[V = \int_0^4 x \, dx\]</p>
+
+                        <p><strong>Step 4:</strong> Evaluate</p>
+                        <p class="math-display">\[V = \left[\frac{x^2}{2}\right]_0^4 = 8\]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Interactive Cross Sections -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Explore: Different Cross Sections</h2>
+                <div id="interactive-viz" class="viz-container"></div>
+                <div class="controls-container">
+                    <button class="control-btn active" data-shape="square">Squares</button>
+                    <button class="control-btn" data-shape="semicircle">Semicircles</button>
+                    <button class="control-btn" data-shape="equilateral">Equilateral Triangles</button>
+                    <button class="control-btn" data-shape="isosceles">Isosceles Right</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Example 2 - Semicircular -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example 2: Semicircular Cross Sections</h2>
+                <div class="example-box">
+                    <div class="problem">
+                        <p>The base is bounded by \(y = \sin x\) and \(y = 0\) from \(x = 0\) to \(x = \pi\).</p>
+                        <p>Cross sections perpendicular to the x-axis are <strong>semicircles</strong>. Find the volume.</p>
+                    </div>
+                    <div class="solution">
+                        <p><strong>Base width:</strong> \(\sin x\) is the diameter, so \(r = \frac{\sin x}{2}\)</p>
+                        <p style="margin-top: 0.5rem;"><strong>Area:</strong> \(A(x) = \frac{1}{2}\pi r^2 = \frac{\pi}{2} \cdot \frac{\sin^2 x}{4} = \frac{\pi \sin^2 x}{8}\)</p>
+                        <p style="margin-top: 0.5rem;"><strong>Volume:</strong></p>
+                        <p class="math-display">\[V = \int_0^{\pi} \frac{\pi \sin^2 x}{8} dx = \frac{\pi}{8} \cdot \frac{\pi}{2} = \frac{\pi^2}{16}\]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: Cross Sections Perpendicular to y-axis -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Cross Sections Perpendicular to the y-axis</h2>
+                <div class="formula-box">
+                    <div class="formula-title">Integrating with respect to y</div>
+                    <p class="math-display">\[V = \int_c^d A(y) \, dy\]</p>
+                </div>
+                <div class="concept-box" style="margin-top: 1.5rem;">
+                    <h3>When to use dy:</h3>
+                    <ul style="font-size: 1.15rem; line-height: 1.8; margin-left: 1.5rem;">
+                        <li>When cross sections are perpendicular to the y-axis</li>
+                        <li>When the base width is naturally expressed in terms of y</li>
+                        <li>When boundaries are functions of y</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: Example 3 -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example 3: Using dy</h2>
+                <div class="example-box">
+                    <div class="problem">
+                        <p>The base is bounded by \(x = y^2\) and \(x = 1\).</p>
+                        <p>Cross sections perpendicular to the y-axis are <strong>squares</strong>. Find the volume.</p>
+                    </div>
+                    <div class="solution">
+                        <p><strong>Base width:</strong> \(1 - y^2\) (right minus left)</p>
+                        <p style="margin-top: 0.5rem;"><strong>Area:</strong> \(A(y) = (1 - y^2)^2\)</p>
+                        <p style="margin-top: 0.5rem;"><strong>Limits:</strong> \(y^2 = 1 \Rightarrow y = \pm 1\)</p>
+                        <p class="math-display">\[V = \int_{-1}^{1} (1-y^2)^2 dy = \int_{-1}^{1} (1 - 2y^2 + y^4) dy = \frac{16}{15}\]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 13: Triangular Base -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Triangular Base Regions</h2>
+                <div id="triangle-base-viz" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.1rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                    Base: triangle with vertices at (0,0), (2,0), (0,2)
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 14: Example 4 -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example 4: Triangular Base</h2>
+                <div class="example-box">
+                    <div class="problem">
+                        <p>The base is a triangle with vertices (0,0), (2,0), and (0,2).</p>
+                        <p>Cross sections perpendicular to the x-axis are <strong>equilateral triangles</strong>.</p>
+                    </div>
+                    <div class="solution">
+                        <p><strong>Hypotenuse equation:</strong> \(y = 2 - x\)</p>
+                        <p><strong>Base width at x:</strong> \(2 - x\)</p>
+                        <p><strong>Area:</strong> \(A(x) = \frac{\sqrt{3}}{4}(2-x)^2\)</p>
+                        <p class="math-display">\[V = \int_0^{2} \frac{\sqrt{3}}{4}(2-x)^2 dx = \frac{\sqrt{3}}{4} \cdot \frac{8}{3} = \frac{2\sqrt{3}}{3}\]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 15: Circular and Elliptical Bases -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Circular Base</h2>
+                <div class="example-box">
+                    <div class="problem">
+                        <p>The base is a circle: \(x^2 + y^2 = r^2\). Cross sections are squares.</p>
+                    </div>
+                    <div class="solution">
+                        <p><strong>At position x:</strong> \(y = \pm\sqrt{r^2 - x^2}\)</p>
+                        <p><strong>Base width:</strong> \(2\sqrt{r^2 - x^2}\)</p>
+                        <p><strong>Area:</strong> \(A(x) = 4(r^2 - x^2)\)</p>
+                        <p class="math-display">\[V = \int_{-r}^{r} 4(r^2 - x^2) dx = 4\left[r^2 x - \frac{x^3}{3}\right]_{-r}^{r} = \frac{16r^3}{3}\]</p>
+                    </div>
+                </div>
+                <p style="text-align: center; color: var(--accent-secondary); margin-top: 1rem;">
+                    Note: For a unit circle (r = 1), \(V = \frac{16}{3}\)
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 16: Slider Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Visualizing the Slicing</h2>
+                <div id="slider-viz" class="viz-container"></div>
+                <div class="controls-container">
+                    <div class="control-group">
+                        <label>Position x:</label>
+                        <input type="range" class="slider" id="slice-position" min="0" max="4" step="0.1" value="2">
+                        <span class="slider-value" id="slice-value">2.0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 17: Practice Problems -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Practice Problems</h2>
+                <div class="exercise-box">
+                    <ol style="font-size: 1.15rem; line-height: 2.2; text-align: left; max-width: 900px; margin: 0 auto;">
+                        <li>Base: \(y = x^2\) and \(y = 4\). Cross sections (perp. to y): squares. Find V.</li>
+                        <li>Base: \(y = \cos x\) and \(y = 0\) from \(x = -\frac{\pi}{2}\) to \(x = \frac{\pi}{2}\). Cross sections (perp. to x): squares. Find V.</li>
+                        <li>Base: triangle with vertices (0,0), (1,0), (0,1). Cross sections (perp. to x): semicircles. Find V.</li>
+                        <li>Base: \(y = e^{-x}\), \(y = 0\), \(x = 0\), \(x = 1\). Cross sections: isosceles right triangles with leg on the base. Find V.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 18: Solutions -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <ol style="font-size: 1.05rem; line-height: 2.2; text-align: left; max-width: 900px; margin: 0 auto;">
+                    <li>Width = \(2\sqrt{y}\), \(A(y) = 4y\), \(V = \int_0^4 4y\,dy = 32\)</li>
+                    <li>\(A(x) = \cos^2 x\), \(V = \int_{-\pi/2}^{\pi/2} \cos^2 x\,dx = \frac{\pi}{2}\)</li>
+                    <li>Width = \(1-x\), \(r = \frac{1-x}{2}\), \(A(x) = \frac{\pi(1-x)^2}{8}\), \(V = \frac{\pi}{8} \cdot \frac{1}{3} = \frac{\pi}{24}\)</li>
+                    <li>\(A(x) = \frac{1}{2}e^{-2x}\), \(V = \int_0^1 \frac{1}{2}e^{-2x}dx = \frac{1}{4}(1 - e^{-2})\)</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Slide 19: Exit Ticket -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="exercise-box">
+                    <p><strong>1.</strong> A solid has base bounded by \(y = x\) and \(y = x^2\). Cross sections perpendicular to the x-axis are squares. Set up (but don't evaluate) the volume integral.</p>
+                    <div style="height: 1.5rem;"></div>
+                    <p><strong>2.</strong> If the base width at position x is \(f(x)\) and cross sections are equilateral triangles, what is \(A(x)\)?</p>
+                    <div style="height: 1.5rem;"></div>
+                    <p><strong>3.</strong> Why do we need to integrate to find volume (instead of just using \(V = A \cdot h\))?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 20: Looking Ahead -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <h2>Looking Ahead</h2>
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--theme-color);">Next: Disc and Washer Methods</h3>
+                    <ul style="font-size: 1.35rem; line-height: 2; list-style: none; padding: 0; margin-top: 1.5rem;">
+                        <li>Revolution about the x-axis</li>
+                        <li>Revolution about the y-axis</li>
+                        <li>Hollow solids (washers)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="slide-nav">
+        <button id="prevBtn" aria-label="Previous slide">&#8592;</button>
+        <span id="slideCounter">1 / 20</span>
+        <button id="nextBtn" aria-label="Next slide">&#8594;</button>
+        <button id="tocBtn" aria-label="Table of contents">&#9776;</button>
+    </nav>
+
+    <!-- Table of Contents -->
+    <div id="toc" class="toc-overlay">
+        <div class="toc-content">
+            <h3>Contents</h3>
+            <ul id="tocList"></ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <script src="../shared/presentation.js"></script>
+
+    <script>
+        // Visualization slides mapping
+        const visualizationSlides = {
+            4: drawIntroViz,
+            7: drawSquareViz,
+            9: drawInteractiveViz,
+            13: drawTriangleBaseViz,
+            16: drawSliderViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Visualization 1: Introduction to cross sections
+        function drawIntroViz() {
+            const container = d3.select('#intro-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Draw 3D-ish representation
+            const xScale = d3.scaleLinear().domain([0, 5]).range([margin.left + 50, width - margin.right - 50]);
+            const yScale = d3.scaleLinear().domain([0, 3]).range([height - margin.bottom, margin.top + 50]);
+
+            // Base region (y = sqrt(x) type curve)
+            const f = x => Math.sqrt(x);
+            const xVals = d3.range(0, 4.01, 0.1);
+
+            // Draw the base with slight 3D effect
+            const baseOffset = 30;
+
+            // Base filled region
+            const basePath = [];
+            xVals.forEach(x => basePath.push({ x: xScale(x), y: yScale(f(x)) }));
+            basePath.push({ x: xScale(4), y: yScale(0) });
+            basePath.push({ x: xScale(0), y: yScale(0) });
+
+            svg.append('path')
+                .datum(basePath)
+                .attr('fill', 'rgba(96, 165, 250, 0.3)')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 2)
+                .attr('d', d3.line().x(d => d.x).y(d => d.y));
+
+            // Draw several cross-section squares at different x positions
+            const slicePositions = [0.5, 1.5, 2.5, 3.5];
+
+            slicePositions.forEach((x, i) => {
+                const baseWidth = f(x);
+                const sideLength = baseWidth * 60; // Scale for visualization
+                const xPos = xScale(x);
+                const yPos = yScale(0);
+
+                // Draw square rising up from base
+                svg.append('rect')
+                    .attr('x', xPos - sideLength/2)
+                    .attr('y', yPos - sideLength - baseOffset)
+                    .attr('width', sideLength)
+                    .attr('height', sideLength)
+                    .attr('fill', `rgba(34, 197, 94, ${0.2 + i * 0.1})`)
+                    .attr('stroke', '#22c55e')
+                    .attr('stroke-width', 1.5)
+                    .attr('transform', `skewY(-5) skewX(5)`);
+            });
+
+            // Labels
+            svg.append('text')
+                .attr('x', xScale(2)).attr('y', yScale(0) + 35)
+                .attr('fill', '#9ca3af').attr('text-anchor', 'middle').attr('font-size', '1rem')
+                .text('Base region in xy-plane');
+
+            svg.append('text')
+                .attr('x', xScale(3.5) + 40).attr('y', yScale(f(3.5)) - 80)
+                .attr('fill', '#22c55e').attr('font-size', '0.95rem')
+                .text('Cross sections');
+        }
+
+        // Visualization 2: Square cross sections example
+        function drawSquareViz() {
+            const container = d3.select('#square-viz');
+            container.selectAll('*').remove();
+
+            const width = 600;
+            const height = 300;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-0.5, 5]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-0.5, 2.5]).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            // y = sqrt(x)
+            const f = x => Math.sqrt(x);
+            const xVals = d3.range(0, 4.01, 0.05);
+
+            // Shaded base region
+            const areaData = xVals.map(x => ({ x, y: f(x) }));
+            areaData.push({ x: 4, y: 0 });
+            areaData.unshift({ x: 0, y: 0 });
+
+            svg.append('path')
+                .datum(areaData)
+                .attr('fill', 'rgba(96, 165, 250, 0.3)')
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Curve
+            svg.append('path')
+                .datum(xVals.map(x => ({ x, y: f(x) })))
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural));
+
+            // Sample slice
+            const sliceX = 2;
+            const sliceWidth = f(sliceX);
+
+            svg.append('line')
+                .attr('x1', xScale(sliceX)).attr('x2', xScale(sliceX))
+                .attr('y1', yScale(0)).attr('y2', yScale(sliceWidth))
+                .attr('stroke', '#f43f5e')
+                .attr('stroke-width', 3);
+
+            // Labels
+            svg.append('text')
+                .attr('x', xScale(4)).attr('y', yScale(0) + 20)
+                .attr('fill', '#9ca3af').attr('font-size', '0.9rem')
+                .text('4');
+
+            svg.append('text')
+                .attr('x', xScale(3)).attr('y', yScale(f(3)) - 10)
+                .attr('fill', '#60a5fa').attr('font-size', '0.95rem')
+                .text('y = sqrt(x)');
+
+            svg.append('text')
+                .attr('x', xScale(sliceX) + 10).attr('y', yScale(sliceWidth/2))
+                .attr('fill', '#f43f5e').attr('font-size', '0.85rem')
+                .text('side = sqrt(x)');
+        }
+
+        // Visualization 3: Interactive cross sections
+        let currentShape = 'square';
+
+        function drawInteractiveViz() {
+            const container = d3.select('#interactive-viz');
+            container.selectAll('svg').remove();
+
+            const width = 700;
+            const height = 350;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([0, 5]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([0, 2.5]).range([height - margin.bottom, margin.top]);
+
+            // Base region
+            const f = x => Math.sqrt(x);
+            const xVals = d3.range(0, 4.01, 0.05);
+
+            // Shaded base
+            const areaData = xVals.map(x => ({ x, y: f(x) }));
+            areaData.push({ x: 4, y: 0 });
+            areaData.unshift({ x: 0, y: 0 });
+
+            svg.append('path')
+                .datum(areaData)
+                .attr('fill', 'rgba(96, 165, 250, 0.2)')
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Curve
+            svg.append('path')
+                .datum(xVals.map(x => ({ x, y: f(x) })))
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 2)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural));
+
+            // Draw cross sections at several positions
+            const positions = [0.5, 1, 1.5, 2, 2.5, 3, 3.5];
+
+            const areaFormulas = {
+                square: s => s * s,
+                semicircle: s => Math.PI * (s/2) * (s/2) / 2,
+                equilateral: s => Math.sqrt(3) / 4 * s * s,
+                isosceles: s => 0.5 * s * s
+            };
+
+            positions.forEach(x => {
+                const baseWidth = f(x);
+                const area = areaFormulas[currentShape](baseWidth);
+                const visualHeight = Math.sqrt(area) * 30; // Scale for visualization
+
+                const xPos = xScale(x);
+                const yBase = yScale(0);
+
+                // Draw shape representation
+                if (currentShape === 'square') {
+                    svg.append('rect')
+                        .attr('x', xPos - visualHeight/2)
+                        .attr('y', yBase - visualHeight)
+                        .attr('width', visualHeight)
+                        .attr('height', visualHeight)
+                        .attr('fill', 'rgba(244, 63, 94, 0.4)')
+                        .attr('stroke', '#f43f5e')
+                        .attr('stroke-width', 1);
+                } else if (currentShape === 'semicircle') {
+                    const r = visualHeight / 1.5;
+                    svg.append('path')
+                        .attr('d', `M ${xPos - r} ${yBase} A ${r} ${r} 0 0 1 ${xPos + r} ${yBase}`)
+                        .attr('fill', 'rgba(244, 63, 94, 0.4)')
+                        .attr('stroke', '#f43f5e')
+                        .attr('stroke-width', 1);
+                } else if (currentShape === 'equilateral' || currentShape === 'isosceles') {
+                    const h = visualHeight;
+                    const w = currentShape === 'equilateral' ? visualHeight : visualHeight;
+                    svg.append('polygon')
+                        .attr('points', `${xPos},${yBase - h} ${xPos - w/2},${yBase} ${xPos + w/2},${yBase}`)
+                        .attr('fill', 'rgba(244, 63, 94, 0.4)')
+                        .attr('stroke', '#f43f5e')
+                        .attr('stroke-width', 1);
+                }
+            });
+
+            // Volume formula display
+            const formulas = {
+                square: 'A(x) = x',
+                semicircle: 'A(x) = pi*x/8',
+                equilateral: 'A(x) = sqrt(3)*x/4',
+                isosceles: 'A(x) = x/2'
+            };
+
+            svg.append('text')
+                .attr('x', width - margin.right - 10)
+                .attr('y', margin.top + 20)
+                .attr('fill', '#f43f5e')
+                .attr('font-size', '1rem')
+                .attr('text-anchor', 'end')
+                .text(formulas[currentShape]);
+
+            // Button listeners
+            document.querySelectorAll('.control-btn[data-shape]').forEach(btn => {
+                btn.onclick = function() {
+                    currentShape = this.dataset.shape;
+                    document.querySelectorAll('.control-btn[data-shape]').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    drawInteractiveViz();
+                };
+            });
+        }
+
+        // Visualization 4: Triangular base
+        function drawTriangleBaseViz() {
+            const container = d3.select('#triangle-base-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-0.5, 3]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-0.5, 3]).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            // Triangle base
+            svg.append('polygon')
+                .attr('points', `${xScale(0)},${yScale(0)} ${xScale(2)},${yScale(0)} ${xScale(0)},${yScale(2)}`)
+                .attr('fill', 'rgba(96, 165, 250, 0.3)')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 2);
+
+            // Cross section slices
+            const positions = [0.3, 0.7, 1.1, 1.5];
+            positions.forEach(x => {
+                const width = 2 - x;
+                const height = width * 40; // Scale
+
+                // Vertical line showing base width
+                svg.append('line')
+                    .attr('x1', xScale(x)).attr('x2', xScale(x))
+                    .attr('y1', yScale(0)).attr('y2', yScale(2 - x))
+                    .attr('stroke', '#f43f5e')
+                    .attr('stroke-width', 2);
+
+                // Small equilateral triangle indicator
+                const triSize = 15;
+                svg.append('polygon')
+                    .attr('points', `${xScale(x)},${yScale(2-x) - triSize*1.5} ${xScale(x) - triSize},${yScale(2-x)} ${xScale(x) + triSize},${yScale(2-x)}`)
+                    .attr('fill', 'rgba(34, 197, 94, 0.5)')
+                    .attr('stroke', '#22c55e')
+                    .attr('stroke-width', 1);
+            });
+
+            // Labels
+            svg.append('text')
+                .attr('x', xScale(0) - 10).attr('y', yScale(2) + 5)
+                .attr('fill', '#fbbf24').attr('font-size', '0.9rem').attr('text-anchor', 'end')
+                .text('(0,2)');
+
+            svg.append('text')
+                .attr('x', xScale(2)).attr('y', yScale(0) + 20)
+                .attr('fill', '#fbbf24').attr('font-size', '0.9rem').attr('text-anchor', 'middle')
+                .text('(2,0)');
+
+            svg.append('text')
+                .attr('x', xScale(1.2)).attr('y', yScale(1.2))
+                .attr('fill', '#60a5fa').attr('font-size', '0.9rem')
+                .text('y = 2 - x');
+        }
+
+        // Visualization 5: Slider visualization
+        function drawSliderViz() {
+            const container = d3.select('#slider-viz');
+            container.selectAll('svg').remove();
+
+            const width = 700;
+            const height = 350;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-0.5, 5]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-0.5, 2.5]).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            const f = x => Math.sqrt(x);
+
+            function update() {
+                const pos = parseFloat(document.getElementById('slice-position').value);
+                document.getElementById('slice-value').textContent = pos.toFixed(1);
+
+                svg.selectAll('.dynamic').remove();
+
+                // Base region
+                const xVals = d3.range(0, 4.01, 0.05);
+                const areaData = xVals.map(x => ({ x, y: f(x) }));
+                areaData.push({ x: 4, y: 0 });
+                areaData.unshift({ x: 0, y: 0 });
+
+                svg.append('path')
+                    .attr('class', 'dynamic')
+                    .datum(areaData)
+                    .attr('fill', 'rgba(96, 165, 250, 0.2)')
+                    .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+                // Curve
+                svg.append('path')
+                    .attr('class', 'dynamic')
+                    .datum(xVals.map(x => ({ x, y: f(x) })))
+                    .attr('fill', 'none')
+                    .attr('stroke', '#60a5fa')
+                    .attr('stroke-width', 2)
+                    .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural));
+
+                // Current slice
+                const baseWidth = f(pos);
+                const sideLength = baseWidth * 60;
+
+                // Vertical line
+                svg.append('line')
+                    .attr('class', 'dynamic')
+                    .attr('x1', xScale(pos)).attr('x2', xScale(pos))
+                    .attr('y1', yScale(0)).attr('y2', yScale(baseWidth))
+                    .attr('stroke', '#f43f5e')
+                    .attr('stroke-width', 3);
+
+                // Square cross section representation
+                svg.append('rect')
+                    .attr('class', 'dynamic')
+                    .attr('x', xScale(pos) - sideLength/2)
+                    .attr('y', yScale(0) - sideLength - 20)
+                    .attr('width', sideLength)
+                    .attr('height', sideLength)
+                    .attr('fill', 'rgba(34, 197, 94, 0.4)')
+                    .attr('stroke', '#22c55e')
+                    .attr('stroke-width', 2);
+
+                // Labels
+                svg.append('text')
+                    .attr('class', 'dynamic')
+                    .attr('x', xScale(pos) + 10).attr('y', yScale(baseWidth/2))
+                    .attr('fill', '#f43f5e').attr('font-size', '0.9rem')
+                    .text(`s = ${baseWidth.toFixed(2)}`);
+
+                svg.append('text')
+                    .attr('class', 'dynamic')
+                    .attr('x', xScale(pos)).attr('y', yScale(0) - sideLength - 30)
+                    .attr('fill', '#22c55e').attr('font-size', '0.9rem').attr('text-anchor', 'middle')
+                    .text(`A = ${(baseWidth * baseWidth).toFixed(2)}`);
+            }
+
+            document.getElementById('slice-position').oninput = update;
+            update();
+        }
+    </script>
+</body>
+</html>

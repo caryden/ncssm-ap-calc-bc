@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 26: First Derivative Test | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #14b8a6;
+            --theme-color-light: #2dd4bf;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .theorem-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--accent-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 850px;
+        }
+
+        .theorem-box h4 {
+            color: var(--accent-secondary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .definition-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 850px;
+        }
+
+        .definition-box h4 {
+            color: var(--theme-color-light);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .concept-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            border-radius: 0 8px 8px 0;
+            max-width: 850px;
+            text-align: left;
+        }
+
+        .concept-box h4 {
+            color: var(--theme-color-light);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .sign-chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 2rem auto;
+            max-width: 700px;
+        }
+
+        .sign-row {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin: 0.5rem 0;
+        }
+
+        .sign-label {
+            width: 80px;
+            font-weight: 600;
+            color: var(--theme-color-light);
+        }
+
+        .sign-line {
+            flex: 1;
+            height: 3px;
+            background: var(--text-tertiary);
+            position: relative;
+        }
+
+        .sign-point {
+            position: absolute;
+            top: -8px;
+            width: 20px;
+            height: 20px;
+            background: var(--theme-color);
+            border-radius: 50%;
+            transform: translateX(-50%);
+        }
+
+        .sign-region {
+            position: absolute;
+            top: -25px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            transform: translateX(-50%);
+        }
+
+        .behavior-cards {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            flex-wrap: wrap;
+        }
+
+        .behavior-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .behavior-card h5 {
+            color: var(--theme-color-light);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .behavior-card .arrow {
+            font-size: 2rem;
+            color: var(--accent-secondary);
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .slider-control label {
+            font-size: 1.25rem;
+            font-family: var(--font-display);
+        }
+
+        .slider-control input[type="range"] {
+            width: 300px;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--theme-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .info-display {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-family: var(--font-mono);
+            font-size: 1.15rem;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+        }
+
+        .motion-legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-size: 1.15rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .test-case {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin: 0.75rem 0;
+        }
+
+        .test-case h5 {
+            color: var(--accent-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="First Derivative Test">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 5: Analytical Applications of Differentiation</div>
+                <h1>First Derivative Test</h1>
+                <p class="subtitle">Increasing, Decreasing, and Local Extrema</p>
+                <p class="meta">Class 26 | CED Topics 5.3, 5.4 | AP Calculus BC | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: Opening Question -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="Opening Question">
+            <div class="slide-content">
+                <p class="statement">If you know the sign of \( f'(x) \), what do you know about \( f(x) \)?</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Warm-Up -->
+        <div class="slide slide-exercise" data-slide="2" data-section="Opening" data-title="Warm-Up">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="prompt">
+                    <p>For \( f(x) = x^3 - 3x^2 + 2 \):</p>
+                </div>
+                <div class="instructions" style="text-align: left; max-width: 700px; margin: 1.5rem auto 0;">
+                    <ol style="list-style-position: inside; font-size: 1.25rem;">
+                        <li style="padding: 0.5rem 0;">Find all critical points</li>
+                        <li style="padding: 0.5rem 0;">Determine the sign of \( f'(x) \) on each interval</li>
+                        <li style="padding: 0.5rem 0;">Where is \( f \) increasing? Decreasing?</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Increasing/Decreasing Definition -->
+        <div class="slide slide-visual" data-slide="3" data-section="Increasing/Decreasing" data-title="Definition">
+            <div class="slide-content">
+                <h2>Increasing and Decreasing Functions</h2>
+                <div class="definition-box">
+                    <h4>Definitions</h4>
+                    <p style="font-size: 1.25rem; margin-bottom: 1rem;">\( f \) is <strong>increasing</strong> on an interval if for any \( x_1 < x_2 \): \( f(x_1) < f(x_2) \)</p>
+                    <p style="font-size: 1.25rem;">\( f \) is <strong>decreasing</strong> on an interval if for any \( x_1 < x_2 \): \( f(x_1) > f(x_2) \)</p>
+                </div>
+                <p style="text-align: center; font-size: 1.25rem; color: var(--text-secondary); margin-top: 1rem;">
+                    Increasing = going up as you move right<br>
+                    Decreasing = going down as you move right
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Connection to Derivative -->
+        <div class="slide slide-visual" data-slide="4" data-section="Increasing/Decreasing" data-title="Derivative Connection">
+            <div class="slide-content">
+                <h2>The Derivative Tells Us Everything</h2>
+                <div class="theorem-box">
+                    <h4>Increasing/Decreasing Test</h4>
+                    <p style="font-size: 1.25rem; margin-bottom: 1rem;">If \( f'(x) > 0 \) on an interval, then \( f \) is <strong>increasing</strong> on that interval.</p>
+                    <p style="font-size: 1.25rem;">If \( f'(x) < 0 \) on an interval, then \( f \) is <strong>decreasing</strong> on that interval.</p>
+                </div>
+                <div class="concept-box" style="margin-top: 1rem;">
+                    <p style="font-size: 1.15rem;"><strong>Why?</strong> By MVT, if \( f'(x) > 0 \), then any secant line has positive slope, so the function rises!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Visualization -->
+        <div class="slide slide-visual" data-slide="5" data-section="Increasing/Decreasing" data-title="Visualization">
+            <div class="slide-content">
+                <h2>Visualizing Increasing/Decreasing</h2>
+                <div id="inc-dec-viz" class="visualization"></div>
+                <div class="motion-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-derivative);"></div>
+                        <span>\( f'(x) > 0 \): Increasing</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-error);"></div>
+                        <span>\( f'(x) < 0 \): Decreasing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Sign Charts -->
+        <div class="slide slide-visual" data-slide="6" data-section="Increasing/Decreasing" data-title="Sign Charts">
+            <div class="slide-content">
+                <h2>Sign Charts for \( f'(x) \)</h2>
+                <div class="concept-box">
+                    <h4>How to Build a Sign Chart</h4>
+                    <ol style="font-size: 1.2rem; list-style-position: inside;">
+                        <li style="padding: 0.4rem 0;">Find all critical points (where \( f' = 0 \) or DNE)</li>
+                        <li style="padding: 0.4rem 0;">Plot critical points on a number line</li>
+                        <li style="padding: 0.4rem 0;">Test a value in each interval</li>
+                        <li style="padding: 0.4rem 0;">Mark each interval as + or -</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Example Sign Chart -->
+        <div class="slide slide-example" data-slide="7" data-section="Increasing/Decreasing" data-title="Example Sign Chart">
+            <div class="slide-content">
+                <h2>Example: Sign Chart for \( f(x) = x^3 - 3x \)</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>\( f'(x) = 3x^2 - 3 = 3(x-1)(x+1) \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>Critical points: \( x = -1 \) and \( x = 1 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>Test: \( f'(-2) = 9 > 0 \), \( f'(0) = -3 < 0 \), \( f'(2) = 9 > 0 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>Increasing on \( (-\infty, -1) \) and \( (1, \infty) \); Decreasing on \( (-1, 1) \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: First Derivative Test Statement -->
+        <div class="slide slide-visual" data-slide="8" data-section="First Derivative Test" data-title="FDT Statement">
+            <div class="slide-content">
+                <h2>The First Derivative Test</h2>
+                <div class="theorem-box">
+                    <h4>First Derivative Test for Local Extrema</h4>
+                    <p style="font-size: 1.2rem; margin-bottom: 1rem;">Suppose \( c \) is a critical point of a continuous function \( f \):</p>
+                    <div class="test-case">
+                        <h5>Local Maximum</h5>
+                        <p>If \( f' \) changes from <strong>+ to -</strong> at \( c \), then \( f(c) \) is a local maximum.</p>
+                    </div>
+                    <div class="test-case">
+                        <h5>Local Minimum</h5>
+                        <p>If \( f' \) changes from <strong>- to +</strong> at \( c \), then \( f(c) \) is a local minimum.</p>
+                    </div>
+                    <div class="test-case">
+                        <h5>Neither</h5>
+                        <p>If \( f' \) does not change sign at \( c \), then \( f(c) \) is neither.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: FDT Visualization -->
+        <div class="slide slide-visual" data-slide="9" data-section="First Derivative Test" data-title="FDT Visualization">
+            <div class="slide-content">
+                <h2>First Derivative Test in Action</h2>
+                <div id="fdt-viz" class="visualization"></div>
+                <div class="motion-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-error);"></div>
+                        <span>Local Max (+to-)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-function);"></div>
+                        <span>Local Min (-to+)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Why It Works -->
+        <div class="slide slide-statement" data-slide="10" data-section="First Derivative Test" data-title="Intuition">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">
+                    If you're going <em>up</em> and then going <em>down</em>,<br>
+                    you must have reached a <em>peak</em>.
+                </p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    The sign change of \( f' \) tells us the direction change of \( f \)!
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 11: Complete Example -->
+        <div class="slide slide-example" data-slide="11" data-section="Examples" data-title="Complete Example">
+            <div class="slide-content">
+                <h2>Example: Complete Analysis</h2>
+                <div class="problem">
+                    <p>Find all local extrema of \( f(x) = x^4 - 4x^3 \) using the First Derivative Test.</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>\( f'(x) = 4x^3 - 12x^2 = 4x^2(x - 3) \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>Critical points: \( x = 0 \) and \( x = 3 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>Sign chart: \( f'(-1) < 0 \), \( f'(1) < 0 \), \( f'(4) > 0 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>At \( x = 0 \): no sign change (neither). At \( x = 3 \): - to + (local min)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Interactive Exploration -->
+        <div class="slide slide-visual" data-slide="12" data-section="Examples" data-title="Interactive">
+            <div class="slide-content">
+                <h2>Exploring \( f(x) = x^4 - 4x^3 \)</h2>
+                <div id="interactive-fdt-viz" class="visualization"></div>
+                <div class="info-display">
+                    <div class="info-item">x = 0: Neither (- to -)</div>
+                    <div class="info-item">x = 3: Local Min (- to +)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Example with Rational Function -->
+        <div class="slide slide-example" data-slide="13" data-section="Examples" data-title="Rational Example">
+            <div class="slide-content">
+                <h2>Example: Rational Function</h2>
+                <div class="problem">
+                    <p>Find intervals of increase/decrease for \( f(x) = \frac{x^2}{x-1} \).</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>\( f'(x) = \frac{2x(x-1) - x^2}{(x-1)^2} = \frac{x^2 - 2x}{(x-1)^2} = \frac{x(x-2)}{(x-1)^2} \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>Critical: \( x = 0, 2 \). Not in domain: \( x = 1 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>Sign chart with four intervals separated by 0, 1, 2</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>Inc: \( (-\infty, 0) \cup (2, \infty) \), Dec: \( (0,1) \cup (1,2) \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Common Mistakes -->
+        <div class="slide slide-visual" data-slide="14" data-section="Examples" data-title="Common Mistakes">
+            <div class="slide-content">
+                <h2>Common Mistakes to Avoid</h2>
+                <div class="behavior-cards">
+                    <div class="behavior-card">
+                        <h5>Forgetting DNE</h5>
+                        <p style="font-size: 1.1rem;">Critical points include where \( f' \) doesn't exist!</p>
+                    </div>
+                    <div class="behavior-card">
+                        <h5>Ignoring Domain</h5>
+                        <p style="font-size: 1.1rem;">Discontinuities break up intervals too.</p>
+                    </div>
+                    <div class="behavior-card">
+                        <h5>Wrong Conclusion</h5>
+                        <p style="font-size: 1.1rem;">\( f'(c) = 0 \) alone doesn't guarantee extremum.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Connecting f and f' -->
+        <div class="slide slide-visual" data-slide="15" data-section="Connections" data-title="f and f' Together">
+            <div class="slide-content">
+                <h2>Connecting \( f \) and \( f' \) Graphically</h2>
+                <div id="f-fprime-viz" class="visualization"></div>
+                <div class="motion-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-function);"></div>
+                        <span>\( f(x) \)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-derivative);"></div>
+                        <span>\( f'(x) \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Reading f from f' -->
+        <div class="slide slide-visual" data-slide="16" data-section="Connections" data-title="Reading from f'">
+            <div class="slide-content">
+                <h2>What \( f' \) Tells Us About \( f \)</h2>
+                <div class="concept-box">
+                    <h4>Key Observations</h4>
+                    <ul style="font-size: 1.2rem; list-style-position: inside;">
+                        <li style="padding: 0.4rem 0;">\( f' > 0 \) means \( f \) is increasing</li>
+                        <li style="padding: 0.4rem 0;">\( f' < 0 \) means \( f \) is decreasing</li>
+                        <li style="padding: 0.4rem 0;">\( f' = 0 \) means \( f \) has horizontal tangent</li>
+                        <li style="padding: 0.4rem 0;">\( f' \) crosses x-axis means potential extremum of \( f \)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Practice Problem 1 -->
+        <div class="slide slide-exercise" data-slide="17" data-section="Practice" data-title="Practice 1">
+            <div class="slide-content">
+                <h2>Your Turn</h2>
+                <div class="prompt">
+                    <p>For \( f(x) = x^3 - 6x^2 + 9x + 1 \):</p>
+                </div>
+                <div class="instructions" style="text-align: left; max-width: 700px; margin: 1.5rem auto 0;">
+                    <ol style="list-style-position: inside; font-size: 1.25rem;">
+                        <li style="padding: 0.5rem 0;">Find all critical points</li>
+                        <li style="padding: 0.5rem 0;">Create a sign chart for \( f' \)</li>
+                        <li style="padding: 0.5rem 0;">Determine intervals of increase/decrease</li>
+                        <li style="padding: 0.5rem 0;">Classify each critical point using FDT</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Practice Problem 2 -->
+        <div class="slide slide-exercise" data-slide="18" data-section="Practice" data-title="Practice 2">
+            <div class="slide-content">
+                <h2>Your Turn: From the Graph of \( f' \)</h2>
+                <div id="fprime-only-viz" class="visualization" style="height: 300px;"></div>
+                <div class="prompt" style="margin-top: 1rem;">
+                    <p>Given the graph of \( f'(x) \), where does \( f \) have local extrema?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Summary -->
+        <div class="slide slide-visual" data-slide="19" data-section="Closing" data-title="Key Takeaways">
+            <div class="slide-content">
+                <h2>Key Takeaways</h2>
+                <div class="theorem-box" style="border-color: var(--theme-color);">
+                    <p style="font-size: 1.15rem; margin-bottom: 0.75rem;"><strong>\( f' > 0 \):</strong> \( f \) is increasing</p>
+                    <p style="font-size: 1.15rem; margin-bottom: 0.75rem;"><strong>\( f' < 0 \):</strong> \( f \) is decreasing</p>
+                    <p style="font-size: 1.15rem; margin-bottom: 0.75rem;"><strong>+ to -:</strong> Local maximum</p>
+                    <p style="font-size: 1.15rem;"><strong>- to +:</strong> Local minimum</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="20" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p><strong>1.</strong> If \( f'(x) = (x-1)^2(x+2) \), find all intervals where \( f \) is increasing.</p>
+                    <p style="margin-top: 1rem;"><strong>2.</strong> Classify the critical points of \( f \) using the First Derivative Test.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Looking Ahead -->
+        <div class="slide slide-statement" data-slide="21" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Coming Up Next:</p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    Concavity and the<br>
+                    Second Derivative Test
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 22</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 26: First Derivative Test</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Increasing/Decreasing Visualization (Slide 5) =====
+        function drawIncDecViz() {
+            const container = document.getElementById('inc-dec-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-3, 3]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-3, 5]).range([plotHeight, 0]);
+
+            const f = x => x * x * x - 3 * x;
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-3, 6, 1))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Increasing regions (green)
+            const incLeft = d3.range(-2.5, -1.01, 0.05);
+            const incRight = d3.range(1, 2.51, 0.05);
+
+            const lineFn = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(f(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(incLeft)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-derivative)')
+                .attr('stroke-width', 4)
+                .attr('d', lineFn);
+
+            g.append('path')
+                .datum(incRight)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-derivative)')
+                .attr('stroke-width', 4)
+                .attr('d', lineFn);
+
+            // Decreasing region (red)
+            const decRange = d3.range(-1, 1.01, 0.05);
+
+            g.append('path')
+                .datum(decRange)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-error)')
+                .attr('stroke-width', 4)
+                .attr('d', lineFn);
+
+            // Critical points
+            g.append('circle')
+                .attr('cx', xScale(-1))
+                .attr('cy', yScale(f(-1)))
+                .attr('r', 7)
+                .attr('fill', 'var(--accent-secondary)');
+
+            g.append('circle')
+                .attr('cx', xScale(1))
+                .attr('cy', yScale(f(1)))
+                .attr('r', 7)
+                .attr('fill', 'var(--accent-secondary)');
+
+            // Labels
+            g.append('text')
+                .attr('x', xScale(-1))
+                .attr('y', yScale(f(-1)) - 15)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('Local Max');
+
+            g.append('text')
+                .attr('x', xScale(1))
+                .attr('y', yScale(f(1)) + 25)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('Local Min');
+
+            // Arrows for direction
+            g.append('text')
+                .attr('x', xScale(-1.8))
+                .attr('y', yScale(f(-1.8)) - 20)
+                .attr('font-size', '1.5rem')
+                .attr('fill', 'var(--color-derivative)')
+                .text('\u2197');
+
+            g.append('text')
+                .attr('x', xScale(0))
+                .attr('y', yScale(f(0)) - 20)
+                .attr('font-size', '1.5rem')
+                .attr('fill', 'var(--color-error)')
+                .text('\u2198');
+
+            g.append('text')
+                .attr('x', xScale(1.8))
+                .attr('y', yScale(f(1.8)) - 20)
+                .attr('font-size', '1.5rem')
+                .attr('fill', 'var(--color-derivative)')
+                .text('\u2197');
+        }
+
+        // ===== FDT Visualization (Slide 9) =====
+        function drawFdtViz() {
+            const container = document.getElementById('fdt-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([0, 6]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([0, 5]).range([plotHeight, 0]);
+
+            const f = x => -0.2 * (x - 2) * (x - 2) * (x - 4) + 2.5;
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(0, 6, 1))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axis
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Curve
+            const xValues = d3.range(0.5, 5.5, 0.05);
+            const fLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(f(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', fLine);
+
+            // Sign indicators
+            g.append('text')
+                .attr('x', xScale(1.2))
+                .attr('y', yScale(4.5))
+                .attr('font-size', '1.5rem')
+                .attr('font-weight', 'bold')
+                .attr('fill', 'var(--color-derivative)')
+                .text("f' > 0");
+
+            g.append('text')
+                .attr('x', xScale(3))
+                .attr('y', yScale(4.5))
+                .attr('font-size', '1.5rem')
+                .attr('font-weight', 'bold')
+                .attr('fill', 'var(--color-error)')
+                .text("f' < 0");
+
+            g.append('text')
+                .attr('x', xScale(4.5))
+                .attr('y', yScale(4.5))
+                .attr('font-size', '1.5rem')
+                .attr('font-weight', 'bold')
+                .attr('fill', 'var(--color-derivative)')
+                .text("f' > 0");
+
+            // Critical points
+            const c1 = 2, c2 = 4;
+
+            g.append('circle')
+                .attr('cx', xScale(c1))
+                .attr('cy', yScale(f(c1)))
+                .attr('r', 8)
+                .attr('fill', 'var(--color-error)');
+
+            g.append('circle')
+                .attr('cx', xScale(c2))
+                .attr('cy', yScale(f(c2)))
+                .attr('r', 8)
+                .attr('fill', 'var(--color-function)');
+
+            g.append('text')
+                .attr('x', xScale(c1))
+                .attr('y', yScale(f(c1)) - 15)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .attr('fill', 'var(--color-error)')
+                .text('Local Max');
+
+            g.append('text')
+                .attr('x', xScale(c2))
+                .attr('y', yScale(f(c2)) + 25)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .attr('fill', 'var(--color-function)')
+                .text('Local Min');
+        }
+
+        // ===== Interactive FDT Visualization (Slide 12) =====
+        function drawInteractiveFdtViz() {
+            const container = document.getElementById('interactive-fdt-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-1, 5]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-30, 10]).range([plotHeight, 0]);
+
+            const f = x => Math.pow(x, 4) - 4 * Math.pow(x, 3);
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-30, 15, 10))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Curve
+            const xValues = d3.range(-0.5, 4.5, 0.05);
+            const fLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(f(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', fLine);
+
+            // Critical points
+            g.append('circle')
+                .attr('cx', xScale(0))
+                .attr('cy', yScale(f(0)))
+                .attr('r', 7)
+                .attr('fill', 'var(--text-tertiary)');
+
+            g.append('circle')
+                .attr('cx', xScale(3))
+                .attr('cy', yScale(f(3)))
+                .attr('r', 7)
+                .attr('fill', 'var(--color-function)');
+
+            g.append('text')
+                .attr('x', xScale(0) + 15)
+                .attr('y', yScale(f(0)) - 10)
+                .attr('font-size', '0.9rem')
+                .attr('fill', 'var(--text-tertiary)')
+                .text('Neither');
+
+            g.append('text')
+                .attr('x', xScale(3))
+                .attr('y', yScale(f(3)) + 25)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '0.9rem')
+                .attr('fill', 'var(--color-function)')
+                .text('Local Min');
+        }
+
+        // ===== f and f' Together (Slide 15) =====
+        function drawFFprimeViz() {
+            const container = document.getElementById('f-fprime-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-2, 2]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-3, 3]).range([plotHeight, 0]);
+
+            const f = x => x * x * x - x;
+            const fPrime = x => 3 * x * x - 1;
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-3, 4, 1))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            const xValues = d3.range(-1.8, 1.81, 0.05);
+            const lineFn = d3.line().curve(d3.curveNatural);
+
+            // f(x)
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', lineFn.x(d => xScale(d)).y(d => yScale(f(d))));
+
+            // f'(x)
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-derivative)')
+                .attr('stroke-width', 3)
+                .attr('stroke-dasharray', '8,4')
+                .attr('d', lineFn.x(d => xScale(d)).y(d => yScale(fPrime(d))));
+
+            // Mark where f' = 0
+            const c1 = -1/Math.sqrt(3), c2 = 1/Math.sqrt(3);
+
+            g.append('circle')
+                .attr('cx', xScale(c1))
+                .attr('cy', yScale(0))
+                .attr('r', 5)
+                .attr('fill', 'var(--color-derivative)');
+
+            g.append('circle')
+                .attr('cx', xScale(c2))
+                .attr('cy', yScale(0))
+                .attr('r', 5)
+                .attr('fill', 'var(--color-derivative)');
+
+            // Vertical dashed lines
+            g.append('line')
+                .attr('x1', xScale(c1))
+                .attr('x2', xScale(c1))
+                .attr('y1', yScale(-2.5))
+                .attr('y2', yScale(2.5))
+                .attr('stroke', 'var(--text-tertiary)')
+                .attr('stroke-width', 1)
+                .attr('stroke-dasharray', '4,4');
+
+            g.append('line')
+                .attr('x1', xScale(c2))
+                .attr('x2', xScale(c2))
+                .attr('y1', yScale(-2.5))
+                .attr('y2', yScale(2.5))
+                .attr('stroke', 'var(--text-tertiary)')
+                .attr('stroke-width', 1)
+                .attr('stroke-dasharray', '4,4');
+        }
+
+        // ===== f' only visualization for practice (Slide 18) =====
+        function drawFprimeOnlyViz() {
+            const container = document.getElementById('fprime-only-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 280;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-3, 4]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-3, 3]).range([plotHeight, 0]);
+
+            const fPrime = x => (x + 1) * (x - 2);
+
+            // Axis
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // f'(x) curve
+            const xValues = d3.range(-2.5, 3.5, 0.05);
+            const fLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(fPrime(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-derivative)')
+                .attr('stroke-width', 3)
+                .attr('d', fLine);
+
+            // Zeros
+            g.append('circle')
+                .attr('cx', xScale(-1))
+                .attr('cy', yScale(0))
+                .attr('r', 6)
+                .attr('fill', 'var(--accent-secondary)');
+
+            g.append('circle')
+                .attr('cx', xScale(2))
+                .attr('cy', yScale(0))
+                .attr('r', 6)
+                .attr('fill', 'var(--accent-secondary)');
+
+            // Labels
+            g.append('text')
+                .attr('x', xScale(-1))
+                .attr('y', yScale(0) + 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '0.9rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('x = -1');
+
+            g.append('text')
+                .attr('x', xScale(2))
+                .attr('y', yScale(0) + 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '0.9rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('x = 2');
+
+            g.append('text')
+                .attr('x', plotWidth - 10)
+                .attr('y', yScale(0) - 10)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1.1rem')
+                .attr('fill', 'var(--color-derivative)')
+                .text("f'(x)");
+        }
+
+        // ===== Visualization Trigger =====
+        const visualizationSlides = {
+            5: drawIncDecViz,
+            9: drawFdtViz,
+            12: drawInteractiveFdtViz,
+            15: drawFFprimeViz,
+            18: drawFprimeOnlyViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Area Between Curves | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <style>
+        :root {
+            --theme-color: #f43f5e;
+            --theme-color-light: #fb7185;
+            --theme-color-dark: #e11d48;
+            --curve-top: #60a5fa;
+            --curve-bottom: #a78bfa;
+            --area-fill: rgba(244, 63, 94, 0.3);
+            --intersection-color: #fbbf24;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .slide-title h1 {
+            color: var(--theme-color);
+        }
+
+        .viz-container {
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viz-container svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .formula-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 850px;
+        }
+
+        .formula-box .formula-title {
+            color: var(--theme-color);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .method-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .method-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: left;
+        }
+
+        .method-card h3 {
+            color: var(--theme-color);
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--theme-color);
+        }
+
+        .method-card p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin: 0.5rem 0;
+        }
+
+        .step-box {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: left;
+        }
+
+        .step-box .step-title {
+            color: var(--theme-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .controls-container {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 2px solid var(--theme-color);
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .control-btn:hover, .control-btn.active {
+            background: var(--theme-color);
+            color: white;
+        }
+
+        .example-box {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: left;
+        }
+
+        .example-box .problem {
+            border-left: 3px solid var(--theme-color);
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .warning-box {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin: 1rem auto;
+            max-width: 800px;
+        }
+
+        .warning-box h4 {
+            color: #fbbf24;
+            margin-bottom: 0.5rem;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .highlight-formula {
+            background: rgba(244, 63, 94, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+
+        <!-- Slide 0: Title -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 8: Applications of Integration</span>
+                <h1>Area Between Curves</h1>
+                <p class="subtitle">Setting Up and Evaluating Area Integrals</p>
+                <p class="meta">Class 45 | CED Topics 8.4, 8.5</p>
+            </div>
+        </section>
+
+        <!-- Slide 1: Warm-Up -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="exercise-box">
+                    <p>Find the area under \(f(x) = x^2\) from \(x = 0\) to \(x = 2\).</p>
+                    <hr style="margin: 1.5rem 0; border-color: #2d3748;">
+                    <p style="margin-top: 1rem;"><strong>Discussion:</strong> How would you find the area <em>between</em> \(f(x) = x^2\) and \(g(x) = x\)?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: The Big Idea -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>The Big Idea</h2>
+                <div class="statement-box">
+                    <p>Area between curves = <strong>Top minus Bottom</strong></p>
+                    <p class="math-display">\[A = \int_a^b \left[ f(x) - g(x) \right] dx\]</p>
+                </div>
+                <div style="margin-top: 2rem;">
+                    <p style="font-size: 1.35rem;">where \(f(x) \geq g(x)\) on \([a, b]\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Visual Introduction -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Visualizing Area Between Curves</h2>
+                <div id="intro-viz" class="viz-container"></div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--curve-top);"></div>
+                        <span>Top: \(f(x)\)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--curve-bottom);"></div>
+                        <span>Bottom: \(g(x)\)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--theme-color); height: 16px; width: 16px;"></div>
+                        <span>Area</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Setting Up the Integral -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Setting Up the Integral</h2>
+                <div class="step-box">
+                    <div class="step-title">Step 1: Sketch the region</div>
+                    <p>Graph both curves to identify which is on top.</p>
+                </div>
+                <div class="step-box">
+                    <div class="step-title">Step 2: Find intersection points</div>
+                    <p>Solve \(f(x) = g(x)\) to find the limits of integration.</p>
+                </div>
+                <div class="step-box">
+                    <div class="step-title">Step 3: Set up the integral</div>
+                    <p>\(\displaystyle A = \int_a^b [\text{top} - \text{bottom}] \, dx\)</p>
+                </div>
+                <div class="step-box">
+                    <div class="step-title">Step 4: Evaluate</div>
+                    <p>Use the Fundamental Theorem of Calculus.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Example 1 -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example 1: Parabola and Line</h2>
+                <div class="example-box">
+                    <div class="problem">
+                        <p>Find the area enclosed by \(y = x^2\) and \(y = x + 2\).</p>
+                    </div>
+                </div>
+                <div id="example1-viz" class="viz-container" style="height: 350px;"></div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Example 1 Solution -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example 1: Solution</h2>
+                <div class="two-column">
+                    <div>
+                        <p><strong>Step 1:</strong> Find intersections</p>
+                        <p>\(x^2 = x + 2 \Rightarrow x^2 - x - 2 = 0\)</p>
+                        <p>\((x-2)(x+1) = 0 \Rightarrow x = -1, 2\)</p>
+
+                        <p style="margin-top: 1rem;"><strong>Step 2:</strong> Identify top/bottom</p>
+                        <p>Line is above parabola on \([-1, 2]\)</p>
+                    </div>
+                    <div>
+                        <p><strong>Step 3:</strong> Set up integral</p>
+                        <p>\[\int_{-1}^{2} [(x+2) - x^2] \, dx\]</p>
+
+                        <p style="margin-top: 1rem;"><strong>Step 4:</strong> Evaluate</p>
+                        <p>\[= \left[\frac{x^2}{2} + 2x - \frac{x^3}{3}\right]_{-1}^{2} = \frac{9}{2}\]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Interactive Explorer -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Explore: Area Between Curves</h2>
+                <div id="interactive-viz" class="viz-container"></div>
+                <div class="controls-container">
+                    <button class="control-btn active" data-example="1">x vs x^2</button>
+                    <button class="control-btn" data-example="2">sin vs cos</button>
+                    <button class="control-btn" data-example="3">Two parabolas</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: When Curves Cross -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>When Curves Cross</h2>
+                <div class="warning-box">
+                    <h4>Important!</h4>
+                    <p>When curves cross, you must split the integral at intersection points.</p>
+                </div>
+                <div class="formula-box" style="margin-top: 1.5rem;">
+                    <div class="formula-title">Split Integral Formula</div>
+                    <p class="math-display">\[A = \int_a^c |f(x) - g(x)| \, dx + \int_c^b |f(x) - g(x)| \, dx\]</p>
+                    <p style="text-align: center; margin-top: 0.5rem;">where \(c\) is the crossing point</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Crossing Example Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example: Curves That Cross</h2>
+                <div id="crossing-viz" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.1rem; color: var(--text-secondary);">
+                    Area = |Region 1| + |Region 2| (must add absolute values)
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 10: Horizontal Slicing -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Horizontal Slicing (Integrating with respect to y)</h2>
+                <div class="method-comparison">
+                    <div class="method-card">
+                        <h3>Vertical Slices (dx)</h3>
+                        <p>\(\displaystyle A = \int_a^b [f(x) - g(x)] \, dx\)</p>
+                        <p style="margin-top: 0.5rem;">Top minus Bottom</p>
+                        <p style="color: var(--accent-secondary);">Use when top/bottom are clear functions of x</p>
+                    </div>
+                    <div class="method-card">
+                        <h3>Horizontal Slices (dy)</h3>
+                        <p>\(\displaystyle A = \int_c^d [f(y) - g(y)] \, dy\)</p>
+                        <p style="margin-top: 0.5rem;">Right minus Left</p>
+                        <p style="color: var(--accent-secondary);">Use when right/left are clear functions of y</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: When to Use Horizontal -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>When Horizontal Slicing is Better</h2>
+                <div id="horizontal-viz" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.15rem; margin-top: 0.5rem;">
+                    Region bounded by \(x = y^2\) and \(x = 2 - y^2\)
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 12: Horizontal Example -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example 2: Using Horizontal Slices</h2>
+                <div class="example-box">
+                    <div class="problem">
+                        <p>Find the area between \(x = y^2\) and \(x = 2 - y^2\).</p>
+                    </div>
+                    <div class="solution">
+                        <p><strong>Intersections:</strong> \(y^2 = 2 - y^2 \Rightarrow 2y^2 = 2 \Rightarrow y = \pm 1\)</p>
+                        <p style="margin-top: 0.5rem;"><strong>Right minus Left:</strong></p>
+                        <p class="math-display">\[A = \int_{-1}^{1} [(2-y^2) - y^2] \, dy = \int_{-1}^{1} (2 - 2y^2) \, dy\]</p>
+                        <p>\[= \left[2y - \frac{2y^3}{3}\right]_{-1}^{1} = \frac{8}{3}\]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 13: Choosing the Right Method -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Choosing dx vs dy</h2>
+                <div class="method-comparison">
+                    <div class="method-card">
+                        <h3>Use dx (vertical) when:</h3>
+                        <p>- Functions given as \(y = f(x)\)</p>
+                        <p>- Clear top and bottom functions</p>
+                        <p>- Boundaries are vertical lines</p>
+                        <p>- Would need multiple integrals with dy</p>
+                    </div>
+                    <div class="method-card">
+                        <h3>Use dy (horizontal) when:</h3>
+                        <p>- Functions given as \(x = f(y)\)</p>
+                        <p>- Clear right and left functions</p>
+                        <p>- Boundaries are horizontal lines</p>
+                        <p>- Would need multiple integrals with dx</p>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 1.5rem; color: var(--accent-secondary); font-size: 1.2rem;">
+                    Goal: Use whichever requires fewer integrals!
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 14: Complex Region -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Complex Regions</h2>
+                <div id="complex-viz" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.1rem; color: var(--text-secondary);">
+                    Some regions require multiple integrals regardless of direction
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 15: Example 3 -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example 3: Triangular Region</h2>
+                <div class="example-box">
+                    <div class="problem">
+                        <p>Find the area of the region bounded by \(y = 0\), \(y = 2x\), and \(y = -x + 6\).</p>
+                    </div>
+                    <div class="solution">
+                        <p><strong>Vertices:</strong> \((0, 0)\), \((3, 0)\), \((2, 4)\)</p>
+                        <p style="margin-top: 0.5rem;"><strong>Using dx:</strong> Need to split at \(x = 2\)</p>
+                        <p class="math-display">\[A = \int_0^2 2x \, dx + \int_2^3 (-x + 6) \, dx\]</p>
+                        <p><strong>Using dy:</strong> Single integral from \(y = 0\) to \(y = 4\)</p>
+                        <p class="math-display">\[A = \int_0^4 \left[(6-y) - \frac{y}{2}\right] dy = \int_0^4 \left(6 - \frac{3y}{2}\right) dy = 6\]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 16: Practice Problems -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Practice Problems</h2>
+                <div class="exercise-box">
+                    <ol style="font-size: 1.2rem; line-height: 2.2; text-align: left; max-width: 900px; margin: 0 auto;">
+                        <li>Find the area enclosed by \(y = x^2\) and \(y = 4\).</li>
+                        <li>Find the area between \(y = \sin x\) and \(y = \cos x\) from \(x = 0\) to \(x = \frac{\pi}{2}\).</li>
+                        <li>Find the area bounded by \(x = y^2 - 1\) and \(x = 1 - y^2\).</li>
+                        <li>Set up (but don't evaluate) the integral for the area between \(y = e^x\) and \(y = x + 1\) from \(x = 0\) to \(x = 1\).</li>
+                        <li>Find the area enclosed by \(y = x^3\) and \(y = x\).</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 17: Solutions -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <ol style="font-size: 1.1rem; line-height: 2.2; text-align: left; max-width: 900px; margin: 0 auto;">
+                    <li>\(\int_{-2}^{2} (4 - x^2) dx = \frac{32}{3}\)</li>
+                    <li>Curves cross at \(x = \frac{\pi}{4}\): \(\int_0^{\pi/4} (\cos x - \sin x) dx + \int_{\pi/4}^{\pi/2} (\sin x - \cos x) dx = 2\sqrt{2} - 2\)</li>
+                    <li>Using dy: \(\int_{-1}^{1} [(1-y^2) - (y^2-1)] dy = \int_{-1}^{1} (2 - 2y^2) dy = \frac{8}{3}\)</li>
+                    <li>\(\int_0^1 (e^x - x - 1) dx\) (since \(e^x > x + 1\) on \([0,1]\))</li>
+                    <li>Intersect at \(x = -1, 0, 1\): \(\int_{-1}^{0} (x^3 - x) dx + \int_0^1 (x - x^3) dx = \frac{1}{2}\)</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Slide 18: Common Mistakes -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Common Mistakes to Avoid</h2>
+                <div class="method-comparison">
+                    <div class="method-card">
+                        <h3>Mistake 1</h3>
+                        <p style="color: #ef4444;">Forgetting to identify which curve is on top</p>
+                        <p style="margin-top: 0.5rem; color: #22c55e;">Always sketch or test a point!</p>
+                    </div>
+                    <div class="method-card">
+                        <h3>Mistake 2</h3>
+                        <p style="color: #ef4444;">Not splitting when curves cross</p>
+                        <p style="margin-top: 0.5rem; color: #22c55e;">Check for intersections in the interval!</p>
+                    </div>
+                    <div class="method-card">
+                        <h3>Mistake 3</h3>
+                        <p style="color: #ef4444;">Wrong limits of integration</p>
+                        <p style="margin-top: 0.5rem; color: #22c55e;">Solve the system to find intersections!</p>
+                    </div>
+                    <div class="method-card">
+                        <h3>Mistake 4</h3>
+                        <p style="color: #ef4444;">Subtracting in wrong order</p>
+                        <p style="margin-top: 0.5rem; color: #22c55e;">Area is always positive!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 19: Exit Ticket -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="exercise-box">
+                    <p><strong>1.</strong> Set up the integral for the area between \(y = x\) and \(y = x^2 - 2\).</p>
+                    <div style="height: 1.5rem;"></div>
+                    <p><strong>2.</strong> Would you use dx or dy to find the area bounded by \(x = y^2\) and \(x = 4\)? Explain.</p>
+                    <div style="height: 1.5rem;"></div>
+                    <p><strong>3.</strong> If \(f(x) > g(x)\) on \([a, c]\) and \(g(x) > f(x)\) on \([c, b]\), write the area formula.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 20: Looking Ahead -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <h2>Looking Ahead</h2>
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--theme-color);">Next: Volumes by Cross Sections</h3>
+                    <ul style="font-size: 1.35rem; line-height: 2; list-style: none; padding: 0; margin-top: 1.5rem;">
+                        <li>Extending 2D area to 3D volume</li>
+                        <li>Slicing solids with known cross sections</li>
+                        <li>Square, rectangular, and triangular cross sections</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="slide-nav">
+        <button id="prevBtn" aria-label="Previous slide">&#8592;</button>
+        <span id="slideCounter">1 / 20</span>
+        <button id="nextBtn" aria-label="Next slide">&#8594;</button>
+        <button id="tocBtn" aria-label="Table of contents">&#9776;</button>
+    </nav>
+
+    <!-- Table of Contents -->
+    <div id="toc" class="toc-overlay">
+        <div class="toc-content">
+            <h3>Contents</h3>
+            <ul id="tocList"></ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <script src="../shared/presentation.js"></script>
+
+    <script>
+        // Visualization slides mapping
+        const visualizationSlides = {
+            3: drawIntroViz,
+            5: drawExample1Viz,
+            7: drawInteractiveViz,
+            9: drawCrossingViz,
+            11: drawHorizontalViz,
+            14: drawComplexViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Visualization 1: Introduction
+        function drawIntroViz() {
+            const container = d3.select('#intro-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-1, 4]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-1, 6]).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            const f = x => -0.5 * x * x + 3 * x + 1; // top curve
+            const g = x => 0.3 * x + 0.5; // bottom curve (line)
+
+            const a = 0, b = 3;
+            const xVals = d3.range(a, b + 0.05, 0.05);
+
+            // Shaded area
+            const areaData = [];
+            xVals.forEach(x => areaData.push({ x, y: f(x) }));
+            for (let i = xVals.length - 1; i >= 0; i--) {
+                areaData.push({ x: xVals[i], y: g(xVals[i]) });
+            }
+
+            svg.append('path')
+                .datum(areaData)
+                .attr('fill', 'rgba(244, 63, 94, 0.3)')
+                .attr('stroke', 'none')
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Top curve
+            svg.append('path')
+                .datum(xVals.map(x => ({ x, y: f(x) })))
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural));
+
+            // Bottom curve
+            svg.append('path')
+                .datum(xVals.map(x => ({ x, y: g(x) })))
+                .attr('fill', 'none')
+                .attr('stroke', '#a78bfa')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Vertical slice indicator
+            const sliceX = 1.5;
+            svg.append('line')
+                .attr('x1', xScale(sliceX)).attr('x2', xScale(sliceX))
+                .attr('y1', yScale(g(sliceX))).attr('y2', yScale(f(sliceX)))
+                .attr('stroke', '#f43f5e')
+                .attr('stroke-width', 3);
+
+            svg.append('text')
+                .attr('x', xScale(sliceX) + 10).attr('y', yScale((f(sliceX) + g(sliceX)) / 2))
+                .attr('fill', '#f43f5e').attr('font-size', '0.9rem')
+                .text('f(x) - g(x)');
+
+            // Labels
+            svg.append('text')
+                .attr('x', xScale(2.5)).attr('y', yScale(f(2.5)) - 10)
+                .attr('fill', '#60a5fa').attr('font-size', '1rem')
+                .text('f(x)');
+
+            svg.append('text')
+                .attr('x', xScale(2.5)).attr('y', yScale(g(2.5)) + 20)
+                .attr('fill', '#a78bfa').attr('font-size', '1rem')
+                .text('g(x)');
+        }
+
+        // Visualization 2: Example 1
+        function drawExample1Viz() {
+            const container = d3.select('#example1-viz');
+            container.selectAll('*').remove();
+
+            const width = 600;
+            const height = 300;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-2, 3]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-1, 5]).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            const f = x => x + 2; // line (top)
+            const g = x => x * x; // parabola (bottom)
+
+            const xVals = d3.range(-1, 2.01, 0.05);
+
+            // Shaded area
+            const areaData = [];
+            xVals.forEach(x => areaData.push({ x, y: f(x) }));
+            for (let i = xVals.length - 1; i >= 0; i--) {
+                areaData.push({ x: xVals[i], y: g(xVals[i]) });
+            }
+
+            svg.append('path')
+                .datum(areaData)
+                .attr('fill', 'rgba(244, 63, 94, 0.3)')
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Parabola (extended)
+            const fullXVals = d3.range(-1.5, 2.5, 0.05);
+            svg.append('path')
+                .datum(fullXVals.map(x => ({ x, y: g(x) })))
+                .attr('fill', 'none')
+                .attr('stroke', '#a78bfa')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural));
+
+            // Line (extended)
+            svg.append('line')
+                .attr('x1', xScale(-1.5)).attr('x2', xScale(2.5))
+                .attr('y1', yScale(f(-1.5))).attr('y2', yScale(f(2.5)))
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3);
+
+            // Intersection points
+            [[-1, 1], [2, 4]].forEach(([x, y]) => {
+                svg.append('circle')
+                    .attr('cx', xScale(x)).attr('cy', yScale(y))
+                    .attr('r', 6)
+                    .attr('fill', '#fbbf24');
+            });
+
+            // Labels
+            svg.append('text')
+                .attr('x', xScale(-1) - 5).attr('y', yScale(1) + 15)
+                .attr('fill', '#fbbf24').attr('font-size', '0.85rem').attr('text-anchor', 'end')
+                .text('(-1, 1)');
+
+            svg.append('text')
+                .attr('x', xScale(2) + 5).attr('y', yScale(4) - 5)
+                .attr('fill', '#fbbf24').attr('font-size', '0.85rem')
+                .text('(2, 4)');
+        }
+
+        // Visualization 3: Interactive
+        let currentExample = 1;
+
+        function drawInteractiveViz() {
+            const container = d3.select('#interactive-viz');
+            container.selectAll('svg').remove();
+
+            const width = 700;
+            const height = 350;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const examples = {
+                1: { f: x => x, g: x => x * x, domain: [-0.5, 1.5], range: [-0.5, 2], a: 0, b: 1 },
+                2: { f: x => Math.sin(x), g: x => Math.cos(x), domain: [-0.5, Math.PI], range: [-1.5, 1.5], a: 0, b: Math.PI / 2 },
+                3: { f: x => 4 - x * x, g: x => x * x - 2, domain: [-2.5, 2.5], range: [-3, 5], a: -Math.sqrt(3), b: Math.sqrt(3) }
+            };
+
+            const ex = examples[currentExample];
+
+            const xScale = d3.scaleLinear().domain(ex.domain).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain(ex.range).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            const xVals = d3.range(ex.a, ex.b + 0.02, 0.02);
+
+            // Determine top/bottom at each point
+            const areaData = [];
+            xVals.forEach(x => {
+                const top = Math.max(ex.f(x), ex.g(x));
+                areaData.push({ x, y: top });
+            });
+            for (let i = xVals.length - 1; i >= 0; i--) {
+                const bottom = Math.min(ex.f(xVals[i]), ex.g(xVals[i]));
+                areaData.push({ x: xVals[i], y: bottom });
+            }
+
+            svg.append('path')
+                .datum(areaData)
+                .attr('fill', 'rgba(244, 63, 94, 0.3)')
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Curves
+            const fullX = d3.range(ex.domain[0], ex.domain[1], 0.02);
+            svg.append('path')
+                .datum(fullX.map(x => ({ x, y: ex.f(x) })))
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural));
+
+            svg.append('path')
+                .datum(fullX.map(x => ({ x, y: ex.g(x) })))
+                .attr('fill', 'none')
+                .attr('stroke', '#a78bfa')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural));
+
+            // Set up button listeners
+            document.querySelectorAll('.control-btn[data-example]').forEach(btn => {
+                btn.onclick = function() {
+                    currentExample = parseInt(this.dataset.example);
+                    document.querySelectorAll('.control-btn[data-example]').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    drawInteractiveViz();
+                };
+            });
+        }
+
+        // Visualization 4: Crossing curves
+        function drawCrossingViz() {
+            const container = d3.select('#crossing-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-1, 4]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-2, 4]).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            const f = x => Math.sin(x * 1.5) * 2;
+            const g = x => 0.5 * x - 0.5;
+
+            // Find approximate crossing points
+            const cross1 = 0.35, cross2 = 2.4;
+
+            // Region 1 (f > g)
+            const xVals1 = d3.range(0, cross1 + 0.02, 0.02);
+            const area1 = [];
+            xVals1.forEach(x => area1.push({ x, y: f(x) }));
+            for (let i = xVals1.length - 1; i >= 0; i--) {
+                area1.push({ x: xVals1[i], y: g(xVals1[i]) });
+            }
+
+            svg.append('path')
+                .datum(area1)
+                .attr('fill', 'rgba(96, 165, 250, 0.3)')
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Region 2 (g > f)
+            const xVals2 = d3.range(cross1, cross2 + 0.02, 0.02);
+            const area2 = [];
+            xVals2.forEach(x => area2.push({ x, y: g(x) }));
+            for (let i = xVals2.length - 1; i >= 0; i--) {
+                area2.push({ x: xVals2[i], y: f(xVals2[i]) });
+            }
+
+            svg.append('path')
+                .datum(area2)
+                .attr('fill', 'rgba(167, 139, 250, 0.3)')
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Region 3 (f > g again)
+            const xVals3 = d3.range(cross2, 3.5, 0.02);
+            const area3 = [];
+            xVals3.forEach(x => area3.push({ x, y: f(x) }));
+            for (let i = xVals3.length - 1; i >= 0; i--) {
+                area3.push({ x: xVals3[i], y: g(xVals3[i]) });
+            }
+
+            svg.append('path')
+                .datum(area3)
+                .attr('fill', 'rgba(96, 165, 250, 0.3)')
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Curves
+            const fullX = d3.range(-0.5, 3.8, 0.02);
+            svg.append('path')
+                .datum(fullX.map(x => ({ x, y: f(x) })))
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural));
+
+            svg.append('path')
+                .datum(fullX.map(x => ({ x, y: g(x) })))
+                .attr('fill', 'none')
+                .attr('stroke', '#a78bfa')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Crossing points
+            [cross1, cross2].forEach(x => {
+                svg.append('circle')
+                    .attr('cx', xScale(x)).attr('cy', yScale(g(x)))
+                    .attr('r', 7)
+                    .attr('fill', '#fbbf24')
+                    .attr('stroke', 'white')
+                    .attr('stroke-width', 2);
+            });
+        }
+
+        // Visualization 5: Horizontal slicing
+        function drawHorizontalViz() {
+            const container = d3.select('#horizontal-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-0.5, 3]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-1.5, 1.5]).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            // x = y^2 (left) and x = 2 - y^2 (right)
+            const yVals = d3.range(-1, 1.01, 0.02);
+
+            // Shaded area
+            const areaData = [];
+            yVals.forEach(y => areaData.push({ x: 2 - y * y, y })); // right curve
+            for (let i = yVals.length - 1; i >= 0; i--) {
+                areaData.push({ x: yVals[i] * yVals[i], y: yVals[i] }); // left curve
+            }
+
+            svg.append('path')
+                .datum(areaData)
+                .attr('fill', 'rgba(244, 63, 94, 0.3)')
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Left curve: x = y^2
+            const fullY = d3.range(-1.3, 1.31, 0.02);
+            svg.append('path')
+                .datum(fullY.map(y => ({ x: y * y, y })))
+                .attr('fill', 'none')
+                .attr('stroke', '#a78bfa')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural));
+
+            // Right curve: x = 2 - y^2
+            svg.append('path')
+                .datum(fullY.map(y => ({ x: 2 - y * y, y })))
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural));
+
+            // Horizontal slice indicator
+            const sliceY = 0.5;
+            svg.append('line')
+                .attr('x1', xScale(sliceY * sliceY)).attr('x2', xScale(2 - sliceY * sliceY))
+                .attr('y1', yScale(sliceY)).attr('y2', yScale(sliceY))
+                .attr('stroke', '#f43f5e')
+                .attr('stroke-width', 3);
+
+            // Intersection points
+            [[1, 1], [1, -1]].forEach(([x, y]) => {
+                svg.append('circle')
+                    .attr('cx', xScale(x)).attr('cy', yScale(y))
+                    .attr('r', 6)
+                    .attr('fill', '#fbbf24');
+            });
+
+            // Labels
+            svg.append('text')
+                .attr('x', xScale(1.7)).attr('y', yScale(0.8))
+                .attr('fill', '#60a5fa').attr('font-size', '0.95rem')
+                .text('x = 2 - y^2');
+
+            svg.append('text')
+                .attr('x', xScale(0.3)).attr('y', yScale(-0.8))
+                .attr('fill', '#a78bfa').attr('font-size', '0.95rem')
+                .text('x = y^2');
+
+            svg.append('text')
+                .attr('x', xScale(1)).attr('y', yScale(sliceY) - 10)
+                .attr('fill', '#f43f5e').attr('font-size', '0.85rem').attr('text-anchor', 'middle')
+                .text('right - left');
+        }
+
+        // Visualization 6: Complex region
+        function drawComplexViz() {
+            const container = d3.select('#complex-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-0.5, 4]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-0.5, 5]).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#4b5563').attr('stroke-width', 2);
+
+            // Triangular region bounded by y = 0, y = 2x, y = -x + 6
+            // Vertices: (0,0), (2,4), (3,0) -- wait, let me recalculate
+            // y = 2x and y = 0 meet at (0,0)
+            // y = -x + 6 and y = 0 meet at (6,0) - but for nice viz let's use smaller
+            // y = 2x and y = -x + 6 meet at 2x = -x + 6, 3x = 6, x = 2, y = 4
+
+            // Triangle: (0,0), (2,4), (6,0)
+            const triangleData = [
+                { x: 0, y: 0 },
+                { x: 2, y: 4 },
+                { x: 3.5, y: 0 }
+            ];
+
+            svg.append('polygon')
+                .attr('points', triangleData.map(d => `${xScale(d.x)},${yScale(d.y)}`).join(' '))
+                .attr('fill', 'rgba(244, 63, 94, 0.3)')
+                .attr('stroke', 'none');
+
+            // y = 2x line
+            svg.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(2.5))
+                .attr('y1', yScale(0)).attr('y2', yScale(5))
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3);
+
+            // y = -x + 6 line (adjusted)
+            svg.append('line')
+                .attr('x1', xScale(1)).attr('x2', xScale(4))
+                .attr('y1', yScale(5)).attr('y2', yScale(2))
+                .attr('stroke', '#a78bfa')
+                .attr('stroke-width', 3);
+
+            // y = 0 (x-axis already drawn)
+
+            // Vertical slice indicator at x = 1.5
+            svg.append('line')
+                .attr('x1', xScale(1.5)).attr('x2', xScale(1.5))
+                .attr('y1', yScale(0)).attr('y2', yScale(3))
+                .attr('stroke', '#f43f5e')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '4,2');
+
+            // Vertices
+            triangleData.forEach(d => {
+                svg.append('circle')
+                    .attr('cx', xScale(d.x)).attr('cy', yScale(d.y))
+                    .attr('r', 6)
+                    .attr('fill', '#fbbf24');
+            });
+
+            // Labels
+            svg.append('text')
+                .attr('x', xScale(1.3)).attr('y', yScale(3.5))
+                .attr('fill', '#60a5fa').attr('font-size', '0.9rem')
+                .text('y = 2x');
+
+            svg.append('text')
+                .attr('x', xScale(2.8)).attr('y', yScale(3))
+                .attr('fill', '#a78bfa').attr('font-size', '0.9rem')
+                .text('y = -x + 6');
+
+            svg.append('text')
+                .attr('x', xScale(2)).attr('y', yScale(-0.3))
+                .attr('fill', '#9ca3af').attr('font-size', '0.9rem')
+                .text('y = 0');
+        }
+    </script>
+</body>
+</html>

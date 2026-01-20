@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modeling with Differential Equations | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <style>
+        :root {
+            --theme-color: #f97316;
+            --theme-color-light: #fb923c;
+            --theme-color-dark: #ea580c;
+            --solution-curve: #3b82f6;
+            --direction-field: #9ca3af;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .slide-title h1 {
+            color: var(--theme-color);
+        }
+
+        .viz-container {
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viz-container svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .definition-box h3 {
+            color: var(--theme-color);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .example-box {
+            background: #f8fafc;
+            border: 2px solid var(--theme-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .model-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--theme-color);
+        }
+
+        .model-card h4 {
+            color: var(--theme-color);
+            margin: 0 0 0.75rem 0;
+        }
+
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .equation-highlight {
+            background: #fef3c7;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 0.5rem 0;
+        }
+
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            padding: 0.75rem 0 0.75rem 3rem;
+            position: relative;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2rem;
+            height: 2rem;
+            background: var(--theme-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .controls-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--theme-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .control-btn:hover {
+            background: var(--theme-color-dark);
+        }
+
+        .control-btn.active {
+            background: var(--theme-color-dark);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid #e5e7eb;
+        }
+
+        .comparison-table th {
+            background: var(--theme-color);
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #fff7ed;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+
+        <!-- Slide 0: Title -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 7: Differential Equations</span>
+                <h1>Modeling with Differential Equations</h1>
+                <p class="subtitle">Writing & Interpreting Differential Equations</p>
+                <p class="meta">Class 39 | CED Topics 7.1, 7.2</p>
+            </div>
+        </section>
+
+        <!-- Slide 1: Warm-Up -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="exercise-box">
+                    <p>A population grows at a rate proportional to its current size.</p>
+                    <p style="margin-top: 1rem;"><strong>If the population is P(t):</strong></p>
+                    <ul style="margin-top: 0.5rem; font-size: 1.25rem;">
+                        <li>What does "rate of change" mean mathematically?</li>
+                        <li>What does "proportional to P" mean?</li>
+                        <li>Can you write an equation relating these?</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: What is a Differential Equation? -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>What is a Differential Equation?</h2>
+                <div class="definition-box">
+                    <h3>Definition</h3>
+                    <p>A <strong>differential equation</strong> is an equation that relates a function to its derivatives.</p>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <h3>Examples</h3>
+                    <div class="math-display">\[\frac{dy}{dx} = 2x\]</div>
+                    <div class="math-display">\[\frac{dP}{dt} = kP\]</div>
+                    <div class="math-display">\[\frac{d^2y}{dx^2} + y = 0\]</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Solutions to Differential Equations -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Solutions to Differential Equations</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <div class="definition-box">
+                            <h3>What is a Solution?</h3>
+                            <p>A <strong>solution</strong> is a function that satisfies the equation when substituted.</p>
+                        </div>
+                        <div class="example-box" style="margin-top: 1rem;">
+                            <p><strong>Given:</strong> \(\dfrac{dy}{dx} = 2x\)</p>
+                            <p style="margin-top: 0.5rem;"><strong>Solution:</strong> \(y = x^2 + C\)</p>
+                            <p style="margin-top: 0.5rem;"><strong>Verify:</strong> \(\dfrac{d}{dx}(x^2 + C) = 2x\) ✓</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="definition-box">
+                            <h3>General vs. Particular</h3>
+                            <p><strong>General solution:</strong> Contains arbitrary constant(s)</p>
+                            <p style="margin-top: 0.5rem;"><strong>Particular solution:</strong> Specific value for constant(s)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Family of Solutions Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Family of Solutions: \(\frac{dy}{dx} = 2x\)</h2>
+                <div id="family-solutions-viz" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.1rem;">Each curve represents \(y = x^2 + C\) for different values of C</p>
+            </div>
+        </section>
+
+        <!-- Slide 5: Initial Value Problems -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Initial Value Problems (IVP)</h2>
+                <div class="definition-box">
+                    <h3>Definition</h3>
+                    <p>An <strong>initial value problem</strong> consists of:</p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li>A differential equation</li>
+                        <li>An initial condition: a known point \((x_0, y_0)\) on the solution</li>
+                    </ul>
+                </div>
+                <div class="example-box" style="margin-top: 1.5rem;">
+                    <p><strong>Example IVP:</strong></p>
+                    <div class="math-display">\[\frac{dy}{dx} = 2x, \quad y(0) = 3\]</div>
+                    <p style="margin-top: 0.5rem;"><strong>Solution:</strong> \(y = x^2 + 3\) (since \(y(0) = 0 + 3 = 3\))</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: IVP Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Finding the Particular Solution</h2>
+                <div id="ivp-viz" class="viz-container"></div>
+                <div class="controls-container">
+                    <span>Initial condition y(0) = </span>
+                    <button class="control-btn" data-c="-2">-2</button>
+                    <button class="control-btn" data-c="0">0</button>
+                    <button class="control-btn active" data-c="3">3</button>
+                    <button class="control-btn" data-c="5">5</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Modeling Natural Phenomena -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Modeling with Differential Equations</h2>
+                <div class="definition-box">
+                    <h3>The Modeling Process</h3>
+                    <p>Translate verbal descriptions into mathematical equations.</p>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <h3>Key Phrases to Recognize</h3>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Phrase</th>
+                            <th>Mathematical Meaning</th>
+                        </tr>
+                        <tr>
+                            <td>"rate of change"</td>
+                            <td>\(\dfrac{dy}{dt}\) or \(\dfrac{dP}{dt}\)</td>
+                        </tr>
+                        <tr>
+                            <td>"proportional to"</td>
+                            <td>multiply by constant \(k\)</td>
+                        </tr>
+                        <tr>
+                            <td>"inversely proportional to"</td>
+                            <td>divide by (or \(\cdot \frac{1}{x}\))</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Proportionality Examples -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Proportionality in Models</h2>
+                <div class="model-grid">
+                    <div class="model-card">
+                        <h4>Exponential Growth</h4>
+                        <p>"Rate of change is proportional to the quantity"</p>
+                        <div class="equation-highlight">
+                            \(\dfrac{dP}{dt} = kP\)
+                        </div>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Example: Population, compound interest</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>Exponential Decay</h4>
+                        <p>"Rate of decrease is proportional to amount present"</p>
+                        <div class="equation-highlight">
+                            \(\dfrac{dA}{dt} = -kA\)
+                        </div>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Example: Radioactive decay, cooling</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>Newton's Law of Cooling</h4>
+                        <p>"Rate of cooling proportional to temperature difference"</p>
+                        <div class="equation-highlight">
+                            \(\dfrac{dT}{dt} = -k(T - T_{\text{env}})\)
+                        </div>
+                    </div>
+                    <div class="model-card">
+                        <h4>Logistic Growth</h4>
+                        <p>"Rate proportional to both P and (M - P)"</p>
+                        <div class="equation-highlight">
+                            \(\dfrac{dP}{dt} = kP(M - P)\)
+                        </div>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Example: Limited resources</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Modeling Example 1 -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Modeling Example: Population Growth</h2>
+                <div class="example-box">
+                    <p><strong>Problem:</strong> A bacteria colony grows at a rate proportional to its current population. Initially there are 1000 bacteria.</p>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <ul class="step-list">
+                        <li><strong>Identify the quantity:</strong> \(P(t)\) = population at time \(t\)</li>
+                        <li><strong>Write "rate of change":</strong> \(\dfrac{dP}{dt}\)</li>
+                        <li><strong>Translate "proportional to P":</strong> \(\dfrac{dP}{dt} = kP\)</li>
+                        <li><strong>Initial condition:</strong> \(P(0) = 1000\)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Population Growth Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Exponential Growth: \(\frac{dP}{dt} = kP\)</h2>
+                <div id="exponential-growth-viz" class="viz-container"></div>
+                <div class="controls-container">
+                    <span>Growth rate k = </span>
+                    <button class="control-btn" data-k="0.1">0.1</button>
+                    <button class="control-btn active" data-k="0.2">0.2</button>
+                    <button class="control-btn" data-k="0.3">0.3</button>
+                    <button class="control-btn" data-k="0.5">0.5</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: Modeling Example 2 -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Modeling Example: Newton's Cooling</h2>
+                <div class="example-box">
+                    <p><strong>Problem:</strong> A cup of coffee at 180°F is placed in a room at 70°F. The temperature decreases at a rate proportional to the difference between the coffee and room temperature.</p>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <ul class="step-list">
+                        <li><strong>Identify:</strong> \(T(t)\) = temperature at time \(t\)</li>
+                        <li><strong>Temperature difference:</strong> \(T - 70\)</li>
+                        <li><strong>Model:</strong> \(\dfrac{dT}{dt} = -k(T - 70)\)</li>
+                        <li><strong>Initial condition:</strong> \(T(0) = 180\)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: Cooling Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Newton's Law of Cooling</h2>
+                <div id="cooling-viz" class="viz-container"></div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--theme-color);"></div>
+                        <span>Coffee Temperature</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #9ca3af; border: 1px dashed #666;"></div>
+                        <span>Room Temperature (70°F)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 13: Verifying Solutions -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Verifying Solutions</h2>
+                <div class="definition-box">
+                    <h3>Process</h3>
+                    <p>To verify that \(y = f(x)\) solves a differential equation:</p>
+                    <ol style="margin-top: 0.5rem;">
+                        <li>Find the derivative(s) needed</li>
+                        <li>Substitute into the equation</li>
+                        <li>Verify both sides are equal</li>
+                    </ol>
+                </div>
+                <div class="example-box" style="margin-top: 1rem;">
+                    <p><strong>Verify:</strong> \(y = Ce^{2x}\) satisfies \(\dfrac{dy}{dx} = 2y\)</p>
+                    <p style="margin-top: 0.5rem;"><strong>LHS:</strong> \(\dfrac{dy}{dx} = 2Ce^{2x}\)</p>
+                    <p><strong>RHS:</strong> \(2y = 2Ce^{2x}\)</p>
+                    <p style="margin-top: 0.5rem; color: var(--theme-color);"><strong>LHS = RHS ✓</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 14: Practice Verification -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Verification Practice</h2>
+                <div class="exercise-box">
+                    <p><strong>Verify each solution satisfies the given differential equation:</strong></p>
+                    <ol style="margin-top: 1rem; font-size: 1.2rem; line-height: 2.2;">
+                        <li>\(y = x^3 + 2x\) satisfies \(\dfrac{dy}{dx} = 3x^2 + 2\)</li>
+                        <li>\(y = e^{-t}\) satisfies \(\dfrac{dy}{dt} = -y\)</li>
+                        <li>\(y = \sin(2x)\) satisfies \(\dfrac{d^2y}{dx^2} = -4y\)</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 15: Writing Differential Equations -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Writing Differential Equations from Context</h2>
+                <div class="model-grid">
+                    <div class="model-card">
+                        <h4>1. Identify Variables</h4>
+                        <p>What quantity is changing?</p>
+                        <p>What is it changing with respect to?</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>2. Find Relationships</h4>
+                        <p>How does the rate depend on other quantities?</p>
+                        <p>Look for "proportional to" language.</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>3. Write the Equation</h4>
+                        <p>Translate words to symbols.</p>
+                        <p>\(\dfrac{dy}{dt} = \text{(expression)}\)</p>
+                    </div>
+                    <div class="model-card">
+                        <h4>4. Include Initial Condition</h4>
+                        <p>What is the starting value?</p>
+                        <p>\(y(t_0) = y_0\)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 16: Practice Problems -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Write the Differential Equation</h2>
+                <div class="exercise-box">
+                    <ol style="font-size: 1.15rem; line-height: 2.5;">
+                        <li>A tank contains 500 liters of water. Water drains at a rate proportional to the volume present.</li>
+                        <li>Money in an account grows at a rate proportional to the balance, starting with $5000.</li>
+                        <li>A rumor spreads at a rate proportional to both the number who know it and the number who don't. The town has 10,000 people.</li>
+                        <li>A patient metabolizes medication at a rate proportional to the current amount in their system.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 17: Solutions -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <ol style="font-size: 1.15rem; line-height: 2.5;">
+                    <li>\(\dfrac{dV}{dt} = -kV, \quad V(0) = 500\)</li>
+                    <li>\(\dfrac{dM}{dt} = kM, \quad M(0) = 5000\)</li>
+                    <li>\(\dfrac{dN}{dt} = kN(10000 - N)\) (logistic model)</li>
+                    <li>\(\dfrac{dA}{dt} = -kA\) where A is medication amount</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Slide 18: Common Models Summary -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Common Differential Equation Models</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Model</th>
+                        <th>Equation</th>
+                        <th>Behavior</th>
+                    </tr>
+                    <tr>
+                        <td>Exponential Growth</td>
+                        <td>\(\dfrac{dy}{dt} = ky\) (k > 0)</td>
+                        <td>Unbounded increase</td>
+                    </tr>
+                    <tr>
+                        <td>Exponential Decay</td>
+                        <td>\(\dfrac{dy}{dt} = -ky\) (k > 0)</td>
+                        <td>Approaches 0</td>
+                    </tr>
+                    <tr>
+                        <td>Logistic Growth</td>
+                        <td>\(\dfrac{dy}{dt} = ky(M-y)\)</td>
+                        <td>Approaches M</td>
+                    </tr>
+                    <tr>
+                        <td>Newton's Cooling</td>
+                        <td>\(\dfrac{dT}{dt} = -k(T-T_e)\)</td>
+                        <td>Approaches \(T_e\)</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- Slide 19: Exit Ticket -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="exercise-box">
+                    <p><strong>1.</strong> Verify that \(y = 5e^{3t}\) is a solution to \(\dfrac{dy}{dt} = 3y\)</p>
+                    <div style="height: 1.5rem;"></div>
+                    <p><strong>2.</strong> Write a differential equation for: "The rate at which ice melts is proportional to the mass of ice remaining."</p>
+                    <div style="height: 1.5rem;"></div>
+                    <p><strong>3.</strong> What makes an equation a <em>differential</em> equation?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 20: Looking Ahead -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <h2>Looking Ahead</h2>
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--theme-color);">Next Class: Slope Fields</h3>
+                    <ul style="font-size: 1.35rem; line-height: 2; list-style: none; padding: 0; margin-top: 1.5rem;">
+                        <li>Visualizing differential equations</li>
+                        <li>Drawing slope fields by hand</li>
+                        <li>Sketching solution curves</li>
+                        <li>Matching equations to slope fields</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="slide-nav">
+        <button id="prevBtn" aria-label="Previous slide">←</button>
+        <span id="slideCounter">1 / 21</span>
+        <button id="nextBtn" aria-label="Next slide">→</button>
+        <button id="tocBtn" aria-label="Table of contents">☰</button>
+    </nav>
+
+    <!-- Table of Contents -->
+    <div id="toc" class="toc-overlay">
+        <div class="toc-content">
+            <h3>Contents</h3>
+            <ul id="tocList"></ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <script src="../shared/presentation.js"></script>
+
+    <script>
+        // Visualization functions
+        const visualizationSlides = {
+            4: drawFamilySolutionsViz,
+            6: drawIVPViz,
+            10: drawExponentialGrowthViz,
+            12: drawCoolingViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Visualization 1: Family of solutions for dy/dx = 2x
+        function drawFamilySolutionsViz() {
+            const container = d3.select('#family-solutions-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear()
+                .domain([-4, 4])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([-5, 10])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-4, 11, 2))
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            svg.append('g')
+                .selectAll('line.v')
+                .data(d3.range(-4, 5))
+                .enter().append('line')
+                .attr('x1', d => xScale(d))
+                .attr('x2', d => xScale(d))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Family of parabolas y = x^2 + C
+            const cValues = [-4, -2, 0, 2, 4, 6];
+            const colors = d3.scaleSequential(d3.interpolateOranges).domain([-5, 8]);
+
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const xValues = d3.range(-4, 4.01, 0.1);
+
+            cValues.forEach(c => {
+                const data = xValues.map(x => ({ x, y: x * x + c }))
+                    .filter(d => d.y >= -5 && d.y <= 10);
+
+                svg.append('path')
+                    .datum(data)
+                    .attr('fill', 'none')
+                    .attr('stroke', colors(c))
+                    .attr('stroke-width', 3)
+                    .attr('d', line);
+
+                // Label
+                const labelX = c >= 0 ? 3 : -3;
+                const labelY = labelX * labelX + c;
+                if (labelY >= -4 && labelY <= 9) {
+                    svg.append('text')
+                        .attr('x', xScale(labelX) + 5)
+                        .attr('y', yScale(labelY))
+                        .attr('font-size', '0.9rem')
+                        .attr('fill', colors(c))
+                        .text(`C=${c}`);
+                }
+            });
+
+            // Axis labels
+            svg.append('text')
+                .attr('x', width - margin.right)
+                .attr('y', yScale(0) - 10)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1.1rem')
+                .text('x');
+
+            svg.append('text')
+                .attr('x', xScale(0) + 10)
+                .attr('y', margin.top + 15)
+                .attr('font-size', '1.1rem')
+                .text('y');
+        }
+
+        // Visualization 2: IVP with selectable initial condition
+        let selectedC = 3;
+
+        function drawIVPViz() {
+            const container = d3.select('#ivp-viz');
+            container.selectAll('svg').remove();
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear()
+                .domain([-4, 4])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([-5, 10])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-4, 11, 2))
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            svg.append('g')
+                .selectAll('line.v')
+                .data(d3.range(-4, 5))
+                .enter().append('line')
+                .attr('x1', d => xScale(d))
+                .attr('x2', d => xScale(d))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // All family curves (faded)
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const xValues = d3.range(-4, 4.01, 0.1);
+            const cValues = [-4, -2, 0, 2, 3, 4, 5, 6];
+
+            cValues.forEach(c => {
+                const data = xValues.map(x => ({ x, y: x * x + c }))
+                    .filter(d => d.y >= -5 && d.y <= 10);
+
+                svg.append('path')
+                    .datum(data)
+                    .attr('fill', 'none')
+                    .attr('stroke', '#e5e7eb')
+                    .attr('stroke-width', 2)
+                    .attr('d', line);
+            });
+
+            // Selected curve (highlighted)
+            const selectedData = xValues.map(x => ({ x, y: x * x + selectedC }))
+                .filter(d => d.y >= -5 && d.y <= 10);
+
+            svg.append('path')
+                .datum(selectedData)
+                .attr('fill', 'none')
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 4)
+                .attr('d', line);
+
+            // Initial point
+            svg.append('circle')
+                .attr('cx', xScale(0))
+                .attr('cy', yScale(selectedC))
+                .attr('r', 8)
+                .attr('fill', '#f97316')
+                .attr('stroke', 'white')
+                .attr('stroke-width', 2);
+
+            // Label for initial point
+            svg.append('text')
+                .attr('x', xScale(0) + 15)
+                .attr('y', yScale(selectedC) + 5)
+                .attr('font-size', '1.1rem')
+                .attr('font-weight', 'bold')
+                .attr('fill', '#f97316')
+                .text(`(0, ${selectedC})`);
+
+            // Equation label
+            svg.append('text')
+                .attr('x', xScale(2.5))
+                .attr('y', yScale(2.5 * 2.5 + selectedC) - 10)
+                .attr('font-size', '1.1rem')
+                .attr('fill', '#f97316')
+                .text(`y = x² + ${selectedC}`);
+
+            // Set up button listeners
+            document.querySelectorAll('.control-btn[data-c]').forEach(btn => {
+                btn.onclick = function() {
+                    selectedC = parseFloat(this.dataset.c);
+                    document.querySelectorAll('.control-btn[data-c]').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    drawIVPViz();
+                };
+            });
+        }
+
+        // Visualization 3: Exponential growth
+        let selectedK = 0.2;
+
+        function drawExponentialGrowthViz() {
+            const container = d3.select('#exponential-growth-viz');
+            container.selectAll('svg').remove();
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 20, right: 30, bottom: 40, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear()
+                .domain([0, 10])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, 8000])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line.h')
+                .data(d3.range(0, 8001, 1000))
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Exponential curve P = 1000 * e^(kt)
+            const line = d3.line()
+                .x(d => xScale(d.t))
+                .y(d => yScale(d.P))
+                .curve(d3.curveNatural);
+
+            const tValues = d3.range(0, 10.01, 0.1);
+            const data = tValues.map(t => ({ t, P: 1000 * Math.exp(selectedK * t) }))
+                .filter(d => d.P <= 8000);
+
+            svg.append('path')
+                .datum(data)
+                .attr('fill', 'none')
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Initial point
+            svg.append('circle')
+                .attr('cx', xScale(0))
+                .attr('cy', yScale(1000))
+                .attr('r', 6)
+                .attr('fill', '#f97316');
+
+            // Axis labels
+            svg.append('text')
+                .attr('x', width - margin.right)
+                .attr('y', yScale(0) + 30)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1.1rem')
+                .text('t (time)');
+
+            svg.append('text')
+                .attr('x', margin.left - 10)
+                .attr('y', margin.top)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1.1rem')
+                .text('P');
+
+            // Y-axis tick labels
+            [0, 2000, 4000, 6000, 8000].forEach(v => {
+                svg.append('text')
+                    .attr('x', margin.left - 10)
+                    .attr('y', yScale(v) + 4)
+                    .attr('text-anchor', 'end')
+                    .attr('font-size', '0.9rem')
+                    .text(v);
+            });
+
+            // Set up button listeners
+            document.querySelectorAll('.control-btn[data-k]').forEach(btn => {
+                btn.onclick = function() {
+                    selectedK = parseFloat(this.dataset.k);
+                    document.querySelectorAll('.control-btn[data-k]').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    drawExponentialGrowthViz();
+                };
+            });
+        }
+
+        // Visualization 4: Newton's Law of Cooling
+        function drawCoolingViz() {
+            const container = d3.select('#cooling-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 20, right: 30, bottom: 40, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear()
+                .domain([0, 30])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([60, 190])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line.h')
+                .data(d3.range(60, 191, 20))
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(60))
+                .attr('y2', yScale(60))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Room temperature line
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(70))
+                .attr('y2', yScale(70))
+                .attr('stroke', '#9ca3af')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,5');
+
+            // Cooling curve: T = 70 + 110*e^(-0.1t)
+            const line = d3.line()
+                .x(d => xScale(d.t))
+                .y(d => yScale(d.T))
+                .curve(d3.curveNatural);
+
+            const tValues = d3.range(0, 30.01, 0.2);
+            const k = 0.1;
+            const data = tValues.map(t => ({ t, T: 70 + 110 * Math.exp(-k * t) }));
+
+            svg.append('path')
+                .datum(data)
+                .attr('fill', 'none')
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Initial point
+            svg.append('circle')
+                .attr('cx', xScale(0))
+                .attr('cy', yScale(180))
+                .attr('r', 6)
+                .attr('fill', '#f97316');
+
+            // Labels
+            svg.append('text')
+                .attr('x', width - margin.right)
+                .attr('y', yScale(60) + 30)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1.1rem')
+                .text('t (minutes)');
+
+            svg.append('text')
+                .attr('x', margin.left - 10)
+                .attr('y', margin.top)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1.1rem')
+                .text('T (°F)');
+
+            // Y-axis tick labels
+            [80, 100, 120, 140, 160, 180].forEach(v => {
+                svg.append('text')
+                    .attr('x', margin.left - 10)
+                    .attr('y', yScale(v) + 4)
+                    .attr('text-anchor', 'end')
+                    .attr('font-size', '0.9rem')
+                    .text(v);
+            });
+
+            // Asymptote label
+            svg.append('text')
+                .attr('x', width - margin.right - 10)
+                .attr('y', yScale(70) - 8)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '0.9rem')
+                .attr('fill', '#666')
+                .text('T = 70°F (room temp)');
+        }
+    </script>
+</body>
+</html>

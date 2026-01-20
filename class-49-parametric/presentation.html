@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parametric Equations and Derivatives | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <style>
+        :root {
+            --theme-color: #06b6d4;
+            --theme-color-light: #22d3ee;
+            --theme-color-dark: #0891b2;
+            --param-x: #06b6d4;
+            --param-y: #ec4899;
+            --param-curve: #8b5cf6;
+            --tangent: #f59e0b;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .bc-badge {
+            background: linear-gradient(135deg, var(--theme-color), var(--theme-color-dark));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .slide-title h1 {
+            color: var(--theme-color);
+        }
+
+        .viz-container {
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viz-container svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #ecfeff, #cffafe);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+
+        .definition-box h3 {
+            color: var(--theme-color-dark);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .formula-box {
+            background: white;
+            border: 2px solid var(--theme-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 1rem 0;
+            box-shadow: 0 4px 6px rgba(6, 182, 212, 0.1);
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .example-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 4px solid var(--theme-color);
+        }
+
+        .example-card h4 {
+            color: var(--theme-color-dark);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-list li {
+            counter-increment: step;
+            margin: 0.75rem 0;
+            padding-left: 2.5rem;
+            position: relative;
+        }
+
+        .step-list li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            width: 1.75rem;
+            height: 1.75rem;
+            background: var(--theme-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .controls-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--theme-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .control-btn:hover {
+            background: var(--theme-color-dark);
+        }
+
+        .control-btn.active {
+            background: var(--theme-color-dark);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .slider-container input[type="range"] {
+            width: 200px;
+            accent-color: var(--theme-color);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.1rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .comparison-table th {
+            background: var(--theme-color);
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f0fdfa;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+
+        <!-- Slide 0: Title -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 9: Parametric, Polar, and Vectors</span>
+                <span class="bc-badge">BC Only</span>
+                <h1>Parametric Equations</h1>
+                <p class="subtitle">and Derivatives</p>
+                <p class="meta">Class 49 | CED Topics 9.1, 9.2</p>
+            </div>
+        </section>
+
+        <!-- Slide 1: Warm-Up -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="exercise-box">
+                    <p>A particle moves so that at time \(t\):</p>
+                    <p class="math-display">\[x = t^2 - 1 \quad \text{and} \quad y = 2t\]</p>
+                    <hr style="margin: 1.5rem 0; border-color: #e5e7eb;">
+                    <ol style="font-size: 1.2rem;">
+                        <li>Plot points for \(t = -2, -1, 0, 1, 2\)</li>
+                        <li>Can you eliminate \(t\) to find a Cartesian equation?</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: What are Parametric Equations? -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>What are Parametric Equations?</h2>
+                <div class="definition-box">
+                    <h3>Definition</h3>
+                    <p>A <strong>parametric curve</strong> is defined by:</p>
+                    <p class="math-display">\[x = f(t), \quad y = g(t)\]</p>
+                    <p>where \(t\) is the <strong>parameter</strong> (often represents time).</p>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <p style="font-size: 1.25rem;">Both \(x\) and \(y\) are functions of \(t\), giving us:</p>
+                    <ul style="font-size: 1.2rem; line-height: 2;">
+                        <li><strong>Position</strong> at any time</li>
+                        <li><strong>Direction</strong> of motion</li>
+                        <li><strong>Speed</strong> of travel along the curve</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Parametric vs Cartesian Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Parametric Curve: \(x = t^2 - 1, y = 2t\)</h2>
+                <div id="param-intro-viz" class="viz-container"></div>
+                <div class="slider-container">
+                    <span>t = </span>
+                    <input type="range" id="param-t-slider" min="-2" max="2" step="0.1" value="-2">
+                    <span id="param-t-value">-2</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Why Use Parametric? -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Why Use Parametric Equations?</h2>
+                <div class="example-grid">
+                    <div class="example-card">
+                        <h4>Circles</h4>
+                        <p>\(x = \cos t, \quad y = \sin t\)</p>
+                        <p style="font-size: 0.95rem; color: #666;">Traces a circle as \(t\) varies</p>
+                    </div>
+                    <div class="example-card">
+                        <h4>Projectile Motion</h4>
+                        <p>\(x = v_0 t \cos\theta\)</p>
+                        <p>\(y = v_0 t \sin\theta - \frac{1}{2}gt^2\)</p>
+                    </div>
+                    <div class="example-card">
+                        <h4>Cycloid</h4>
+                        <p>\(x = r(t - \sin t)\)</p>
+                        <p>\(y = r(1 - \cos t)\)</p>
+                    </div>
+                    <div class="example-card">
+                        <h4>Animation & Graphics</h4>
+                        <p>Path of moving objects</p>
+                        <p style="font-size: 0.95rem; color: #666;">Time-based animation paths</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Common Parametric Curves -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Common Parametric Curves</h2>
+                <div id="common-curves-viz" class="viz-container"></div>
+                <div class="controls-container">
+                    <button class="control-btn active" data-curve="circle">Circle</button>
+                    <button class="control-btn" data-curve="ellipse">Ellipse</button>
+                    <button class="control-btn" data-curve="cycloid">Cycloid</button>
+                    <button class="control-btn" data-curve="lissajous">Lissajous</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: The Derivative dy/dx -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Finding \(\frac{dy}{dx}\) for Parametric Curves</h2>
+                <div class="formula-box">
+                    <p style="font-size: 1.5rem;"><strong>Chain Rule Approach</strong></p>
+                    <p class="math-display">\[\frac{dy}{dx} = \frac{dy/dt}{dx/dt} = \frac{y'(t)}{x'(t)}\]</p>
+                    <p style="font-size: 1.1rem; color: #666;">provided \(\frac{dx}{dt} \neq 0\)</p>
+                </div>
+                <div class="definition-box" style="margin-top: 1.5rem;">
+                    <h3>Why does this work?</h3>
+                    <p>\(\displaystyle \frac{dy}{dx} = \frac{dy}{dt} \cdot \frac{dt}{dx} = \frac{dy}{dt} \cdot \frac{1}{dx/dt} = \frac{dy/dt}{dx/dt}\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: First Example -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example: Find \(\frac{dy}{dx}\)</h2>
+                <div class="two-column">
+                    <div>
+                        <p><strong>Given:</strong> \(x = t^2 - 1, \quad y = 2t\)</p>
+                        <ul class="step-list" style="margin-top: 1.5rem;">
+                            <li>\(\dfrac{dx}{dt} = 2t\)</li>
+                            <li>\(\dfrac{dy}{dt} = 2\)</li>
+                            <li>\(\dfrac{dy}{dx} = \dfrac{2}{2t} = \dfrac{1}{t}\)</li>
+                        </ul>
+                        <p style="margin-top: 1rem; padding: 0.75rem; background: #f0fdfa; border-radius: 4px;">
+                            At \(t = 1\): slope \(= 1\)<br>
+                            At \(t = 2\): slope \(= \frac{1}{2}\)
+                        </p>
+                    </div>
+                    <div id="example1-viz" class="viz-container" style="height: 300px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Circle Example -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example: Circle Derivative</h2>
+                <div class="two-column">
+                    <div>
+                        <p><strong>Given:</strong> \(x = \cos t, \quad y = \sin t\)</p>
+                        <ul class="step-list" style="margin-top: 1.5rem;">
+                            <li>\(\dfrac{dx}{dt} = -\sin t\)</li>
+                            <li>\(\dfrac{dy}{dt} = \cos t\)</li>
+                            <li>\(\dfrac{dy}{dx} = \dfrac{\cos t}{-\sin t} = -\cot t\)</li>
+                        </ul>
+                        <p style="margin-top: 1rem; padding: 0.75rem; background: #f0fdfa; border-radius: 4px;">
+                            At \(t = \frac{\pi}{4}\): slope \(= -1\)<br>
+                            At \(t = \frac{\pi}{2}\): slope \(= 0\)
+                        </p>
+                    </div>
+                    <div id="circle-deriv-viz" class="viz-container" style="height: 300px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Tangent Line Interactive -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Interactive: Tangent Lines</h2>
+                <div id="tangent-viz" class="viz-container"></div>
+                <div class="slider-container">
+                    <span>t = </span>
+                    <input type="range" id="tangent-t-slider" min="0" max="6.28" step="0.05" value="0.785">
+                    <span id="tangent-t-value">0.79</span>
+                    <span style="margin-left: 1rem;">Slope: </span>
+                    <span id="tangent-slope-value">-1.00</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Horizontal and Vertical Tangents -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Horizontal and Vertical Tangent Lines</h2>
+                <div class="example-grid">
+                    <div class="formula-box">
+                        <h3 style="color: var(--theme-color);">Horizontal Tangent</h3>
+                        <p class="math-display">\[\frac{dy}{dt} = 0 \quad \text{and} \quad \frac{dx}{dt} \neq 0\]</p>
+                        <p style="font-size: 1.1rem;">Slope = 0</p>
+                    </div>
+                    <div class="formula-box">
+                        <h3 style="color: var(--theme-color);">Vertical Tangent</h3>
+                        <p class="math-display">\[\frac{dx}{dt} = 0 \quad \text{and} \quad \frac{dy}{dt} \neq 0\]</p>
+                        <p style="font-size: 1.1rem;">Slope undefined</p>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 1.5rem; font-size: 1.2rem;">
+                    <strong>Note:</strong> If both \(\frac{dx}{dt} = 0\) and \(\frac{dy}{dt} = 0\), use L'Hopital's Rule or other analysis.
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 11: Finding Special Points -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example: Finding Tangent Types</h2>
+                <div class="two-column">
+                    <div>
+                        <p><strong>Given:</strong> \(x = t^3 - 3t, \quad y = t^2 - 4\)</p>
+                        <p style="margin-top: 1rem;">\(\dfrac{dx}{dt} = 3t^2 - 3 = 3(t-1)(t+1)\)</p>
+                        <p>\(\dfrac{dy}{dt} = 2t\)</p>
+                        <div style="margin-top: 1rem; padding: 0.75rem; background: #fef3c7; border-radius: 4px;">
+                            <strong>Vertical:</strong> \(t = \pm 1\) (where \(\frac{dx}{dt} = 0\))
+                        </div>
+                        <div style="margin-top: 0.5rem; padding: 0.75rem; background: #d1fae5; border-radius: 4px;">
+                            <strong>Horizontal:</strong> \(t = 0\) (where \(\frac{dy}{dt} = 0\))
+                        </div>
+                    </div>
+                    <div id="special-points-viz" class="viz-container" style="height: 300px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: Second Derivative -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Second Derivative: \(\frac{d^2y}{dx^2}\)</h2>
+                <div class="formula-box">
+                    <p class="math-display">\[\frac{d^2y}{dx^2} = \frac{d}{dx}\left(\frac{dy}{dx}\right) = \frac{\frac{d}{dt}\left(\frac{dy}{dx}\right)}{\frac{dx}{dt}}\]</p>
+                </div>
+                <div class="definition-box" style="margin-top: 1.5rem;">
+                    <h3>Process</h3>
+                    <ol style="font-size: 1.15rem; line-height: 2;">
+                        <li>Find \(\frac{dy}{dx}\) as a function of \(t\)</li>
+                        <li>Differentiate \(\frac{dy}{dx}\) with respect to \(t\)</li>
+                        <li>Divide by \(\frac{dx}{dt}\)</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 13: Second Derivative Example -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example: Second Derivative</h2>
+                <div class="two-column">
+                    <div>
+                        <p><strong>Given:</strong> \(x = t^2, \quad y = t^3\)</p>
+                        <ul class="step-list" style="margin-top: 1rem;">
+                            <li>\(\dfrac{dy}{dx} = \dfrac{3t^2}{2t} = \dfrac{3t}{2}\)</li>
+                            <li>\(\dfrac{d}{dt}\left(\dfrac{3t}{2}\right) = \dfrac{3}{2}\)</li>
+                            <li>\(\dfrac{d^2y}{dx^2} = \dfrac{3/2}{2t} = \dfrac{3}{4t}\)</li>
+                        </ul>
+                        <p style="margin-top: 1rem; padding: 0.75rem; background: #f0fdfa; border-radius: 4px;">
+                            <strong>Concavity:</strong><br>
+                            \(t > 0\): concave up<br>
+                            \(t < 0\): concave down
+                        </p>
+                    </div>
+                    <div id="second-deriv-viz" class="viz-container" style="height: 300px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 14: Concavity Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Concavity of Parametric Curves</h2>
+                <div id="concavity-viz" class="viz-container"></div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #10b981;"></div>
+                        <span>Concave Up (\(\frac{d^2y}{dx^2} > 0\))</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ef4444;"></div>
+                        <span>Concave Down (\(\frac{d^2y}{dx^2} < 0\))</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 15: Eliminating the Parameter -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Eliminating the Parameter</h2>
+                <div class="definition-box">
+                    <h3>Process</h3>
+                    <p>Solve one equation for \(t\), substitute into the other.</p>
+                </div>
+                <div class="example-grid" style="margin-top: 1.5rem;">
+                    <div class="example-card">
+                        <h4>Example 1</h4>
+                        <p>\(x = t^2 - 1, \quad y = 2t\)</p>
+                        <p style="margin-top: 0.5rem;">\(t = \frac{y}{2}\)</p>
+                        <p>\(x = \left(\frac{y}{2}\right)^2 - 1 = \frac{y^2}{4} - 1\)</p>
+                        <p style="color: var(--theme-color); font-weight: bold;">Parabola!</p>
+                    </div>
+                    <div class="example-card">
+                        <h4>Example 2</h4>
+                        <p>\(x = \cos t, \quad y = \sin t\)</p>
+                        <p style="margin-top: 0.5rem;">Use identity:</p>
+                        <p>\(\cos^2 t + \sin^2 t = 1\)</p>
+                        <p style="color: var(--theme-color); font-weight: bold;">\(x^2 + y^2 = 1\) (Circle)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 16: Practice Problems -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Practice Problems</h2>
+                <div class="exercise-box">
+                    <ol style="font-size: 1.15rem; line-height: 2.2;">
+                        <li>Find \(\frac{dy}{dx}\) for \(x = e^t, y = e^{2t}\)</li>
+                        <li>Find the slope at \(t = \frac{\pi}{3}\) for \(x = 2\cos t, y = 3\sin t\)</li>
+                        <li>Find all horizontal tangent lines for \(x = t^2, y = t^3 - 3t\)</li>
+                        <li>Find \(\frac{d^2y}{dx^2}\) for \(x = t^2 + 1, y = t^3 - t\)</li>
+                        <li>Eliminate \(t\): \(x = t + 1, y = t^2 - 2t\)</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 17: Solutions -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <ol style="font-size: 1.1rem; line-height: 2.2;">
+                    <li>\(\frac{dy}{dx} = \frac{2e^{2t}}{e^t} = 2e^t\)</li>
+                    <li>\(\frac{dy}{dx} = \frac{3\cos t}{-2\sin t}\); at \(t = \frac{\pi}{3}\): \(\frac{3(1/2)}{-2(\sqrt{3}/2)} = -\frac{\sqrt{3}}{2}\)</li>
+                    <li>\(\frac{dy}{dt} = 3t^2 - 3 = 0 \Rightarrow t = \pm 1\); Points: \((1, -2)\) and \((1, 2)\)</li>
+                    <li>\(\frac{dy}{dx} = \frac{3t^2-1}{2t}\); \(\frac{d^2y}{dx^2} = \frac{3t^2+1}{4t^3}\)</li>
+                    <li>\(t = x - 1\); \(y = (x-1)^2 - 2(x-1) = x^2 - 4x + 3\)</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Slide 18: AP Exam Tips -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>AP Exam Tips</h2>
+                <div class="definition-box">
+                    <h3>Common Question Types</h3>
+                    <ul style="font-size: 1.15rem; line-height: 2;">
+                        <li>Find slope at a specific \(t\) value</li>
+                        <li>Find equation of tangent line at given \(t\)</li>
+                        <li>Determine where tangent is horizontal/vertical</li>
+                        <li>Analyze concavity using second derivative</li>
+                    </ul>
+                </div>
+                <div style="margin-top: 1.5rem; padding: 1rem; background: #fef3c7; border-radius: 8px;">
+                    <p style="font-size: 1.2rem;"><strong>Remember:</strong> Always divide by \(\frac{dx}{dt}\), not \(\frac{dt}{dx}\)!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 19: Exit Ticket -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="exercise-box">
+                    <p>A curve is defined by \(x = t^2 + 2t, \quad y = t^3 - t\)</p>
+                    <ol style="font-size: 1.2rem; margin-top: 1rem;">
+                        <li>Find \(\frac{dy}{dx}\) in terms of \(t\).</li>
+                        <li>Find the slope of the tangent line at \(t = 1\).</li>
+                        <li>Find all values of \(t\) where the tangent line is horizontal.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 20: Looking Ahead -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <h2>Looking Ahead</h2>
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--theme-color);">Next Class: Parametric Arc Length</h3>
+                    <ul style="font-size: 1.25rem; line-height: 2; list-style: none; padding: 0; margin-top: 1.5rem;">
+                        <li>Arc length formula for parametric curves</li>
+                        <li>Speed along a parametric path</li>
+                        <li>Applications to motion</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="slide-nav">
+        <button id="prevBtn" aria-label="Previous slide">&#8592;</button>
+        <span id="slideCounter">1 / 21</span>
+        <button id="nextBtn" aria-label="Next slide">&#8594;</button>
+        <button id="tocBtn" aria-label="Table of contents">&#9776;</button>
+    </nav>
+
+    <!-- Table of Contents -->
+    <div id="toc" class="toc-overlay">
+        <div class="toc-content">
+            <h3>Contents</h3>
+            <ul id="tocList"></ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <script src="../shared/presentation.js"></script>
+
+    <script>
+        // Visualization functions
+        const visualizationSlides = {
+            3: drawParamIntroViz,
+            5: drawCommonCurvesViz,
+            7: drawExample1Viz,
+            8: drawCircleDerivViz,
+            9: drawTangentViz,
+            11: drawSpecialPointsViz,
+            13: drawSecondDerivViz,
+            14: drawConcavityViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Visualization 1: Parametric Introduction
+        function drawParamIntroViz() {
+            const container = d3.select('#param-intro-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-2, 4]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-5, 5]).range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g').selectAll('line.h').data(d3.range(-5, 6)).enter().append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d)).attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
+
+            svg.append('g').selectAll('line.v').data(d3.range(-2, 5)).enter().append('line')
+                .attr('x1', d => xScale(d)).attr('x2', d => xScale(d))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#333').attr('stroke-width', 2);
+            svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 2);
+
+            // Parametric curve
+            const tValues = d3.range(-2, 2.01, 0.05);
+            const curveData = tValues.map(t => ({ x: t * t - 1, y: 2 * t, t }));
+
+            const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural);
+
+            svg.append('path').datum(curveData).attr('fill', 'none')
+                .attr('stroke', '#8b5cf6').attr('stroke-width', 3).attr('d', line);
+
+            // Animate point
+            const point = svg.append('circle').attr('r', 10).attr('fill', '#06b6d4');
+            const slider = document.getElementById('param-t-slider');
+            const tDisplay = document.getElementById('param-t-value');
+
+            function updatePoint() {
+                const t = parseFloat(slider.value);
+                const x = t * t - 1;
+                const y = 2 * t;
+                point.attr('cx', xScale(x)).attr('cy', yScale(y));
+                tDisplay.textContent = t.toFixed(1);
+            }
+
+            slider.oninput = updatePoint;
+            updatePoint();
+
+            // Direction arrows
+            const arrowData = [{ t: -1.5 }, { t: -0.5 }, { t: 0.5 }, { t: 1.5 }];
+            arrowData.forEach(d => {
+                const t = d.t;
+                const x = t * t - 1;
+                const y = 2 * t;
+                const dx = 2 * t * 0.1;
+                const dy = 2 * 0.1;
+                svg.append('line')
+                    .attr('x1', xScale(x)).attr('y1', yScale(y))
+                    .attr('x2', xScale(x + dx)).attr('y2', yScale(y + dy))
+                    .attr('stroke', '#f59e0b').attr('stroke-width', 2)
+                    .attr('marker-end', 'url(#arrowhead)');
+            });
+
+            svg.append('defs').append('marker').attr('id', 'arrowhead').attr('viewBox', '0 0 10 10')
+                .attr('refX', 9).attr('refY', 5).attr('markerWidth', 6).attr('markerHeight', 6)
+                .attr('orient', 'auto').append('path').attr('d', 'M 0 0 L 10 5 L 0 10 z').attr('fill', '#f59e0b');
+        }
+
+        // Visualization 2: Common Curves
+        let currentCurve = 'circle';
+        function drawCommonCurvesViz() {
+            const container = d3.select('#common-curves-viz');
+            container.selectAll('svg').remove();
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const curves = {
+                circle: { fn: t => ({ x: Math.cos(t), y: Math.sin(t) }), domain: [0, 2 * Math.PI], label: 'x = cos t, y = sin t' },
+                ellipse: { fn: t => ({ x: 2 * Math.cos(t), y: Math.sin(t) }), domain: [0, 2 * Math.PI], label: 'x = 2cos t, y = sin t' },
+                cycloid: { fn: t => ({ x: t - Math.sin(t), y: 1 - Math.cos(t) }), domain: [0, 4 * Math.PI], label: 'x = t - sin t, y = 1 - cos t' },
+                lissajous: { fn: t => ({ x: Math.sin(3 * t), y: Math.sin(2 * t) }), domain: [0, 2 * Math.PI], label: 'x = sin 3t, y = sin 2t' }
+            };
+
+            const curve = curves[currentCurve];
+            const tValues = d3.range(curve.domain[0], curve.domain[1] + 0.01, 0.05);
+            const data = tValues.map(t => curve.fn(t));
+
+            const xExtent = d3.extent(data, d => d.x);
+            const yExtent = d3.extent(data, d => d.y);
+            const xPad = (xExtent[1] - xExtent[0]) * 0.2 || 1;
+            const yPad = (yExtent[1] - yExtent[0]) * 0.2 || 1;
+
+            const xScale = d3.scaleLinear().domain([xExtent[0] - xPad, xExtent[1] + xPad]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([yExtent[0] - yPad, yExtent[1] + yPad]).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#ccc').attr('stroke-width', 1);
+            svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#ccc').attr('stroke-width', 1);
+
+            const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural);
+
+            svg.append('path').datum(data).attr('fill', 'none')
+                .attr('stroke', '#06b6d4').attr('stroke-width', 3).attr('d', line);
+
+            svg.append('text').attr('x', width / 2).attr('y', height - 5)
+                .attr('text-anchor', 'middle').attr('font-size', '1.1rem').text(curve.label);
+
+            document.querySelectorAll('.control-btn[data-curve]').forEach(btn => {
+                btn.onclick = function() {
+                    currentCurve = this.dataset.curve;
+                    document.querySelectorAll('.control-btn[data-curve]').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    drawCommonCurvesViz();
+                };
+            });
+        }
+
+        // Visualization 3: Example 1
+        function drawExample1Viz() {
+            const container = d3.select('#example1-viz');
+            container.selectAll('*').remove();
+
+            const width = 350;
+            const height = 280;
+            const margin = { top: 10, right: 20, bottom: 30, left: 40 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-2, 4]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-5, 5]).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#333').attr('stroke-width', 1);
+            svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 1);
+
+            const tValues = d3.range(-2, 2.01, 0.05);
+            const curveData = tValues.map(t => ({ x: t * t - 1, y: 2 * t }));
+            const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural);
+
+            svg.append('path').datum(curveData).attr('fill', 'none')
+                .attr('stroke', '#8b5cf6').attr('stroke-width', 2).attr('d', line);
+
+            // Points with tangent lines
+            [1, 2].forEach(t => {
+                const x = t * t - 1;
+                const y = 2 * t;
+                const slope = 1 / t;
+                svg.append('circle').attr('cx', xScale(x)).attr('cy', yScale(y)).attr('r', 6).attr('fill', '#06b6d4');
+                svg.append('line')
+                    .attr('x1', xScale(x - 1)).attr('y1', yScale(y - slope))
+                    .attr('x2', xScale(x + 1)).attr('y2', yScale(y + slope))
+                    .attr('stroke', '#f59e0b').attr('stroke-width', 2);
+            });
+        }
+
+        // Visualization 4: Circle Derivative
+        function drawCircleDerivViz() {
+            const container = d3.select('#circle-deriv-viz');
+            container.selectAll('*').remove();
+
+            const width = 300;
+            const height = 280;
+            const margin = { top: 10, right: 20, bottom: 30, left: 40 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-1.5, 1.5]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-1.5, 1.5]).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#333').attr('stroke-width', 1);
+            svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 1);
+
+            // Circle
+            const tValues = d3.range(0, 2 * Math.PI + 0.01, 0.05);
+            const circleData = tValues.map(t => ({ x: Math.cos(t), y: Math.sin(t) }));
+            const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveLinearClosed);
+
+            svg.append('path').datum(circleData).attr('fill', 'none')
+                .attr('stroke', '#8b5cf6').attr('stroke-width', 2).attr('d', line);
+
+            // Points
+            [Math.PI / 4, Math.PI / 2].forEach(t => {
+                const x = Math.cos(t);
+                const y = Math.sin(t);
+                const slope = -Math.cos(t) / Math.sin(t);
+                svg.append('circle').attr('cx', xScale(x)).attr('cy', yScale(y)).attr('r', 6).attr('fill', '#06b6d4');
+                if (Math.abs(slope) < 10) {
+                    const dx = 0.5;
+                    svg.append('line')
+                        .attr('x1', xScale(x - dx)).attr('y1', yScale(y - slope * dx))
+                        .attr('x2', xScale(x + dx)).attr('y2', yScale(y + slope * dx))
+                        .attr('stroke', '#f59e0b').attr('stroke-width', 2);
+                } else {
+                    svg.append('line')
+                        .attr('x1', xScale(x)).attr('y1', yScale(y - 0.5))
+                        .attr('x2', xScale(x)).attr('y2', yScale(y + 0.5))
+                        .attr('stroke', '#f59e0b').attr('stroke-width', 2);
+                }
+            });
+        }
+
+        // Visualization 5: Interactive Tangent
+        function drawTangentViz() {
+            const container = d3.select('#tangent-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-1.5, 1.5]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-1.5, 1.5]).range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g').selectAll('line.h').data([-1, 0, 1]).enter().append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d)).attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
+
+            svg.append('g').selectAll('line.v').data([-1, 0, 1]).enter().append('line')
+                .attr('x1', d => xScale(d)).attr('x2', d => xScale(d))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#333').attr('stroke-width', 2);
+            svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 2);
+
+            // Circle
+            const tValues = d3.range(0, 2 * Math.PI + 0.01, 0.05);
+            const circleData = tValues.map(t => ({ x: Math.cos(t), y: Math.sin(t) }));
+            const lineFn = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveLinearClosed);
+
+            svg.append('path').datum(circleData).attr('fill', 'none')
+                .attr('stroke', '#8b5cf6').attr('stroke-width', 3).attr('d', lineFn);
+
+            const tangentLine = svg.append('line').attr('stroke', '#f59e0b').attr('stroke-width', 2);
+            const point = svg.append('circle').attr('r', 10).attr('fill', '#06b6d4');
+
+            const slider = document.getElementById('tangent-t-slider');
+            const tDisplay = document.getElementById('tangent-t-value');
+            const slopeDisplay = document.getElementById('tangent-slope-value');
+
+            function updateTangent() {
+                const t = parseFloat(slider.value);
+                const x = Math.cos(t);
+                const y = Math.sin(t);
+                const slope = Math.sin(t) !== 0 ? -Math.cos(t) / Math.sin(t) : Infinity;
+
+                point.attr('cx', xScale(x)).attr('cy', yScale(y));
+                tDisplay.textContent = t.toFixed(2);
+                slopeDisplay.textContent = isFinite(slope) ? slope.toFixed(2) : 'undef';
+
+                if (Math.abs(slope) < 20) {
+                    const dx = 0.8;
+                    tangentLine
+                        .attr('x1', xScale(x - dx)).attr('y1', yScale(y - slope * dx))
+                        .attr('x2', xScale(x + dx)).attr('y2', yScale(y + slope * dx))
+                        .attr('opacity', 1);
+                } else {
+                    tangentLine
+                        .attr('x1', xScale(x)).attr('y1', yScale(y - 0.8))
+                        .attr('x2', xScale(x)).attr('y2', yScale(y + 0.8))
+                        .attr('opacity', 1);
+                }
+            }
+
+            slider.oninput = updateTangent;
+            updateTangent();
+        }
+
+        // Visualization 6: Special Points
+        function drawSpecialPointsViz() {
+            const container = d3.select('#special-points-viz');
+            container.selectAll('*').remove();
+
+            const width = 350;
+            const height = 280;
+            const margin = { top: 10, right: 20, bottom: 30, left: 40 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-3, 3]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-5, 2]).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#333').attr('stroke-width', 1);
+            svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 1);
+
+            // Curve: x = t^3 - 3t, y = t^2 - 4
+            const tValues = d3.range(-2, 2.01, 0.05);
+            const curveData = tValues.map(t => ({ x: t * t * t - 3 * t, y: t * t - 4 }));
+            const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural);
+
+            svg.append('path').datum(curveData).attr('fill', 'none')
+                .attr('stroke', '#8b5cf6').attr('stroke-width', 2).attr('d', line);
+
+            // Vertical tangent points (t = 1 and t = -1)
+            [-1, 1].forEach(t => {
+                const x = t * t * t - 3 * t;
+                const y = t * t - 4;
+                svg.append('circle').attr('cx', xScale(x)).attr('cy', yScale(y)).attr('r', 6).attr('fill', '#f59e0b');
+                svg.append('line')
+                    .attr('x1', xScale(x)).attr('y1', yScale(y - 1))
+                    .attr('x2', xScale(x)).attr('y2', yScale(y + 1))
+                    .attr('stroke', '#f59e0b').attr('stroke-width', 2);
+            });
+
+            // Horizontal tangent point (t = 0)
+            svg.append('circle').attr('cx', xScale(0)).attr('cy', yScale(-4)).attr('r', 6).attr('fill', '#10b981');
+            svg.append('line')
+                .attr('x1', xScale(-1)).attr('y1', yScale(-4))
+                .attr('x2', xScale(1)).attr('y2', yScale(-4))
+                .attr('stroke', '#10b981').attr('stroke-width', 2);
+        }
+
+        // Visualization 7: Second Derivative
+        function drawSecondDerivViz() {
+            const container = d3.select('#second-deriv-viz');
+            container.selectAll('*').remove();
+
+            const width = 350;
+            const height = 280;
+            const margin = { top: 10, right: 20, bottom: 30, left: 40 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-1, 5]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-3, 3]).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#333').attr('stroke-width', 1);
+            svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 1);
+
+            // Curve: x = t^2, y = t^3
+            const tValuesNeg = d3.range(-1.5, 0, 0.05);
+            const tValuesPos = d3.range(0, 1.8, 0.05);
+
+            const curveDataNeg = tValuesNeg.map(t => ({ x: t * t, y: t * t * t }));
+            const curveDataPos = tValuesPos.map(t => ({ x: t * t, y: t * t * t }));
+
+            const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural);
+
+            svg.append('path').datum(curveDataNeg).attr('fill', 'none')
+                .attr('stroke', '#ef4444').attr('stroke-width', 3).attr('d', line);
+
+            svg.append('path').datum(curveDataPos).attr('fill', 'none')
+                .attr('stroke', '#10b981').attr('stroke-width', 3).attr('d', line);
+
+            // Origin point
+            svg.append('circle').attr('cx', xScale(0)).attr('cy', yScale(0)).attr('r', 6).attr('fill', '#06b6d4');
+        }
+
+        // Visualization 8: Concavity
+        function drawConcavityViz() {
+            const container = d3.select('#concavity-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-1, 5]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-4, 4]).range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g').selectAll('line.h').data(d3.range(-4, 5)).enter().append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d)).attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
+
+            svg.append('g').selectAll('line.v').data(d3.range(-1, 6)).enter().append('line')
+                .attr('x1', d => xScale(d)).attr('x2', d => xScale(d))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#333').attr('stroke-width', 2);
+            svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 2);
+
+            // Curve: x = t^2, y = t^3
+            const tValuesNeg = d3.range(-1.6, 0, 0.05);
+            const tValuesPos = d3.range(0, 2.1, 0.05);
+
+            const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural);
+
+            // Concave down (t < 0)
+            const curveDataNeg = tValuesNeg.map(t => ({ x: t * t, y: t * t * t }));
+            svg.append('path').datum(curveDataNeg).attr('fill', 'none')
+                .attr('stroke', '#ef4444').attr('stroke-width', 4).attr('d', line);
+
+            // Concave up (t > 0)
+            const curveDataPos = tValuesPos.map(t => ({ x: t * t, y: t * t * t }));
+            svg.append('path').datum(curveDataPos).attr('fill', 'none')
+                .attr('stroke', '#10b981').attr('stroke-width', 4).attr('d', line);
+
+            // Inflection point
+            svg.append('circle').attr('cx', xScale(0)).attr('cy', yScale(0)).attr('r', 8).attr('fill', '#06b6d4');
+            svg.append('text').attr('x', xScale(0) + 15).attr('y', yScale(0) + 5)
+                .attr('font-size', '1rem').text('Inflection');
+
+            // Labels
+            svg.append('text').attr('x', xScale(2)).attr('y', yScale(-3))
+                .attr('font-size', '1.1rem').attr('fill', '#ef4444').text('t < 0: Concave Down');
+            svg.append('text').attr('x', xScale(2)).attr('y', yScale(3))
+                .attr('font-size', '1.1rem').attr('fill', '#10b981').text('t > 0: Concave Up');
+        }
+    </script>
+</body>
+</html>

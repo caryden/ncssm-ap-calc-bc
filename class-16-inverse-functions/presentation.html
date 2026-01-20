@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 16: Differentiating Inverse Functions | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #8b5cf6;
+            --theme-color-light: #a78bfa;
+            --f-color: #60a5fa;
+            --finv-color: #f97316;
+        }
+
+        .formula-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--theme-color);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 1.5rem auto;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .formula-box .formula {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .formula-box .verbal {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .derivation-steps {
+            text-align: left;
+            max-width: 800px;
+            margin: 1.5rem auto;
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 12px;
+        }
+
+        .deriv-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            font-size: 1.25rem;
+        }
+
+        .deriv-step .label {
+            background: var(--theme-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .data-table {
+            width: 100%;
+            max-width: 500px;
+            margin: 1.5rem auto;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem 1.5rem;
+            text-align: center;
+            border: 1px solid var(--bg-tertiary);
+            font-size: 1.25rem;
+        }
+
+        .data-table th {
+            background: var(--theme-color);
+            color: white;
+            font-family: var(--font-display);
+        }
+
+        .data-table tr:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .legend-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .practice-problems {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            max-width: 700px;
+            margin: 1.5rem auto;
+        }
+
+        .practice-problem {
+            background: var(--bg-secondary);
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .practice-problem .num {
+            width: 32px;
+            height: 32px;
+            background: var(--theme-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .practice-problem .text {
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Inverse Function Derivatives">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 3: Advanced Differentiation</div>
+                <h1>Differentiating Inverse Functions</h1>
+                <p class="subtitle">When the Roles Are Reversed</p>
+                <p class="meta">Class 16 | March 3, 2026 | CED 3.3</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: Warm-Up -->
+        <div class="slide slide-exercise" data-slide="1" data-section="Opening" data-title="Warm-Up">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="prompt">
+                    <p>If \(f(x) = x^3 + 2x - 1\), find:</p>
+                    <p style="font-size: 1.5rem; margin-top: 1rem;">1. \(f(1)\) and \(f'(1)\)</p>
+                    <p style="font-size: 1.5rem; margin-top: 0.5rem;">2. If \(f(1) = 2\), what is \(f^{-1}(2)\)?</p>
+                </div>
+                <p style="margin-top: 2rem; color: var(--text-tertiary);">
+                    <strong>Answers:</strong> \(f(1) = 2\), \(f'(1) = 5\), \(f^{-1}(2) = 1\)
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Inverse Review -->
+        <div class="slide slide-visual" data-slide="2" data-section="Review" data-title="Inverse Functions">
+            <div class="slide-content">
+                <h2>Inverse Functions: Graphical View</h2>
+                <div id="inverse-graph-viz" class="visualization"></div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--f-color);"></div>
+                        <span>\(f(x)\)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--finv-color);"></div>
+                        <span>\(f^{-1}(x)\)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: #6b7a94;"></div>
+                        <span>\(y = x\)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Key Property -->
+        <div class="slide slide-two-part" data-slide="3" data-section="Review" data-title="Key Property">
+            <div class="slide-content">
+                <p class="primary">The Defining Property of Inverses</p>
+                <div style="font-size: 2rem; margin: 1.5rem 0;">
+                    \[f(f^{-1}(x)) = x \quad \text{and} \quad f^{-1}(f(x)) = x\]
+                </div>
+                <p class="secondary">If \((a, b)\) is on the graph of \(f\), then \((b, a)\) is on the graph of \(f^{-1}\)</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Big Question -->
+        <div class="slide slide-statement" data-slide="4" data-section="Derivation" data-title="The Question">
+            <div class="slide-content">
+                <p class="statement">If we know \(f'(x)\), can we find \((f^{-1})'(x)\) <em>without</em> finding \(f^{-1}\) explicitly?</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Setup -->
+        <div class="slide slide-visual" data-slide="5" data-section="Derivation" data-title="Setup">
+            <div class="slide-content">
+                <h2>Setting Up the Derivation</h2>
+                <div class="derivation-steps">
+                    <div class="deriv-step">
+                        <span class="label">Start</span>
+                        <span>Begin with the inverse property: \(f(f^{-1}(x)) = x\)</span>
+                    </div>
+                    <div class="deriv-step">
+                        <span class="label">Substitute</span>
+                        <span>Let \(y = f^{-1}(x)\), so we have \(f(y) = x\)</span>
+                    </div>
+                    <div class="deriv-step">
+                        <span class="label">Goal</span>
+                        <span>Find \(\frac{dy}{dx}\), which is \((f^{-1})'(x)\)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Implicit Differentiation -->
+        <div class="slide slide-visual" data-slide="6" data-section="Derivation" data-title="Apply Implicit Diff">
+            <div class="slide-content">
+                <h2>Applying Implicit Differentiation</h2>
+                <div class="derivation-steps">
+                    <div class="deriv-step">
+                        <span class="label">Equation</span>
+                        <span>\(f(y) = x\) where \(y = f^{-1}(x)\)</span>
+                    </div>
+                    <div class="deriv-step">
+                        <span class="label">Differentiate</span>
+                        <span>Apply \(\frac{d}{dx}\) to both sides: \(\frac{d}{dx}[f(y)] = \frac{d}{dx}[x]\)</span>
+                    </div>
+                    <div class="deriv-step">
+                        <span class="label">Chain Rule</span>
+                        <span>\(f'(y) \cdot \frac{dy}{dx} = 1\)</span>
+                    </div>
+                    <div class="deriv-step">
+                        <span class="label">Solve</span>
+                        <span style="color: var(--success);">\(\frac{dy}{dx} = \frac{1}{f'(y)} = \frac{1}{f'(f^{-1}(x))}\)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: The Formula -->
+        <div class="slide slide-statement" data-slide="7" data-section="Derivation" data-title="The Formula">
+            <div class="slide-content">
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-bottom: 1rem;">The Inverse Function Derivative Formula</p>
+                <div class="formula-box">
+                    <div class="formula">
+                        \[(f^{-1})'(a) = \frac{1}{f'(f^{-1}(a))}\]
+                    </div>
+                    <div class="verbal">
+                        "One over the derivative of f, evaluated at the corresponding point"
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Example 1 -->
+        <div class="slide slide-visual" data-slide="8" data-section="Examples" data-title="Example 1">
+            <div class="slide-content">
+                <h2>Example 1</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 1rem;">If \(f(x) = x^3 + 2x - 1\), find \((f^{-1})'(2)\)</p>
+                <div class="derivation-steps">
+                    <div class="deriv-step">
+                        <span class="label">Step 1</span>
+                        <span>Find \(f^{-1}(2)\): What x gives \(f(x) = 2\)?</span>
+                    </div>
+                    <div class="deriv-step">
+                        <span class="label">Check</span>
+                        <span>\(f(1) = 1 + 2 - 1 = 2\), so \(f^{-1}(2) = 1\)</span>
+                    </div>
+                    <div class="deriv-step">
+                        <span class="label">Step 2</span>
+                        <span>Find \(f'(1)\): \(f'(x) = 3x^2 + 2\), so \(f'(1) = 5\)</span>
+                    </div>
+                    <div class="deriv-step">
+                        <span class="label">Step 3</span>
+                        <span style="color: var(--success);">\((f^{-1})'(2) = \frac{1}{f'(1)} = \boxed{\frac{1}{5}}\)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Example 2 -->
+        <div class="slide slide-visual" data-slide="9" data-section="Examples" data-title="Example 2">
+            <div class="slide-content">
+                <h2>Example 2</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 1rem;">If \(f(x) = x^5 + x + 1\), find \((f^{-1})'(3)\)</p>
+                <div class="derivation-steps">
+                    <div class="deriv-step">
+                        <span class="label">Step 1</span>
+                        <span>Find \(f^{-1}(3)\): What x gives \(f(x) = 3\)?</span>
+                    </div>
+                    <div class="deriv-step">
+                        <span class="label">Check</span>
+                        <span>\(f(1) = 1 + 1 + 1 = 3\), so \(f^{-1}(3) = 1\)</span>
+                    </div>
+                    <div class="deriv-step">
+                        <span class="label">Step 2</span>
+                        <span>Find \(f'(1)\): \(f'(x) = 5x^4 + 1\), so \(f'(1) = 6\)</span>
+                    </div>
+                    <div class="deriv-step">
+                        <span class="label">Step 3</span>
+                        <span style="color: var(--success);">\((f^{-1})'(3) = \frac{1}{f'(1)} = \boxed{\frac{1}{6}}\)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Table Example -->
+        <div class="slide slide-visual" data-slide="10" data-section="Examples" data-title="Table Example">
+            <div class="slide-content">
+                <h2>Example 3: Using a Table</h2>
+                <p style="font-size: 1.25rem; margin-bottom: 1rem;">Find \((f^{-1})'(5)\)</p>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>\(x\)</th>
+                            <th>\(f(x)\)</th>
+                            <th>\(f'(x)\)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2</td>
+                            <td style="color: var(--accent-secondary);">5</td>
+                            <td style="color: var(--success);">3</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>8</td>
+                            <td>4</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="derivation-steps" style="margin-top: 1rem;">
+                    <div class="deriv-step">
+                        <span class="label">Find</span>
+                        <span>\(f(2) = 5\) means \(f^{-1}(5) = 2\)</span>
+                    </div>
+                    <div class="deriv-step">
+                        <span class="label">Apply</span>
+                        <span style="color: var(--success);">\((f^{-1})'(5) = \frac{1}{f'(2)} = \boxed{\frac{1}{3}}\)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Visualization -->
+        <div class="slide slide-visual" data-slide="11" data-section="Examples" data-title="Visual Verification">
+            <div class="slide-content">
+                <h2>Visualizing the Relationship</h2>
+                <div id="tangent-viz" class="visualization"></div>
+                <p class="caption">Tangent line slopes: if f has slope m at (a, b), then f^(-1) has slope 1/m at (b, a)</p>
+            </div>
+        </div>
+
+        <!-- Slide 12: Common Mistakes -->
+        <div class="slide slide-list" data-slide="12" data-section="Practice" data-title="Common Mistakes">
+            <div class="slide-content">
+                <h2>Watch Out For...</h2>
+                <ul>
+                    <li>
+                        <strong>Wrong evaluation point:</strong><br>
+                        <span style="color: var(--danger);">Wrong:</span> \((f^{-1})'(2) = \frac{1}{f'(2)}\)<br>
+                        <span style="color: var(--success);">Right:</span> \((f^{-1})'(2) = \frac{1}{f'(f^{-1}(2))}\)
+                    </li>
+                    <li>
+                        <strong>Confusing notation:</strong> \(f^{-1}(x) \neq \frac{1}{f(x)}\)
+                    </li>
+                    <li>
+                        <strong>Skipping the first step:</strong> Always find \(f^{-1}(a)\) first!
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 13: Practice -->
+        <div class="slide slide-visual" data-slide="13" data-section="Practice" data-title="Practice">
+            <div class="slide-content">
+                <h2>Practice Problems</h2>
+                <div class="practice-problems">
+                    <div class="practice-problem">
+                        <span class="num">1</span>
+                        <span class="text">If \(f(x) = x^3 - x + 2\) and \(f(1) = 2\), find \((f^{-1})'(2)\)</span>
+                    </div>
+                    <div class="practice-problem">
+                        <span class="num">2</span>
+                        <span class="text">If \(g(2) = 5\) and \(g'(2) = 3\), find \((g^{-1})'(5)\)</span>
+                    </div>
+                    <div class="practice-problem">
+                        <span class="num">3</span>
+                        <span class="text">If \(h(x) = e^x + x\) and \(h(0) = 1\), find \((h^{-1})'(1)\)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Solutions -->
+        <div class="slide slide-list" data-slide="14" data-section="Practice" data-title="Solutions">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <ul>
+                    <li>\(f'(x) = 3x^2 - 1\), \(f'(1) = 2\), so \((f^{-1})'(2) = \frac{1}{2}\)</li>
+                    <li>\(g^{-1}(5) = 2\), so \((g^{-1})'(5) = \frac{1}{g'(2)} = \frac{1}{3}\)</li>
+                    <li>\(h'(x) = e^x + 1\), \(h'(0) = 2\), so \((h^{-1})'(1) = \frac{1}{2}\)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 15: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="15" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p>If \(f(x) = x^5 + 3x - 2\) and \(f(1) = 2\),</p>
+                    <p style="font-size: 2rem; margin-top: 1.5rem; color: var(--accent-secondary);">
+                        find \((f^{-1})'(2)\)
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Coming Up -->
+        <div class="slide slide-statement" data-slide="16" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Tomorrow: <em>Inverse Trigonometric Derivatives</em></p>
+                <p style="margin-top: 1.5rem; font-size: 1.5rem; color: var(--text-secondary);">
+                    Applying this formula to find derivatives of arcsin, arccos, arctan...
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 17</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>←</kbd> <kbd>→</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 16: Inverse Function Derivatives</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">← Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">← Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Inverse Graph Visualization =====
+        function drawInverseGraph() {
+            const container = document.getElementById('inverse-graph-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 550;
+            const height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 50 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-1, 5]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-1, 5]).range([plotHeight, 0]);
+
+            // Grid
+            for (let i = 0; i <= 5; i++) {
+                g.append('line')
+                    .attr('x1', 0).attr('x2', plotWidth)
+                    .attr('y1', yScale(i)).attr('y2', yScale(i))
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+                g.append('line')
+                    .attr('x1', xScale(i)).attr('x2', xScale(i))
+                    .attr('y1', 0).attr('y2', plotHeight)
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0).attr('x2', plotWidth)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#4a5568').attr('stroke-width', 2);
+            g.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', 0).attr('y2', plotHeight)
+                .attr('stroke', '#4a5568').attr('stroke-width', 2);
+
+            // y = x line
+            g.append('line')
+                .attr('x1', xScale(-1)).attr('y1', yScale(-1))
+                .attr('x2', xScale(5)).attr('y2', yScale(5))
+                .attr('stroke', '#6b7a94')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '8,4');
+
+            // f(x) = x^2 (for x >= 0)
+            const fPoints = [];
+            for (let x = 0; x <= 2.2; x += 0.05) {
+                fPoints.push({ x: x, y: x * x });
+            }
+
+            g.append('path')
+                .datum(fPoints)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // f^(-1)(x) = sqrt(x)
+            const fInvPoints = [];
+            for (let x = 0; x <= 5; x += 0.05) {
+                fInvPoints.push({ x: x, y: Math.sqrt(x) });
+            }
+
+            g.append('path')
+                .datum(fInvPoints)
+                .attr('fill', 'none')
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Points showing correspondence (1, 1) and (4, 2) / (2, 4)
+            // Point on f: (2, 4)
+            g.append('circle')
+                .attr('cx', xScale(2)).attr('cy', yScale(4))
+                .attr('r', 8).attr('fill', '#60a5fa');
+
+            // Point on f^(-1): (4, 2)
+            g.append('circle')
+                .attr('cx', xScale(4)).attr('cy', yScale(2))
+                .attr('r', 8).attr('fill', '#f97316');
+
+            // Dashed lines connecting
+            g.append('line')
+                .attr('x1', xScale(2)).attr('y1', yScale(4))
+                .attr('x2', xScale(4)).attr('y2', yScale(2))
+                .attr('stroke', '#8b5cf6')
+                .attr('stroke-width', 1)
+                .attr('stroke-dasharray', '4,4');
+
+            // Labels
+            g.append('text')
+                .attr('x', xScale(2.3)).attr('y', yScale(4.5))
+                .attr('font-size', '1rem').attr('fill', '#60a5fa')
+                .text('(2, 4)');
+
+            g.append('text')
+                .attr('x', xScale(4.2)).attr('y', yScale(2))
+                .attr('font-size', '1rem').attr('fill', '#f97316')
+                .text('(4, 2)');
+
+            // Function labels
+            g.append('text')
+                .attr('x', xScale(2)).attr('y', yScale(4.8))
+                .attr('font-size', '1.25rem').attr('fill', '#60a5fa')
+                .text('f(x) = x²');
+
+            g.append('text')
+                .attr('x', xScale(4.3)).attr('y', yScale(1.8))
+                .attr('font-size', '1.25rem').attr('fill', '#f97316')
+                .text('f⁻¹(x) = √x');
+        }
+
+        // ===== Tangent Lines Visualization =====
+        function drawTangentViz() {
+            const container = document.getElementById('tangent-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 50 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-0.5, 5]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-0.5, 5]).range([plotHeight, 0]);
+
+            // y = x line
+            g.append('line')
+                .attr('x1', xScale(-0.5)).attr('y1', yScale(-0.5))
+                .attr('x2', xScale(5)).attr('y2', yScale(5))
+                .attr('stroke', '#6b7a94')
+                .attr('stroke-width', 1)
+                .attr('stroke-dasharray', '8,4');
+
+            // f(x) = x^2
+            const fPoints = [];
+            for (let x = 0; x <= 2.2; x += 0.05) {
+                fPoints.push({ x: x, y: x * x });
+            }
+
+            g.append('path')
+                .datum(fPoints)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // f^(-1)(x) = sqrt(x)
+            const fInvPoints = [];
+            for (let x = 0; x <= 5; x += 0.05) {
+                fInvPoints.push({ x: x, y: Math.sqrt(x) });
+            }
+
+            g.append('path')
+                .datum(fInvPoints)
+                .attr('fill', 'none')
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Point on f at x = 1.5: (1.5, 2.25)
+            const px = 1.5, py = px * px;
+            const fSlope = 2 * px; // f'(x) = 2x
+
+            g.append('circle')
+                .attr('cx', xScale(px)).attr('cy', yScale(py))
+                .attr('r', 8).attr('fill', '#60a5fa');
+
+            // Tangent line on f
+            g.append('line')
+                .attr('x1', xScale(px - 0.8))
+                .attr('y1', yScale(py - fSlope * 0.8))
+                .attr('x2', xScale(px + 0.8))
+                .attr('y2', yScale(py + fSlope * 0.8))
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 2);
+
+            // Corresponding point on f^(-1): (2.25, 1.5)
+            const invPx = py, invPy = px;
+            const invSlope = 1 / fSlope;
+
+            g.append('circle')
+                .attr('cx', xScale(invPx)).attr('cy', yScale(invPy))
+                .attr('r', 8).attr('fill', '#f97316');
+
+            // Tangent line on f^(-1)
+            g.append('line')
+                .attr('x1', xScale(invPx - 0.8))
+                .attr('y1', yScale(invPy - invSlope * 0.8))
+                .attr('x2', xScale(invPx + 0.8))
+                .attr('y2', yScale(invPy + invSlope * 0.8))
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 2);
+
+            // Labels
+            g.append('text')
+                .attr('x', xScale(px + 0.15)).attr('y', yScale(py + 0.4))
+                .attr('font-size', '1rem').attr('fill', '#60a5fa')
+                .text('slope = 3');
+
+            g.append('text')
+                .attr('x', xScale(invPx + 0.15)).attr('y', yScale(invPy - 0.25))
+                .attr('font-size', '1rem').attr('fill', '#f97316')
+                .text('slope = 1/3');
+        }
+
+        // ===== Trigger Visualizations =====
+        const visualizationSlides = {
+            2: drawInverseGraph,
+            11: drawTangentViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

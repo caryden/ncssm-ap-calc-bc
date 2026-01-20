@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 11: Power Rule and Basic Derivative Rules | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #7c3aed;
+            --theme-color-light: #8b5cf6;
+        }
+
+        /* Rule box styling */
+        .rule-box {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(124, 58, 237, 0.05));
+            border: 2px solid var(--theme-color);
+            padding: 2rem 2.5rem;
+            border-radius: 12px;
+            margin: 1.5rem auto;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .rule-box .label {
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: var(--accent-secondary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .rule-box .math-content {
+            font-size: 2.5rem;
+            color: var(--text-primary);
+        }
+
+        .rule-box .note {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+        }
+
+        /* Pattern table */
+        .pattern-table {
+            width: 100%;
+            max-width: 500px;
+            margin: 1.5rem auto;
+            border-collapse: collapse;
+        }
+
+        .pattern-table th,
+        .pattern-table td {
+            padding: 1rem 2rem;
+            text-align: center;
+            border: 1px solid var(--bg-tertiary);
+            font-size: 1.5rem;
+        }
+
+        .pattern-table th {
+            background: var(--theme-color);
+            color: white;
+            font-family: var(--font-display);
+        }
+
+        .pattern-table tr:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+
+        .pattern-table .highlight {
+            color: var(--accent-secondary);
+            font-weight: 700;
+        }
+
+        .pattern-table .mystery {
+            color: var(--theme-color);
+            font-weight: 700;
+        }
+
+        /* Example grid */
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            max-width: 800px;
+            margin: 1.5rem auto;
+        }
+
+        .example-item {
+            background: var(--bg-secondary);
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.5rem;
+            border-left: 4px solid var(--theme-color);
+        }
+
+        /* Step boxes */
+        .step-box {
+            background: var(--bg-secondary);
+            padding: 1.25rem 2rem;
+            border-radius: 8px;
+            margin: 0.75rem auto;
+            max-width: 800px;
+            font-size: 1.5rem;
+            text-align: center;
+            border-left: 4px solid var(--theme-color);
+        }
+
+        .step-box.result {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.05));
+            border-color: #22c55e;
+        }
+
+        /* Conversion grid */
+        .conversion-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            max-width: 700px;
+            margin: 1.5rem auto;
+        }
+
+        .conversion-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            background: var(--bg-secondary);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1.4rem;
+        }
+
+        .conversion-item .arrow {
+            color: var(--theme-color);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        /* Rules summary */
+        .rules-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 750px;
+            margin: 1.5rem auto;
+        }
+
+        .rule-summary-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            background: var(--bg-secondary);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+        }
+
+        .rule-summary-item .rule-num {
+            background: var(--theme-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .rule-summary-item .rule-text {
+            font-size: 1.35rem;
+        }
+
+        /* Warning box */
+        .warning-box {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05));
+            border: 2px solid #ef4444;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            margin: 1.5rem auto;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .warning-box .title {
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: #ef4444;
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .warning-box p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        /* Mnemonic box */
+        .mnemonic-box {
+            background: linear-gradient(135deg, rgba(212, 160, 40, 0.15), rgba(212, 160, 40, 0.05));
+            border: 2px solid var(--accent-secondary);
+            padding: 2rem 2.5rem;
+            border-radius: 12px;
+            margin: 1.5rem auto;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .mnemonic-box .mnemonic {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .mnemonic-box .explanation {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        /* Worked example */
+        .worked-example {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .worked-example .problem {
+            background: var(--bg-secondary);
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--theme-color);
+            font-size: 1.5rem;
+        }
+
+        .worked-example .steps {
+            text-align: left;
+        }
+
+        .worked-example .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .worked-example .step-number {
+            background: var(--theme-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .worked-example .step-content {
+            flex: 1;
+            font-size: 1.25rem;
+        }
+
+        .worked-example .step-content .desc {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Power Rule">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 2: Differentiation Fundamentals</div>
+                <h1>The Power Rule</h1>
+                <p class="subtitle">Your First Shortcut for Derivatives</p>
+                <p class="meta">Class 11 | CED 2.5, 2.6 | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: The Problem -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="The Problem">
+            <div class="slide-content">
+                <p class="statement">Using the limit definition every time is <em>tedious</em>.</p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">There must be a pattern we can exploit...</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Recall Our Results -->
+        <div class="slide slide-visual" data-slide="2" data-section="Discovery" data-title="Pattern Discovery">
+            <div class="slide-content">
+                <h2>Let's Look at What We Know</h2>
+                <table class="pattern-table">
+                    <tr>
+                        <th>\(f(x)\)</th>
+                        <th>\(f'(x)\)</th>
+                    </tr>
+                    <tr>
+                        <td>\(x^1\)</td>
+                        <td>\(1\)</td>
+                    </tr>
+                    <tr>
+                        <td>\(x^2\)</td>
+                        <td>\(2x\)</td>
+                    </tr>
+                    <tr>
+                        <td>\(x^3\)</td>
+                        <td>\(3x^2\)</td>
+                    </tr>
+                    <tr>
+                        <td>\(x^4\)</td>
+                        <td class="mystery">?</td>
+                    </tr>
+                </table>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 1.5rem;">Do you see the pattern?</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: The Pattern -->
+        <div class="slide slide-statement" data-slide="3" data-section="Discovery" data-title="The Pattern">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">The exponent comes down as a coefficient...</p>
+                <p class="statement" style="font-size: 2.5rem; margin-top: 1rem;">...and the exponent decreases by 1.</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: The Power Rule -->
+        <div class="slide slide-visual" data-slide="4" data-section="The Rules" data-title="Power Rule">
+            <div class="slide-content">
+                <h2>The Power Rule</h2>
+                <div class="rule-box">
+                    <div class="label">Power Rule</div>
+                    <div class="math-content">\[\frac{d}{dx}[x^n] = n \cdot x^{n-1}\]</div>
+                    <div class="note">Works for ANY real number \(n\)</div>
+                </div>
+                <div class="mnemonic-box">
+                    <div class="mnemonic">"Bring Down and Reduce"</div>
+                    <div class="explanation">Bring down the exponent, reduce it by one</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Power Rule Visual -->
+        <div class="slide slide-visual" data-slide="5" data-section="The Rules" data-title="Power Rule Visualization">
+            <div class="slide-content">
+                <h2>Visualizing the Power Rule</h2>
+                <div id="power-rule-viz" class="visualization"></div>
+                <p class="caption">The derivative tells us the slope at each point</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Integer Examples -->
+        <div class="slide slide-visual" data-slide="6" data-section="The Rules" data-title="Integer Exponents">
+            <div class="slide-content">
+                <h2>Power Rule: Positive Integers</h2>
+                <div class="example-grid">
+                    <div class="example-item">\(\frac{d}{dx}[x^2] = 2x\)</div>
+                    <div class="example-item">\(\frac{d}{dx}[x^3] = 3x^2\)</div>
+                    <div class="example-item">\(\frac{d}{dx}[x^5] = 5x^4\)</div>
+                    <div class="example-item">\(\frac{d}{dx}[x^{10}] = 10x^9\)</div>
+                </div>
+                <p style="font-size: 1.5rem; color: var(--theme-color); margin-top: 1.5rem;">No limits needed!</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: Special Case n=1 -->
+        <div class="slide slide-visual" data-slide="7" data-section="The Rules" data-title="Special Case">
+            <div class="slide-content">
+                <h2>Special Case: \(n = 1\)</h2>
+                <div class="step-box">
+                    \[\frac{d}{dx}[x] = \frac{d}{dx}[x^1] = 1 \cdot x^0 = 1\]
+                </div>
+                <p style="font-size: 1.75rem; margin-top: 2rem;">The derivative of \(x\) is always \(1\).</p>
+                <p class="caption">The slope of \(y = x\) is 1 everywhere - makes sense!</p>
+            </div>
+        </div>
+
+        <!-- Slide 8: Constant Rule -->
+        <div class="slide slide-visual" data-slide="8" data-section="The Rules" data-title="Constant Rule">
+            <div class="slide-content">
+                <h2>The Constant Rule</h2>
+                <div class="rule-box">
+                    <div class="label">Constant Rule</div>
+                    <div class="math-content">\[\frac{d}{dx}[c] = 0\]</div>
+                    <div class="note">The derivative of any constant is zero</div>
+                </div>
+                <div id="constant-viz" class="visualization" style="max-height: 250px;"></div>
+                <p class="caption">A horizontal line has zero slope everywhere</p>
+            </div>
+        </div>
+
+        <!-- Slide 9: Constant Rule Examples -->
+        <div class="slide slide-visual" data-slide="9" data-section="The Rules" data-title="Constant Examples">
+            <div class="slide-content">
+                <h2>Constant Rule Examples</h2>
+                <div class="example-grid">
+                    <div class="example-item">\(\frac{d}{dx}[5] = 0\)</div>
+                    <div class="example-item">\(\frac{d}{dx}[\pi] = 0\)</div>
+                    <div class="example-item">\(\frac{d}{dx}[-17] = 0\)</div>
+                    <div class="example-item">\(\frac{d}{dx}[\sqrt{2}] = 0\)</div>
+                </div>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 1.5rem;">If there's no \(x\), the derivative is 0!</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Constant Multiple Rule -->
+        <div class="slide slide-visual" data-slide="10" data-section="The Rules" data-title="Constant Multiple Rule">
+            <div class="slide-content">
+                <h2>The Constant Multiple Rule</h2>
+                <div class="rule-box">
+                    <div class="label">Constant Multiple Rule</div>
+                    <div class="math-content">\[\frac{d}{dx}[c \cdot f(x)] = c \cdot f'(x)\]</div>
+                    <div class="note">Constants "factor out" of the derivative</div>
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 1.5rem;">You can pull constants out, differentiate, then put them back.</p>
+            </div>
+        </div>
+
+        <!-- Slide 11: Constant Multiple Examples -->
+        <div class="slide slide-visual" data-slide="11" data-section="The Rules" data-title="Constant Multiple Examples">
+            <div class="slide-content">
+                <h2>Constant Multiple Examples</h2>
+                <div class="step-box">\(\frac{d}{dx}[3x^2] = 3 \cdot 2x = 6x\)</div>
+                <div class="step-box">\(\frac{d}{dx}[5x^4] = 5 \cdot 4x^3 = 20x^3\)</div>
+                <div class="step-box">\(\frac{d}{dx}[-2x^7] = -2 \cdot 7x^6 = -14x^6\)</div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Negative Exponents -->
+        <div class="slide slide-visual" data-slide="12" data-section="Extensions" data-title="Negative Exponents">
+            <div class="slide-content">
+                <h2>Power Rule: Negative Exponents</h2>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Remember: \(\frac{1}{x^n} = x^{-n}\)</p>
+                <div class="step-box">\(\frac{d}{dx}\left[\frac{1}{x}\right] = \frac{d}{dx}[x^{-1}] = -1 \cdot x^{-2} = -\frac{1}{x^2}\)</div>
+                <div class="step-box">\(\frac{d}{dx}\left[\frac{1}{x^3}\right] = \frac{d}{dx}[x^{-3}] = -3x^{-4} = -\frac{3}{x^4}\)</div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Fractional Exponents -->
+        <div class="slide slide-visual" data-slide="13" data-section="Extensions" data-title="Fractional Exponents">
+            <div class="slide-content">
+                <h2>Power Rule: Fractional Exponents</h2>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Remember: \(\sqrt{x} = x^{1/2}\) and \(\sqrt[n]{x} = x^{1/n}\)</p>
+                <div class="step-box">\(\frac{d}{dx}[\sqrt{x}] = \frac{d}{dx}[x^{1/2}] = \frac{1}{2}x^{-1/2} = \frac{1}{2\sqrt{x}}\)</div>
+                <div class="step-box">\(\frac{d}{dx}[\sqrt[3]{x}] = \frac{d}{dx}[x^{1/3}] = \frac{1}{3}x^{-2/3} = \frac{1}{3\sqrt[3]{x^2}}\)</div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Conversion Reference -->
+        <div class="slide slide-visual" data-slide="14" data-section="Extensions" data-title="Conversions">
+            <div class="slide-content">
+                <h2>Essential Conversions</h2>
+                <div class="conversion-grid">
+                    <div class="conversion-item">
+                        <span>\(\sqrt{x}\)</span>
+                        <span class="arrow">=</span>
+                        <span>\(x^{1/2}\)</span>
+                    </div>
+                    <div class="conversion-item">
+                        <span>\(\sqrt[3]{x}\)</span>
+                        <span class="arrow">=</span>
+                        <span>\(x^{1/3}\)</span>
+                    </div>
+                    <div class="conversion-item">
+                        <span>\(\frac{1}{x}\)</span>
+                        <span class="arrow">=</span>
+                        <span>\(x^{-1}\)</span>
+                    </div>
+                    <div class="conversion-item">
+                        <span>\(\frac{1}{x^2}\)</span>
+                        <span class="arrow">=</span>
+                        <span>\(x^{-2}\)</span>
+                    </div>
+                    <div class="conversion-item">
+                        <span>\(\sqrt{x^3}\)</span>
+                        <span class="arrow">=</span>
+                        <span>\(x^{3/2}\)</span>
+                    </div>
+                    <div class="conversion-item">
+                        <span>\(\frac{1}{\sqrt{x}}\)</span>
+                        <span class="arrow">=</span>
+                        <span>\(x^{-1/2}\)</span>
+                    </div>
+                </div>
+                <p style="font-size: 1.4rem; color: var(--accent-secondary); margin-top: 1.5rem;">Always convert to exponent form before differentiating!</p>
+            </div>
+        </div>
+
+        <!-- Slide 15: Sum and Difference Rules -->
+        <div class="slide slide-visual" data-slide="15" data-section="Combining Terms" data-title="Sum and Difference Rules">
+            <div class="slide-content">
+                <h2>Sum and Difference Rules</h2>
+                <div class="rule-box" style="max-width: 800px;">
+                    <div class="label">Sum Rule</div>
+                    <div class="math-content">\[\frac{d}{dx}[f(x) + g(x)] = f'(x) + g'(x)\]</div>
+                </div>
+                <div class="rule-box" style="max-width: 800px;">
+                    <div class="label">Difference Rule</div>
+                    <div class="math-content">\[\frac{d}{dx}[f(x) - g(x)] = f'(x) - g'(x)\]</div>
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 1rem;">Differentiate term by term!</p>
+            </div>
+        </div>
+
+        <!-- Slide 16: Sum Rule Visualization -->
+        <div class="slide slide-visual" data-slide="16" data-section="Combining Terms" data-title="Sum Rule Visual">
+            <div class="slide-content">
+                <h2>Visualizing the Sum Rule</h2>
+                <div id="sum-rule-viz" class="visualization"></div>
+                <p class="caption">The slope of the sum equals the sum of the slopes</p>
+            </div>
+        </div>
+
+        <!-- Slide 17: Polynomial Example -->
+        <div class="slide slide-visual" data-slide="17" data-section="Examples" data-title="Polynomial Example">
+            <div class="slide-content">
+                <h2>Example: Polynomial</h2>
+                <div class="worked-example">
+                    <div class="problem">Find \(\frac{d}{dx}[4x^3 - 2x^2 + 5x - 7]\)</div>
+                    <div class="step-box">Apply rules to each term:</div>
+                    <div class="step-box">\(\frac{d}{dx}[4x^3] - \frac{d}{dx}[2x^2] + \frac{d}{dx}[5x] - \frac{d}{dx}[7]\)</div>
+                    <div class="step-box">\(= 4(3x^2) - 2(2x) + 5(1) - 0\)</div>
+                    <div class="step-box result">\(= 12x^2 - 4x + 5\)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Rewriting Example -->
+        <div class="slide slide-visual" data-slide="18" data-section="Examples" data-title="Rewriting Example">
+            <div class="slide-content">
+                <h2>Example: Rewrite First</h2>
+                <div class="worked-example">
+                    <div class="problem">Find \(\frac{d}{dx}\left[\frac{3x^4 + 2}{x^2}\right]\)</div>
+                    <div class="step-box">Rewrite: \(\frac{3x^4}{x^2} + \frac{2}{x^2} = 3x^2 + 2x^{-2}\)</div>
+                    <div class="step-box">Differentiate: \(\frac{d}{dx}[3x^2] + \frac{d}{dx}[2x^{-2}]\)</div>
+                    <div class="step-box">\(= 6x + 2(-2)x^{-3}\)</div>
+                    <div class="step-box result">\(= 6x - \frac{4}{x^3}\)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Common Mistake -->
+        <div class="slide slide-visual" data-slide="19" data-section="Warnings" data-title="Common Mistake">
+            <div class="slide-content">
+                <h2>Common Mistake!</h2>
+                <div class="warning-box">
+                    <div class="title">The Power Rule is for \(x^n\), NOT \(a^x\)</div>
+                    <p style="margin-top: 1rem;">\(\frac{d}{dx}[2^x] \neq x \cdot 2^{x-1}\)</p>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem;">
+                    <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 8px; border: 2px solid #22c55e;">
+                        <p style="color: #22c55e; font-size: 1.25rem; margin-bottom: 0.5rem;">Power Rule applies to:</p>
+                        <p style="font-size: 1.5rem;">\(x^5\), \(x^{-2}\), \(x^{1/3}\)</p>
+                        <p style="font-size: 1.1rem; color: var(--text-tertiary);">Variable base, constant exponent</p>
+                    </div>
+                    <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 8px; border: 2px solid #ef4444;">
+                        <p style="color: #ef4444; font-size: 1.25rem; margin-bottom: 0.5rem;">Power Rule does NOT apply to:</p>
+                        <p style="font-size: 1.5rem;">\(2^x\), \(e^x\), \(10^x\)</p>
+                        <p style="font-size: 1.1rem; color: var(--text-tertiary);">Constant base, variable exponent</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Rules Summary -->
+        <div class="slide slide-visual" data-slide="20" data-section="Summary" data-title="Rules Summary">
+            <div class="slide-content">
+                <h2>All Rules Together</h2>
+                <div class="rules-summary">
+                    <div class="rule-summary-item">
+                        <div class="rule-num">1</div>
+                        <div class="rule-text"><strong>Constant:</strong> \(\frac{d}{dx}[c] = 0\)</div>
+                    </div>
+                    <div class="rule-summary-item">
+                        <div class="rule-num">2</div>
+                        <div class="rule-text"><strong>Power:</strong> \(\frac{d}{dx}[x^n] = nx^{n-1}\)</div>
+                    </div>
+                    <div class="rule-summary-item">
+                        <div class="rule-num">3</div>
+                        <div class="rule-text"><strong>Constant Multiple:</strong> \(\frac{d}{dx}[cf(x)] = c \cdot f'(x)\)</div>
+                    </div>
+                    <div class="rule-summary-item">
+                        <div class="rule-num">4</div>
+                        <div class="rule-text"><strong>Sum/Difference:</strong> Differentiate term by term</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Practice 1 -->
+        <div class="slide slide-exercise" data-slide="21" data-section="Practice" data-title="Practice 1">
+            <div class="slide-content">
+                <h2>Practice: Find \(f'(x)\)</h2>
+                <div class="prompt">
+                    <p style="font-size: 2rem;">\(f(x) = 5x^4 - 3x^2 + 2x - 8\)</p>
+                </div>
+                <p style="margin-top: 2rem; color: var(--accent-secondary);">1 minute</p>
+            </div>
+        </div>
+
+        <!-- Slide 22: Practice 1 Solution -->
+        <div class="slide slide-visual" data-slide="22" data-section="Practice" data-title="Solution 1">
+            <div class="slide-content">
+                <h2>Solution</h2>
+                <div class="step-box">\(f(x) = 5x^4 - 3x^2 + 2x - 8\)</div>
+                <div class="step-box">\(f'(x) = 5(4x^3) - 3(2x) + 2(1) - 0\)</div>
+                <div class="step-box result">\(f'(x) = 20x^3 - 6x + 2\)</div>
+            </div>
+        </div>
+
+        <!-- Slide 23: Practice 2 -->
+        <div class="slide slide-exercise" data-slide="23" data-section="Practice" data-title="Practice 2">
+            <div class="slide-content">
+                <h2>Practice: Find \(g'(x)\)</h2>
+                <div class="prompt">
+                    <p style="font-size: 2rem;">\(g(x) = \sqrt{x} + \frac{4}{x}\)</p>
+                    <p style="font-size: 1.25rem; color: var(--text-secondary); margin-top: 1rem;">Hint: Rewrite as exponents first!</p>
+                </div>
+                <p style="margin-top: 2rem; color: var(--accent-secondary);">2 minutes</p>
+            </div>
+        </div>
+
+        <!-- Slide 24: Practice 2 Solution -->
+        <div class="slide slide-visual" data-slide="24" data-section="Practice" data-title="Solution 2">
+            <div class="slide-content">
+                <h2>Solution</h2>
+                <div class="step-box">\(g(x) = \sqrt{x} + \frac{4}{x} = x^{1/2} + 4x^{-1}\)</div>
+                <div class="step-box">\(g'(x) = \frac{1}{2}x^{-1/2} + 4(-1)x^{-2}\)</div>
+                <div class="step-box">\(g'(x) = \frac{1}{2}x^{-1/2} - 4x^{-2}\)</div>
+                <div class="step-box result">\(g'(x) = \frac{1}{2\sqrt{x}} - \frac{4}{x^2}\)</div>
+            </div>
+        </div>
+
+        <!-- Slide 25: Key Takeaways -->
+        <div class="slide slide-list" data-slide="25" data-section="Summary" data-title="Key Takeaways">
+            <div class="slide-content">
+                <h2>Key Takeaways</h2>
+                <ul>
+                    <li><strong>Power Rule:</strong> \(\frac{d}{dx}[x^n] = nx^{n-1}\) for any real \(n\)</li>
+                    <li><strong>Constants vanish:</strong> \(\frac{d}{dx}[c] = 0\)</li>
+                    <li><strong>Constants factor out:</strong> \(\frac{d}{dx}[cf] = c \cdot f'\)</li>
+                    <li><strong>Term by term:</strong> Sums and differences differentiate separately</li>
+                    <li><strong>Rewrite first:</strong> Convert radicals and fractions to exponents</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 26: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="26" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p>Find the derivative:</p>
+                    <p style="font-size: 2rem; margin-top: 1rem;">\(h(x) = 3x^5 - \frac{2}{x^3} + \sqrt[3]{x}\)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 27: Coming Up -->
+        <div class="slide slide-statement" data-slide="27" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Next: More Basic Rules</p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 1.5rem;">Trig functions, exponentials, and logarithms</p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 28</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 11: Power Rule and Basic Derivative Rules</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">&#8592; Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">&#8592; Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next &#8594;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Power Rule Visualization (Slide 5) =====
+        function drawPowerRuleViz() {
+            const container = document.getElementById('power-rule-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 900;
+            const height = 350;
+            const margin = { top: 30, right: 40, bottom: 40, left: 50 };
+            const plotWidth = (width - margin.left - margin.right - 60) / 2;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Left panel: f(x) = x^2
+            const g1 = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Right panel: f'(x) = 2x
+            const g2 = svg.append('g')
+                .attr('transform', `translate(${margin.left + plotWidth + 80},${margin.top})`);
+
+            // Scales for left panel
+            const xScale1 = d3.scaleLinear().domain([-3, 3]).range([0, plotWidth]);
+            const yScale1 = d3.scaleLinear().domain([-1, 9]).range([plotHeight, 0]);
+
+            // Scales for right panel
+            const xScale2 = d3.scaleLinear().domain([-3, 3]).range([0, plotWidth]);
+            const yScale2 = d3.scaleLinear().domain([-6, 6]).range([plotHeight, 0]);
+
+            // Grid for left panel
+            for (let i = -1; i <= 9; i += 2) {
+                g1.append('line')
+                    .attr('x1', 0).attr('x2', plotWidth)
+                    .attr('y1', yScale1(i)).attr('y2', yScale1(i))
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+            for (let i = -3; i <= 3; i++) {
+                g1.append('line')
+                    .attr('x1', xScale1(i)).attr('x2', xScale1(i))
+                    .attr('y1', 0).attr('y2', plotHeight)
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+
+            // Grid for right panel
+            for (let i = -6; i <= 6; i += 2) {
+                g2.append('line')
+                    .attr('x1', 0).attr('x2', plotWidth)
+                    .attr('y1', yScale2(i)).attr('y2', yScale2(i))
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+            for (let i = -3; i <= 3; i++) {
+                g2.append('line')
+                    .attr('x1', xScale2(i)).attr('x2', xScale2(i))
+                    .attr('y1', 0).attr('y2', plotHeight)
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+
+            // Axes
+            g1.append('g')
+                .attr('transform', `translate(0,${yScale1(0)})`)
+                .call(d3.axisBottom(xScale1).ticks(6))
+                .selectAll('text').attr('font-size', '1rem').attr('fill', '#b8c4d6');
+            g1.append('g')
+                .attr('transform', `translate(${xScale1(0)},0)`)
+                .call(d3.axisLeft(yScale1).ticks(5))
+                .selectAll('text').attr('font-size', '1rem').attr('fill', '#b8c4d6');
+
+            g2.append('g')
+                .attr('transform', `translate(0,${yScale2(0)})`)
+                .call(d3.axisBottom(xScale2).ticks(6))
+                .selectAll('text').attr('font-size', '1rem').attr('fill', '#b8c4d6');
+            g2.append('g')
+                .attr('transform', `translate(${xScale2(0)},0)`)
+                .call(d3.axisLeft(yScale2).ticks(6))
+                .selectAll('text').attr('font-size', '1rem').attr('fill', '#b8c4d6');
+
+            // Draw f(x) = x^2
+            const line1 = d3.line()
+                .x(d => xScale1(d.x))
+                .y(d => yScale1(d.y));
+
+            const data1 = d3.range(-3, 3.05, 0.05).map(x => ({ x, y: x * x }));
+
+            g1.append('path')
+                .datum(data1)
+                .attr('d', line1)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3);
+
+            // Draw f'(x) = 2x
+            const line2 = d3.line()
+                .x(d => xScale2(d.x))
+                .y(d => yScale2(d.y));
+
+            const data2 = d3.range(-3, 3.05, 0.05).map(x => ({ x, y: 2 * x }));
+
+            g2.append('path')
+                .datum(data2)
+                .attr('d', line2)
+                .attr('fill', 'none')
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 3);
+
+            // Labels
+            g1.append('text')
+                .attr('x', plotWidth / 2).attr('y', -10)
+                .attr('text-anchor', 'middle')
+                .attr('fill', '#60a5fa')
+                .attr('font-size', '1.25rem')
+                .attr('font-weight', 'bold')
+                .text('f(x) = x^2');
+
+            g2.append('text')
+                .attr('x', plotWidth / 2).attr('y', -10)
+                .attr('text-anchor', 'middle')
+                .attr('fill', '#f97316')
+                .attr('font-size', '1.25rem')
+                .attr('font-weight', 'bold')
+                .text("f'(x) = 2x");
+
+            // Interactive elements
+            const tangentLine = g1.append('line')
+                .attr('stroke', '#fbbf24')
+                .attr('stroke-width', 2);
+
+            const point1 = g1.append('circle')
+                .attr('r', 7)
+                .attr('fill', '#fbbf24')
+                .attr('stroke', 'white')
+                .attr('stroke-width', 2);
+
+            const point2 = g2.append('circle')
+                .attr('r', 7)
+                .attr('fill', '#fbbf24')
+                .attr('stroke', 'white')
+                .attr('stroke-width', 2);
+
+            const slopeText = g1.append('text')
+                .attr('fill', '#fbbf24')
+                .attr('font-size', '1.1rem')
+                .attr('font-weight', 'bold');
+
+            function update(x) {
+                const y = x * x;
+                const slope = 2 * x;
+
+                point1.attr('cx', xScale1(x)).attr('cy', yScale1(y));
+                point2.attr('cx', xScale2(x)).attr('cy', yScale2(slope));
+
+                const dx = 1;
+                tangentLine
+                    .attr('x1', xScale1(x - dx))
+                    .attr('y1', yScale1(y - slope * dx))
+                    .attr('x2', xScale1(x + dx))
+                    .attr('y2', yScale1(y + slope * dx));
+
+                slopeText
+                    .attr('x', xScale1(x) + 15)
+                    .attr('y', yScale1(y) - 15)
+                    .text(`slope = ${slope.toFixed(1)}`);
+            }
+
+            // Animate
+            let t = 0;
+            function animate() {
+                t += 0.02;
+                const x = 2 * Math.sin(t);
+                update(x);
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // ===== Constant Rule Visualization (Slide 8) =====
+        function drawConstantViz() {
+            const container = document.getElementById('constant-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 220;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-4, 4]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-1, 5]).range([plotHeight, 0]);
+
+            // Grid
+            for (let i = 0; i <= 5; i++) {
+                g.append('line')
+                    .attr('x1', 0).attr('x2', plotWidth)
+                    .attr('y1', yScale(i)).attr('y2', yScale(i))
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${yScale(0)})`)
+                .call(d3.axisBottom(xScale).ticks(8))
+                .selectAll('text').attr('font-size', '1rem').attr('fill', '#b8c4d6');
+            g.append('g')
+                .attr('transform', `translate(${xScale(0)},0)`)
+                .call(d3.axisLeft(yScale).ticks(5))
+                .selectAll('text').attr('font-size', '1rem').attr('fill', '#b8c4d6');
+
+            // Constant line y = 3
+            g.append('line')
+                .attr('x1', xScale(-4)).attr('y1', yScale(3))
+                .attr('x2', xScale(4)).attr('y2', yScale(3))
+                .attr('stroke', '#7c3aed')
+                .attr('stroke-width', 3);
+
+            // Label
+            g.append('text')
+                .attr('x', xScale(3)).attr('y', yScale(3.5))
+                .attr('fill', '#7c3aed')
+                .attr('font-size', '1.25rem')
+                .attr('font-weight', 'bold')
+                .text('f(x) = 3');
+
+            // Tangent indicators
+            const points = [-2, 0, 2];
+            points.forEach((x, i) => {
+                g.append('line')
+                    .attr('x1', xScale(x - 0.8)).attr('y1', yScale(3))
+                    .attr('x2', xScale(x + 0.8)).attr('y2', yScale(3))
+                    .attr('stroke', '#fbbf24')
+                    .attr('stroke-width', 2)
+                    .attr('stroke-dasharray', '5,3')
+                    .attr('opacity', 0)
+                    .transition()
+                    .delay(i * 400)
+                    .duration(400)
+                    .attr('opacity', 1);
+
+                g.append('circle')
+                    .attr('cx', xScale(x)).attr('cy', yScale(3))
+                    .attr('r', 5)
+                    .attr('fill', '#fbbf24')
+                    .attr('opacity', 0)
+                    .transition()
+                    .delay(i * 400)
+                    .duration(400)
+                    .attr('opacity', 1);
+
+                g.append('text')
+                    .attr('x', xScale(x)).attr('y', yScale(3) + 25)
+                    .attr('text-anchor', 'middle')
+                    .attr('fill', '#fbbf24')
+                    .attr('font-size', '1rem')
+                    .attr('font-weight', 'bold')
+                    .text('slope = 0')
+                    .attr('opacity', 0)
+                    .transition()
+                    .delay(i * 400 + 200)
+                    .duration(200)
+                    .attr('opacity', 1);
+            });
+        }
+
+        // ===== Sum Rule Visualization (Slide 16) =====
+        function drawSumRuleViz() {
+            const container = document.getElementById('sum-rule-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 800;
+            const height = 350;
+            const margin = { top: 30, right: 30, bottom: 40, left: 50 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const f = x => x * x;
+            const gFunc = x => x;
+            const sum = x => f(x) + gFunc(x);
+
+            const fPrime = x => 2 * x;
+            const gPrime = x => 1;
+            const sumPrime = x => fPrime(x) + gPrime(x);
+
+            const xScale = d3.scaleLinear().domain([-2, 3]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-1, 12]).range([plotHeight, 0]);
+
+            // Grid
+            for (let i = 0; i <= 12; i += 2) {
+                g.append('line')
+                    .attr('x1', 0).attr('x2', plotWidth)
+                    .attr('y1', yScale(i)).attr('y2', yScale(i))
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+            for (let i = -2; i <= 3; i++) {
+                g.append('line')
+                    .attr('x1', xScale(i)).attr('x2', xScale(i))
+                    .attr('y1', 0).attr('y2', plotHeight)
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${yScale(0)})`)
+                .call(d3.axisBottom(xScale).ticks(5))
+                .selectAll('text').attr('font-size', '1rem').attr('fill', '#b8c4d6');
+            g.append('g')
+                .attr('transform', `translate(${xScale(0)},0)`)
+                .call(d3.axisLeft(yScale).ticks(6))
+                .selectAll('text').attr('font-size', '1rem').attr('fill', '#b8c4d6');
+
+            // Line generator
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y));
+
+            const xRange = d3.range(-2, 3.05, 0.05);
+
+            // Draw f(x) = x^2
+            const dataF = xRange.map(x => ({ x, y: f(x) }));
+            g.append('path')
+                .datum(dataF)
+                .attr('d', line)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '6,3');
+
+            // Draw g(x) = x
+            const dataG = xRange.map(x => ({ x, y: gFunc(x) }));
+            g.append('path')
+                .datum(dataG)
+                .attr('d', line)
+                .attr('fill', 'none')
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '6,3');
+
+            // Draw sum
+            const dataSum = xRange.map(x => ({ x, y: sum(x) }));
+            g.append('path')
+                .datum(dataSum)
+                .attr('d', line)
+                .attr('fill', 'none')
+                .attr('stroke', '#7c3aed')
+                .attr('stroke-width', 3);
+
+            // Legend
+            const legend = g.append('g').attr('transform', `translate(${plotWidth - 180}, 10)`);
+
+            legend.append('line').attr('x1', 0).attr('y1', 0).attr('x2', 25).attr('y2', 0)
+                .attr('stroke', '#60a5fa').attr('stroke-width', 2).attr('stroke-dasharray', '6,3');
+            legend.append('text').attr('x', 30).attr('y', 5).text('f(x) = x^2')
+                .attr('fill', '#60a5fa').attr('font-size', '1rem');
+
+            legend.append('line').attr('x1', 0).attr('y1', 22).attr('x2', 25).attr('y2', 22)
+                .attr('stroke', '#22c55e').attr('stroke-width', 2).attr('stroke-dasharray', '6,3');
+            legend.append('text').attr('x', 30).attr('y', 27).text('g(x) = x')
+                .attr('fill', '#22c55e').attr('font-size', '1rem');
+
+            legend.append('line').attr('x1', 0).attr('y1', 44).attr('x2', 25).attr('y2', 44)
+                .attr('stroke', '#7c3aed').attr('stroke-width', 3);
+            legend.append('text').attr('x', 30).attr('y', 49).text('(f+g)(x)')
+                .attr('fill', '#7c3aed').attr('font-size', '1rem');
+
+            // Interactive elements
+            const pointF = g.append('circle').attr('r', 5).attr('fill', '#60a5fa');
+            const pointG = g.append('circle').attr('r', 5).attr('fill', '#22c55e');
+            const pointSum = g.append('circle').attr('r', 7).attr('fill', '#7c3aed');
+
+            const tangentSum = g.append('line')
+                .attr('stroke', '#fbbf24')
+                .attr('stroke-width', 2);
+
+            // Slope display box
+            const slopeBox = g.append('g').attr('transform', `translate(10, ${plotHeight - 70})`);
+            slopeBox.append('rect')
+                .attr('width', 180)
+                .attr('height', 65)
+                .attr('fill', 'rgba(124, 58, 237, 0.1)')
+                .attr('stroke', '#7c3aed')
+                .attr('stroke-width', 1)
+                .attr('rx', 5);
+            const slopeTextF = slopeBox.append('text').attr('x', 10).attr('y', 18).attr('fill', '#60a5fa').attr('font-size', '1rem');
+            const slopeTextG = slopeBox.append('text').attr('x', 10).attr('y', 36).attr('fill', '#22c55e').attr('font-size', '1rem');
+            const slopeTextSum = slopeBox.append('text').attr('x', 10).attr('y', 54).attr('fill', '#7c3aed').attr('font-size', '1rem').attr('font-weight', 'bold');
+
+            function update(x) {
+                pointF.attr('cx', xScale(x)).attr('cy', yScale(f(x)));
+                pointG.attr('cx', xScale(x)).attr('cy', yScale(gFunc(x)));
+                pointSum.attr('cx', xScale(x)).attr('cy', yScale(sum(x)));
+
+                const slope = sumPrime(x);
+                const dx = 0.8;
+                tangentSum
+                    .attr('x1', xScale(x - dx))
+                    .attr('y1', yScale(sum(x) - slope * dx))
+                    .attr('x2', xScale(x + dx))
+                    .attr('y2', yScale(sum(x) + slope * dx));
+
+                slopeTextF.text(`f' = ${fPrime(x).toFixed(1)}`);
+                slopeTextG.text(`g' = ${gPrime(x).toFixed(1)}`);
+                slopeTextSum.text(`(f+g)' = ${sumPrime(x).toFixed(1)}`);
+            }
+
+            // Animate
+            let t = 0;
+            function animate() {
+                t += 0.015;
+                const x = 0.5 + 1.5 * Math.sin(t);
+                update(x);
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // ===== Trigger Visualizations on Slide Entry =====
+        const visualizationSlides = {
+            5: drawPowerRuleViz,
+            8: drawConstantViz,
+            16: drawSumRuleViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        // Check periodically for slide changes
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Also check on hash changes
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        // Initial check after DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

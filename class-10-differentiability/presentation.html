@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 10: Differentiability and Continuity | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #7c3aed;
+            --theme-color-light: #8b5cf6;
+        }
+
+        /* Definition box styling */
+        .definition-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--theme-color);
+            padding: 2rem 2.5rem;
+            border-radius: 12px;
+            margin: 1.5rem auto;
+            max-width: 850px;
+            text-align: center;
+        }
+
+        .definition-box .label {
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--theme-color);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .definition-box .math-content {
+            font-size: 2rem;
+        }
+
+        /* Theorem box */
+        .theorem-box {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05));
+            border: 2px solid var(--theme-color);
+            padding: 2rem 2.5rem;
+            border-radius: 12px;
+            margin: 1.5rem auto;
+            max-width: 850px;
+            text-align: center;
+        }
+
+        .theorem-box .label {
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: var(--accent-secondary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Case display */
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 2rem auto;
+        }
+
+        .case-item {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-top: 4px solid var(--theme-color);
+            text-align: center;
+        }
+
+        .case-item h3 {
+            color: var(--theme-color);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .case-item .viz {
+            height: 150px;
+            margin-bottom: 1rem;
+        }
+
+        .case-item p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Implication diagram */
+        .implication-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .implication-box {
+            background: var(--bg-secondary);
+            padding: 1.5rem 2.5rem;
+            border-radius: 12px;
+            font-size: 1.75rem;
+            font-family: var(--font-display);
+        }
+
+        .implication-box.true {
+            border: 2px solid #22c55e;
+            color: #22c55e;
+        }
+
+        .implication-box.false {
+            border: 2px solid #ef4444;
+            color: #ef4444;
+        }
+
+        .implication-arrow {
+            font-size: 3rem;
+            color: var(--theme-color);
+        }
+
+        .implication-arrow.not {
+            color: #ef4444;
+            position: relative;
+        }
+
+        .implication-arrow.not::after {
+            content: '/';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 4rem;
+            color: #ef4444;
+        }
+
+        /* Example list */
+        .example-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 800px;
+            margin: 1.5rem auto;
+        }
+
+        .example-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            background: var(--bg-secondary);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+        }
+
+        .example-item .check {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .example-item .check.yes {
+            background: #22c55e;
+            color: white;
+        }
+
+        .example-item .check.no {
+            background: #ef4444;
+            color: white;
+        }
+
+        .example-item .content {
+            flex: 1;
+            font-size: 1.25rem;
+        }
+
+        /* Slider controls */
+        .slider-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            padding: 1rem 2rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .slider-control label {
+            font-size: 1.25rem;
+            font-family: var(--font-display);
+            color: var(--text-primary);
+        }
+
+        .slider-control input[type="range"] {
+            width: 300px;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--theme-color);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .value-display {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            color: var(--accent-secondary);
+            min-width: 150px;
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+        }
+
+        /* Warning box */
+        .warning-box {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
+            border: 2px solid #ef4444;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            margin: 1.5rem auto;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .warning-box .title {
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: #ef4444;
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .warning-box p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        /* Summary table */
+        .summary-table {
+            width: 100%;
+            max-width: 800px;
+            margin: 1.5rem auto;
+            border-collapse: collapse;
+        }
+
+        .summary-table th,
+        .summary-table td {
+            padding: 1rem 1.5rem;
+            text-align: center;
+            border: 1px solid var(--bg-tertiary);
+            font-size: 1.25rem;
+        }
+
+        .summary-table th {
+            background: var(--theme-color);
+            color: white;
+            font-family: var(--font-display);
+        }
+
+        .summary-table tr:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Differentiability and Continuity">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 2: Differentiation Fundamentals</div>
+                <h1>Differentiability and Continuity</h1>
+                <p class="subtitle">When Derivatives Exist (and When They Don't)</p>
+                <p class="meta">Class 10 | CED 2.4 | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: The Big Question -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="The Big Question">
+            <div class="slide-content">
+                <p class="statement">Does every function have a derivative at every point?</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: The Answer -->
+        <div class="slide slide-statement" data-slide="2" data-section="Opening" data-title="The Answer">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 4rem; color: #ef4444;">No!</p>
+                <p style="font-size: 1.75rem; color: var(--text-secondary); margin-top: 2rem;">And understanding when derivatives fail to exist is crucial for AP Calculus.</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Differentiability Definition -->
+        <div class="slide slide-visual" data-slide="3" data-section="Differentiability" data-title="Definition">
+            <div class="slide-content">
+                <h2>What Does Differentiable Mean?</h2>
+                <div class="definition-box">
+                    <div class="label">Definition</div>
+                    <div class="math-content">
+                        <p>A function \(f\) is <strong>differentiable at \(x = a\)</strong> if</p>
+                        <p style="margin-top: 1rem;">\[\lim_{h \to 0} \frac{f(a+h) - f(a)}{h} \text{ exists}\]</p>
+                    </div>
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 1.5rem;">In other words: the derivative \(f'(a)\) exists and is a finite number.</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Left and Right Derivatives -->
+        <div class="slide slide-visual" data-slide="4" data-section="Differentiability" data-title="One-Sided Derivatives">
+            <div class="slide-content">
+                <h2>One-Sided Derivatives</h2>
+                <div style="display: flex; justify-content: center; gap: 3rem; margin: 2rem 0;">
+                    <div class="definition-box" style="max-width: 400px;">
+                        <div class="label">Left-Hand Derivative</div>
+                        <p style="font-size: 1.5rem;">\[f'_-(a) = \lim_{h \to 0^-} \frac{f(a+h) - f(a)}{h}\]</p>
+                    </div>
+                    <div class="definition-box" style="max-width: 400px;">
+                        <div class="label">Right-Hand Derivative</div>
+                        <p style="font-size: 1.5rem;">\[f'_+(a) = \lim_{h \to 0^+} \frac{f(a+h) - f(a)}{h}\]</p>
+                    </div>
+                </div>
+                <p style="font-size: 1.5rem; color: var(--accent-secondary);">For \(f'(a)\) to exist: \(f'_-(a) = f'_+(a)\)</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: When Derivatives Fail -->
+        <div class="slide slide-visual" data-slide="5" data-section="Non-Differentiability" data-title="Three Cases">
+            <div class="slide-content">
+                <h2>Three Ways Derivatives Fail to Exist</h2>
+                <div class="case-grid">
+                    <div class="case-item">
+                        <h3>1. Corner / Cusp</h3>
+                        <div class="viz" id="corner-viz"></div>
+                        <p>Abrupt change in direction</p>
+                    </div>
+                    <div class="case-item">
+                        <h3>2. Discontinuity</h3>
+                        <div class="viz" id="discontinuity-viz"></div>
+                        <p>Function not continuous</p>
+                    </div>
+                    <div class="case-item">
+                        <h3>3. Vertical Tangent</h3>
+                        <div class="viz" id="vertical-viz"></div>
+                        <p>Slope becomes infinite</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Corner Example -->
+        <div class="slide slide-visual" data-slide="6" data-section="Non-Differentiability" data-title="Corner Example">
+            <div class="slide-content">
+                <h2>Case 1: Corner at \(x = 0\)</h2>
+                <div id="abs-value-viz" class="visualization"></div>
+                <p style="font-size: 1.5rem; margin-top: 1rem;">\(f(x) = |x|\) has a corner at \(x = 0\)</p>
+                <p class="caption">The left slope is -1, the right slope is +1. They don't match!</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: Absolute Value Analysis -->
+        <div class="slide slide-visual" data-slide="7" data-section="Non-Differentiability" data-title="Absolute Value Analysis">
+            <div class="slide-content">
+                <h2>Why \(|x|\) Isn't Differentiable at 0</h2>
+                <div style="display: flex; justify-content: center; gap: 3rem; margin: 2rem 0;">
+                    <div style="background: var(--bg-secondary); padding: 1.5rem 2rem; border-radius: 8px; border-left: 4px solid #60a5fa;">
+                        <p style="font-size: 1.25rem; color: #60a5fa; margin-bottom: 0.75rem;">From the Left</p>
+                        <p style="font-size: 1.5rem;">\[\lim_{h \to 0^-} \frac{|0+h| - |0|}{h} = \lim_{h \to 0^-} \frac{-h}{h} = -1\]</p>
+                    </div>
+                    <div style="background: var(--bg-secondary); padding: 1.5rem 2rem; border-radius: 8px; border-left: 4px solid #f97316;">
+                        <p style="font-size: 1.25rem; color: #f97316; margin-bottom: 0.75rem;">From the Right</p>
+                        <p style="font-size: 1.5rem;">\[\lim_{h \to 0^+} \frac{|0+h| - |0|}{h} = \lim_{h \to 0^+} \frac{h}{h} = 1\]</p>
+                    </div>
+                </div>
+                <p style="font-size: 1.5rem; color: #ef4444; margin-top: 1.5rem;">\(-1 \neq 1\), so \(f'(0)\) does not exist.</p>
+            </div>
+        </div>
+
+        <!-- Slide 8: Cusp Example -->
+        <div class="slide slide-visual" data-slide="8" data-section="Non-Differentiability" data-title="Cusp Example">
+            <div class="slide-content">
+                <h2>Case 1 (Variant): Cusp at \(x = 0\)</h2>
+                <div id="cusp-viz" class="visualization"></div>
+                <p style="font-size: 1.5rem; margin-top: 1rem;">\(f(x) = x^{2/3}\) has a cusp at \(x = 0\)</p>
+                <p class="caption">Both sides approach vertical, but from opposite directions.</p>
+            </div>
+        </div>
+
+        <!-- Slide 9: Discontinuity Example -->
+        <div class="slide slide-visual" data-slide="9" data-section="Non-Differentiability" data-title="Discontinuity Example">
+            <div class="slide-content">
+                <h2>Case 2: Discontinuity</h2>
+                <div id="jump-viz" class="visualization"></div>
+                <p style="font-size: 1.5rem; margin-top: 1rem;">A step function has a jump discontinuity</p>
+                <p class="caption">If the function isn't continuous, it can't be differentiable!</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Vertical Tangent Example -->
+        <div class="slide slide-visual" data-slide="10" data-section="Non-Differentiability" data-title="Vertical Tangent Example">
+            <div class="slide-content">
+                <h2>Case 3: Vertical Tangent</h2>
+                <div id="cbrt-viz" class="visualization"></div>
+                <p style="font-size: 1.5rem; margin-top: 1rem;">\(f(x) = \sqrt[3]{x}\) has a vertical tangent at \(x = 0\)</p>
+                <p class="caption">The slope becomes infinite: \(f'(x) = \frac{1}{3x^{2/3}} \to \infty\) as \(x \to 0\)</p>
+            </div>
+        </div>
+
+        <!-- Slide 11: The Key Theorem -->
+        <div class="slide slide-visual" data-slide="11" data-section="The Theorem" data-title="Differentiability Implies Continuity">
+            <div class="slide-content">
+                <h2>The Fundamental Relationship</h2>
+                <div class="theorem-box">
+                    <div class="label">Theorem</div>
+                    <p style="font-size: 1.75rem; margin-top: 1rem;">If \(f\) is differentiable at \(x = a\), then \(f\) is continuous at \(x = a\).</p>
+                </div>
+                <div class="implication-diagram" style="margin-top: 2rem;">
+                    <div class="implication-box">Differentiable</div>
+                    <div class="implication-arrow">\(\Rightarrow\)</div>
+                    <div class="implication-box">Continuous</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Contrapositive -->
+        <div class="slide slide-visual" data-slide="12" data-section="The Theorem" data-title="Contrapositive">
+            <div class="slide-content">
+                <h2>The Contrapositive</h2>
+                <div class="theorem-box" style="border-color: #ef4444;">
+                    <div class="label" style="color: #ef4444;">Contrapositive</div>
+                    <p style="font-size: 1.75rem; margin-top: 1rem;">If \(f\) is <strong>not continuous</strong> at \(x = a\), then \(f\) is <strong>not differentiable</strong> at \(x = a\).</p>
+                </div>
+                <div class="implication-diagram" style="margin-top: 2rem;">
+                    <div class="implication-box" style="border-color: #ef4444; color: #ef4444;">Not Continuous</div>
+                    <div class="implication-arrow">\(\Rightarrow\)</div>
+                    <div class="implication-box" style="border-color: #ef4444; color: #ef4444;">Not Differentiable</div>
+                </div>
+                <p class="caption">If there's a discontinuity, don't even bother checking for differentiability!</p>
+            </div>
+        </div>
+
+        <!-- Slide 13: The Converse is FALSE -->
+        <div class="slide slide-visual" data-slide="13" data-section="The Theorem" data-title="Converse is False">
+            <div class="slide-content">
+                <h2>But the Converse is FALSE!</h2>
+                <div class="warning-box">
+                    <div class="title">Common Mistake</div>
+                    <p>Continuous does NOT imply differentiable!</p>
+                </div>
+                <div class="implication-diagram" style="margin-top: 2rem;">
+                    <div class="implication-box">Continuous</div>
+                    <div class="implication-arrow not">\(\nRightarrow\)</div>
+                    <div class="implication-box">Differentiable</div>
+                </div>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">Example: \(f(x) = |x|\) is continuous everywhere but not differentiable at \(x = 0\)</p>
+            </div>
+        </div>
+
+        <!-- Slide 14: Visual Summary -->
+        <div class="slide slide-visual" data-slide="14" data-section="The Theorem" data-title="Visual Relationship">
+            <div class="slide-content">
+                <h2>Visualizing the Relationship</h2>
+                <div id="venn-diagram" class="visualization"></div>
+                <p class="caption">Differentiable functions are a subset of continuous functions</p>
+            </div>
+        </div>
+
+        <!-- Slide 15: Interactive Explorer -->
+        <div class="slide slide-visual" data-slide="15" data-section="Exploration" data-title="Interactive Explorer">
+            <div class="slide-content">
+                <h2>Explore: Secant to Tangent at a Corner</h2>
+                <div id="corner-explorer-viz" class="visualization"></div>
+                <div class="slider-control">
+                    <label>Approach from:</label>
+                    <input type="range" id="corner-slider" min="-2" max="2" step="0.01" value="1">
+                    <div class="value-display">
+                        <span id="corner-h">h = 1.00</span>
+                    </div>
+                </div>
+                <p class="caption">Notice how the slopes from left and right don't converge to the same value!</p>
+            </div>
+        </div>
+
+        <!-- Slide 16: Quick Check -->
+        <div class="slide slide-visual" data-slide="16" data-section="Practice" data-title="Quick Check">
+            <div class="slide-content">
+                <h2>Quick Check: Differentiable at \(x = 0\)?</h2>
+                <div class="example-list">
+                    <div class="example-item">
+                        <div class="check yes">Y</div>
+                        <div class="content">\(f(x) = x^2\) - smooth parabola</div>
+                    </div>
+                    <div class="example-item">
+                        <div class="check no">N</div>
+                        <div class="content">\(g(x) = |x|\) - corner at origin</div>
+                    </div>
+                    <div class="example-item">
+                        <div class="check yes">Y</div>
+                        <div class="content">\(h(x) = x^3\) - smooth curve</div>
+                    </div>
+                    <div class="example-item">
+                        <div class="check no">N</div>
+                        <div class="content">\(k(x) = \sqrt[3]{x}\) - vertical tangent</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Practice Problem -->
+        <div class="slide slide-exercise" data-slide="17" data-section="Practice" data-title="Practice Problem">
+            <div class="slide-content">
+                <h2>Practice Problem</h2>
+                <div class="prompt">
+                    <p>For the piecewise function:</p>
+                    <p style="font-size: 1.75rem; margin: 1rem 0;">\[f(x) = \begin{cases} x^2 & x \leq 1 \\ 2x - 1 & x > 1 \end{cases}\]</p>
+                    <p style="margin-top: 1rem;">Is \(f\) differentiable at \(x = 1\)?</p>
+                </div>
+                <p style="margin-top: 2rem; color: var(--accent-secondary);">3 minutes - Check continuity first, then derivatives!</p>
+            </div>
+        </div>
+
+        <!-- Slide 18: Practice Solution -->
+        <div class="slide slide-visual" data-slide="18" data-section="Practice" data-title="Practice Solution">
+            <div class="slide-content">
+                <h2>Solution</h2>
+                <div style="max-width: 800px; margin: 0 auto; text-align: left;">
+                    <div style="background: var(--bg-secondary); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <p style="color: var(--theme-color); font-weight: 600;">Step 1: Check continuity</p>
+                        <p style="font-size: 1.25rem;">\(\lim_{x \to 1^-} x^2 = 1\) and \(\lim_{x \to 1^+} (2x-1) = 1\) and \(f(1) = 1\) &#10003;</p>
+                    </div>
+                    <div style="background: var(--bg-secondary); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <p style="color: var(--theme-color); font-weight: 600;">Step 2: Check derivatives</p>
+                        <p style="font-size: 1.25rem;">Left: \(f'_-(1) = 2x|_{x=1} = 2\)</p>
+                        <p style="font-size: 1.25rem;">Right: \(f'_+(1) = 2\)</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05)); padding: 1rem 1.5rem; border-radius: 8px; border: 2px solid #22c55e;">
+                        <p style="font-size: 1.5rem; color: #22c55e; text-align: center;"><strong>Yes!</strong> \(f'(1) = 2\)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Summary Table -->
+        <div class="slide slide-visual" data-slide="19" data-section="Summary" data-title="Summary Table">
+            <div class="slide-content">
+                <h2>Differentiability Summary</h2>
+                <table class="summary-table">
+                    <tr>
+                        <th>Feature</th>
+                        <th>Differentiable?</th>
+                        <th>Continuous?</th>
+                    </tr>
+                    <tr>
+                        <td>Smooth curve</td>
+                        <td style="color: #22c55e;">Yes</td>
+                        <td style="color: #22c55e;">Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Corner / Cusp</td>
+                        <td style="color: #ef4444;">No</td>
+                        <td style="color: #22c55e;">Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Vertical tangent</td>
+                        <td style="color: #ef4444;">No</td>
+                        <td style="color: #22c55e;">Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Jump discontinuity</td>
+                        <td style="color: #ef4444;">No</td>
+                        <td style="color: #ef4444;">No</td>
+                    </tr>
+                    <tr>
+                        <td>Removable discontinuity</td>
+                        <td style="color: #ef4444;">No</td>
+                        <td style="color: #ef4444;">No</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 20: Key Takeaways -->
+        <div class="slide slide-list" data-slide="20" data-section="Summary" data-title="Key Takeaways">
+            <div class="slide-content">
+                <h2>Key Takeaways</h2>
+                <ul>
+                    <li><strong>Differentiable</strong> means the derivative exists (limit exists and is finite)</li>
+                    <li>Three failure modes: corners, discontinuities, vertical tangents</li>
+                    <li><strong>Differentiable implies continuous</strong> (always true!)</li>
+                    <li><strong>Continuous does NOT imply differentiable</strong></li>
+                    <li>Always check <em>continuity first</em> when analyzing differentiability</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 21: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="21" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p>Give an example of a function that is:</p>
+                    <p style="margin-top: 1.5rem; color: var(--theme-color);">1. Continuous everywhere but not differentiable at \(x = 2\)</p>
+                    <p style="margin-top: 1rem; color: var(--accent-secondary);">2. Neither continuous nor differentiable at \(x = 0\)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22: Coming Up -->
+        <div class="slide slide-statement" data-slide="22" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Next: The Power Rule</p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 1.5rem;">Shortcuts that make finding derivatives much faster!</p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 23</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 10: Differentiability and Continuity</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">&#8592; Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">&#8592; Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next &#8594;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Small Case Visualizations (Slide 5) =====
+        function drawCaseViz() {
+            // Corner visualization
+            const cornerContainer = document.getElementById('corner-viz');
+            if (cornerContainer && !cornerContainer.querySelector('svg')) {
+                const svg = d3.select(cornerContainer)
+                    .append('svg')
+                    .attr('viewBox', '0 0 140 140')
+                    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+                const g = svg.append('g').attr('transform', 'translate(70, 120)');
+
+                // Axes
+                g.append('line').attr('x1', -60).attr('y1', 0).attr('x2', 60).attr('y2', 0)
+                    .attr('stroke', '#4a5568').attr('stroke-width', 1);
+                g.append('line').attr('x1', 0).attr('y1', 10).attr('x2', 0).attr('y2', -100)
+                    .attr('stroke', '#4a5568').attr('stroke-width', 1);
+
+                // |x| shape
+                g.append('path')
+                    .attr('d', 'M -50 -50 L 0 0 L 50 -50')
+                    .attr('fill', 'none')
+                    .attr('stroke', '#7c3aed')
+                    .attr('stroke-width', 3);
+
+                // Corner point
+                g.append('circle').attr('cx', 0).attr('cy', 0).attr('r', 5).attr('fill', '#ef4444');
+            }
+
+            // Discontinuity visualization
+            const discontContainer = document.getElementById('discontinuity-viz');
+            if (discontContainer && !discontContainer.querySelector('svg')) {
+                const svg = d3.select(discontContainer)
+                    .append('svg')
+                    .attr('viewBox', '0 0 140 140')
+                    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+                const g = svg.append('g').attr('transform', 'translate(70, 70)');
+
+                // Axes
+                g.append('line').attr('x1', -60).attr('y1', 0).attr('x2', 60).attr('y2', 0)
+                    .attr('stroke', '#4a5568').attr('stroke-width', 1);
+                g.append('line').attr('x1', 0).attr('y1', 50).attr('x2', 0).attr('y2', -50)
+                    .attr('stroke', '#4a5568').attr('stroke-width', 1);
+
+                // Step function
+                g.append('line').attr('x1', -50).attr('y1', 20).attr('x2', 0).attr('y2', 20)
+                    .attr('stroke', '#7c3aed').attr('stroke-width', 3);
+                g.append('line').attr('x1', 0).attr('y1', -20).attr('x2', 50).attr('y2', -20)
+                    .attr('stroke', '#7c3aed').attr('stroke-width', 3);
+
+                // Open/closed circles
+                g.append('circle').attr('cx', 0).attr('cy', 20).attr('r', 5)
+                    .attr('fill', 'none').attr('stroke', '#ef4444').attr('stroke-width', 2);
+                g.append('circle').attr('cx', 0).attr('cy', -20).attr('r', 5).attr('fill', '#ef4444');
+            }
+
+            // Vertical tangent visualization
+            const vertContainer = document.getElementById('vertical-viz');
+            if (vertContainer && !vertContainer.querySelector('svg')) {
+                const svg = d3.select(vertContainer)
+                    .append('svg')
+                    .attr('viewBox', '0 0 140 140')
+                    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+                const g = svg.append('g').attr('transform', 'translate(70, 70)');
+
+                // Axes
+                g.append('line').attr('x1', -60).attr('y1', 0).attr('x2', 60).attr('y2', 0)
+                    .attr('stroke', '#4a5568').attr('stroke-width', 1);
+                g.append('line').attr('x1', 0).attr('y1', 50).attr('x2', 0).attr('y2', -50)
+                    .attr('stroke', '#4a5568').attr('stroke-width', 1);
+
+                // Cube root shape
+                const line = d3.line().curve(d3.curveCatmullRom);
+                const data = [];
+                for (let x = -50; x <= 50; x += 2) {
+                    const scaledX = x / 50;
+                    const y = -40 * Math.sign(scaledX) * Math.pow(Math.abs(scaledX), 1/3);
+                    data.push([x, y]);
+                }
+                g.append('path')
+                    .attr('d', line(data))
+                    .attr('fill', 'none')
+                    .attr('stroke', '#7c3aed')
+                    .attr('stroke-width', 3);
+
+                // Vertical tangent line
+                g.append('line').attr('x1', 0).attr('y1', -45).attr('x2', 0).attr('y2', 45)
+                    .attr('stroke', '#fbbf24').attr('stroke-width', 2).attr('stroke-dasharray', '4,3');
+            }
+        }
+
+        // ===== Absolute Value Visualization (Slide 6) =====
+        function drawAbsValueViz() {
+            const container = document.getElementById('abs-value-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-4, 4]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-1, 5]).range([plotHeight, 0]);
+
+            // Grid
+            for (let i = -1; i <= 5; i++) {
+                g.append('line')
+                    .attr('x1', 0).attr('x2', plotWidth)
+                    .attr('y1', yScale(i)).attr('y2', yScale(i))
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+            for (let i = -4; i <= 4; i++) {
+                g.append('line')
+                    .attr('x1', xScale(i)).attr('x2', xScale(i))
+                    .attr('y1', 0).attr('y2', plotHeight)
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${yScale(0)})`)
+                .call(d3.axisBottom(xScale).ticks(8))
+                .selectAll('text').attr('font-size', '1.25rem').attr('fill', '#b8c4d6');
+            g.append('g')
+                .attr('transform', `translate(${xScale(0)},0)`)
+                .call(d3.axisLeft(yScale).ticks(6))
+                .selectAll('text').attr('font-size', '1.25rem').attr('fill', '#b8c4d6');
+
+            // |x| curve
+            g.append('line')
+                .attr('x1', xScale(-4)).attr('y1', yScale(4))
+                .attr('x2', xScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#60a5fa').attr('stroke-width', 3);
+            g.append('line')
+                .attr('x1', xScale(0)).attr('y1', yScale(0))
+                .attr('x2', xScale(4)).attr('y2', yScale(4))
+                .attr('stroke', '#60a5fa').attr('stroke-width', 3);
+
+            // Tangent lines approaching from left and right
+            g.append('line')
+                .attr('x1', xScale(-3)).attr('y1', yScale(3.5))
+                .attr('x2', xScale(0.5)).attr('y2', yScale(0))
+                .attr('stroke', '#60a5fa').attr('stroke-width', 2).attr('stroke-dasharray', '6,3').attr('opacity', 0.7);
+
+            g.append('line')
+                .attr('x1', xScale(-0.5)).attr('y1', yScale(0))
+                .attr('x2', xScale(3)).attr('y2', yScale(3.5))
+                .attr('stroke', '#f97316').attr('stroke-width', 2).attr('stroke-dasharray', '6,3').attr('opacity', 0.7);
+
+            // Corner point
+            g.append('circle')
+                .attr('cx', xScale(0)).attr('cy', yScale(0))
+                .attr('r', 8).attr('fill', '#ef4444');
+
+            // Labels
+            g.append('text')
+                .attr('x', xScale(-2)).attr('y', yScale(3))
+                .attr('fill', '#60a5fa').attr('font-size', '1.25rem')
+                .text('slope = -1');
+
+            g.append('text')
+                .attr('x', xScale(1.5)).attr('y', yScale(3))
+                .attr('fill', '#f97316').attr('font-size', '1.25rem')
+                .text('slope = +1');
+
+            g.append('text')
+                .attr('x', xScale(3)).attr('y', yScale(4.5))
+                .attr('fill', '#60a5fa').attr('font-size', '1.25rem')
+                .text('f(x) = |x|');
+        }
+
+        // ===== Cusp Visualization (Slide 8) =====
+        function drawCuspViz() {
+            const container = document.getElementById('cusp-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-3, 3]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-0.5, 3]).range([plotHeight, 0]);
+
+            // Grid
+            for (let i = 0; i <= 3; i++) {
+                g.append('line')
+                    .attr('x1', 0).attr('x2', plotWidth)
+                    .attr('y1', yScale(i)).attr('y2', yScale(i))
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+            for (let i = -3; i <= 3; i++) {
+                g.append('line')
+                    .attr('x1', xScale(i)).attr('x2', xScale(i))
+                    .attr('y1', 0).attr('y2', plotHeight)
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${yScale(0)})`)
+                .call(d3.axisBottom(xScale).ticks(6))
+                .selectAll('text').attr('font-size', '1.25rem').attr('fill', '#b8c4d6');
+            g.append('g')
+                .attr('transform', `translate(${xScale(0)},0)`)
+                .call(d3.axisLeft(yScale).ticks(4))
+                .selectAll('text').attr('font-size', '1.25rem').attr('fill', '#b8c4d6');
+
+            // x^(2/3) curve
+            const line = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(Math.pow(Math.abs(d), 2/3)))
+                .curve(d3.curveCatmullRom);
+
+            g.append('path')
+                .datum(d3.range(-3, 3.1, 0.1))
+                .attr('fill', 'none')
+                .attr('stroke', '#7c3aed')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Cusp point
+            g.append('circle')
+                .attr('cx', xScale(0)).attr('cy', yScale(0))
+                .attr('r', 8).attr('fill', '#ef4444');
+
+            // Label
+            g.append('text')
+                .attr('x', xScale(2)).attr('y', yScale(2))
+                .attr('fill', '#7c3aed').attr('font-size', '1.25rem')
+                .text('f(x) = x^(2/3)');
+        }
+
+        // ===== Jump Discontinuity Visualization (Slide 9) =====
+        function drawJumpViz() {
+            const container = document.getElementById('jump-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-4, 4]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-1, 4]).range([plotHeight, 0]);
+
+            // Grid
+            for (let i = -1; i <= 4; i++) {
+                g.append('line')
+                    .attr('x1', 0).attr('x2', plotWidth)
+                    .attr('y1', yScale(i)).attr('y2', yScale(i))
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+            for (let i = -4; i <= 4; i++) {
+                g.append('line')
+                    .attr('x1', xScale(i)).attr('x2', xScale(i))
+                    .attr('y1', 0).attr('y2', plotHeight)
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${yScale(0)})`)
+                .call(d3.axisBottom(xScale).ticks(8))
+                .selectAll('text').attr('font-size', '1.25rem').attr('fill', '#b8c4d6');
+            g.append('g')
+                .attr('transform', `translate(${xScale(0)},0)`)
+                .call(d3.axisLeft(yScale).ticks(5))
+                .selectAll('text').attr('font-size', '1.25rem').attr('fill', '#b8c4d6');
+
+            // Step function
+            g.append('line')
+                .attr('x1', xScale(-4)).attr('y1', yScale(1))
+                .attr('x2', xScale(0)).attr('y2', yScale(1))
+                .attr('stroke', '#7c3aed').attr('stroke-width', 3);
+
+            g.append('line')
+                .attr('x1', xScale(0)).attr('y1', yScale(3))
+                .attr('x2', xScale(4)).attr('y2', yScale(3))
+                .attr('stroke', '#7c3aed').attr('stroke-width', 3);
+
+            // Open and closed circles
+            g.append('circle')
+                .attr('cx', xScale(0)).attr('cy', yScale(1))
+                .attr('r', 6).attr('fill', 'none').attr('stroke', '#ef4444').attr('stroke-width', 2);
+
+            g.append('circle')
+                .attr('cx', xScale(0)).attr('cy', yScale(3))
+                .attr('r', 6).attr('fill', '#ef4444');
+
+            // Jump arrow
+            g.append('line')
+                .attr('x1', xScale(0.3)).attr('y1', yScale(1.2))
+                .attr('x2', xScale(0.3)).attr('y2', yScale(2.8))
+                .attr('stroke', '#fbbf24').attr('stroke-width', 2)
+                .attr('marker-end', 'url(#arrowhead)');
+
+            g.append('text')
+                .attr('x', xScale(0.6)).attr('y', yScale(2))
+                .attr('fill', '#fbbf24').attr('font-size', '1.25rem')
+                .text('jump!');
+        }
+
+        // ===== Cube Root Visualization (Slide 10) =====
+        function drawCbrtViz() {
+            const container = document.getElementById('cbrt-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-4, 4]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-2, 2]).range([plotHeight, 0]);
+
+            // Grid
+            for (let i = -2; i <= 2; i++) {
+                g.append('line')
+                    .attr('x1', 0).attr('x2', plotWidth)
+                    .attr('y1', yScale(i)).attr('y2', yScale(i))
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+            for (let i = -4; i <= 4; i++) {
+                g.append('line')
+                    .attr('x1', xScale(i)).attr('x2', xScale(i))
+                    .attr('y1', 0).attr('y2', plotHeight)
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${yScale(0)})`)
+                .call(d3.axisBottom(xScale).ticks(8))
+                .selectAll('text').attr('font-size', '1.25rem').attr('fill', '#b8c4d6');
+            g.append('g')
+                .attr('transform', `translate(${xScale(0)},0)`)
+                .call(d3.axisLeft(yScale).ticks(4))
+                .selectAll('text').attr('font-size', '1.25rem').attr('fill', '#b8c4d6');
+
+            // Cube root curve
+            const line = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(Math.sign(d) * Math.pow(Math.abs(d), 1/3)))
+                .curve(d3.curveCatmullRom);
+
+            g.append('path')
+                .datum(d3.range(-4, 4.1, 0.1))
+                .attr('fill', 'none')
+                .attr('stroke', '#7c3aed')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Vertical tangent line
+            g.append('line')
+                .attr('x1', xScale(0)).attr('y1', yScale(-1.8))
+                .attr('x2', xScale(0)).attr('y2', yScale(1.8))
+                .attr('stroke', '#fbbf24').attr('stroke-width', 2).attr('stroke-dasharray', '8,4');
+
+            // Point at origin
+            g.append('circle')
+                .attr('cx', xScale(0)).attr('cy', yScale(0))
+                .attr('r', 8).attr('fill', '#ef4444');
+
+            // Labels
+            g.append('text')
+                .attr('x', xScale(2.5)).attr('y', yScale(1.5))
+                .attr('fill', '#7c3aed').attr('font-size', '1.25rem')
+                .text('f(x) = x^(1/3)');
+
+            g.append('text')
+                .attr('x', xScale(0.3)).attr('y', yScale(1.5))
+                .attr('fill', '#fbbf24').attr('font-size', '1.1rem')
+                .text('vertical tangent');
+        }
+
+        // ===== Venn Diagram (Slide 14) =====
+        function drawVennDiagram() {
+            const container = document.getElementById('venn-diagram');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Outer circle (Continuous)
+            svg.append('ellipse')
+                .attr('cx', 350).attr('cy', 200)
+                .attr('rx', 280).attr('ry', 160)
+                .attr('fill', 'rgba(96, 165, 250, 0.2)')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3);
+
+            // Inner circle (Differentiable)
+            svg.append('ellipse')
+                .attr('cx', 350).attr('cy', 200)
+                .attr('rx', 180).attr('ry', 100)
+                .attr('fill', 'rgba(124, 58, 237, 0.3)')
+                .attr('stroke', '#7c3aed')
+                .attr('stroke-width', 3);
+
+            // Labels
+            svg.append('text')
+                .attr('x', 350).attr('y', 50)
+                .attr('text-anchor', 'middle')
+                .attr('fill', '#60a5fa')
+                .attr('font-size', '1.5rem')
+                .attr('font-weight', '600')
+                .text('Continuous Functions');
+
+            svg.append('text')
+                .attr('x', 350).attr('y', 200)
+                .attr('text-anchor', 'middle')
+                .attr('fill', '#7c3aed')
+                .attr('font-size', '1.5rem')
+                .attr('font-weight', '600')
+                .text('Differentiable');
+
+            svg.append('text')
+                .attr('x', 350).attr('y', 230)
+                .attr('text-anchor', 'middle')
+                .attr('fill', '#7c3aed')
+                .attr('font-size', '1.5rem')
+                .attr('font-weight', '600')
+                .text('Functions');
+
+            // Examples in the gap (continuous but not differentiable)
+            svg.append('text')
+                .attr('x', 150).attr('y', 320)
+                .attr('text-anchor', 'middle')
+                .attr('fill', '#60a5fa')
+                .attr('font-size', '1.1rem')
+                .text('|x|, x^(2/3)');
+
+            // Examples inside (differentiable)
+            svg.append('text')
+                .attr('x', 350).attr('y', 280)
+                .attr('text-anchor', 'middle')
+                .attr('fill', '#a78bfa')
+                .attr('font-size', '1.1rem')
+                .text('x^2, sin(x), e^x');
+        }
+
+        // ===== Corner Explorer (Slide 15) =====
+        function drawCornerExplorer() {
+            const container = document.getElementById('corner-explorer-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 350;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const f = x => Math.abs(x);
+            const xScale = d3.scaleLinear().domain([-3, 3]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-0.5, 3]).range([plotHeight, 0]);
+
+            // Grid
+            for (let i = 0; i <= 3; i++) {
+                g.append('line')
+                    .attr('x1', 0).attr('x2', plotWidth)
+                    .attr('y1', yScale(i)).attr('y2', yScale(i))
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+            for (let i = -3; i <= 3; i++) {
+                g.append('line')
+                    .attr('x1', xScale(i)).attr('x2', xScale(i))
+                    .attr('y1', 0).attr('y2', plotHeight)
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${yScale(0)})`)
+                .call(d3.axisBottom(xScale).ticks(6))
+                .selectAll('text').attr('font-size', '1.25rem').attr('fill', '#b8c4d6');
+            g.append('g')
+                .attr('transform', `translate(${xScale(0)},0)`)
+                .call(d3.axisLeft(yScale).ticks(4))
+                .selectAll('text').attr('font-size', '1.25rem').attr('fill', '#b8c4d6');
+
+            // |x| curve
+            g.append('line')
+                .attr('x1', xScale(-3)).attr('y1', yScale(3))
+                .attr('x2', xScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#60a5fa').attr('stroke-width', 3);
+            g.append('line')
+                .attr('x1', xScale(0)).attr('y1', yScale(0))
+                .attr('x2', xScale(3)).attr('y2', yScale(3))
+                .attr('stroke', '#60a5fa').attr('stroke-width', 3);
+
+            // Fixed point at origin
+            g.append('circle')
+                .attr('cx', xScale(0)).attr('cy', yScale(0))
+                .attr('r', 8).attr('fill', '#f97316');
+
+            // Secant line
+            const secantLine = g.append('line')
+                .attr('stroke', '#a78bfa')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '8,4');
+
+            // Moving point
+            const movingPoint = g.append('circle')
+                .attr('r', 6).attr('fill', '#a78bfa');
+
+            // Slope display
+            const slopeText = g.append('text')
+                .attr('fill', '#a78bfa')
+                .attr('font-size', '1.25rem')
+                .attr('font-weight', 'bold');
+
+            function update(h) {
+                if (Math.abs(h) < 0.05) h = h >= 0 ? 0.05 : -0.05;
+
+                const y = f(h);
+                const slope = (y - 0) / (h - 0);
+
+                movingPoint.attr('cx', xScale(h)).attr('cy', yScale(y));
+
+                // Extend secant line
+                const lineX1 = -2.5, lineX2 = 2.5;
+                const lineY1 = slope * lineX1;
+                const lineY2 = slope * lineX2;
+                secantLine
+                    .attr('x1', xScale(lineX1)).attr('y1', yScale(lineY1))
+                    .attr('x2', xScale(lineX2)).attr('y2', yScale(lineY2));
+
+                slopeText
+                    .attr('x', xScale(h > 0 ? 1.5 : -1.5)).attr('y', yScale(2.5))
+                    .text(`slope = ${slope.toFixed(2)}`);
+
+                document.getElementById('corner-h').textContent = `h = ${h.toFixed(2)}`;
+            }
+
+            update(1);
+
+            document.getElementById('corner-slider').addEventListener('input', function(e) {
+                update(parseFloat(e.target.value));
+            });
+        }
+
+        // ===== Trigger Visualizations on Slide Entry =====
+        const visualizationSlides = {
+            5: drawCaseViz,
+            6: drawAbsValueViz,
+            8: drawCuspViz,
+            9: drawJumpViz,
+            10: drawCbrtViz,
+            14: drawVennDiagram,
+            15: drawCornerExplorer
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        // Check periodically for slide changes
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Also check on hash changes
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        // Initial check after DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

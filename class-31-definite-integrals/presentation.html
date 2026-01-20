@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Definite Integrals and Notation | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <style>
+        :root {
+            --theme-color: #eab308;
+            --theme-color-light: #facc15;
+            --theme-color-dark: #ca8a04;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+            color: #000;
+        }
+
+        .slide-title h1 {
+            color: var(--theme-color);
+        }
+
+        .viz-container {
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viz-container svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .notation-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .notation-parts {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 0.5rem;
+            font-size: 3rem;
+            margin: 1rem 0;
+        }
+
+        .notation-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .property-card {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.25rem;
+            border-radius: 0 8px 8px 0;
+            text-align: left;
+        }
+
+        .property-card h4 {
+            color: var(--theme-color);
+            margin: 0 0 0.75rem 0;
+            font-size: 1.2rem;
+        }
+
+        .property-card .math-display {
+            font-size: 1.4rem;
+            margin: 0.5rem 0;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .slider-container label {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .slider-container input[type="range"] {
+            width: 200px;
+        }
+
+        .slider-value {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            color: var(--theme-color);
+            min-width: 50px;
+        }
+
+        .example-box {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem auto;
+            max-width: 800px;
+            text-align: left;
+        }
+
+        .example-box h4 {
+            color: var(--theme-color);
+            margin: 0 0 1rem 0;
+        }
+
+        .step-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-list li {
+            padding: 0.5rem 0;
+            font-size: 1.2rem;
+        }
+
+        .step-list li::before {
+            content: '→ ';
+            color: var(--theme-color);
+        }
+
+        .geometric-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .geo-card {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .geo-card h5 {
+            color: var(--theme-color);
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .geo-card svg {
+            width: 120px;
+            height: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+
+        <!-- Slide 0: Title -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 6: Integration</span>
+                <h1>Definite Integrals</h1>
+                <p class="subtitle">& Integral Notation</p>
+                <p class="meta">Class 31 | CED Topic 6.3</p>
+            </div>
+        </section>
+
+        <!-- Slide 1: Warm-Up -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="exercise-box">
+                    <p>Evaluate the following Riemann sum with \(n = 4\) equal subintervals:</p>
+                    <p class="math-display">\[\text{Right sum for } \int_0^4 (2x + 1)\, dx\]</p>
+                    <hr style="margin: 1.5rem 0; border-color: var(--bg-tertiary);">
+                    <p style="font-size: 1.1rem; color: var(--text-secondary);">What do you think the exact value is?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: From Riemann Sum to Integral -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>The Limit of Riemann Sums</h2>
+                <div class="statement-box">
+                    <p>As \(n \to \infty\), Riemann sums approach the <strong>exact</strong> area.</p>
+                </div>
+                <p class="math-display">\[\lim_{n \to \infty} \sum_{i=1}^{n} f(x_i^*) \Delta x = \int_a^b f(x)\, dx\]</p>
+                <p style="font-size: 1.25rem; color: var(--text-secondary); margin-top: 1rem;">
+                    This limit defines the <strong style="color: var(--theme-color);">definite integral</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 3: Integral Notation -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Anatomy of an Integral</h2>
+                <div class="notation-box">
+                    <p class="math-display" style="font-size: 4rem;">\[\int_a^b f(x)\, dx\]</p>
+                </div>
+                <div class="property-grid" style="margin-top: 2rem;">
+                    <div class="property-card">
+                        <h4>\(\int\)</h4>
+                        <p>Integral sign (elongated S for "sum")</p>
+                    </div>
+                    <div class="property-card">
+                        <h4>\(a\) and \(b\)</h4>
+                        <p>Lower and upper limits of integration</p>
+                    </div>
+                    <div class="property-card">
+                        <h4>\(f(x)\)</h4>
+                        <p>Integrand (the function being integrated)</p>
+                    </div>
+                    <div class="property-card">
+                        <h4>\(dx\)</h4>
+                        <p>Variable of integration (indicates infinitesimal width)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Geometric Interpretation -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Geometric Interpretation</h2>
+                <div id="area-viz" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.25rem; margin-top: 0.5rem;">
+                    \(\displaystyle\int_a^b f(x)\, dx = \) <strong style="color: var(--theme-color);">Signed Area</strong> between \(f(x)\) and the x-axis
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 5: Signed Area -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Signed Area</h2>
+                <div id="signed-area-viz" class="viz-container" style="height: 380px;"></div>
+                <div class="property-grid" style="max-width: 700px;">
+                    <div class="property-card">
+                        <h4 style="color: #22c55e;">Above x-axis</h4>
+                        <p>Area is <strong>positive</strong></p>
+                    </div>
+                    <div class="property-card">
+                        <h4 style="color: #ef4444;">Below x-axis</h4>
+                        <p>Area is <strong>negative</strong></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Net vs Total Area -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Net Area vs Total Area</h2>
+                <div class="property-grid" style="max-width: 800px;">
+                    <div class="property-card">
+                        <h4>Net (Signed) Area</h4>
+                        <p class="math-display" style="font-size: 1.3rem;">\[\int_a^b f(x)\, dx\]</p>
+                        <p>Positive above, negative below. Can cancel out.</p>
+                    </div>
+                    <div class="property-card">
+                        <h4>Total Area</h4>
+                        <p class="math-display" style="font-size: 1.3rem;">\[\int_a^b |f(x)|\, dx\]</p>
+                        <p>All regions counted as positive.</p>
+                    </div>
+                </div>
+                <div class="example-box" style="margin-top: 1.5rem;">
+                    <p><strong>Example:</strong> If \(f(x) = x\) on \([-2, 3]\):</p>
+                    <p>Net area = \(\dfrac{9}{2} - 2 = \dfrac{5}{2}\) (positive and negative parts cancel)</p>
+                    <p>Total area = \(2 + \dfrac{9}{2} = \dfrac{13}{2}\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Property 1 - Constant Multiple -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Property 1: Constant Multiple</h2>
+                <div class="statement-box">
+                    <p class="math-display">\[\int_a^b c \cdot f(x)\, dx = c \cdot \int_a^b f(x)\, dx\]</p>
+                </div>
+                <div class="example-box">
+                    <h4>Example</h4>
+                    <p class="math-display">\[\int_0^3 5x^2\, dx = 5 \int_0^3 x^2\, dx\]</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Property 2 - Sum/Difference -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Property 2: Sum and Difference</h2>
+                <div class="statement-box">
+                    <p class="math-display">\[\int_a^b [f(x) \pm g(x)]\, dx = \int_a^b f(x)\, dx \pm \int_a^b g(x)\, dx\]</p>
+                </div>
+                <div class="example-box">
+                    <h4>Example</h4>
+                    <p class="math-display">\[\int_1^4 (x^2 + 3x)\, dx = \int_1^4 x^2\, dx + \int_1^4 3x\, dx\]</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Property 3 - Additivity -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Property 3: Additivity Over Intervals</h2>
+                <div class="statement-box" style="max-width: 600px;">
+                    <p class="math-display">\[\int_a^b f(x)\, dx + \int_b^c f(x)\, dx = \int_a^c f(x)\, dx\]</p>
+                </div>
+                <div id="additivity-viz" class="viz-container" style="height: 300px;"></div>
+                <p style="text-align: center; font-size: 1.2rem;">
+                    Adjacent areas can be combined into one integral
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 10: Property 4 - Reversed Limits -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Property 4: Reversed Limits</h2>
+                <div class="statement-box">
+                    <p class="math-display">\[\int_a^b f(x)\, dx = -\int_b^a f(x)\, dx\]</p>
+                </div>
+                <p style="font-size: 1.25rem; color: var(--text-secondary); margin-top: 1.5rem;">
+                    Swapping the limits of integration changes the sign.
+                </p>
+                <div class="example-box">
+                    <h4>Example</h4>
+                    <p class="math-display">\[\int_5^2 x\, dx = -\int_2^5 x\, dx\]</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: Property 5 - Same Limits -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Property 5: Same Limits</h2>
+                <div class="statement-box">
+                    <p class="math-display">\[\int_a^a f(x)\, dx = 0\]</p>
+                </div>
+                <p style="font-size: 1.25rem; color: var(--text-secondary); margin-top: 1.5rem;">
+                    There is no width, so no area!
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 12: Geometric Integrals -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Evaluating with Geometry</h2>
+                <p style="font-size: 1.25rem; margin-bottom: 1rem;">Some integrals can be evaluated using known area formulas.</p>
+                <div class="geometric-grid">
+                    <div class="geo-card">
+                        <h5>Rectangle</h5>
+                        <p>\(\int_0^4 3\, dx = 12\)</p>
+                    </div>
+                    <div class="geo-card">
+                        <h5>Triangle</h5>
+                        <p>\(\int_0^4 x\, dx = 8\)</p>
+                    </div>
+                    <div class="geo-card">
+                        <h5>Semicircle</h5>
+                        <p>\(\int_{-r}^{r} \sqrt{r^2 - x^2}\, dx = \dfrac{\pi r^2}{2}\)</p>
+                    </div>
+                </div>
+                <div id="geometry-viz" class="viz-container" style="height: 280px;"></div>
+            </div>
+        </section>
+
+        <!-- Slide 13: Example - Circle -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example: Semicircle</h2>
+                <div class="example-box">
+                    <p>Evaluate \(\displaystyle\int_{-3}^{3} \sqrt{9 - x^2}\, dx\)</p>
+                </div>
+                <div id="semicircle-viz" class="viz-container" style="height: 300px;"></div>
+                <div class="example-box">
+                    <ul class="step-list">
+                        <li>This is the upper half of a circle with radius 3</li>
+                        <li>Area = \(\dfrac{1}{2}\pi r^2 = \dfrac{1}{2}\pi(9) = \dfrac{9\pi}{2}\)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 14: Properties Application -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Using Properties Together</h2>
+                <div class="example-box">
+                    <h4>Given:</h4>
+                    <p>\(\displaystyle\int_1^5 f(x)\, dx = 8\) and \(\displaystyle\int_1^5 g(x)\, dx = 3\)</p>
+                </div>
+                <div class="example-box" style="margin-top: 1rem;">
+                    <h4>Find:</h4>
+                    <ol style="font-size: 1.2rem; line-height: 2;">
+                        <li>\(\displaystyle\int_1^5 [f(x) + g(x)]\, dx = 8 + 3 = 11\)</li>
+                        <li>\(\displaystyle\int_1^5 [2f(x) - 3g(x)]\, dx = 2(8) - 3(3) = 7\)</li>
+                        <li>\(\displaystyle\int_5^1 f(x)\, dx = -8\)</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 15: Additivity Practice -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Using Additivity</h2>
+                <div class="example-box">
+                    <h4>Given:</h4>
+                    <p>\(\displaystyle\int_0^4 f(x)\, dx = 10\) and \(\displaystyle\int_0^7 f(x)\, dx = 18\)</p>
+                </div>
+                <div class="example-box" style="margin-top: 1rem;">
+                    <h4>Find \(\displaystyle\int_4^7 f(x)\, dx\)</h4>
+                    <ul class="step-list">
+                        <li>\(\displaystyle\int_0^4 f(x)\, dx + \int_4^7 f(x)\, dx = \int_0^7 f(x)\, dx\)</li>
+                        <li>\(10 + \displaystyle\int_4^7 f(x)\, dx = 18\)</li>
+                        <li>\(\displaystyle\int_4^7 f(x)\, dx = 8\)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 16: Definition Recap -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Definite Integral Definition</h2>
+                <div class="statement-box">
+                    <p>If \(f\) is continuous on \([a, b]\), then:</p>
+                    <p class="math-display">\[\int_a^b f(x)\, dx = \lim_{n \to \infty} \sum_{i=1}^{n} f(x_i^*) \Delta x\]</p>
+                    <p style="font-size: 1.1rem; color: var(--text-secondary); margin-top: 1rem;">
+                        where \(\Delta x = \dfrac{b-a}{n}\) and \(x_i^*\) is any point in the \(i\)th subinterval.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 17: Practice Problems -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Practice Problems</h2>
+                <div class="exercise-box">
+                    <ol style="font-size: 1.2rem; line-height: 2.2; text-align: left; max-width: 700px; margin: 0 auto;">
+                        <li>Evaluate geometrically: \(\displaystyle\int_0^5 (4 - x)\, dx\)</li>
+                        <li>If \(\displaystyle\int_2^6 f(x)\, dx = 12\), find \(\displaystyle\int_6^2 f(x)\, dx\)</li>
+                        <li>If \(\displaystyle\int_0^3 f(x)\, dx = 7\) and \(\displaystyle\int_0^3 g(x)\, dx = 2\), find \(\displaystyle\int_0^3 [3f(x) - 2g(x)]\, dx\)</li>
+                        <li>Evaluate: \(\displaystyle\int_{-2}^{2} \sqrt{4 - x^2}\, dx\)</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 18: Exit Ticket -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="exercise-box">
+                    <p><strong>1.</strong> Evaluate using geometry: \(\displaystyle\int_0^6 |x - 3|\, dx\)</p>
+                    <div style="height: 1.5rem;"></div>
+                    <p><strong>2.</strong> Given \(\displaystyle\int_1^4 f(x)\, dx = 5\) and \(\displaystyle\int_4^8 f(x)\, dx = -2\), find \(\displaystyle\int_1^8 f(x)\, dx\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 19: Looking Ahead -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <h2>Looking Ahead</h2>
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--theme-color);">Next: The Fundamental Theorem</h3>
+                    <ul style="font-size: 1.35rem; line-height: 2; list-style: none; padding: 0; margin-top: 1.5rem;">
+                        <li>Connecting derivatives and integrals</li>
+                        <li>Accumulation functions</li>
+                        <li>FTC Part 1</li>
+                        <li>Evaluating integrals exactly</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="slide-nav">
+        <button id="prevBtn" aria-label="Previous slide">←</button>
+        <span id="slideCounter">1 / 20</span>
+        <button id="nextBtn" aria-label="Next slide">→</button>
+        <button id="tocBtn" aria-label="Table of contents">☰</button>
+    </nav>
+
+    <!-- Table of Contents -->
+    <div id="toc" class="toc-overlay">
+        <div class="toc-content">
+            <h3>Contents</h3>
+            <ul id="tocList"></ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <script src="../shared/presentation.js"></script>
+
+    <script>
+        const visualizationSlides = {
+            4: drawAreaViz,
+            5: drawSignedAreaViz,
+            9: drawAdditivityViz,
+            12: drawGeometryViz,
+            13: drawSemicircleViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Helper functions
+        function drawAxes(svg, xScale, yScale, width, height, margin) {
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 2);
+        }
+
+        function drawCurve(svg, xScale, yScale, fn, xMin, xMax, color, strokeWidth = 3) {
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const data = d3.range(xMin, xMax + 0.01, 0.05).map(x => ({ x, y: fn(x) }));
+
+            svg.append('path')
+                .datum(data)
+                .attr('fill', 'none')
+                .attr('stroke', color)
+                .attr('stroke-width', strokeWidth)
+                .attr('d', line);
+        }
+
+        // Area visualization
+        function drawAreaViz() {
+            const container = d3.select('#area-viz');
+            container.selectAll('*').remove();
+
+            const width = 700, height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const fn = x => 0.3 * x * x + 1;
+            const a = 1, b = 4;
+
+            const xScale = d3.scaleLinear().domain([0, 5]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([0, 7]).range([height - margin.bottom, margin.top]);
+
+            // Shaded area
+            const areaGen = d3.area()
+                .x(d => xScale(d.x))
+                .y0(yScale(0))
+                .y1(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const areaData = d3.range(a, b + 0.01, 0.05).map(x => ({ x, y: fn(x) }));
+
+            svg.append('path')
+                .datum(areaData)
+                .attr('fill', 'rgba(234, 179, 8, 0.4)')
+                .attr('d', areaGen);
+
+            // Boundary lines
+            svg.append('line')
+                .attr('x1', xScale(a)).attr('x2', xScale(a))
+                .attr('y1', yScale(0)).attr('y2', yScale(fn(a)))
+                .attr('stroke', '#eab308').attr('stroke-width', 2).attr('stroke-dasharray', '5,5');
+
+            svg.append('line')
+                .attr('x1', xScale(b)).attr('x2', xScale(b))
+                .attr('y1', yScale(0)).attr('y2', yScale(fn(b)))
+                .attr('stroke', '#eab308').attr('stroke-width', 2).attr('stroke-dasharray', '5,5');
+
+            drawAxes(svg, xScale, yScale, width, height, margin);
+            drawCurve(svg, xScale, yScale, fn, 0, 5, '#60a5fa');
+
+            // Labels
+            svg.append('text').attr('x', xScale(a)).attr('y', yScale(0) + 25)
+                .attr('text-anchor', 'middle').attr('fill', '#eab308').attr('font-size', '1.2rem').text('a');
+            svg.append('text').attr('x', xScale(b)).attr('y', yScale(0) + 25)
+                .attr('text-anchor', 'middle').attr('fill', '#eab308').attr('font-size', '1.2rem').text('b');
+            svg.append('text').attr('x', xScale(2.5)).attr('y', yScale(2))
+                .attr('text-anchor', 'middle').attr('fill', '#eab308').attr('font-size', '1.3rem').text('Area');
+        }
+
+        // Signed area visualization
+        function drawSignedAreaViz() {
+            const container = d3.select('#signed-area-viz');
+            container.selectAll('*').remove();
+
+            const width = 650, height = 340;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const fn = x => Math.sin(x * 1.5);
+
+            const xScale = d3.scaleLinear().domain([-0.5, 5]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-1.5, 1.5]).range([height - margin.bottom, margin.top]);
+
+            // Positive area
+            const posAreaGen = d3.area()
+                .x(d => xScale(d.x))
+                .y0(yScale(0))
+                .y1(d => yScale(Math.max(0, d.y)))
+                .curve(d3.curveNatural);
+
+            // Negative area
+            const negAreaGen = d3.area()
+                .x(d => xScale(d.x))
+                .y0(yScale(0))
+                .y1(d => yScale(Math.min(0, d.y)))
+                .curve(d3.curveNatural);
+
+            const data = d3.range(0, 4.2, 0.05).map(x => ({ x, y: fn(x) }));
+
+            svg.append('path')
+                .datum(data)
+                .attr('fill', 'rgba(34, 197, 94, 0.4)')
+                .attr('d', posAreaGen);
+
+            svg.append('path')
+                .datum(data)
+                .attr('fill', 'rgba(239, 68, 68, 0.4)')
+                .attr('d', negAreaGen);
+
+            drawAxes(svg, xScale, yScale, width, height, margin);
+            drawCurve(svg, xScale, yScale, fn, -0.5, 5, '#60a5fa');
+
+            // Labels
+            svg.append('text').attr('x', xScale(1)).attr('y', yScale(0.5))
+                .attr('text-anchor', 'middle').attr('fill', '#22c55e').attr('font-size', '1.1rem').text('+');
+            svg.append('text').attr('x', xScale(2.8)).attr('y', yScale(-0.5))
+                .attr('text-anchor', 'middle').attr('fill', '#ef4444').attr('font-size', '1.1rem').text('-');
+        }
+
+        // Additivity visualization
+        function drawAdditivityViz() {
+            const container = d3.select('#additivity-viz');
+            container.selectAll('*').remove();
+
+            const width = 650, height = 260;
+            const margin = { top: 20, right: 30, bottom: 50, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const fn = x => 0.2 * x * x + 1;
+
+            const xScale = d3.scaleLinear().domain([0, 7]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([0, 6]).range([height - margin.bottom, margin.top]);
+
+            const a = 1, b = 3, c = 5;
+
+            // Area a to b
+            const area1 = d3.area()
+                .x(d => xScale(d.x))
+                .y0(yScale(0))
+                .y1(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            svg.append('path')
+                .datum(d3.range(a, b + 0.01, 0.05).map(x => ({ x, y: fn(x) })))
+                .attr('fill', 'rgba(59, 130, 246, 0.4)')
+                .attr('d', area1);
+
+            // Area b to c
+            svg.append('path')
+                .datum(d3.range(b, c + 0.01, 0.05).map(x => ({ x, y: fn(x) })))
+                .attr('fill', 'rgba(234, 179, 8, 0.4)')
+                .attr('d', area1);
+
+            drawAxes(svg, xScale, yScale, width, height, margin);
+            drawCurve(svg, xScale, yScale, fn, 0, 7, '#60a5fa');
+
+            // Labels
+            svg.append('text').attr('x', xScale(a)).attr('y', yScale(0) + 20)
+                .attr('text-anchor', 'middle').attr('fill', '#fff').attr('font-size', '1rem').text('a');
+            svg.append('text').attr('x', xScale(b)).attr('y', yScale(0) + 20)
+                .attr('text-anchor', 'middle').attr('fill', '#fff').attr('font-size', '1rem').text('b');
+            svg.append('text').attr('x', xScale(c)).attr('y', yScale(0) + 20)
+                .attr('text-anchor', 'middle').attr('fill', '#fff').attr('font-size', '1rem').text('c');
+        }
+
+        // Geometry visualization
+        function drawGeometryViz() {
+            const container = d3.select('#geometry-viz');
+            container.selectAll('*').remove();
+
+            const width = 700, height = 240;
+            const margin = { top: 20, right: 20, bottom: 40, left: 40 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Three small graphs
+            const graphs = [
+                { fn: x => 3, xDom: [0, 4], yDom: [0, 5], fill: 'rgba(234, 179, 8, 0.4)' },
+                { fn: x => x, xDom: [0, 4], yDom: [0, 5], fill: 'rgba(59, 130, 246, 0.4)' },
+                { fn: x => Math.sqrt(4 - (x - 2) * (x - 2)), xDom: [0, 4], yDom: [0, 3], fill: 'rgba(34, 197, 94, 0.4)' }
+            ];
+
+            const graphWidth = 200;
+
+            graphs.forEach((g, i) => {
+                const offsetX = 40 + i * 230;
+                const gGroup = svg.append('g').attr('transform', `translate(${offsetX}, 0)`);
+
+                const xScale = d3.scaleLinear().domain(g.xDom).range([0, graphWidth]);
+                const yScale = d3.scaleLinear().domain(g.yDom).range([height - margin.bottom, margin.top]);
+
+                const area = d3.area()
+                    .x(d => xScale(d.x))
+                    .y0(yScale(0))
+                    .y1(d => yScale(d.y))
+                    .curve(d3.curveNatural);
+
+                const data = d3.range(g.xDom[0], g.xDom[1] + 0.01, 0.05).map(x => ({ x, y: g.fn(x) }));
+
+                gGroup.append('path').datum(data).attr('fill', g.fill).attr('d', area);
+
+                // Axes
+                gGroup.append('line')
+                    .attr('x1', 0).attr('x2', graphWidth)
+                    .attr('y1', yScale(0)).attr('y2', yScale(0))
+                    .attr('stroke', '#fff').attr('stroke-width', 1.5);
+
+                gGroup.append('line')
+                    .attr('x1', xScale(0)).attr('x2', xScale(0))
+                    .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                    .attr('stroke', '#fff').attr('stroke-width', 1.5);
+
+                // Curve
+                const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural);
+                gGroup.append('path').datum(data)
+                    .attr('fill', 'none').attr('stroke', '#eab308').attr('stroke-width', 2).attr('d', line);
+            });
+        }
+
+        // Semicircle visualization
+        function drawSemicircleViz() {
+            const container = d3.select('#semicircle-viz');
+            container.selectAll('*').remove();
+
+            const width = 500, height = 260;
+            const margin = { top: 20, right: 40, bottom: 40, left: 40 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const r = 3;
+            const fn = x => Math.sqrt(r * r - x * x);
+
+            const xScale = d3.scaleLinear().domain([-4, 4]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-0.5, 4]).range([height - margin.bottom, margin.top]);
+
+            // Shaded semicircle
+            const area = d3.area()
+                .x(d => xScale(d.x))
+                .y0(yScale(0))
+                .y1(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const data = d3.range(-r, r + 0.01, 0.05).map(x => ({ x, y: fn(x) }));
+
+            svg.append('path')
+                .datum(data)
+                .attr('fill', 'rgba(234, 179, 8, 0.4)')
+                .attr('d', area);
+
+            drawAxes(svg, xScale, yScale, width, height, margin);
+
+            // Curve
+            const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural);
+            svg.append('path').datum(data)
+                .attr('fill', 'none').attr('stroke', '#60a5fa').attr('stroke-width', 3).attr('d', line);
+
+            // Labels
+            svg.append('text').attr('x', xScale(-3)).attr('y', yScale(0) + 20)
+                .attr('text-anchor', 'middle').attr('fill', '#fff').attr('font-size', '1rem').text('-3');
+            svg.append('text').attr('x', xScale(3)).attr('y', yScale(0) + 20)
+                .attr('text-anchor', 'middle').attr('fill', '#fff').attr('font-size', '1rem').text('3');
+            svg.append('text').attr('x', xScale(0)).attr('y', yScale(1.5))
+                .attr('text-anchor', 'middle').attr('fill', '#eab308').attr('font-size', '1.2rem').text('Area = 9π/2');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 27: Concavity & Second Derivative Test | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #14b8a6;
+            --theme-color-light: #2dd4bf;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .theorem-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--accent-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 850px;
+        }
+
+        .theorem-box h4 {
+            color: var(--accent-secondary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .definition-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 850px;
+        }
+
+        .definition-box h4 {
+            color: var(--theme-color-light);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .concept-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            border-radius: 0 8px 8px 0;
+            max-width: 850px;
+            text-align: left;
+        }
+
+        .concept-box h4 {
+            color: var(--theme-color-light);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .concavity-cards {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            flex-wrap: wrap;
+        }
+
+        .concavity-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            flex: 1;
+            min-width: 280px;
+            text-align: center;
+        }
+
+        .concavity-card h5 {
+            color: var(--theme-color-light);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .concavity-card .shape {
+            font-size: 3rem;
+            margin: 0.5rem 0;
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .slider-control label {
+            font-size: 1.25rem;
+            font-family: var(--font-display);
+        }
+
+        .slider-control input[type="range"] {
+            width: 300px;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--theme-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .info-display {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-family: var(--font-mono);
+            font-size: 1.15rem;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+        }
+
+        .motion-legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-size: 1.15rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .test-case {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin: 0.75rem 0;
+        }
+
+        .test-case h5 {
+            color: var(--accent-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            max-width: 700px;
+            margin: 1.5rem auto;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 1rem;
+            border: 1px solid var(--bg-tertiary);
+            text-align: center;
+        }
+
+        .comparison-table th {
+            background: var(--bg-secondary);
+            color: var(--theme-color-light);
+        }
+
+        .mnemonic-box {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1), rgba(212, 160, 40, 0.1));
+            border: 1px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .mnemonic-box h4 {
+            color: var(--accent-secondary);
+            margin-bottom: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Concavity & SDT">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 5: Analytical Applications of Differentiation</div>
+                <h1>Concavity &amp; Second Derivative Test</h1>
+                <p class="subtitle">The Shape of the Curve</p>
+                <p class="meta">Class 27 | CED Topics 5.6, 5.7 | AP Calculus BC | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: Opening Question -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="Opening Question">
+            <div class="slide-content">
+                <p class="statement">Two curves can both be increasing, but feel very different. Why?</p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    What makes a curve "bend" one way or another?
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Warm-Up -->
+        <div class="slide slide-exercise" data-slide="2" data-section="Opening" data-title="Warm-Up">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="prompt">
+                    <p>Compare these two increasing functions on \( [0, 2] \):</p>
+                    <p style="margin-top: 1rem;">\( f(x) = x^2 \) vs. \( g(x) = \sqrt{x} \)</p>
+                </div>
+                <div class="instructions" style="text-align: left; max-width: 700px; margin: 1.5rem auto 0;">
+                    <ol style="list-style-position: inside; font-size: 1.25rem;">
+                        <li style="padding: 0.5rem 0;">Sketch both curves</li>
+                        <li style="padding: 0.5rem 0;">How do they "bend" differently?</li>
+                        <li style="padding: 0.5rem 0;">Find \( f''(x) \) and \( g''(x) \). What do you notice?</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Concavity Definition -->
+        <div class="slide slide-visual" data-slide="3" data-section="Concavity" data-title="Concavity Definition">
+            <div class="slide-content">
+                <h2>What is Concavity?</h2>
+                <div class="concavity-cards">
+                    <div class="concavity-card">
+                        <h5>Concave Up</h5>
+                        <div class="shape">\( \cup \)</div>
+                        <p style="font-size: 1.15rem;">Curves upward like a cup</p>
+                        <p style="font-size: 1.15rem; color: var(--accent-secondary); margin-top: 0.5rem;">Holds water</p>
+                    </div>
+                    <div class="concavity-card">
+                        <h5>Concave Down</h5>
+                        <div class="shape">\( \cap \)</div>
+                        <p style="font-size: 1.15rem;">Curves downward like a cap</p>
+                        <p style="font-size: 1.15rem; color: var(--accent-secondary); margin-top: 0.5rem;">Spills water</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Formal Definition -->
+        <div class="slide slide-visual" data-slide="4" data-section="Concavity" data-title="Formal Definition">
+            <div class="slide-content">
+                <h2>Formal Definition of Concavity</h2>
+                <div class="definition-box">
+                    <h4>Definition</h4>
+                    <p style="font-size: 1.25rem; margin-bottom: 1rem;">\( f \) is <strong>concave up</strong> on an interval if \( f' \) is increasing on that interval.</p>
+                    <p style="font-size: 1.25rem;">\( f \) is <strong>concave down</strong> on an interval if \( f' \) is decreasing on that interval.</p>
+                </div>
+                <div class="concept-box" style="margin-top: 1rem;">
+                    <p style="font-size: 1.15rem;"><strong>Intuition:</strong> Concavity describes how the slope itself is changing!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Second Derivative Test for Concavity -->
+        <div class="slide slide-visual" data-slide="5" data-section="Concavity" data-title="Concavity Test">
+            <div class="slide-content">
+                <h2>Concavity and the Second Derivative</h2>
+                <div class="theorem-box">
+                    <h4>Concavity Test</h4>
+                    <p style="font-size: 1.25rem; margin-bottom: 1rem;">If \( f''(x) > 0 \) on an interval, then \( f \) is <strong>concave up</strong>.</p>
+                    <p style="font-size: 1.25rem;">If \( f''(x) < 0 \) on an interval, then \( f \) is <strong>concave down</strong>.</p>
+                </div>
+                <div class="mnemonic-box" style="margin-top: 1rem;">
+                    <h4>Memory Aid</h4>
+                    <p style="font-size: 1.25rem;">\( f'' > 0 \): smile \( \cup \) &nbsp;&nbsp;&nbsp;&nbsp; \( f'' < 0 \): frown \( \cap \)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Concavity Visualization -->
+        <div class="slide slide-visual" data-slide="6" data-section="Concavity" data-title="Visualization">
+            <div class="slide-content">
+                <h2>Visualizing Concavity</h2>
+                <div id="concavity-viz" class="visualization"></div>
+                <div class="motion-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-derivative);"></div>
+                        <span>Concave Up (\( f'' > 0 \))</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-error);"></div>
+                        <span>Concave Down (\( f'' < 0 \))</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Inflection Points -->
+        <div class="slide slide-visual" data-slide="7" data-section="Inflection Points" data-title="Inflection Points">
+            <div class="slide-content">
+                <h2>Inflection Points</h2>
+                <div class="definition-box">
+                    <h4>Definition: Inflection Point</h4>
+                    <p style="font-size: 1.25rem;">An <strong>inflection point</strong> is where the concavity changes.</p>
+                    <p style="font-size: 1.15rem; margin-top: 1rem; color: var(--text-secondary);">At an inflection point, \( f''(c) = 0 \) or \( f''(c) \) does not exist.</p>
+                </div>
+                <div class="concept-box" style="margin-top: 1rem;">
+                    <p style="font-size: 1.15rem;"><strong>Caution:</strong> \( f''(c) = 0 \) alone is not enough! The sign must actually change.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Inflection Point Visualization -->
+        <div class="slide slide-visual" data-slide="8" data-section="Inflection Points" data-title="Inflection Visualization">
+            <div class="slide-content">
+                <h2>Finding Inflection Points</h2>
+                <div id="inflection-viz" class="visualization"></div>
+                <div class="info-display">
+                    <div class="info-item">Inflection at x = 0: concave down to concave up</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Example - Finding Concavity -->
+        <div class="slide slide-example" data-slide="9" data-section="Examples" data-title="Example 1">
+            <div class="slide-content">
+                <h2>Example: Concavity Analysis</h2>
+                <div class="problem">
+                    <p>Find intervals of concavity and inflection points for \( f(x) = x^3 - 6x^2 + 9x + 1 \).</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>\( f'(x) = 3x^2 - 12x + 9 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>\( f''(x) = 6x - 12 = 6(x - 2) \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( f''(x) = 0 \) when \( x = 2 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>Concave down on \( (-\infty, 2) \), concave up on \( (2, \infty) \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">5</span>
+                        <span>Inflection point at \( x = 2 \) (sign changes!)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Second Derivative Test for Extrema -->
+        <div class="slide slide-visual" data-slide="10" data-section="Second Derivative Test" data-title="SDT Statement">
+            <div class="slide-content">
+                <h2>The Second Derivative Test</h2>
+                <div class="theorem-box">
+                    <h4>Second Derivative Test for Local Extrema</h4>
+                    <p style="font-size: 1.2rem; margin-bottom: 1rem;">Suppose \( f'(c) = 0 \):</p>
+                    <div class="test-case">
+                        <h5>Local Maximum</h5>
+                        <p>If \( f''(c) < 0 \), then \( f(c) \) is a local maximum.</p>
+                    </div>
+                    <div class="test-case">
+                        <h5>Local Minimum</h5>
+                        <p>If \( f''(c) > 0 \), then \( f(c) \) is a local minimum.</p>
+                    </div>
+                    <div class="test-case">
+                        <h5>Inconclusive</h5>
+                        <p>If \( f''(c) = 0 \), the test fails. Use FDT instead.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Why SDT Works -->
+        <div class="slide slide-visual" data-slide="11" data-section="Second Derivative Test" data-title="SDT Intuition">
+            <div class="slide-content">
+                <h2>Why the Second Derivative Test Works</h2>
+                <div id="sdt-viz" class="visualization"></div>
+                <div class="concept-box" style="margin-top: 1rem;">
+                    <p style="font-size: 1.15rem;">At a critical point where \( f' = 0 \):</p>
+                    <p style="font-size: 1.15rem; margin-top: 0.5rem;">\( f'' < 0 \): curve bends down = local max (peak)</p>
+                    <p style="font-size: 1.15rem;">\( f'' > 0 \): curve bends up = local min (valley)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Example - SDT -->
+        <div class="slide slide-example" data-slide="12" data-section="Examples" data-title="SDT Example">
+            <div class="slide-content">
+                <h2>Example: Using the Second Derivative Test</h2>
+                <div class="problem">
+                    <p>Find and classify all local extrema of \( f(x) = x^4 - 8x^2 \).</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>\( f'(x) = 4x^3 - 16x = 4x(x^2 - 4) = 4x(x-2)(x+2) \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>Critical points: \( x = -2, 0, 2 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( f''(x) = 12x^2 - 16 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>\( f''(-2) = 32 > 0 \) (min), \( f''(0) = -16 < 0 \) (max), \( f''(2) = 32 > 0 \) (min)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Comparing FDT and SDT -->
+        <div class="slide slide-visual" data-slide="13" data-section="Second Derivative Test" data-title="FDT vs SDT">
+            <div class="slide-content">
+                <h2>First vs Second Derivative Test</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Aspect</th>
+                        <th>First Derivative Test</th>
+                        <th>Second Derivative Test</th>
+                    </tr>
+                    <tr>
+                        <td>What to check</td>
+                        <td>Sign of \( f' \) on each side</td>
+                        <td>Sign of \( f'' \) at the point</td>
+                    </tr>
+                    <tr>
+                        <td>Always works?</td>
+                        <td>Yes (if continuous)</td>
+                        <td>No (fails if \( f'' = 0 \))</td>
+                    </tr>
+                    <tr>
+                        <td>Best for</td>
+                        <td>When \( f'' \) is hard to compute</td>
+                        <td>When \( f'' \) is easy to evaluate</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 14: Interactive f, f', f'' -->
+        <div class="slide slide-visual" data-slide="14" data-section="Connections" data-title="Three Derivatives">
+            <div class="slide-content">
+                <h2>Connecting \( f \), \( f' \), and \( f'' \)</h2>
+                <div id="three-derivatives-viz" class="visualization"></div>
+                <div class="motion-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-function);"></div>
+                        <span>\( f(x) \)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-derivative);"></div>
+                        <span>\( f'(x) \)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--theme-color);"></div>
+                        <span>\( f''(x) \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Reading from Graphs -->
+        <div class="slide slide-visual" data-slide="15" data-section="Connections" data-title="Reading Graphs">
+            <div class="slide-content">
+                <h2>What Each Derivative Tells Us</h2>
+                <div class="concept-box">
+                    <h4>Summary of Connections</h4>
+                    <ul style="font-size: 1.15rem; list-style-position: inside;">
+                        <li style="padding: 0.4rem 0;">\( f' > 0 \): \( f \) increasing &nbsp;|&nbsp; \( f' < 0 \): \( f \) decreasing</li>
+                        <li style="padding: 0.4rem 0;">\( f' = 0 \): possible extremum of \( f \)</li>
+                        <li style="padding: 0.4rem 0;">\( f'' > 0 \): \( f \) concave up, \( f' \) increasing</li>
+                        <li style="padding: 0.4rem 0;">\( f'' < 0 \): \( f \) concave down, \( f' \) decreasing</li>
+                        <li style="padding: 0.4rem 0;">\( f'' = 0 \) (with sign change): inflection point of \( f \), extremum of \( f' \)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Complete Analysis Example -->
+        <div class="slide slide-example" data-slide="16" data-section="Examples" data-title="Complete Analysis">
+            <div class="slide-content">
+                <h2>Complete Analysis</h2>
+                <div class="problem">
+                    <p>Analyze \( f(x) = x^4 - 4x^3 + 10 \) completely.</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>\( f'(x) = 4x^3 - 12x^2 = 4x^2(x - 3) \). Critical: \( x = 0, 3 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>\( f''(x) = 12x^2 - 24x = 12x(x - 2) \). Zero at \( x = 0, 2 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>SDT: \( f''(3) = 36 > 0 \), so \( x = 3 \) is local min. \( f''(0) = 0 \) is inconclusive.</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>Inflection points at \( x = 0 \) and \( x = 2 \) (concavity changes)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Practice Problem 1 -->
+        <div class="slide slide-exercise" data-slide="17" data-section="Practice" data-title="Practice 1">
+            <div class="slide-content">
+                <h2>Your Turn</h2>
+                <div class="prompt">
+                    <p>For \( f(x) = x^3 - 3x^2 - 9x + 5 \):</p>
+                </div>
+                <div class="instructions" style="text-align: left; max-width: 700px; margin: 1.5rem auto 0;">
+                    <ol style="list-style-position: inside; font-size: 1.25rem;">
+                        <li style="padding: 0.5rem 0;">Find all critical points</li>
+                        <li style="padding: 0.5rem 0;">Use the Second Derivative Test to classify them</li>
+                        <li style="padding: 0.5rem 0;">Find all inflection points</li>
+                        <li style="padding: 0.5rem 0;">State intervals of concavity</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Practice Problem 2 -->
+        <div class="slide slide-exercise" data-slide="18" data-section="Practice" data-title="Practice 2">
+            <div class="slide-content">
+                <h2>Your Turn: From the Graph</h2>
+                <div id="practice-graph-viz" class="visualization" style="height: 300px;"></div>
+                <div class="prompt" style="margin-top: 1rem;">
+                    <p>Given the graph of \( f''(x) \), where is \( f \) concave up? Where are the inflection points?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Summary -->
+        <div class="slide slide-visual" data-slide="19" data-section="Closing" data-title="Key Takeaways">
+            <div class="slide-content">
+                <h2>Key Takeaways</h2>
+                <div class="theorem-box" style="border-color: var(--theme-color);">
+                    <p style="font-size: 1.15rem; margin-bottom: 0.75rem;"><strong>Concavity:</strong> \( f'' > 0 \) means concave up; \( f'' < 0 \) means concave down</p>
+                    <p style="font-size: 1.15rem; margin-bottom: 0.75rem;"><strong>Inflection:</strong> Where concavity changes (and \( f'' = 0 \) or DNE)</p>
+                    <p style="font-size: 1.15rem;"><strong>SDT:</strong> At critical point, \( f'' < 0 \) means max; \( f'' > 0 \) means min</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="20" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p><strong>1.</strong> For \( f(x) = x^3 - 12x \), find and classify all local extrema using the Second Derivative Test.</p>
+                    <p style="margin-top: 1rem;"><strong>2.</strong> Find all inflection points of \( f(x) = x^4 - 6x^2 \).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Looking Ahead -->
+        <div class="slide slide-statement" data-slide="21" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Coming Up Next:</p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    Curve Sketching<br>
+                    Putting It All Together
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 22</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 27: Concavity & SDT</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Concavity Visualization (Slide 6) =====
+        function drawConcavityViz() {
+            const container = document.getElementById('concavity-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-3, 3]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-2, 4]).range([plotHeight, 0]);
+
+            const f = x => x * x * x / 3 + 1;
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-2, 5, 1))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Concave down part (x < 0)
+            const concaveDownX = d3.range(-2.5, 0.01, 0.05);
+            const lineDown = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(f(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(concaveDownX)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-error)')
+                .attr('stroke-width', 4)
+                .attr('d', lineDown);
+
+            // Concave up part (x > 0)
+            const concaveUpX = d3.range(0, 2.51, 0.05);
+            const lineUp = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(f(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(concaveUpX)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-derivative)')
+                .attr('stroke-width', 4)
+                .attr('d', lineUp);
+
+            // Inflection point
+            g.append('circle')
+                .attr('cx', xScale(0))
+                .attr('cy', yScale(f(0)))
+                .attr('r', 7)
+                .attr('fill', 'var(--accent-secondary)');
+
+            g.append('text')
+                .attr('x', xScale(0) + 15)
+                .attr('y', yScale(f(0)) - 10)
+                .attr('font-size', '1rem')
+                .attr('fill', 'var(--accent-secondary)')
+                .text('Inflection Point');
+
+            // Labels
+            g.append('text')
+                .attr('x', xScale(-1.5))
+                .attr('y', yScale(f(-1.5)) - 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.1rem')
+                .attr('fill', 'var(--color-error)')
+                .text('f\'\' < 0');
+
+            g.append('text')
+                .attr('x', xScale(1.5))
+                .attr('y', yScale(f(1.5)) - 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.1rem')
+                .attr('fill', 'var(--color-derivative)')
+                .text('f\'\' > 0');
+        }
+
+        // ===== Inflection Point Visualization (Slide 8) =====
+        function drawInflectionViz() {
+            const container = document.getElementById('inflection-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-2, 2]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-1, 1]).range([plotHeight, 0]);
+
+            const f = x => x * x * x / 2;
+            const fDoublePrime = x => 3 * x;
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-1, 2, 0.5))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Function
+            const xValues = d3.range(-1.5, 1.51, 0.05);
+            const fLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(f(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', fLine);
+
+            // Inflection point
+            g.append('circle')
+                .attr('cx', xScale(0))
+                .attr('cy', yScale(0))
+                .attr('r', 8)
+                .attr('fill', 'var(--accent-secondary)');
+
+            // Tangent line at inflection
+            g.append('line')
+                .attr('x1', xScale(-0.8))
+                .attr('x2', xScale(0.8))
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--theme-color)')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '6,4');
+
+            // Labels for concavity
+            g.append('text')
+                .attr('x', xScale(-1))
+                .attr('y', yScale(0.6))
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .attr('fill', 'var(--color-error)')
+                .text('Concave Down');
+
+            g.append('text')
+                .attr('x', xScale(1))
+                .attr('y', yScale(-0.6))
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .attr('fill', 'var(--color-derivative)')
+                .text('Concave Up');
+        }
+
+        // ===== SDT Visualization (Slide 11) =====
+        function drawSdtViz() {
+            const container = document.getElementById('sdt-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 350;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([0, 6]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([0, 4]).range([plotHeight, 0]);
+
+            // Maximum (concave down)
+            const f1 = x => -(x - 1.5) * (x - 1.5) + 3;
+            const x1 = d3.range(0.5, 2.5, 0.05);
+
+            g.append('path')
+                .datum(x1)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-error)')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d)).y(d => yScale(f1(d))).curve(d3.curveNatural));
+
+            g.append('circle')
+                .attr('cx', xScale(1.5))
+                .attr('cy', yScale(3))
+                .attr('r', 7)
+                .attr('fill', 'var(--color-error)');
+
+            g.append('text')
+                .attr('x', xScale(1.5))
+                .attr('y', yScale(3.5))
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .attr('fill', 'var(--color-error)')
+                .text('f\'\' < 0: MAX');
+
+            // Minimum (concave up)
+            const f2 = x => (x - 4.5) * (x - 4.5) + 1;
+            const x2 = d3.range(3.5, 5.5, 0.05);
+
+            g.append('path')
+                .datum(x2)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-derivative)')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d)).y(d => yScale(f2(d))).curve(d3.curveNatural));
+
+            g.append('circle')
+                .attr('cx', xScale(4.5))
+                .attr('cy', yScale(1))
+                .attr('r', 7)
+                .attr('fill', 'var(--color-derivative)');
+
+            g.append('text')
+                .attr('x', xScale(4.5))
+                .attr('y', yScale(0.3))
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .attr('fill', 'var(--color-derivative)')
+                .text('f\'\' > 0: MIN');
+
+            // Axis
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+        }
+
+        // ===== Three Derivatives Visualization (Slide 14) =====
+        function drawThreeDerivativesViz() {
+            const container = document.getElementById('three-derivatives-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-2, 2]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-4, 4]).range([plotHeight, 0]);
+
+            const f = x => x * x * x - 3 * x;
+            const fPrime = x => 3 * x * x - 3;
+            const fDoublePrime = x => 6 * x;
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-4, 5, 2))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            const xValues = d3.range(-1.8, 1.81, 0.05);
+            const lineFn = d3.line().curve(d3.curveNatural);
+
+            // f(x)
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', lineFn.x(d => xScale(d)).y(d => yScale(f(d))));
+
+            // f'(x)
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-derivative)')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '8,4')
+                .attr('d', lineFn.x(d => xScale(d)).y(d => yScale(fPrime(d))));
+
+            // f''(x)
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--theme-color)')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '4,4')
+                .attr('d', lineFn.x(d => xScale(d)).y(d => yScale(fDoublePrime(d))));
+
+            // Key points
+            g.append('circle')
+                .attr('cx', xScale(0))
+                .attr('cy', yScale(0))
+                .attr('r', 5)
+                .attr('fill', 'var(--theme-color)');
+
+            g.append('text')
+                .attr('x', xScale(0) + 10)
+                .attr('y', yScale(0) - 10)
+                .attr('font-size', '0.9rem')
+                .attr('fill', 'var(--theme-color)')
+                .text('f\'\'=0');
+        }
+
+        // ===== Practice Graph (Slide 18) =====
+        function drawPracticeGraphViz() {
+            const container = document.getElementById('practice-graph-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 280;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-3, 4]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-3, 3]).range([plotHeight, 0]);
+
+            const fDoublePrime = x => (x + 1) * (x - 2);
+
+            // Axis
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // f''(x)
+            const xValues = d3.range(-2.5, 3.5, 0.05);
+            const fLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(fDoublePrime(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--theme-color)')
+                .attr('stroke-width', 3)
+                .attr('d', fLine);
+
+            // Zeros
+            g.append('circle')
+                .attr('cx', xScale(-1))
+                .attr('cy', yScale(0))
+                .attr('r', 6)
+                .attr('fill', 'var(--accent-secondary)');
+
+            g.append('circle')
+                .attr('cx', xScale(2))
+                .attr('cy', yScale(0))
+                .attr('r', 6)
+                .attr('fill', 'var(--accent-secondary)');
+
+            // Labels
+            g.append('text')
+                .attr('x', plotWidth - 10)
+                .attr('y', yScale(0) - 10)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1.1rem')
+                .attr('fill', 'var(--theme-color)')
+                .text("f''(x)");
+        }
+
+        // ===== Visualization Trigger =====
+        const visualizationSlides = {
+            6: drawConcavityViz,
+            8: drawInflectionViz,
+            11: drawSdtViz,
+            14: drawThreeDerivativesViz,
+            18: drawPracticeGraphViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

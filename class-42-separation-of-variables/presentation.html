@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Separation of Variables | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <style>
+        :root {
+            --theme-color: #f97316;
+            --theme-color-light: #fb923c;
+            --theme-color-dark: #ea580c;
+            --solution-curve: #3b82f6;
+            --general-solution: #8b5cf6;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .slide-title h1 {
+            color: var(--theme-color);
+        }
+
+        .viz-container {
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viz-container svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .definition-box h3 {
+            color: var(--theme-color);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .example-box {
+            background: #f8fafc;
+            border: 2px solid var(--theme-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .method-steps {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin: 1rem 0;
+        }
+
+        .method-step {
+            display: flex;
+            align-items: flex-start;
+            margin: 1rem 0;
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: 4px;
+            border-left: 4px solid var(--theme-color);
+        }
+
+        .step-number {
+            background: var(--theme-color);
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .work-box {
+            background: #fef3c7;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .work-box .step {
+            margin: 0.75rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .work-box .step::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--theme-color);
+        }
+
+        .controls-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--theme-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .control-btn:hover {
+            background: var(--theme-color-dark);
+        }
+
+        .control-btn.active {
+            background: var(--theme-color-dark);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .warning-box {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box h4 {
+            color: #ef4444;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid #e5e7eb;
+        }
+
+        .comparison-table th {
+            background: var(--theme-color);
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #fff7ed;
+        }
+
+        .key-insight {
+            background: #ecfdf5;
+            border-left: 4px solid #10b981;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .key-insight strong {
+            color: #059669;
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .solution-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--theme-color);
+        }
+
+        .solution-card h4 {
+            color: var(--theme-color);
+            margin: 0 0 0.75rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+
+        <!-- Slide 0: Title -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 7: Differential Equations</span>
+                <h1>Separation of Variables</h1>
+                <p class="subtitle">Finding Exact Solutions</p>
+                <p class="meta">Class 42 | CED Topics 7.6, 7.7</p>
+            </div>
+        </section>
+
+        <!-- Slide 1: Warm-Up -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="exercise-box">
+                    <p>Verify that \(y = Ce^{3x}\) is a solution to \(\dfrac{dy}{dx} = 3y\)</p>
+                    <hr style="margin: 1.5rem 0; border-color: #e5e7eb;">
+                    <p><strong>Question:</strong> How would you find this solution if you didn't already know it?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: The Big Idea -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>The Big Idea</h2>
+                <div class="definition-box">
+                    <h3>Separation of Variables</h3>
+                    <p>A technique for solving differential equations by:</p>
+                    <ol style="margin-top: 0.5rem;">
+                        <li>Moving all \(y\) terms to one side</li>
+                        <li>Moving all \(x\) terms to the other side</li>
+                        <li>Integrating both sides</li>
+                    </ol>
+                </div>
+                <div class="key-insight" style="margin-top: 1.5rem;">
+                    <strong>Key Requirement:</strong> The equation must be <em>separable</em> — able to be written as \(\dfrac{dy}{dx} = f(x) \cdot g(y)\)
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: The Method -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>The Separation Method</h2>
+                <div class="method-steps">
+                    <div class="method-step">
+                        <span class="step-number">1</span>
+                        <div>
+                            <strong>Start with:</strong> \(\dfrac{dy}{dx} = f(x) \cdot g(y)\)
+                        </div>
+                    </div>
+                    <div class="method-step">
+                        <span class="step-number">2</span>
+                        <div>
+                            <strong>Separate:</strong> \(\dfrac{1}{g(y)} \, dy = f(x) \, dx\)
+                        </div>
+                    </div>
+                    <div class="method-step">
+                        <span class="step-number">3</span>
+                        <div>
+                            <strong>Integrate both sides:</strong> \(\displaystyle\int \dfrac{1}{g(y)} \, dy = \int f(x) \, dx\)
+                        </div>
+                    </div>
+                    <div class="method-step">
+                        <span class="step-number">4</span>
+                        <div>
+                            <strong>Solve for y</strong> (if possible) and include constant C
+                        </div>
+                    </div>
+                    <div class="method-step">
+                        <span class="step-number">5</span>
+                        <div>
+                            <strong>Apply initial condition</strong> (if given) to find C
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Example 1 - Basic -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example 1: \(\frac{dy}{dx} = 3y\)</h2>
+                <div class="work-box">
+                    <p><strong>Separate variables:</strong></p>
+                    <div class="step">\(\dfrac{1}{y} \, dy = 3 \, dx\)</div>
+                    <p><strong>Integrate both sides:</strong></p>
+                    <div class="step">\(\displaystyle\int \dfrac{1}{y} \, dy = \int 3 \, dx\)</div>
+                    <div class="step">\(\ln|y| = 3x + C_1\)</div>
+                    <p><strong>Solve for y:</strong></p>
+                    <div class="step">\(|y| = e^{3x + C_1} = e^{C_1} \cdot e^{3x}\)</div>
+                    <div class="step">\(y = Ce^{3x}\) where \(C = \pm e^{C_1}\)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Family of Solutions Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Solution Family: \(y = Ce^{3x}\)</h2>
+                <div id="exponential-family-viz" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.1rem;">Each curve represents a different value of C</p>
+            </div>
+        </section>
+
+        <!-- Slide 6: Example 2 with Initial Condition -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example 2: \(\frac{dy}{dx} = xy\), \(y(0) = 2\)</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <div class="work-box">
+                            <p><strong>Separate:</strong></p>
+                            <div class="step">\(\dfrac{1}{y} \, dy = x \, dx\)</div>
+                            <p><strong>Integrate:</strong></p>
+                            <div class="step">\(\ln|y| = \dfrac{x^2}{2} + C_1\)</div>
+                            <div class="step">\(y = Ce^{x^2/2}\)</div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="example-box">
+                            <p><strong>Apply IC:</strong> \(y(0) = 2\)</p>
+                            <p style="margin-top: 0.5rem;">\(2 = Ce^{0} = C\)</p>
+                            <p style="margin-top: 0.5rem;"><strong>Particular solution:</strong></p>
+                            <p class="math-display" style="color: var(--theme-color); font-weight: bold;">\[y = 2e^{x^2/2}\]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: IVP Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Particular Solution: \(y = 2e^{x^2/2}\)</h2>
+                <div id="ivp-solution-viz" class="viz-container"></div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #e5e7eb;"></div>
+                        <span>Other solutions (different C)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--theme-color);"></div>
+                        <span>Particular solution (C = 2)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Recognizing Separable Equations -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Which Equations Are Separable?</h2>
+                <div class="definition-box">
+                    <h3>Test for Separability</h3>
+                    <p>Can the equation be written as \(\dfrac{dy}{dx} = f(x) \cdot g(y)\)?</p>
+                </div>
+                <table class="comparison-table" style="margin-top: 1.5rem;">
+                    <tr>
+                        <th>Equation</th>
+                        <th>Separable?</th>
+                        <th>Why?</th>
+                    </tr>
+                    <tr>
+                        <td>\(\dfrac{dy}{dx} = xy\)</td>
+                        <td style="color: #22c55e;">Yes</td>
+                        <td>\(f(x) = x\), \(g(y) = y\)</td>
+                    </tr>
+                    <tr>
+                        <td>\(\dfrac{dy}{dx} = x + y\)</td>
+                        <td style="color: #ef4444;">No</td>
+                        <td>Can't factor into product</td>
+                    </tr>
+                    <tr>
+                        <td>\(\dfrac{dy}{dx} = \dfrac{x^2}{y}\)</td>
+                        <td style="color: #22c55e;">Yes</td>
+                        <td>\(f(x) = x^2\), \(g(y) = 1/y\)</td>
+                    </tr>
+                    <tr>
+                        <td>\(\dfrac{dy}{dx} = e^{x+y}\)</td>
+                        <td style="color: #22c55e;">Yes</td>
+                        <td>\(= e^x \cdot e^y\)</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- Slide 9: Example 3 - Quotient -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example 3: \(\frac{dy}{dx} = \frac{x^2}{y}\)</h2>
+                <div class="work-box">
+                    <p><strong>Separate:</strong></p>
+                    <div class="step">\(y \, dy = x^2 \, dx\)</div>
+                    <p><strong>Integrate:</strong></p>
+                    <div class="step">\(\displaystyle\int y \, dy = \int x^2 \, dx\)</div>
+                    <div class="step">\(\dfrac{y^2}{2} = \dfrac{x^3}{3} + C\)</div>
+                    <p><strong>Solve for y:</strong></p>
+                    <div class="step">\(y^2 = \dfrac{2x^3}{3} + C\)</div>
+                    <div class="step">\(y = \pm\sqrt{\dfrac{2x^3}{3} + C}\)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Common Mistake -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Common Mistakes to Avoid</h2>
+                <div class="warning-box">
+                    <h4>Mistake 1: Forgetting the Constant</h4>
+                    <p>Always add "+C" when integrating. Only one constant is needed (on one side).</p>
+                </div>
+                <div class="warning-box" style="margin-top: 1rem;">
+                    <h4>Mistake 2: Division by Zero</h4>
+                    <p>When dividing by \(g(y)\), check if \(g(y) = 0\) gives an additional solution.</p>
+                    <p style="margin-top: 0.5rem;"><strong>Example:</strong> For \(\dfrac{dy}{dx} = y^2\), \(y = 0\) is a solution!</p>
+                </div>
+                <div class="warning-box" style="margin-top: 1rem;">
+                    <h4>Mistake 3: Losing Solutions</h4>
+                    <p>When taking square roots or solving for y, consider both + and - cases.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: Example 4 - Trig -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example 4: \(\frac{dy}{dx} = y\cos(x)\), \(y(0) = 1\)</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <div class="work-box">
+                            <p><strong>Separate:</strong></p>
+                            <div class="step">\(\dfrac{1}{y} \, dy = \cos(x) \, dx\)</div>
+                            <p><strong>Integrate:</strong></p>
+                            <div class="step">\(\ln|y| = \sin(x) + C_1\)</div>
+                            <div class="step">\(y = Ce^{\sin(x)}\)</div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="example-box">
+                            <p><strong>Apply IC:</strong></p>
+                            <p>\(1 = Ce^{\sin(0)} = Ce^0 = C\)</p>
+                            <p style="margin-top: 1rem;"><strong>Solution:</strong></p>
+                            <p class="math-display" style="color: var(--theme-color);">\[y = e^{\sin(x)}\]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: Trig Solution Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Solution: \(y = e^{\sin(x)}\)</h2>
+                <div id="trig-solution-viz" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.1rem;">Notice the periodic oscillation between \(e^{-1}\) and \(e^1\)</p>
+            </div>
+        </section>
+
+        <!-- Slide 13: Example 5 - Newton's Cooling -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Application: Newton's Law of Cooling</h2>
+                <div class="example-box">
+                    <p>\(\dfrac{dT}{dt} = -k(T - 70)\), \(T(0) = 180\)</p>
+                </div>
+                <div class="work-box" style="margin-top: 1rem;">
+                    <p><strong>Separate:</strong> Let \(u = T - 70\), so \(du = dT\)</p>
+                    <div class="step">\(\dfrac{du}{dt} = -ku\)</div>
+                    <div class="step">\(\dfrac{1}{u} \, du = -k \, dt\)</div>
+                    <p><strong>Integrate:</strong></p>
+                    <div class="step">\(\ln|u| = -kt + C_1\)</div>
+                    <div class="step">\(u = Ce^{-kt}\), so \(T - 70 = Ce^{-kt}\)</div>
+                    <p><strong>Apply IC:</strong> \(180 - 70 = Ce^0\), so \(C = 110\)</p>
+                    <div class="step" style="font-weight: bold; color: var(--theme-color);">\(T = 70 + 110e^{-kt}\)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 14: Cooling Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Newton's Cooling: \(T = 70 + 110e^{-kt}\)</h2>
+                <div id="cooling-solution-viz" class="viz-container"></div>
+                <div class="controls-container">
+                    <span>Cooling rate k = </span>
+                    <button class="control-btn" data-k="0.05">0.05 (slow)</button>
+                    <button class="control-btn active" data-k="0.1">0.1</button>
+                    <button class="control-btn" data-k="0.2">0.2 (fast)</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 15: Implicit vs Explicit Solutions -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Implicit vs. Explicit Solutions</h2>
+                <div class="solution-grid">
+                    <div class="solution-card">
+                        <h4>Explicit Solution</h4>
+                        <p>Solved directly for y:</p>
+                        <p class="math-display">\[y = f(x)\]</p>
+                        <p style="font-size: 0.95rem; margin-top: 0.5rem;"><strong>Example:</strong> \(y = Ce^{3x}\)</p>
+                    </div>
+                    <div class="solution-card">
+                        <h4>Implicit Solution</h4>
+                        <p>Relationship between x and y:</p>
+                        <p class="math-display">\[F(x, y) = C\]</p>
+                        <p style="font-size: 0.95rem; margin-top: 0.5rem;"><strong>Example:</strong> \(y^2 + x^2 = C\)</p>
+                    </div>
+                </div>
+                <div class="key-insight" style="margin-top: 1rem;">
+                    <strong>Note:</strong> Sometimes we cannot solve explicitly for y, and the implicit form is our final answer. That's perfectly acceptable!
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 16: Practice Problems -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Practice Problems</h2>
+                <div class="exercise-box">
+                    <p><strong>Solve each differential equation:</strong></p>
+                    <ol style="margin-top: 1rem; font-size: 1.2rem; line-height: 2.5;">
+                        <li>\(\dfrac{dy}{dx} = 2xy\), \(y(0) = 3\)</li>
+                        <li>\(\dfrac{dy}{dx} = \dfrac{y}{x}\), \(y(1) = 2\)</li>
+                        <li>\(\dfrac{dy}{dx} = y^2\sin(x)\)</li>
+                        <li>\(\dfrac{dy}{dx} = e^{x-y}\)</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 17: Solutions -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <ol style="font-size: 1.1rem; line-height: 2.2;">
+                    <li><strong>\(\frac{dy}{dx} = 2xy\):</strong> \(\frac{1}{y}dy = 2x\,dx\) → \(\ln|y| = x^2 + C\) → \(y = Ce^{x^2}\)
+                        <br>IC: \(3 = Ce^0\), so <strong>\(y = 3e^{x^2}\)</strong></li>
+                    <li><strong>\(\frac{dy}{dx} = \frac{y}{x}\):</strong> \(\frac{1}{y}dy = \frac{1}{x}dx\) → \(\ln|y| = \ln|x| + C\) → \(y = Cx\)
+                        <br>IC: \(2 = C(1)\), so <strong>\(y = 2x\)</strong></li>
+                    <li><strong>\(\frac{dy}{dx} = y^2\sin(x)\):</strong> \(\frac{1}{y^2}dy = \sin(x)dx\) → \(-\frac{1}{y} = -\cos(x) + C\)
+                        <br><strong>\(y = \frac{1}{\cos(x) + C}\)</strong></li>
+                    <li><strong>\(\frac{dy}{dx} = e^{x-y} = e^x \cdot e^{-y}\):</strong> \(e^y dy = e^x dx\) → \(e^y = e^x + C\)
+                        <br><strong>\(y = \ln(e^x + C)\)</strong></li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Slide 18: Summary -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Summary: Separation of Variables</h2>
+                <div class="method-steps">
+                    <div class="method-step">
+                        <span class="step-number">1</span>
+                        <div><strong>Check</strong> if the equation is separable: \(\dfrac{dy}{dx} = f(x) \cdot g(y)\)</div>
+                    </div>
+                    <div class="method-step">
+                        <span class="step-number">2</span>
+                        <div><strong>Separate</strong> the variables: all y terms with dy, all x terms with dx</div>
+                    </div>
+                    <div class="method-step">
+                        <span class="step-number">3</span>
+                        <div><strong>Integrate</strong> both sides (don't forget +C)</div>
+                    </div>
+                    <div class="method-step">
+                        <span class="step-number">4</span>
+                        <div><strong>Solve</strong> for y if possible (explicit vs implicit)</div>
+                    </div>
+                    <div class="method-step">
+                        <span class="step-number">5</span>
+                        <div><strong>Apply</strong> initial condition to find C (for IVPs)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 19: Exit Ticket -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="exercise-box">
+                    <p><strong>1.</strong> Is \(\dfrac{dy}{dx} = x^2 + y^2\) separable? Why or why not?</p>
+                    <div style="height: 1.5rem;"></div>
+                    <p><strong>2.</strong> Solve: \(\dfrac{dy}{dx} = \dfrac{x}{y}\), \(y(0) = 4\)</p>
+                    <div style="height: 1.5rem;"></div>
+                    <p><strong>3.</strong> What is the difference between a general solution and a particular solution?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 20: Looking Ahead -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <h2>Looking Ahead</h2>
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--theme-color);">Next Class: Exponential & Logistic Models</h3>
+                    <ul style="font-size: 1.35rem; line-height: 2; list-style: none; padding: 0; margin-top: 1.5rem;">
+                        <li>Exponential growth and decay applications</li>
+                        <li>The logistic differential equation</li>
+                        <li>Carrying capacity and population models</li>
+                        <li>BC Topic: Solving logistic equations</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="slide-nav">
+        <button id="prevBtn" aria-label="Previous slide">←</button>
+        <span id="slideCounter">1 / 21</span>
+        <button id="nextBtn" aria-label="Next slide">→</button>
+        <button id="tocBtn" aria-label="Table of contents">☰</button>
+    </nav>
+
+    <!-- Table of Contents -->
+    <div id="toc" class="toc-overlay">
+        <div class="toc-content">
+            <h3>Contents</h3>
+            <ul id="tocList"></ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <script src="../shared/presentation.js"></script>
+
+    <script>
+        // Visualization functions
+        const visualizationSlides = {
+            5: drawExponentialFamilyViz,
+            7: drawIVPSolutionViz,
+            12: drawTrigSolutionViz,
+            14: drawCoolingSolutionViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Visualization 1: Family of exponential solutions
+        function drawExponentialFamilyViz() {
+            const container = d3.select('#exponential-family-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear()
+                .domain([-1, 1.5])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([-5, 5])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-4, 5))
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Family of curves y = Ce^(3x)
+            const cValues = [-2, -1, -0.5, 0.5, 1, 2];
+            const colors = d3.scaleSequential(d3.interpolateOranges).domain([-3, 3]);
+
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const xValues = d3.range(-1, 1.5, 0.02);
+
+            cValues.forEach(C => {
+                const data = xValues.map(x => ({ x, y: C * Math.exp(3 * x) }))
+                    .filter(d => d.y >= -5 && d.y <= 5);
+
+                svg.append('path')
+                    .datum(data)
+                    .attr('fill', 'none')
+                    .attr('stroke', colors(C))
+                    .attr('stroke-width', 2.5)
+                    .attr('d', line);
+            });
+
+            // Labels
+            svg.append('text')
+                .attr('x', width - margin.right)
+                .attr('y', yScale(0) - 10)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1rem')
+                .text('x');
+
+            svg.append('text')
+                .attr('x', xScale(0) + 10)
+                .attr('y', margin.top + 10)
+                .attr('font-size', '1rem')
+                .text('y');
+        }
+
+        // Visualization 2: IVP solution with family
+        function drawIVPSolutionViz() {
+            const container = d3.select('#ivp-solution-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear()
+                .domain([-2, 2])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, 10])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line.h')
+                .data(d3.range(0, 11, 2))
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const xValues = d3.range(-2, 2, 0.02);
+
+            // Family of solutions (faded)
+            [0.5, 1, 1.5, 2.5, 3].forEach(C => {
+                const data = xValues.map(x => ({ x, y: C * Math.exp(x * x / 2) }))
+                    .filter(d => d.y >= 0 && d.y <= 10);
+
+                svg.append('path')
+                    .datum(data)
+                    .attr('fill', 'none')
+                    .attr('stroke', '#e5e7eb')
+                    .attr('stroke-width', 2)
+                    .attr('d', line);
+            });
+
+            // Particular solution C = 2 (highlighted)
+            const particularData = xValues.map(x => ({ x, y: 2 * Math.exp(x * x / 2) }))
+                .filter(d => d.y >= 0 && d.y <= 10);
+
+            svg.append('path')
+                .datum(particularData)
+                .attr('fill', 'none')
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 3.5)
+                .attr('d', line);
+
+            // Initial point
+            svg.append('circle')
+                .attr('cx', xScale(0))
+                .attr('cy', yScale(2))
+                .attr('r', 8)
+                .attr('fill', '#f97316')
+                .attr('stroke', 'white')
+                .attr('stroke-width', 2);
+
+            // Label
+            svg.append('text')
+                .attr('x', xScale(0) + 15)
+                .attr('y', yScale(2) - 10)
+                .attr('font-size', '1rem')
+                .attr('fill', '#f97316')
+                .text('(0, 2)');
+        }
+
+        // Visualization 3: Trig solution
+        function drawTrigSolutionViz() {
+            const container = d3.select('#trig-solution-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear()
+                .domain([-2 * Math.PI, 2 * Math.PI])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, 3])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line.h')
+                .data([1, Math.exp(-1), Math.exp(1)])
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1)
+                .attr('stroke-dasharray', d => d === 1 ? 'none' : '5,5');
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Solution y = e^sin(x)
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const xValues = d3.range(-2 * Math.PI, 2 * Math.PI, 0.05);
+            const data = xValues.map(x => ({ x, y: Math.exp(Math.sin(x)) }));
+
+            svg.append('path')
+                .datum(data)
+                .attr('fill', 'none')
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Initial point
+            svg.append('circle')
+                .attr('cx', xScale(0))
+                .attr('cy', yScale(1))
+                .attr('r', 6)
+                .attr('fill', '#f97316');
+
+            // Labels for bounds
+            svg.append('text')
+                .attr('x', width - margin.right - 5)
+                .attr('y', yScale(Math.exp(1)) - 5)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '0.9rem')
+                .attr('fill', '#666')
+                .text('y = e ≈ 2.72');
+
+            svg.append('text')
+                .attr('x', width - margin.right - 5)
+                .attr('y', yScale(Math.exp(-1)) + 15)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '0.9rem')
+                .attr('fill', '#666')
+                .text('y = 1/e ≈ 0.37');
+
+            // Pi labels
+            const piLabels = [
+                { x: -2 * Math.PI, label: '-2π' },
+                { x: -Math.PI, label: '-π' },
+                { x: Math.PI, label: 'π' },
+                { x: 2 * Math.PI, label: '2π' }
+            ];
+
+            piLabels.forEach(p => {
+                svg.append('text')
+                    .attr('x', xScale(p.x))
+                    .attr('y', yScale(0) + 20)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '0.9rem')
+                    .text(p.label);
+            });
+        }
+
+        // Visualization 4: Cooling solution with adjustable k
+        let selectedK = 0.1;
+
+        function drawCoolingSolutionViz() {
+            const container = d3.select('#cooling-solution-viz');
+            container.selectAll('svg').remove();
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 20, right: 30, bottom: 40, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear()
+                .domain([0, 60])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([60, 190])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line.h')
+                .data(d3.range(60, 191, 20))
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(60))
+                .attr('y2', yScale(60))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Room temperature line
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(70))
+                .attr('y2', yScale(70))
+                .attr('stroke', '#9ca3af')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,5');
+
+            // Cooling curve T = 70 + 110e^(-kt)
+            const line = d3.line()
+                .x(d => xScale(d.t))
+                .y(d => yScale(d.T))
+                .curve(d3.curveNatural);
+
+            const tValues = d3.range(0, 60, 0.5);
+            const data = tValues.map(t => ({ t, T: 70 + 110 * Math.exp(-selectedK * t) }));
+
+            svg.append('path')
+                .datum(data)
+                .attr('fill', 'none')
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Initial point
+            svg.append('circle')
+                .attr('cx', xScale(0))
+                .attr('cy', yScale(180))
+                .attr('r', 6)
+                .attr('fill', '#f97316');
+
+            // Labels
+            svg.append('text')
+                .attr('x', width - margin.right)
+                .attr('y', yScale(60) + 25)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1rem')
+                .text('t (minutes)');
+
+            svg.append('text')
+                .attr('x', margin.left - 10)
+                .attr('y', margin.top)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1rem')
+                .text('T (°F)');
+
+            // Asymptote label
+            svg.append('text')
+                .attr('x', width - margin.right - 10)
+                .attr('y', yScale(70) - 8)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '0.9rem')
+                .attr('fill', '#666')
+                .text('T = 70°F (room temp)');
+
+            // Y-axis tick labels
+            [80, 100, 120, 140, 160, 180].forEach(v => {
+                svg.append('text')
+                    .attr('x', margin.left - 10)
+                    .attr('y', yScale(v) + 4)
+                    .attr('text-anchor', 'end')
+                    .attr('font-size', '0.9rem')
+                    .text(v);
+            });
+
+            // Button handlers
+            document.querySelectorAll('.control-btn[data-k]').forEach(btn => {
+                btn.onclick = function() {
+                    selectedK = parseFloat(this.dataset.k);
+                    document.querySelectorAll('.control-btn[data-k]').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    drawCoolingSolutionViz();
+                };
+            });
+        }
+    </script>
+</body>
+</html>

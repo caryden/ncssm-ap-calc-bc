@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 24: Mean Value Theorem | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #14b8a6;
+            --theme-color-light: #2dd4bf;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .theorem-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--accent-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 850px;
+        }
+
+        .theorem-box h4 {
+            color: var(--accent-secondary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .hypothesis-box {
+            background: var(--bg-tertiary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .hypothesis-box h5 {
+            color: var(--theme-color-light);
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .concept-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            border-radius: 0 8px 8px 0;
+            max-width: 850px;
+            text-align: left;
+        }
+
+        .concept-box h4 {
+            color: var(--theme-color-light);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .slider-control label {
+            font-size: 1.25rem;
+            font-family: var(--font-display);
+        }
+
+        .slider-control input[type="range"] {
+            width: 300px;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--theme-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .info-display {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-family: var(--font-mono);
+            font-size: 1.15rem;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+        }
+
+        .motion-legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-size: 1.15rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1), rgba(212, 160, 40, 0.1));
+            border: 1px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            max-width: 800px;
+        }
+
+        .analogy-box h4 {
+            color: var(--accent-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .rolle-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--color-function);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            max-width: 750px;
+        }
+
+        .rolle-box h4 {
+            color: var(--color-function);
+            margin-bottom: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Mean Value Theorem">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 5: Analytical Applications of Differentiation</div>
+                <h1>The Mean Value Theorem</h1>
+                <p class="subtitle">Connecting Average and Instantaneous Rates</p>
+                <p class="meta">Class 24 | CED Topic 5.1 | AP Calculus BC | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: Opening Question -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="The Key Question">
+            <div class="slide-content">
+                <p class="statement">If your average speed was 60 mph, must there be a moment when your speed was <em>exactly</em> 60 mph?</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Warm-Up -->
+        <div class="slide slide-exercise" data-slide="2" data-section="Opening" data-title="Warm-Up">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="prompt">
+                    <p>Let \( f(x) = x^2 \) on the interval \( [1, 4] \).</p>
+                </div>
+                <div class="instructions" style="text-align: left; max-width: 700px; margin: 1.5rem auto 0;">
+                    <ol style="list-style-position: inside; font-size: 1.25rem;">
+                        <li style="padding: 0.5rem 0;">Find the average rate of change of \( f \) on \( [1, 4] \)</li>
+                        <li style="padding: 0.5rem 0;">Find \( f'(x) \)</li>
+                        <li style="padding: 0.5rem 0;">Is there a value \( c \) in \( (1, 4) \) where \( f'(c) \) equals the average rate?</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Rolle's Theorem First -->
+        <div class="slide slide-two-part" data-slide="3" data-section="Rolle's Theorem" data-title="Rolle's Theorem">
+            <div class="slide-content">
+                <p class="primary" style="color: var(--color-function);">Rolle's Theorem (A Special Case)</p>
+                <div class="rolle-box">
+                    <p style="font-size: 1.25rem; margin-bottom: 1rem;">If \( f \) is continuous on \( [a, b] \), differentiable on \( (a, b) \), and \( f(a) = f(b) \), then</p>
+                    <div class="math-display">
+                        \[ \text{there exists } c \in (a, b) \text{ such that } f'(c) = 0 \]
+                    </div>
+                </div>
+                <p style="text-align: center; font-size: 1.25rem; color: var(--text-secondary); margin-top: 1rem;">
+                    If you start and end at the same height, there must be a horizontal tangent somewhere!
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Rolle's Visualization -->
+        <div class="slide slide-visual" data-slide="4" data-section="Rolle's Theorem" data-title="Rolle's Visualization">
+            <div class="slide-content">
+                <h2>Visualizing Rolle's Theorem</h2>
+                <div id="rolle-viz" class="visualization"></div>
+                <p class="caption">The horizontal tangent must exist when \( f(a) = f(b) \)</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Mean Value Theorem Statement -->
+        <div class="slide slide-visual" data-slide="5" data-section="MVT" data-title="MVT Statement">
+            <div class="slide-content">
+                <h2>The Mean Value Theorem</h2>
+                <div class="theorem-box">
+                    <h4>Mean Value Theorem</h4>
+                    <div class="hypothesis-box">
+                        <h5>Hypotheses</h5>
+                        <p style="font-size: 1.15rem;">1. \( f \) is continuous on \( [a, b] \)</p>
+                        <p style="font-size: 1.15rem;">2. \( f \) is differentiable on \( (a, b) \)</p>
+                    </div>
+                    <p style="font-size: 1.25rem; margin-top: 1rem;"><strong>Conclusion:</strong> There exists \( c \in (a, b) \) such that:</p>
+                    <div class="math-display">
+                        \[ f'(c) = \frac{f(b) - f(a)}{b - a} \]
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Geometric Interpretation -->
+        <div class="slide slide-statement" data-slide="6" data-section="MVT" data-title="Geometric Meaning">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">The tangent line is <em>parallel</em> to the secant line at some point</p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    Slope of tangent = Slope of secant (at least once)
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 7: MVT Visualization -->
+        <div class="slide slide-visual" data-slide="7" data-section="MVT" data-title="MVT Visualization">
+            <div class="slide-content">
+                <h2>The Mean Value Theorem in Action</h2>
+                <div id="mvt-viz" class="visualization"></div>
+                <div class="motion-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-function);"></div>
+                        <span>\( f(x) \)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--accent-secondary);"></div>
+                        <span>Secant line</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--theme-color);"></div>
+                        <span>Parallel tangent</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Speed Analogy -->
+        <div class="slide slide-visual" data-slide="8" data-section="MVT" data-title="Speed Analogy">
+            <div class="slide-content">
+                <h2>The Speeding Ticket Interpretation</h2>
+                <div class="analogy-box">
+                    <h4>Real-World Application</h4>
+                    <p style="font-size: 1.25rem;">If you drive 120 miles in 2 hours:</p>
+                    <p style="font-size: 1.5rem; color: var(--accent-secondary); margin: 1rem 0;">Average speed = 60 mph</p>
+                    <p style="font-size: 1.25rem;">By MVT, at some moment your instantaneous speed was exactly 60 mph.</p>
+                </div>
+                <p style="text-align: center; font-size: 1.15rem; color: var(--text-tertiary); margin-top: 1rem;">
+                    This is why toll road cameras at two points can prove speeding!
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 9: Example 1 -->
+        <div class="slide slide-example" data-slide="9" data-section="Examples" data-title="Example 1">
+            <div class="slide-content">
+                <h2>Example: Finding c</h2>
+                <div class="problem">
+                    <p>For \( f(x) = x^3 - x \) on \( [-1, 2] \), find all values of \( c \) guaranteed by MVT.</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>\( f(-1) = -1 + 1 = 0 \), \( f(2) = 8 - 2 = 6 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>Average rate: \( \frac{6 - 0}{2 - (-1)} = \frac{6}{3} = 2 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( f'(x) = 3x^2 - 1 \). Set \( 3x^2 - 1 = 2 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>\( x^2 = 1 \implies x = \pm 1 \). Only \( c = 1 \) is in \( (-1, 2) \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Interactive MVT -->
+        <div class="slide slide-visual" data-slide="10" data-section="Examples" data-title="Interactive MVT">
+            <div class="slide-content">
+                <h2>Exploring MVT: \( f(x) = x^3 - x \)</h2>
+                <div id="interactive-mvt-viz" class="visualization"></div>
+                <div class="slider-control">
+                    <label>c = </label>
+                    <input type="range" id="c-slider" min="-0.9" max="1.9" step="0.05" value="1">
+                    <span id="c-value" style="font-family: var(--font-mono); min-width: 80px;">c = 1.00</span>
+                </div>
+                <div class="info-display">
+                    <div class="info-item" id="secant-slope">Secant slope: 2.00</div>
+                    <div class="info-item" id="tangent-slope">f'(c) = 2.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Example with No c -->
+        <div class="slide slide-example" data-slide="11" data-section="Examples" data-title="Hypotheses Matter">
+            <div class="slide-content">
+                <h2>When MVT Doesn't Apply</h2>
+                <div class="problem">
+                    <p>Consider \( f(x) = |x| \) on \( [-1, 1] \).</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>\( f(-1) = 1 \), \( f(1) = 1 \). Average rate = 0.</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>Is there \( c \) where \( f'(c) = 0 \)?</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( f'(x) = -1 \) for \( x < 0 \), \( f'(x) = 1 \) for \( x > 0 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>No! \( f \) is not differentiable at \( x = 0 \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Consequences of MVT -->
+        <div class="slide slide-list" data-slide="12" data-section="Consequences" data-title="Consequences">
+            <div class="slide-content">
+                <h2>Important Consequences of MVT</h2>
+                <ul>
+                    <li>If \( f'(x) = 0 \) for all \( x \) in an interval, then \( f \) is constant</li>
+                    <li>If \( f'(x) > 0 \) for all \( x \), then \( f \) is increasing</li>
+                    <li>If \( f'(x) < 0 \) for all \( x \), then \( f \) is decreasing</li>
+                    <li>If \( f'(x) = g'(x) \) for all \( x \), then \( f(x) = g(x) + C \)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 13: Proof Sketch -->
+        <div class="slide slide-example" data-slide="13" data-section="Consequences" data-title="Why f' = 0 means Constant">
+            <div class="slide-content">
+                <h2>Why \( f' = 0 \) implies \( f \) is constant</h2>
+                <div class="concept-box">
+                    <h4>Proof sketch using MVT</h4>
+                    <p style="font-size: 1.25rem;">Take any two points \( x_1 < x_2 \) in the interval.</p>
+                    <p style="font-size: 1.25rem; margin-top: 0.75rem;">By MVT, there exists \( c \) between them with:</p>
+                    <p style="font-size: 1.35rem; color: var(--accent-secondary); margin: 1rem 0; text-align: center;">
+                        \( f(x_2) - f(x_1) = f'(c)(x_2 - x_1) = 0 \cdot (x_2 - x_1) = 0 \)
+                    </p>
+                    <p style="font-size: 1.25rem;">Therefore \( f(x_2) = f(x_1) \) for all pairs!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Application - Bound on Change -->
+        <div class="slide slide-example" data-slide="14" data-section="Applications" data-title="Bounding Change">
+            <div class="slide-content">
+                <h2>Application: Bounding Function Values</h2>
+                <div class="problem">
+                    <p>If \( f(2) = 5 \) and \( |f'(x)| \leq 3 \) for all \( x \), what bounds \( f(6) \)?</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>By MVT: \( \frac{f(6) - f(2)}{6 - 2} = f'(c) \) for some \( c \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>\( f(6) - 5 = 4f'(c) \), and \( |f'(c)| \leq 3 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( |f(6) - 5| \leq 4 \cdot 3 = 12 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>Therefore \( -7 \leq f(6) \leq 17 \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Existence Proofs -->
+        <div class="slide slide-example" data-slide="15" data-section="Applications" data-title="Existence Proof">
+            <div class="slide-content">
+                <h2>Using MVT for Existence</h2>
+                <div class="problem">
+                    <p>Prove that \( f(x) = x^3 + x - 1 \) has exactly one real root.</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>\( f(0) = -1 < 0 \) and \( f(1) = 1 > 0 \), so a root exists by IVT</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>\( f'(x) = 3x^2 + 1 > 0 \) for all \( x \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>By MVT consequence, \( f \) is strictly increasing</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>An increasing function can cross zero at most once</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Practice Problem -->
+        <div class="slide slide-exercise" data-slide="16" data-section="Practice" data-title="Practice 1">
+            <div class="slide-content">
+                <h2>Your Turn</h2>
+                <div class="prompt">
+                    <p>For \( f(x) = \sqrt{x} \) on \( [1, 9] \), find the value of \( c \) guaranteed by MVT.</p>
+                </div>
+                <div class="instructions" style="margin-top: 1.5rem;">
+                    <p style="font-size: 1.25rem; color: var(--text-secondary);">
+                        Verify that \( f \) meets the hypotheses first!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Practice Problem 2 -->
+        <div class="slide slide-exercise" data-slide="17" data-section="Practice" data-title="Practice 2">
+            <div class="slide-content">
+                <h2>Your Turn: Tables</h2>
+                <div class="prompt">
+                    <p>The table shows values of a differentiable function \( f \):</p>
+                    <table style="margin: 1rem auto; font-size: 1.25rem; border-collapse: collapse;">
+                        <tr>
+                            <th style="padding: 0.5rem 1rem; border: 1px solid var(--bg-tertiary);">\( x \)</th>
+                            <td style="padding: 0.5rem 1rem; border: 1px solid var(--bg-tertiary);">0</td>
+                            <td style="padding: 0.5rem 1rem; border: 1px solid var(--bg-tertiary);">1</td>
+                            <td style="padding: 0.5rem 1rem; border: 1px solid var(--bg-tertiary);">2</td>
+                            <td style="padding: 0.5rem 1rem; border: 1px solid var(--bg-tertiary);">3</td>
+                        </tr>
+                        <tr>
+                            <th style="padding: 0.5rem 1rem; border: 1px solid var(--bg-tertiary);">\( f(x) \)</th>
+                            <td style="padding: 0.5rem 1rem; border: 1px solid var(--bg-tertiary);">2</td>
+                            <td style="padding: 0.5rem 1rem; border: 1px solid var(--bg-tertiary);">5</td>
+                            <td style="padding: 0.5rem 1rem; border: 1px solid var(--bg-tertiary);">4</td>
+                            <td style="padding: 0.5rem 1rem; border: 1px solid var(--bg-tertiary);">8</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="instructions">
+                    <p style="font-size: 1.25rem;">Must there exist \( c \in (0, 3) \) with \( f'(c) = 2 \)? Explain.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Summary -->
+        <div class="slide slide-visual" data-slide="18" data-section="Closing" data-title="Key Takeaways">
+            <div class="slide-content">
+                <h2>Mean Value Theorem: Summary</h2>
+                <div class="theorem-box" style="border-color: var(--theme-color);">
+                    <p style="font-size: 1.25rem; text-align: center;">If \( f \) is continuous on \( [a,b] \) and differentiable on \( (a,b) \):</p>
+                    <div class="math-display">
+                        \[ f'(c) = \frac{f(b) - f(a)}{b - a} \quad \text{for some } c \in (a, b) \]
+                    </div>
+                </div>
+                <div class="concept-box" style="margin-top: 1rem;">
+                    <p style="font-size: 1.25rem;"><strong>Geometric:</strong> Tangent parallel to secant</p>
+                    <p style="font-size: 1.25rem; margin-top: 0.5rem;"><strong>Physical:</strong> Instantaneous rate = average rate at some moment</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="19" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p><strong>1.</strong> State the hypotheses of the Mean Value Theorem.</p>
+                    <p style="margin-top: 1rem;"><strong>2.</strong> For \( f(x) = x^2 - 4x \) on \( [0, 5] \), find all values of \( c \) guaranteed by MVT.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Looking Ahead -->
+        <div class="slide slide-statement" data-slide="20" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Coming Up in Unit 5:</p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    Extreme Values, Critical Points,<br>
+                    and Optimization Problems
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 21</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 24: Mean Value Theorem</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Rolle's Theorem Visualization (Slide 4) =====
+        function drawRolleViz() {
+            const container = document.getElementById('rolle-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const xScale = d3.scaleLinear().domain([0, 4]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-1, 3]).range([plotHeight, 0]);
+
+            // f(x) = -(x-1)(x-3) + 1 = -x^2 + 4x - 3 + 1 = -x^2 + 4x - 2
+            // This gives f(1) = -1 + 4 - 2 = 1, f(3) = -9 + 12 - 2 = 1
+            const f = x => -(x - 2) * (x - 2) + 2; // Parabola with f(1) = 1, f(3) = 1
+            const fPrime = x => -2 * (x - 2);
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-1, 4, 1))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Curve
+            const xValues = d3.range(0.5, 3.6, 0.05);
+            const fLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(f(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', fLine);
+
+            // Points at a and b
+            const a = 1, b = 3;
+            g.append('circle')
+                .attr('cx', xScale(a))
+                .attr('cy', yScale(f(a)))
+                .attr('r', 6)
+                .attr('fill', 'var(--accent-secondary)');
+
+            g.append('circle')
+                .attr('cx', xScale(b))
+                .attr('cy', yScale(f(b)))
+                .attr('r', 6)
+                .attr('fill', 'var(--accent-secondary)');
+
+            // Horizontal line showing f(a) = f(b)
+            g.append('line')
+                .attr('x1', xScale(a))
+                .attr('x2', xScale(b))
+                .attr('y1', yScale(f(a)))
+                .attr('y2', yScale(f(b)))
+                .attr('stroke', 'var(--accent-secondary)')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '6,4');
+
+            // Horizontal tangent at c = 2
+            const c = 2;
+            g.append('line')
+                .attr('x1', xScale(c - 0.8))
+                .attr('x2', xScale(c + 0.8))
+                .attr('y1', yScale(f(c)))
+                .attr('y2', yScale(f(c)))
+                .attr('stroke', 'var(--theme-color)')
+                .attr('stroke-width', 3);
+
+            g.append('circle')
+                .attr('cx', xScale(c))
+                .attr('cy', yScale(f(c)))
+                .attr('r', 6)
+                .attr('fill', 'var(--theme-color)');
+
+            // Labels
+            g.append('text')
+                .attr('x', xScale(a))
+                .attr('y', yScale(f(a)) + 25)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('a');
+
+            g.append('text')
+                .attr('x', xScale(b))
+                .attr('y', yScale(f(b)) + 25)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('b');
+
+            g.append('text')
+                .attr('x', xScale(c))
+                .attr('y', yScale(f(c)) - 15)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--theme-color)')
+                .text("f'(c) = 0");
+        }
+
+        // ===== MVT Visualization (Slide 7) =====
+        function drawMvtViz() {
+            const container = document.getElementById('mvt-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const xScale = d3.scaleLinear().domain([0, 5]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([0, 6]).range([plotHeight, 0]);
+
+            // f(x) = x^2/4 + 1 (concave up parabola)
+            const f = x => x * x / 4 + 0.5;
+            const fPrime = x => x / 2;
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(0, 7, 1))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Curve
+            const xValues = d3.range(0, 5.01, 0.05);
+            const fLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(f(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', fLine);
+
+            // Points a and b
+            const a = 1, b = 4;
+            const fa = f(a), fb = f(b);
+
+            g.append('circle')
+                .attr('cx', xScale(a))
+                .attr('cy', yScale(fa))
+                .attr('r', 6)
+                .attr('fill', 'var(--accent-secondary)');
+
+            g.append('circle')
+                .attr('cx', xScale(b))
+                .attr('cy', yScale(fb))
+                .attr('r', 6)
+                .attr('fill', 'var(--accent-secondary)');
+
+            // Secant line
+            const secantSlope = (fb - fa) / (b - a);
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(5))
+                .attr('y1', yScale(fa + secantSlope * (0 - a)))
+                .attr('y2', yScale(fa + secantSlope * (5 - a)))
+                .attr('stroke', 'var(--accent-secondary)')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '8,4');
+
+            // Find c where f'(c) = secantSlope: c/2 = secantSlope, c = 2*secantSlope
+            const c = 2 * secantSlope; // = 2 * 1.25 = 2.5
+            const fc = f(c);
+
+            // Tangent at c (parallel to secant)
+            g.append('line')
+                .attr('x1', xScale(c - 1.5))
+                .attr('x2', xScale(c + 1.5))
+                .attr('y1', yScale(fc - secantSlope * 1.5))
+                .attr('y2', yScale(fc + secantSlope * 1.5))
+                .attr('stroke', 'var(--theme-color)')
+                .attr('stroke-width', 3);
+
+            g.append('circle')
+                .attr('cx', xScale(c))
+                .attr('cy', yScale(fc))
+                .attr('r', 6)
+                .attr('fill', 'var(--theme-color)');
+
+            // Labels
+            g.append('text')
+                .attr('x', xScale(a) - 15)
+                .attr('y', yScale(fa) + 5)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1.15rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('(a, f(a))');
+
+            g.append('text')
+                .attr('x', xScale(b) + 10)
+                .attr('y', yScale(fb) + 5)
+                .attr('font-size', '1.15rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('(b, f(b))');
+
+            g.append('text')
+                .attr('x', xScale(c))
+                .attr('y', yScale(fc) - 15)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.15rem')
+                .attr('fill', 'var(--theme-color)')
+                .text('c');
+        }
+
+        // ===== Interactive MVT Visualization (Slide 10) =====
+        function drawInteractiveMvtViz() {
+            const container = document.getElementById('interactive-mvt-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const xScale = d3.scaleLinear().domain([-1.5, 2.5]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-2, 6]).range([plotHeight, 0]);
+
+            // f(x) = x^3 - x
+            const f = x => x*x*x - x;
+            const fPrime = x => 3*x*x - 1;
+
+            const a = -1, b = 2;
+            const fa = f(a), fb = f(b);
+            const secantSlope = (fb - fa) / (b - a);
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-2, 7, 1))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Curve
+            const xValues = d3.range(-1.5, 2.51, 0.05);
+            const fLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(f(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', fLine);
+
+            // Points a and b
+            g.append('circle')
+                .attr('cx', xScale(a))
+                .attr('cy', yScale(fa))
+                .attr('r', 6)
+                .attr('fill', 'var(--accent-secondary)');
+
+            g.append('circle')
+                .attr('cx', xScale(b))
+                .attr('cy', yScale(fb))
+                .attr('r', 6)
+                .attr('fill', 'var(--accent-secondary)');
+
+            // Secant line
+            g.append('line')
+                .attr('x1', xScale(-1.5))
+                .attr('x2', xScale(2.5))
+                .attr('y1', yScale(fa + secantSlope * (-1.5 - a)))
+                .attr('y2', yScale(fa + secantSlope * (2.5 - a)))
+                .attr('stroke', 'var(--accent-secondary)')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '8,4');
+
+            // Tangent line (will be updated)
+            const tangentLine = g.append('line')
+                .attr('stroke', 'var(--theme-color)')
+                .attr('stroke-width', 3);
+
+            // Point c
+            const pointC = g.append('circle')
+                .attr('r', 8)
+                .attr('fill', 'var(--theme-color)');
+
+            function update(c) {
+                const fc = f(c);
+                const slope = fPrime(c);
+
+                pointC
+                    .attr('cx', xScale(c))
+                    .attr('cy', yScale(fc));
+
+                const dx = 0.8;
+                tangentLine
+                    .attr('x1', xScale(c - dx))
+                    .attr('y1', yScale(fc - slope * dx))
+                    .attr('x2', xScale(c + dx))
+                    .attr('y2', yScale(fc + slope * dx));
+
+                document.getElementById('c-value').textContent = `c = ${c.toFixed(2)}`;
+                document.getElementById('secant-slope').textContent = `Secant slope: ${secantSlope.toFixed(2)}`;
+                document.getElementById('tangent-slope').textContent = `f'(c) = ${slope.toFixed(2)}`;
+            }
+
+            update(1);
+
+            const slider = document.getElementById('c-slider');
+            if (slider) {
+                slider.addEventListener('input', function(e) {
+                    update(parseFloat(e.target.value));
+                });
+            }
+        }
+
+        // ===== Visualization Trigger =====
+        const visualizationSlides = {
+            4: drawRolleViz,
+            7: drawMvtViz,
+            10: drawInteractiveMvtViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

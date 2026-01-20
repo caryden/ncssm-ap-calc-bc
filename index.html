@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AP Calculus BC | NCSSM Spring 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ncssm-blue: #356093;
+            --ncssm-blue-light: #4a7ab8;
+            --ncssm-blue-dark: #264570;
+            --bg-primary: #0c1220;
+            --bg-secondary: #141c2e;
+            --bg-tertiary: #1c2640;
+            --bg-hover: #243352;
+            --text-primary: #ffffff;
+            --text-secondary: #b8c4d6;
+            --text-tertiary: #6b7a94;
+            --accent: #356093;
+            --accent-secondary: #d4a028;
+            --gradient-hero: linear-gradient(135deg, #356093 0%, #d4a028 100%);
+
+            /* Unit Colors */
+            --unit-1: #356093;
+            --unit-2: #7c3aed;
+            --unit-3: #8b5cf6;
+            --unit-4: #059669;
+            --unit-5: #0d9488;
+            --unit-6: #d4a028;
+            --unit-7: #ea580c;
+            --unit-8: #e11d48;
+            --unit-9: #0891b2;
+            --unit-10: #4f46e5;
+
+            --font-display: 'Montserrat', Verdana, sans-serif;
+            --font-body: 'Georgia', serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: var(--ncssm-blue);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 2rem;
+            color: white;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            color: var(--text-tertiary);
+            font-size: 1rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Main Content */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Quick Stats */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--bg-tertiary);
+        }
+
+        .stat-number {
+            font-family: var(--font-mono);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-secondary);
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* Section */
+        section {
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--bg-tertiary);
+        }
+
+        /* Unit Grid */
+        .units-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .unit-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--bg-tertiary);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .unit-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .unit-header {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+
+        .unit-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .unit-info {
+            flex: 1;
+        }
+
+        .unit-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .unit-meta {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+        }
+
+        .unit-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: var(--font-display);
+            text-transform: uppercase;
+        }
+
+        .unit-badge.bc-only {
+            background: var(--accent-secondary);
+            color: var(--bg-primary);
+        }
+
+        .unit-classes {
+            padding: 0 1.5rem 1.5rem;
+            display: none;
+        }
+
+        .unit-card.expanded .unit-classes {
+            display: block;
+        }
+
+        .class-list {
+            list-style: none;
+        }
+
+        .class-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+
+        .class-item:last-child {
+            border-bottom: none;
+        }
+
+        .class-number {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            width: 60px;
+            flex-shrink: 0;
+        }
+
+        .class-title {
+            flex: 1;
+            font-size: 1rem;
+        }
+
+        .class-link {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .class-link:hover {
+            color: var(--accent-secondary);
+        }
+
+        .class-date {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            margin-left: 1rem;
+        }
+
+        /* Resources */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .resource-card {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--bg-tertiary);
+        }
+
+        .resource-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .resource-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .resource-card a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .resource-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-tertiary);
+            border-top: 1px solid var(--bg-tertiary);
+            margin-top: 3rem;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.25rem;
+            }
+
+            .meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .unit-header {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">∫</div>
+            <h1>AP Calculus BC</h1>
+            <p class="subtitle">Spring 2026 | NCSSM</p>
+            <div class="meta">
+                <span class="meta-item">
+                    <i data-lucide="calendar"></i>
+                    Feb 2 - May 15, 2026
+                </span>
+                <span class="meta-item">
+                    <i data-lucide="clock"></i>
+                    Mon, Tue, Thu, Fri | 50 min
+                </span>
+                <span class="meta-item">
+                    <i data-lucide="target"></i>
+                    AP Exam: May 12, 2026
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+            <div class="stat-card">
+                <div class="stat-number">64</div>
+                <div class="stat-label">Class Sessions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">10</div>
+                <div class="stat-label">Units</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">~30%</div>
+                <div class="stat-label">BC-Only Content</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">6-8</div>
+                <div class="stat-label">College Credits</div>
+            </div>
+        </div>
+
+        <!-- Units -->
+        <section>
+            <h2>Course Units</h2>
+            <div class="units-grid">
+                <!-- Unit 1 -->
+                <div class="unit-card" data-unit="1">
+                    <div class="unit-header" onclick="toggleUnit(1)">
+                        <div class="unit-number" style="background: var(--unit-1)">1</div>
+                        <div class="unit-info">
+                            <div class="unit-title">Limits and Continuity</div>
+                            <div class="unit-meta">Classes 0-7 | 4-7% of AP Exam</div>
+                        </div>
+                    </div>
+                    <div class="unit-classes">
+                        <ul class="class-list">
+                            <li class="class-item">
+                                <span class="class-number">Class 0</span>
+                                <span class="class-title"><a href="class-0-introduction/presentation.html" class="class-link">Course Introduction: Can Change Occur at an Instant?</a></span>
+                                <span class="class-date">Feb 2</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 1</span>
+                                <span class="class-title"><a href="class-1-limits-intro/presentation.html" class="class-link">Defining Limits and Limit Notation</a></span>
+                                <span class="class-date">Feb 3</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 2</span>
+                                <span class="class-title"><a href="class-2-limits-graphs-tables/presentation.html" class="class-link">Estimating Limits from Graphs and Tables</a></span>
+                                <span class="class-date">Feb 6</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 3</span>
+                                <span class="class-title"><a href="class-3-limit-properties/presentation.html" class="class-link">Algebraic Properties of Limits</a></span>
+                                <span class="class-date">Feb 7</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 4</span>
+                                <span class="class-title"><a href="class-4-limit-techniques/presentation.html" class="class-link">Algebraic Manipulation and Squeeze Theorem</a></span>
+                                <span class="class-date">Feb 10</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 5</span>
+                                <span class="class-title"><a href="class-5-continuity/presentation.html" class="class-link">Types of Discontinuities and Continuity</a></span>
+                                <span class="class-date">Feb 11</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 6</span>
+                                <span class="class-title"><a href="class-6-asymptotes/presentation.html" class="class-link">Infinite Limits and Asymptotes</a></span>
+                                <span class="class-date">Feb 13</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 7</span>
+                                <span class="class-title"><a href="class-7-ivt/presentation.html" class="class-link">Intermediate Value Theorem & Unit 1 Review</a></span>
+                                <span class="class-date">Feb 14</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Unit 2 -->
+                <div class="unit-card" data-unit="2">
+                    <div class="unit-header" onclick="toggleUnit(2)">
+                        <div class="unit-number" style="background: var(--unit-2)">2</div>
+                        <div class="unit-info">
+                            <div class="unit-title">Differentiation: Definition and Fundamentals</div>
+                            <div class="unit-meta">Classes 8-13 | 4-7% of AP Exam</div>
+                        </div>
+                    </div>
+                    <div class="unit-classes">
+                        <ul class="class-list">
+                            <li class="class-item">
+                                <span class="class-number">Class 8</span>
+                                <span class="class-title"><a href="class-8-rates-of-change/presentation.html" class="class-link">Average and Instantaneous Rate of Change</a></span>
+                                <span class="class-date">Feb 17</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 9</span>
+                                <span class="class-title"><a href="class-9-derivative-definition/presentation.html" class="class-link">Defining the Derivative</a></span>
+                                <span class="class-date">Feb 18</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 10</span>
+                                <span class="class-title"><a href="class-10-differentiability/presentation.html" class="class-link">Differentiability and Continuity</a></span>
+                                <span class="class-date">Feb 20</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 11</span>
+                                <span class="class-title"><a href="class-11-power-rule/presentation.html" class="class-link">Power Rule and Basic Derivative Rules</a></span>
+                                <span class="class-date">Feb 21</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 12</span>
+                                <span class="class-title"><a href="class-12-trig-exp-log/presentation.html" class="class-link">Derivatives of Trig, Exponential, and Log Functions</a></span>
+                                <span class="class-date">Feb 24</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 13</span>
+                                <span class="class-title"><a href="class-13-product-quotient/presentation.html" class="class-link">Product and Quotient Rules</a></span>
+                                <span class="class-date">Feb 25</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Unit 3 -->
+                <div class="unit-card" data-unit="3">
+                    <div class="unit-header" onclick="toggleUnit(3)">
+                        <div class="unit-number" style="background: var(--unit-3)">3</div>
+                        <div class="unit-info">
+                            <div class="unit-title">Differentiation: Composite, Implicit, Inverse</div>
+                            <div class="unit-meta">Classes 14-18 | 4-7% of AP Exam</div>
+                        </div>
+                    </div>
+                    <div class="unit-classes">
+                        <ul class="class-list">
+                            <li class="class-item">
+                                <span class="class-number">Class 14</span>
+                                <span class="class-title"><a href="class-14-chain-rule/presentation.html" class="class-link">The Chain Rule</a></span>
+                                <span class="class-date">Feb 27</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 15</span>
+                                <span class="class-title"><a href="class-15-implicit/presentation.html" class="class-link">Implicit Differentiation</a></span>
+                                <span class="class-date">Feb 28</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 16</span>
+                                <span class="class-title"><a href="class-16-inverse-functions/presentation.html" class="class-link">Differentiating Inverse Functions</a></span>
+                                <span class="class-date">Mar 3</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 17</span>
+                                <span class="class-title"><a href="class-17-inverse-trig/presentation.html" class="class-link">Inverse Trigonometric Derivatives</a></span>
+                                <span class="class-date">Mar 4</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 18</span>
+                                <span class="class-title"><a href="class-18-higher-order/presentation.html" class="class-link">Higher-Order Derivatives & Review</a></span>
+                                <span class="class-date">Mar 6</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Unit 4 -->
+                <div class="unit-card" data-unit="4">
+                    <div class="unit-header" onclick="toggleUnit(4)">
+                        <div class="unit-number" style="background: var(--unit-4)">4</div>
+                        <div class="unit-info">
+                            <div class="unit-title">Contextual Applications of Differentiation</div>
+                            <div class="unit-meta">Classes 19-23 | 6-9% of AP Exam</div>
+                        </div>
+                    </div>
+                    <div class="unit-classes">
+                        <ul class="class-list">
+                            <li class="class-item">
+                                <span class="class-number">Class 19</span>
+                                <span class="class-title">Interpreting Derivatives in Context</span>
+                                <span class="class-date">Mar 7</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 20</span>
+                                <span class="class-title">Position, Velocity, and Acceleration</span>
+                                <span class="class-date">Mar 10</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 21</span>
+                                <span class="class-title">Related Rates: Introduction</span>
+                                <span class="class-date">Mar 11</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 22</span>
+                                <span class="class-title">Related Rates: Problem Solving</span>
+                                <span class="class-date">Mar 13</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 23</span>
+                                <span class="class-title">Linearization and L'Hospital's Rule</span>
+                                <span class="class-date">Mar 14</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Unit 5 -->
+                <div class="unit-card" data-unit="5">
+                    <div class="unit-header" onclick="toggleUnit(5)">
+                        <div class="unit-number" style="background: var(--unit-5)">5</div>
+                        <div class="unit-info">
+                            <div class="unit-title">Analytical Applications of Differentiation</div>
+                            <div class="unit-meta">Classes 24-29 | 8-11% of AP Exam</div>
+                        </div>
+                    </div>
+                    <div class="unit-classes">
+                        <ul class="class-list">
+                            <li class="class-item">
+                                <span class="class-number">Class 24</span>
+                                <span class="class-title">Mean Value Theorem</span>
+                                <span class="class-date">Mar 17</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 25</span>
+                                <span class="class-title">Extreme Value Theorem and Critical Points</span>
+                                <span class="class-date">Mar 18</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 26</span>
+                                <span class="class-title">Increasing/Decreasing and First Derivative Test</span>
+                                <span class="class-date">Mar 20</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 27</span>
+                                <span class="class-title">Concavity and Second Derivative Test</span>
+                                <span class="class-date">Mar 21</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 28</span>
+                                <span class="class-title">Curve Sketching and Connecting f, f', f''</span>
+                                <span class="class-date">Mar 24</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 29</span>
+                                <span class="class-title">Optimization Problems</span>
+                                <span class="class-date">Mar 25</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Unit 6 -->
+                <div class="unit-card" data-unit="6">
+                    <div class="unit-header" onclick="toggleUnit(6)">
+                        <div class="unit-number" style="background: var(--unit-6)">6</div>
+                        <div class="unit-info">
+                            <div class="unit-title">Integration and Accumulation of Change</div>
+                            <div class="unit-meta">Classes 30-38 | 17-20% of AP Exam</div>
+                        </div>
+                    </div>
+                    <div class="unit-classes">
+                        <ul class="class-list">
+                            <li class="class-item">
+                                <span class="class-number">Class 30</span>
+                                <span class="class-title">Accumulation of Change and Riemann Sums</span>
+                                <span class="class-date">Apr 7</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 31</span>
+                                <span class="class-title">Definite Integrals and Notation</span>
+                                <span class="class-date">Apr 8</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 32</span>
+                                <span class="class-title">Fundamental Theorem of Calculus (Part 1)</span>
+                                <span class="class-date">Apr 10</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 33</span>
+                                <span class="class-title">Fundamental Theorem of Calculus (Part 2)</span>
+                                <span class="class-date">Apr 11</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 34</span>
+                                <span class="class-title">Antiderivatives and Basic Integration Rules</span>
+                                <span class="class-date">Apr 14</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 35</span>
+                                <span class="class-title">U-Substitution</span>
+                                <span class="class-date">Apr 15</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 36</span>
+                                <span class="class-title">Integration by Parts <span class="unit-badge bc-only">BC</span></span>
+                                <span class="class-date">Apr 17</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 37</span>
+                                <span class="class-title">Partial Fractions <span class="unit-badge bc-only">BC</span></span>
+                                <span class="class-date">Apr 18</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 38</span>
+                                <span class="class-title">Improper Integrals <span class="unit-badge bc-only">BC</span></span>
+                                <span class="class-date">Apr 21</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Unit 7 -->
+                <div class="unit-card" data-unit="7">
+                    <div class="unit-header" onclick="toggleUnit(7)">
+                        <div class="unit-number" style="background: var(--unit-7)">7</div>
+                        <div class="unit-info">
+                            <div class="unit-title">Differential Equations</div>
+                            <div class="unit-meta">Classes 39-43 | 6-9% of AP Exam</div>
+                        </div>
+                    </div>
+                    <div class="unit-classes">
+                        <ul class="class-list">
+                            <li class="class-item">
+                                <span class="class-number">Class 39</span>
+                                <span class="class-title">Modeling with Differential Equations</span>
+                                <span class="class-date">Apr 22</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 40</span>
+                                <span class="class-title">Slope Fields</span>
+                                <span class="class-date">Apr 23</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 41</span>
+                                <span class="class-title">Euler's Method <span class="unit-badge bc-only">BC</span></span>
+                                <span class="class-date">Apr 25</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 42</span>
+                                <span class="class-title">Separation of Variables</span>
+                                <span class="class-date">Apr 28</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 43</span>
+                                <span class="class-title">Exponential and Logistic Models <span class="unit-badge bc-only">BC</span></span>
+                                <span class="class-date">Apr 29</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Unit 8 -->
+                <div class="unit-card" data-unit="8">
+                    <div class="unit-header" onclick="toggleUnit(8)">
+                        <div class="unit-number" style="background: var(--unit-8)">8</div>
+                        <div class="unit-info">
+                            <div class="unit-title">Applications of Integration</div>
+                            <div class="unit-meta">Classes 44-48 | 6-9% of AP Exam</div>
+                        </div>
+                    </div>
+                    <div class="unit-classes">
+                        <ul class="class-list">
+                            <li class="class-item">
+                                <span class="class-number">Class 44</span>
+                                <span class="class-title">Average Value and Accumulation Functions</span>
+                                <span class="class-date">Apr 30</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 45</span>
+                                <span class="class-title">Area Between Curves</span>
+                                <span class="class-date">May 1</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 46</span>
+                                <span class="class-title">Volumes: Cross Sections</span>
+                                <span class="class-date">May 4</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 47</span>
+                                <span class="class-title">Volumes: Disc and Washer Methods</span>
+                                <span class="class-date">May 5</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 48</span>
+                                <span class="class-title">Arc Length <span class="unit-badge bc-only">BC</span></span>
+                                <span class="class-date">May 6</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Unit 9 -->
+                <div class="unit-card" data-unit="9">
+                    <div class="unit-header" onclick="toggleUnit(9)">
+                        <div class="unit-number" style="background: var(--unit-9)">9</div>
+                        <div class="unit-info">
+                            <div class="unit-title">Parametric, Polar, and Vector-Valued Functions</div>
+                            <div class="unit-meta">Classes 49-54 | 11-12% of AP Exam</div>
+                        </div>
+                        <span class="unit-badge bc-only">BC Only</span>
+                    </div>
+                    <div class="unit-classes">
+                        <ul class="class-list">
+                            <li class="class-item">
+                                <span class="class-number">Class 49</span>
+                                <span class="class-title">Parametric Equations and Derivatives</span>
+                                <span class="class-date">Integrated</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 50</span>
+                                <span class="class-title">Parametric Arc Length</span>
+                                <span class="class-date">Integrated</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 51</span>
+                                <span class="class-title">Vector-Valued Functions</span>
+                                <span class="class-date">Integrated</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 52</span>
+                                <span class="class-title">Motion with Vectors</span>
+                                <span class="class-date">Integrated</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 53</span>
+                                <span class="class-title">Polar Coordinates and Derivatives</span>
+                                <span class="class-date">Integrated</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 54</span>
+                                <span class="class-title">Polar Area</span>
+                                <span class="class-date">Integrated</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Unit 10 -->
+                <div class="unit-card" data-unit="10">
+                    <div class="unit-header" onclick="toggleUnit(10)">
+                        <div class="unit-number" style="background: var(--unit-10)">10</div>
+                        <div class="unit-info">
+                            <div class="unit-title">Infinite Sequences and Series</div>
+                            <div class="unit-meta">Classes 55-63 | 17-18% of AP Exam</div>
+                        </div>
+                        <span class="unit-badge bc-only">BC Only</span>
+                    </div>
+                    <div class="unit-classes">
+                        <ul class="class-list">
+                            <li class="class-item">
+                                <span class="class-number">Class 55</span>
+                                <span class="class-title">Sequences and Series Introduction</span>
+                                <span class="class-date">Integrated</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 56</span>
+                                <span class="class-title">Geometric Series</span>
+                                <span class="class-date">Integrated</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 57</span>
+                                <span class="class-title">Divergence and Integral Tests</span>
+                                <span class="class-date">Integrated</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 58</span>
+                                <span class="class-title">p-Series and Comparison Tests</span>
+                                <span class="class-date">Integrated</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 59</span>
+                                <span class="class-title">Alternating Series and Ratio Test</span>
+                                <span class="class-date">Integrated</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 60</span>
+                                <span class="class-title">Absolute/Conditional Convergence</span>
+                                <span class="class-date">Integrated</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 61</span>
+                                <span class="class-title">Taylor Polynomials</span>
+                                <span class="class-date">Integrated</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 62</span>
+                                <span class="class-title">Taylor and Maclaurin Series</span>
+                                <span class="class-date">Integrated</span>
+                            </li>
+                            <li class="class-item">
+                                <span class="class-number">Class 63</span>
+                                <span class="class-title">Power Series and Error Bounds</span>
+                                <span class="class-date">Integrated</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resources -->
+        <section>
+            <h2>Resources</h2>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h3><i data-lucide="book-open"></i> Primary Resources</h3>
+                    <p>Official course materials and AP resources</p>
+                    <ul style="list-style: none; color: var(--text-secondary);">
+                        <li>• <a href="https://apcentral.collegeboard.org/courses/ap-calculus-bc" target="_blank">AP Calculus BC (College Board)</a></li>
+                        <li>• AP Classroom (through your school)</li>
+                        <li>• <a href="https://tutorial.math.lamar.edu/" target="_blank">Paul's Online Math Notes</a></li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <h3><i data-lucide="video"></i> Video Resources</h3>
+                    <p>Recommended YouTube channels for calculus</p>
+                    <ul style="list-style: none; color: var(--text-secondary);">
+                        <li>• <a href="https://www.3blue1brown.com/topics/calculus" target="_blank">3Blue1Brown: Essence of Calculus</a></li>
+                        <li>• <a href="https://www.youtube.com/@ProfessorLeonard" target="_blank">Professor Leonard</a></li>
+                        <li>• <a href="https://www.khanacademy.org/math/ap-calculus-bc" target="_blank">Khan Academy</a></li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <h3><i data-lucide="calculator"></i> Interactive Tools</h3>
+                    <p>Graphing and visualization tools</p>
+                    <ul style="list-style: none; color: var(--text-secondary);">
+                        <li>• <a href="https://www.desmos.com/calculator" target="_blank">Desmos Graphing Calculator</a></li>
+                        <li>• <a href="https://www.geogebra.org/calculator" target="_blank">GeoGebra Calculator</a></li>
+                        <li>• <a href="https://www.wolframalpha.com/" target="_blank">Wolfram Alpha</a></li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <h3><i data-lucide="target"></i> AP Exam Prep</h3>
+                    <p>Practice and review resources</p>
+                    <ul style="list-style: none; color: var(--text-secondary);">
+                        <li>• <a href="https://turksmathstuff.com/apcalcreview.html" target="_blank">Turksvids AP Calc Review</a></li>
+                        <li>• <a href="https://calculus.flippedmath.com/" target="_blank">Flipped Math</a></li>
+                        <li>• AP Practice Exams (in class)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>AP Calculus BC | <a href="https://www.ncssm.edu" target="_blank">NCSSM</a> | Spring 2026</p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem;">Presentations follow the <a href="master-presentation-spec.md">Master Presentation Spec</a></p>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Toggle unit expansion
+        function toggleUnit(unitNum) {
+            const card = document.querySelector(`[data-unit="${unitNum}"]`);
+            if (card) {
+                card.classList.toggle('expanded');
+            }
+        }
+
+        // Expand all units on page load for better overview
+        // (Comment this out if you prefer collapsed by default)
+        // document.querySelectorAll('.unit-card').forEach(card => card.classList.add('expanded'));
+    </script>
+</body>
+</html>

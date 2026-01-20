@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 6: The Squeeze Theorem | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #356093;
+            --theme-color-light: #4a7ab8;
+        }
+
+        /* Theorem box */
+        .theorem-box {
+            background: rgba(53, 96, 147, 0.2);
+            border: 2px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 1.5rem auto;
+        }
+
+        .theorem-box .theorem-title {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--theme-color);
+            margin-bottom: 1rem;
+        }
+
+        .theorem-box .theorem-content {
+            font-size: 1.25rem;
+        }
+
+        /* Solution steps */
+        .solution-steps {
+            text-align: left;
+            max-width: 800px;
+            margin: 1.5rem auto;
+        }
+
+        .solution-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .solution-step .step-num {
+            background: var(--theme-color);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-family: var(--font-display);
+            flex-shrink: 0;
+        }
+
+        .solution-step .step-content {
+            flex: 1;
+            font-size: 1.25rem;
+        }
+
+        .solution-step.success {
+            background: rgba(34, 197, 94, 0.2);
+        }
+
+        .solution-step.success .step-num {
+            background: var(--success);
+        }
+
+        /* Visualization container */
+        .visualization {
+            width: 100%;
+            max-width: 900px;
+            margin: 1rem auto;
+            min-height: 400px;
+        }
+
+        /* Trig limits grid */
+        .trig-limits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            max-width: 900px;
+            margin: 1.5rem auto;
+        }
+
+        .trig-limit-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid transparent;
+        }
+
+        .trig-limit-card.highlight {
+            border-color: var(--theme-color);
+            background: rgba(53, 96, 147, 0.2);
+        }
+
+        .trig-limit-card .limit-expr {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .trig-limit-card .limit-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        /* Key insight box */
+        .insight-box {
+            background: rgba(245, 158, 11, 0.2);
+            border: 2px solid var(--warning);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            max-width: 700px;
+            margin: 1.5rem auto;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        /* Bounds display */
+        .bounds-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .bound-lower {
+            color: #22c55e;
+        }
+
+        .bound-upper {
+            color: #f59e0b;
+        }
+
+        .bound-middle {
+            color: var(--theme-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Squeeze Theorem">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 1: Limits and Continuity</div>
+                <h1>The Squeeze Theorem</h1>
+                <p class="subtitle">Limits by Comparison</p>
+                <p class="meta">Class 6 | February 12, 2026 | CED 1.8</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: A New Challenge -->
+        <div class="slide slide-visual" data-slide="1" data-section="Opening" data-title="New Challenge">
+            <div class="slide-content">
+                <h2>A Limit We Can't Factor</h2>
+                <div class="math-display" style="font-size: 2.5rem; margin: 2rem 0;">
+                    \[\lim_{x \to 0} x^2 \sin\left(\frac{1}{x}\right)\]
+                </div>
+                <p class="caption" style="font-size: 1.5rem; color: var(--warning);">Direct substitution gives 0 times undefined. We need a new approach.</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: The Idea -->
+        <div class="slide slide-statement" data-slide="2" data-section="Opening" data-title="The Idea">
+            <div class="slide-content">
+                <p class="statement">If you're trapped between two things approaching the same place, you <em>must</em> go there too.</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Theorem Statement -->
+        <div class="slide slide-visual" data-slide="3" data-section="The Theorem" data-title="Statement">
+            <div class="slide-content">
+                <h2>The Squeeze Theorem</h2>
+                <div class="theorem-box">
+                    <div class="theorem-title">Squeeze Theorem (Sandwich Theorem)</div>
+                    <div class="theorem-content">
+                        <p style="margin-bottom: 1rem;">If \(g(x) \leq f(x) \leq h(x)\) for all x near a (except possibly at a), and</p>
+                        <div class="math-display">
+                            \[\lim_{x \to a} g(x) = \lim_{x \to a} h(x) = L\]
+                        </div>
+                        <p style="margin-top: 1rem;">Then: \(\displaystyle\lim_{x \to a} f(x) = L\)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Visual Intuition -->
+        <div class="slide slide-visual" data-slide="4" data-section="The Theorem" data-title="Visualization">
+            <div class="slide-content">
+                <h2>Visualizing the Squeeze</h2>
+                <div class="visualization" id="viz-squeeze-basic"></div>
+                <p class="caption">f(x) is trapped—it has no choice but to approach L</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Sandwich Analogy -->
+        <div class="slide slide-visual" data-slide="5" data-section="The Theorem" data-title="Analogy">
+            <div class="slide-content">
+                <h2>The Sandwich Metaphor</h2>
+                <div style="font-size: 1.5rem; max-width: 700px; margin: 2rem auto; text-align: center;">
+                    <p style="margin-bottom: 1.5rem;">Think of two slices of bread pressing together.</p>
+                    <div class="bounds-display">
+                        <span class="bound-upper">Upper bound h(x)</span>
+                        <span style="color: var(--text-tertiary);">squeezes</span>
+                        <span class="bound-middle">f(x)</span>
+                        <span style="color: var(--text-tertiary);">against</span>
+                        <span class="bound-lower">Lower bound g(x)</span>
+                    </div>
+                    <p style="margin-top: 1.5rem;">The filling goes where the bread goes!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Key Requirements -->
+        <div class="slide slide-list" data-slide="6" data-section="The Theorem" data-title="Requirements">
+            <div class="slide-content">
+                <h2>What We Need</h2>
+                <ul>
+                    <li>Find bounding functions g(x) ≤ f(x) ≤ h(x)</li>
+                    <li>Bounds must hold near a (not necessarily at a)</li>
+                    <li>Both bounds must have the <em>same</em> limit L</li>
+                    <li>Then f(x) must also have limit L</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 7: When to Use -->
+        <div class="slide slide-list" data-slide="7" data-section="The Theorem" data-title="When to Use">
+            <div class="slide-content">
+                <h2>Use Squeeze Theorem When...</h2>
+                <ul>
+                    <li>Direct substitution fails</li>
+                    <li>Factoring/rationalizing don't help</li>
+                    <li>The function oscillates or is bounded</li>
+                    <li>You can identify natural upper and lower bounds</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 8: Example 1 Setup -->
+        <div class="slide slide-example" data-slide="8" data-section="Classic Example" data-title="Example 1">
+            <div class="slide-content">
+                <h2>Example 1: Classic Squeeze</h2>
+                <div class="problem">
+                    \[\lim_{x \to 0} x^2 \sin\left(\frac{1}{x}\right)\]
+                </div>
+                <div class="insight-box">
+                    Key observation: sin(1/x) oscillates wildly as x → 0, but it's always bounded!
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Example 1 - Finding Bounds -->
+        <div class="slide slide-example" data-slide="9" data-section="Classic Example" data-title="Finding Bounds">
+            <div class="slide-content">
+                <h2>Step 1: Find Bounds</h2>
+                <div class="solution-steps">
+                    <div class="solution-step">
+                        <span class="step-num">1</span>
+                        <div class="step-content">
+                            <div>We know: \(-1 \leq \sin\left(\frac{1}{x}\right) \leq 1\)</div>
+                        </div>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-num">2</span>
+                        <div class="step-content">
+                            <div>Multiply by \(x^2\) (always positive):</div>
+                        </div>
+                    </div>
+                    <div class="solution-step" style="background: rgba(53, 96, 147, 0.2);">
+                        <span class="step-num" style="background: var(--theme-color);">!</span>
+                        <div class="step-content">
+                            <div class="bounds-display" style="font-size: 1.25rem;">
+                                <span class="bound-lower">\(-x^2\)</span>
+                                <span>\(\leq\)</span>
+                                <span class="bound-middle">\(x^2 \sin\left(\frac{1}{x}\right)\)</span>
+                                <span>\(\leq\)</span>
+                                <span class="bound-upper">\(x^2\)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Example 1 - Visualization -->
+        <div class="slide slide-visual" data-slide="10" data-section="Classic Example" data-title="Visualization">
+            <div class="slide-content">
+                <h2>Visualizing the Squeeze</h2>
+                <div class="visualization" id="viz-oscillating"></div>
+                <p class="caption">The oscillating function is trapped between the parabolas</p>
+            </div>
+        </div>
+
+        <!-- Slide 11: Example 1 - Conclusion -->
+        <div class="slide slide-example" data-slide="11" data-section="Classic Example" data-title="Conclusion">
+            <div class="slide-content">
+                <h2>Step 2: Apply the Theorem</h2>
+                <div class="solution-steps">
+                    <div class="solution-step">
+                        <span class="step-num">1</span>
+                        <div class="step-content">
+                            <div>\(\displaystyle\lim_{x \to 0} (-x^2) = 0\)</div>
+                        </div>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-num">2</span>
+                        <div class="step-content">
+                            <div>\(\displaystyle\lim_{x \to 0} x^2 = 0\)</div>
+                        </div>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-num">3</span>
+                        <div class="step-content">
+                            <div>Both bounds → 0</div>
+                        </div>
+                    </div>
+                    <div class="solution-step success">
+                        <span class="step-num">✓</span>
+                        <div class="step-content" style="color: var(--success); font-weight: 600; font-size: 1.5rem;">
+                            By Squeeze Theorem: \(\displaystyle\lim_{x \to 0} x^2 \sin\left(\frac{1}{x}\right) = 0\)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: The Fundamental Limit -->
+        <div class="slide slide-statement" data-slide="12" data-section="Trig Limit" data-title="Fundamental Limit">
+            <div class="slide-content">
+                <div class="math-display" style="font-size: 3rem; margin-bottom: 2rem;">
+                    \[\lim_{x \to 0} \frac{\sin x}{x} = 1\]
+                </div>
+                <p class="statement" style="font-size: 1.75rem; color: var(--text-secondary);">One of the most important limits in calculus</p>
+            </div>
+        </div>
+
+        <!-- Slide 13: Geometric Setup -->
+        <div class="slide slide-visual" data-slide="13" data-section="Trig Limit" data-title="Geometric Proof">
+            <div class="slide-content">
+                <h2>Geometric Proof</h2>
+                <div class="visualization" id="viz-unit-circle"></div>
+                <p class="caption">Compare areas in the unit circle</p>
+            </div>
+        </div>
+
+        <!-- Slide 14: Area Comparison -->
+        <div class="slide slide-visual" data-slide="14" data-section="Trig Limit" data-title="Area Comparison">
+            <div class="slide-content">
+                <h2>Comparing Areas</h2>
+                <div style="font-size: 1.5rem; margin: 2rem 0;">
+                    <p style="margin-bottom: 1rem;">For 0 < x < π/2:</p>
+                    <div class="bounds-display" style="font-size: 1.5rem;">
+                        <span class="bound-lower">Triangle ≤</span>
+                        <span class="bound-middle">Sector ≤</span>
+                        <span class="bound-upper">Larger Triangle</span>
+                    </div>
+                </div>
+                <div class="math-display" style="font-size: 2rem;">
+                    \[\frac{1}{2}\sin x \leq \frac{1}{2}x \leq \frac{1}{2}\tan x\]
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Deriving the Squeeze -->
+        <div class="slide slide-example" data-slide="15" data-section="Trig Limit" data-title="Setting Up">
+            <div class="slide-content">
+                <h2>Setting Up the Squeeze</h2>
+                <div class="solution-steps">
+                    <div class="solution-step">
+                        <span class="step-num">1</span>
+                        <div class="step-content">
+                            <div>From: \(\frac{1}{2}\sin x \leq \frac{1}{2}x \leq \frac{1}{2}\tan x\)</div>
+                        </div>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-num">2</span>
+                        <div class="step-content">
+                            <div>Divide by \(\frac{1}{2}\sin x\): \(1 \leq \frac{x}{\sin x} \leq \frac{1}{\cos x}\)</div>
+                        </div>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-num">3</span>
+                        <div class="step-content">
+                            <div>Take reciprocals (flip inequalities):</div>
+                        </div>
+                    </div>
+                    <div class="solution-step" style="background: rgba(53, 96, 147, 0.2);">
+                        <span class="step-num" style="background: var(--theme-color);">!</span>
+                        <div class="step-content">
+                            <div class="bounds-display" style="font-size: 1.25rem;">
+                                <span class="bound-lower">\(\cos x\)</span>
+                                <span>\(\leq\)</span>
+                                <span class="bound-middle">\(\frac{\sin x}{x}\)</span>
+                                <span>\(\leq\)</span>
+                                <span class="bound-upper">\(1\)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Applying the Squeeze -->
+        <div class="slide slide-example" data-slide="16" data-section="Trig Limit" data-title="Completing Proof">
+            <div class="slide-content">
+                <h2>Completing the Proof</h2>
+                <div class="solution-steps">
+                    <div class="solution-step">
+                        <span class="step-num">1</span>
+                        <div class="step-content">
+                            <div>\(\displaystyle\lim_{x \to 0} \cos x = 1\)</div>
+                        </div>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-num">2</span>
+                        <div class="step-content">
+                            <div>\(\displaystyle\lim_{x \to 0} 1 = 1\)</div>
+                        </div>
+                    </div>
+                    <div class="solution-step success">
+                        <span class="step-num">✓</span>
+                        <div class="step-content" style="color: var(--success); font-weight: 600; font-size: 1.5rem;">
+                            By Squeeze Theorem: \(\displaystyle\lim_{x \to 0} \frac{\sin x}{x} = 1\)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Related Limits -->
+        <div class="slide slide-visual" data-slide="17" data-section="Trig Limit" data-title="Related Limits">
+            <div class="slide-content">
+                <h2>Important Trig Limits</h2>
+                <div class="trig-limits-grid">
+                    <div class="trig-limit-card highlight">
+                        <div class="limit-expr">\(\displaystyle\lim_{x \to 0} \frac{\sin x}{x}\)</div>
+                        <div class="limit-value">= 1</div>
+                    </div>
+                    <div class="trig-limit-card">
+                        <div class="limit-expr">\(\displaystyle\lim_{x \to 0} \frac{1 - \cos x}{x}\)</div>
+                        <div class="limit-value">= 0</div>
+                    </div>
+                    <div class="trig-limit-card">
+                        <div class="limit-expr">\(\displaystyle\lim_{x \to 0} \frac{\tan x}{x}\)</div>
+                        <div class="limit-value">= 1</div>
+                    </div>
+                </div>
+                <p class="caption">Memorize these—they appear frequently in calculus</p>
+            </div>
+        </div>
+
+        <!-- Slide 18: Example 2 -->
+        <div class="slide slide-example" data-slide="18" data-section="Applications" data-title="Example 2">
+            <div class="slide-content">
+                <h2>Example 2: Variations</h2>
+                <div class="problem">
+                    \[\lim_{x \to 0} \frac{\sin 3x}{x}\]
+                </div>
+                <div class="solution-steps">
+                    <div class="solution-step">
+                        <span class="step-num">1</span>
+                        <div class="step-content">
+                            <div>Rewrite: \(\frac{\sin 3x}{x} = \frac{\sin 3x}{x} \cdot \frac{3}{3} = 3 \cdot \frac{\sin 3x}{3x}\)</div>
+                        </div>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-num">2</span>
+                        <div class="step-content">
+                            <div>As x → 0, we have 3x → 0</div>
+                        </div>
+                    </div>
+                    <div class="solution-step success">
+                        <span class="step-num">✓</span>
+                        <div class="step-content" style="color: var(--success); font-weight: 600; font-size: 1.5rem;">
+                            \(3 \cdot 1 = 3\)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Example 3 -->
+        <div class="slide slide-example" data-slide="19" data-section="Applications" data-title="Example 3">
+            <div class="slide-content">
+                <h2>Example 3</h2>
+                <div class="problem">
+                    \[\lim_{x \to 0} \frac{\tan x}{x}\]
+                </div>
+                <div class="solution-steps">
+                    <div class="solution-step">
+                        <span class="step-num">1</span>
+                        <div class="step-content">
+                            <div>Rewrite: \(\frac{\tan x}{x} = \frac{\sin x}{x} \cdot \frac{1}{\cos x}\)</div>
+                        </div>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-num">2</span>
+                        <div class="step-content">
+                            <div>Apply limits: \(1 \cdot \frac{1}{1}\)</div>
+                        </div>
+                    </div>
+                    <div class="solution-step success">
+                        <span class="step-num">✓</span>
+                        <div class="step-content" style="color: var(--success); font-weight: 600; font-size: 1.5rem;">
+                            = 1
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Example 4 -->
+        <div class="slide slide-example" data-slide="20" data-section="Applications" data-title="Example 4">
+            <div class="slide-content">
+                <h2>Example 4: Direct Squeeze</h2>
+                <div class="problem">
+                    \[\lim_{x \to 0} x \cos\left(\frac{1}{x}\right)\]
+                </div>
+                <div class="solution-steps">
+                    <div class="solution-step">
+                        <span class="step-num">1</span>
+                        <div class="step-content">
+                            <div>Bound: \(-1 \leq \cos\left(\frac{1}{x}\right) \leq 1\)</div>
+                        </div>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-num">2</span>
+                        <div class="step-content">
+                            <div>Therefore: \(-|x| \leq x \cos\left(\frac{1}{x}\right) \leq |x|\)</div>
+                        </div>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-num">3</span>
+                        <div class="step-content">
+                            <div>Both \(-|x|\) and \(|x|\) approach 0 as x → 0</div>
+                        </div>
+                    </div>
+                    <div class="solution-step success">
+                        <span class="step-num">✓</span>
+                        <div class="step-content" style="color: var(--success); font-weight: 600; font-size: 1.5rem;">
+                            = 0
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Practice -->
+        <div class="slide slide-exercise" data-slide="21" data-section="Applications" data-title="Your Turn">
+            <div class="slide-content">
+                <h2>Your Turn</h2>
+                <div class="prompt">
+                    <p>Evaluate:</p>
+                    <div class="math-display" style="font-size: 2.5rem;">
+                        \[\lim_{x \to 0} \frac{\sin 5x}{2x}\]
+                    </div>
+                </div>
+                <div class="definition-box" style="margin-top: 2rem; opacity: 0.3;">
+                    <div class="content" style="text-align: center;">
+                        <p>Answer: \(\frac{5}{2}\)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22: Key Takeaways -->
+        <div class="slide slide-list" data-slide="22" data-section="Closing" data-title="Takeaways">
+            <div class="slide-content">
+                <h2>Key Takeaways</h2>
+                <ul>
+                    <li>Squeeze Theorem: trap f between bounds that share a limit</li>
+                    <li>Works for oscillating or bounded functions</li>
+                    <li>\(\frac{\sin x}{x} \to 1\) as x → 0</li>
+                    <li>Look for natural bounds like -1 ≤ sin ≤ 1</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 23: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="23" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p>Apply the Squeeze Theorem:</p>
+                    <div class="math-display" style="font-size: 2.5rem;">
+                        \[\lim_{x \to 0} x^2 \cos\left(\frac{1}{x}\right)\]
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 24: Coming Up -->
+        <div class="slide slide-statement" data-slide="24" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement">Next: <em>Continuity</em>—functions without breaks</p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 25</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>←</kbd> <kbd>→</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 6: The Squeeze Theorem</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">← Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">← Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // D3 Visualizations for Class 6
+
+        // Visualization mapping
+        const visualizationSlides = {
+            4: drawSqueezeBasic,
+            10: drawOscillating,
+            13: drawUnitCircle
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Visualization 1: Basic Squeeze (Slide 4)
+        function drawSqueezeBasic() {
+            const container = d3.select('#viz-squeeze-basic');
+            container.selectAll('*').remove();
+
+            const width = 800;
+            const height = 400;
+            const margin = { top: 40, right: 60, bottom: 60, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+            // Scales
+            const xScale = d3.scaleLinear()
+                .domain([0, 4])
+                .range([0, plotWidth]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, 5])
+                .range([plotHeight, 0]);
+
+            // Grid
+            g.append('g')
+                .attr('class', 'grid')
+                .selectAll('line.vertical')
+                .data(d3.range(0, 5))
+                .enter()
+                .append('line')
+                .attr('x1', d => xScale(d))
+                .attr('x2', d => xScale(d))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'rgba(255,255,255,0.1)');
+
+            g.append('g')
+                .attr('class', 'grid')
+                .selectAll('line.horizontal')
+                .data(d3.range(0, 6))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'rgba(255,255,255,0.1)');
+
+            // Functions that squeeze toward L = 2 at x = 2
+            const a = 2; // target point
+            const L = 2; // limit value
+
+            // Upper bound: h(x) = L + (x - a)^2 / 2
+            // Lower bound: g(x) = L - (x - a)^2 / 2
+            // Middle: f(x) = L + 0.3 * sin(10x) * (x - a)^2
+
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y));
+
+            // Generate data
+            const upperData = [];
+            const lowerData = [];
+            const middleData = [];
+
+            for (let x = 0; x <= 4; x += 0.02) {
+                const diff = (x - a) * (x - a) / 2;
+                upperData.push({ x: x, y: L + diff });
+                lowerData.push({ x: x, y: L - diff });
+                middleData.push({ x: x, y: L + 0.3 * Math.sin(15 * x) * (x - a) * (x - a) });
+            }
+
+            // Draw upper bound
+            g.append('path')
+                .datum(upperData)
+                .attr('fill', 'none')
+                .attr('stroke', '#f59e0b')
+                .attr('stroke-width', 2)
+                .attr('d', line);
+
+            // Draw lower bound
+            g.append('path')
+                .datum(lowerData)
+                .attr('fill', 'none')
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 2)
+                .attr('d', line);
+
+            // Draw middle function
+            g.append('path')
+                .datum(middleData)
+                .attr('fill', 'none')
+                .attr('stroke', '#356093')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Draw limit line
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(L))
+                .attr('y2', yScale(L))
+                .attr('stroke', 'white')
+                .attr('stroke-width', 1)
+                .attr('stroke-dasharray', '5,5');
+
+            // Target point
+            g.append('circle')
+                .attr('cx', xScale(a))
+                .attr('cy', yScale(L))
+                .attr('r', 6)
+                .attr('fill', 'white');
+
+            // Labels
+            g.append('text')
+                .attr('x', xScale(3.5))
+                .attr('y', yScale(3.5))
+                .attr('fill', '#f59e0b')
+                .attr('font-size', '1.25rem')
+                .attr('font-family', 'var(--font-display)')
+                .text('h(x) - upper');
+
+            g.append('text')
+                .attr('x', xScale(3.5))
+                .attr('y', yScale(0.5))
+                .attr('fill', '#22c55e')
+                .attr('font-size', '1.25rem')
+                .attr('font-family', 'var(--font-display)')
+                .text('g(x) - lower');
+
+            g.append('text')
+                .attr('x', xScale(0.3))
+                .attr('y', yScale(L) - 15)
+                .attr('fill', 'white')
+                .attr('font-size', '1.25rem')
+                .attr('font-family', 'var(--font-display)')
+                .text('L');
+
+            g.append('text')
+                .attr('x', xScale(a))
+                .attr('y', plotHeight + 30)
+                .attr('fill', 'white')
+                .attr('font-size', '1.25rem')
+                .attr('font-family', 'var(--font-display)')
+                .attr('text-anchor', 'middle')
+                .text('a');
+
+            g.append('text')
+                .attr('x', xScale(0.8))
+                .attr('y', yScale(2.5))
+                .attr('fill', '#356093')
+                .attr('font-size', '1.25rem')
+                .attr('font-family', 'var(--font-display)')
+                .text('f(x) - squeezed');
+        }
+
+        // Visualization 2: Oscillating Function (Slide 10)
+        function drawOscillating() {
+            const container = d3.select('#viz-oscillating');
+            container.selectAll('*').remove();
+
+            const width = 800;
+            const height = 400;
+            const margin = { top: 40, right: 60, bottom: 60, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+            // Scales
+            const xScale = d3.scaleLinear()
+                .domain([-1, 1])
+                .range([0, plotWidth]);
+
+            const yScale = d3.scaleLinear()
+                .domain([-1, 1])
+                .range([plotHeight, 0]);
+
+            // Grid
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'rgba(255,255,255,0.3)')
+                .attr('stroke-width', 1);
+
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'rgba(255,255,255,0.3)')
+                .attr('stroke-width', 1);
+
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y));
+
+            // Upper bound: x^2
+            const upperData = [];
+            for (let x = -1; x <= 1; x += 0.01) {
+                upperData.push({ x: x, y: x * x });
+            }
+
+            // Lower bound: -x^2
+            const lowerData = [];
+            for (let x = -1; x <= 1; x += 0.01) {
+                lowerData.push({ x: x, y: -x * x });
+            }
+
+            // Middle: x^2 * sin(1/x)
+            const middleData = [];
+            for (let x = -1; x <= 1; x += 0.001) {
+                if (Math.abs(x) > 0.01) {
+                    middleData.push({ x: x, y: x * x * Math.sin(1 / x) });
+                }
+            }
+
+            // Fill between bounds
+            const areaData = [];
+            for (let x = -1; x <= 1; x += 0.01) {
+                areaData.push({ x: x, upper: x * x, lower: -x * x });
+            }
+
+            const area = d3.area()
+                .x(d => xScale(d.x))
+                .y0(d => yScale(d.lower))
+                .y1(d => yScale(d.upper));
+
+            g.append('path')
+                .datum(areaData)
+                .attr('fill', 'rgba(53, 96, 147, 0.2)')
+                .attr('d', area);
+
+            // Draw bounds
+            g.append('path')
+                .datum(upperData)
+                .attr('fill', 'none')
+                .attr('stroke', '#f59e0b')
+                .attr('stroke-width', 2)
+                .attr('d', line);
+
+            g.append('path')
+                .datum(lowerData)
+                .attr('fill', 'none')
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 2)
+                .attr('d', line);
+
+            // Draw oscillating function
+            g.append('path')
+                .datum(middleData)
+                .attr('fill', 'none')
+                .attr('stroke', '#356093')
+                .attr('stroke-width', 2)
+                .attr('d', line);
+
+            // Origin point
+            g.append('circle')
+                .attr('cx', xScale(0))
+                .attr('cy', yScale(0))
+                .attr('r', 6)
+                .attr('fill', 'white');
+
+            // Labels
+            g.append('text')
+                .attr('x', xScale(0.8))
+                .attr('y', yScale(0.7))
+                .attr('fill', '#f59e0b')
+                .attr('font-size', '1.25rem')
+                .attr('font-family', 'var(--font-display)')
+                .text('y = x²');
+
+            g.append('text')
+                .attr('x', xScale(0.8))
+                .attr('y', yScale(-0.7))
+                .attr('fill', '#22c55e')
+                .attr('font-size', '1.25rem')
+                .attr('font-family', 'var(--font-display)')
+                .text('y = -x²');
+
+            g.append('text')
+                .attr('x', xScale(-0.7))
+                .attr('y', yScale(0.3))
+                .attr('fill', '#356093')
+                .attr('font-size', '1rem')
+                .attr('font-family', 'var(--font-display)')
+                .text('y = x²sin(1/x)');
+        }
+
+        // Visualization 3: Unit Circle Proof (Slide 13)
+        function drawUnitCircle() {
+            const container = d3.select('#viz-unit-circle');
+            container.selectAll('*').remove();
+
+            const width = 800;
+            const height = 400;
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const cx = 250;
+            const cy = 200;
+            const r = 150;
+            const angle = 0.6; // radians
+
+            // Draw unit circle
+            svg.append('circle')
+                .attr('cx', cx)
+                .attr('cy', cy)
+                .attr('r', r)
+                .attr('fill', 'none')
+                .attr('stroke', 'rgba(255,255,255,0.5)')
+                .attr('stroke-width', 2);
+
+            // Key points
+            const A = { x: cx, y: cy }; // center
+            const B = { x: cx + r, y: cy }; // (1, 0)
+            const C = { x: cx + r * Math.cos(angle), y: cy - r * Math.sin(angle) }; // point on circle
+            const D = { x: cx + r, y: cy - r * Math.tan(angle) }; // tangent point
+
+            // Draw sector (yellow/amber)
+            const arcPath = d3.arc()
+                .innerRadius(0)
+                .outerRadius(r)
+                .startAngle(-angle)
+                .endAngle(0);
+
+            svg.append('path')
+                .attr('transform', `translate(${cx}, ${cy})`)
+                .attr('d', arcPath)
+                .attr('fill', 'rgba(212, 160, 40, 0.3)')
+                .attr('stroke', '#d4a028')
+                .attr('stroke-width', 2);
+
+            // Draw inner triangle (green)
+            svg.append('polygon')
+                .attr('points', `${A.x},${A.y} ${B.x},${B.y} ${C.x},${C.y}`)
+                .attr('fill', 'rgba(34, 197, 94, 0.3)')
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 2);
+
+            // Draw outer triangle (orange)
+            svg.append('polygon')
+                .attr('points', `${A.x},${A.y} ${B.x},${B.y} ${D.x},${D.y}`)
+                .attr('fill', 'none')
+                .attr('stroke', '#f59e0b')
+                .attr('stroke-width', 2);
+
+            // Draw radius to C
+            svg.append('line')
+                .attr('x1', A.x)
+                .attr('y1', A.y)
+                .attr('x2', C.x)
+                .attr('y2', C.y)
+                .attr('stroke', 'white')
+                .attr('stroke-width', 2);
+
+            // Draw vertical line from C to x-axis (sin x)
+            svg.append('line')
+                .attr('x1', C.x)
+                .attr('y1', C.y)
+                .attr('x2', C.x)
+                .attr('y2', cy)
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,3');
+
+            // Draw arc for angle
+            const smallArc = d3.arc()
+                .innerRadius(30)
+                .outerRadius(30)
+                .startAngle(-angle)
+                .endAngle(0);
+
+            svg.append('path')
+                .attr('transform', `translate(${cx}, ${cy})`)
+                .attr('d', smallArc)
+                .attr('fill', 'none')
+                .attr('stroke', 'white')
+                .attr('stroke-width', 2);
+
+            // Labels
+            svg.append('text')
+                .attr('x', cx + 45)
+                .attr('y', cy - 10)
+                .attr('fill', 'white')
+                .attr('font-size', '1.25rem')
+                .text('x');
+
+            svg.append('text')
+                .attr('x', C.x + 10)
+                .attr('y', (C.y + cy) / 2)
+                .attr('fill', '#22c55e')
+                .attr('font-size', '1rem')
+                .text('sin x');
+
+            svg.append('text')
+                .attr('x', B.x + 10)
+                .attr('y', (B.y + D.y) / 2)
+                .attr('fill', '#f59e0b')
+                .attr('font-size', '1rem')
+                .text('tan x');
+
+            // Legend on right side
+            const legendX = 500;
+            const legendY = 80;
+            const legendSpacing = 50;
+
+            // Inner triangle
+            svg.append('rect')
+                .attr('x', legendX)
+                .attr('y', legendY)
+                .attr('width', 24)
+                .attr('height', 24)
+                .attr('fill', 'rgba(34, 197, 94, 0.3)')
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 2);
+
+            svg.append('text')
+                .attr('x', legendX + 35)
+                .attr('y', legendY + 17)
+                .attr('fill', '#22c55e')
+                .attr('font-size', '1.25rem')
+                .text('Triangle: ½ sin x');
+
+            // Sector
+            svg.append('rect')
+                .attr('x', legendX)
+                .attr('y', legendY + legendSpacing)
+                .attr('width', 24)
+                .attr('height', 24)
+                .attr('fill', 'rgba(212, 160, 40, 0.3)')
+                .attr('stroke', '#d4a028')
+                .attr('stroke-width', 2);
+
+            svg.append('text')
+                .attr('x', legendX + 35)
+                .attr('y', legendY + legendSpacing + 17)
+                .attr('fill', '#d4a028')
+                .attr('font-size', '1.25rem')
+                .text('Sector: ½ x');
+
+            // Outer triangle
+            svg.append('rect')
+                .attr('x', legendX)
+                .attr('y', legendY + 2 * legendSpacing)
+                .attr('width', 24)
+                .attr('height', 24)
+                .attr('fill', 'none')
+                .attr('stroke', '#f59e0b')
+                .attr('stroke-width', 2);
+
+            svg.append('text')
+                .attr('x', legendX + 35)
+                .attr('y', legendY + 2 * legendSpacing + 17)
+                .attr('fill', '#f59e0b')
+                .attr('font-size', '1.25rem')
+                .text('Outer: ½ tan x');
+
+            // Inequality
+            svg.append('text')
+                .attr('x', legendX)
+                .attr('y', legendY + 3.5 * legendSpacing)
+                .attr('fill', 'white')
+                .attr('font-size', '1.5rem')
+                .attr('font-family', 'var(--font-display)')
+                .text('Triangle ≤ Sector ≤ Outer');
+        }
+    </script>
+</body>
+</html>

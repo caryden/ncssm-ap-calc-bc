@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 15: Implicit Differentiation | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #8b5cf6;
+            --theme-color-light: #a78bfa;
+            --y-term-color: #d4a028;
+            --dydx-color: #8b5cf6;
+        }
+
+        /* Solution steps styling */
+        .impl-solution {
+            text-align: left;
+            max-width: 850px;
+            margin: 1.5rem auto;
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 12px;
+        }
+
+        .impl-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            font-size: 1.25rem;
+        }
+
+        .impl-step-num {
+            background: var(--theme-color);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .impl-step-content {
+            flex: 1;
+        }
+
+        .y-highlight {
+            color: var(--y-term-color);
+            font-weight: 600;
+        }
+
+        .dydx-highlight {
+            color: var(--dydx-color);
+            font-weight: 600;
+        }
+
+        /* Rule box */
+        .rule-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            border-radius: 0 12px 12px 0;
+            margin: 1.5rem auto;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .rule-box .rule-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--theme-color);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .rule-box .rule-content {
+            font-size: 1.5rem;
+        }
+
+        /* Process steps */
+        .process-list {
+            list-style: none;
+            max-width: 700px;
+            margin: 1.5rem auto;
+            text-align: left;
+        }
+
+        .process-list li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            font-size: 1.25rem;
+        }
+
+        .process-list .step-circle {
+            width: 32px;
+            height: 32px;
+            background: var(--theme-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        /* Practice grid */
+        .practice-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            max-width: 800px;
+            margin: 1.5rem auto;
+        }
+
+        .practice-item {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .practice-item .num {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: var(--theme-color);
+            color: white;
+            border-radius: 50%;
+            font-family: var(--font-display);
+            font-weight: 600;
+            line-height: 28px;
+            margin-bottom: 0.75rem;
+        }
+
+        .practice-item .problem {
+            font-size: 1.5rem;
+        }
+
+        /* Comparison styling */
+        .type-card {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .type-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--theme-color);
+        }
+
+        .type-card .example {
+            font-size: 1.5rem;
+            margin: 0.75rem 0;
+            font-family: var(--font-mono);
+        }
+
+        /* Chain rule reminder */
+        .chain-reminder {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            max-width: 900px;
+            margin: 1.5rem auto;
+        }
+
+        .chain-item {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .chain-item .original {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .chain-item .derivative {
+            font-size: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        .chain-item .dydx {
+            color: var(--dydx-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Implicit Differentiation">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 3: Advanced Differentiation</div>
+                <h1>Implicit Differentiation</h1>
+                <p class="subtitle">When y Won't Solve for Itself</p>
+                <p class="meta">Class 15 | February 28, 2026 | CED 3.2</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: Circle Problem -->
+        <div class="slide slide-visual" data-slide="1" data-section="Opening" data-title="A Circle Problem">
+            <div class="slide-content">
+                <h2>A Circle Problem</h2>
+                <div id="circle-viz" class="visualization"></div>
+                <p style="font-size: 1.5rem; margin-top: 1rem;">What's the slope of the tangent line at \((3, 4)\)?</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Traditional Approach -->
+        <div class="slide slide-list" data-slide="2" data-section="Opening" data-title="Method 1">
+            <div class="slide-content">
+                <h2>Method 1: Solve for y First</h2>
+                <ul>
+                    <li>Solve: \(y = \sqrt{25 - x^2}\) <span style="color: var(--text-tertiary);">(top half only!)</span></li>
+                    <li>Differentiate: \(\frac{dy}{dx} = \frac{-x}{\sqrt{25 - x^2}}\)</li>
+                    <li>At \(x = 3\): \(\frac{dy}{dx} = \frac{-3}{\sqrt{25-9}} = \frac{-3}{4}\)</li>
+                    <li style="color: var(--warning);">Problem: This only works for the top half!</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 3: What About Bottom Half -->
+        <div class="slide slide-visual" data-slide="3" data-section="Opening" data-title="Bottom Half Problem">
+            <div class="slide-content">
+                <h2>What About the Bottom Half?</h2>
+                <div id="circle-both-viz" class="visualization"></div>
+                <p style="font-size: 1.25rem; color: var(--text-secondary); margin-top: 1rem;">
+                    The bottom half needs \(y = -\sqrt{25 - x^2}\)<br>
+                    Is there a <em>unified</em> approach?
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Explicit vs Implicit -->
+        <div class="slide slide-comparison" data-slide="4" data-section="The Method" data-title="Explicit vs Implicit">
+            <div class="slide-content">
+                <h2>Two Types of Function Definitions</h2>
+                <div class="columns">
+                    <div class="column">
+                        <h3 style="color: var(--success);">Explicit</h3>
+                        <p style="font-size: 1.75rem; margin: 1rem 0;">\(y = f(x)\)</p>
+                        <p>y is <em>isolated</em></p>
+                        <div style="margin-top: 1rem; color: var(--text-secondary);">
+                            <p>Examples:</p>
+                            <p>\(y = x^2\)</p>
+                            <p>\(y = \sin(x)\)</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h3 style="color: var(--theme-color);">Implicit</h3>
+                        <p style="font-size: 1.75rem; margin: 1rem 0;">\(F(x, y) = 0\)</p>
+                        <p>x and y <em>mixed together</em></p>
+                        <div style="margin-top: 1rem; color: var(--text-secondary);">
+                            <p>Examples:</p>
+                            <p>\(x^2 + y^2 = 25\)</p>
+                            <p>\(xy + y^3 = 1\)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Key Insight -->
+        <div class="slide slide-statement" data-slide="5" data-section="The Method" data-title="Key Insight">
+            <div class="slide-content">
+                <p class="statement">Think of <span class="y-highlight">y</span> as a function of x: <span class="y-highlight">y = y(x)</span></p>
+                <p style="margin-top: 2rem; font-size: 1.5rem; color: var(--text-secondary);">
+                    When we differentiate any expression containing <span class="y-highlight">y</span>,<br>
+                    we must use the <em>chain rule</em>
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Chain Rule Connection -->
+        <div class="slide slide-visual" data-slide="6" data-section="The Method" data-title="Chain Rule for y">
+            <div class="slide-content">
+                <h2>When Differentiating y Terms</h2>
+                <div class="chain-reminder">
+                    <div class="chain-item">
+                        <div class="original">\(\frac{d}{dx}[y^2]\)</div>
+                        <div class="derivative">\(= 2y \cdot \)<span class="dydx">\(\frac{dy}{dx}\)</span></div>
+                    </div>
+                    <div class="chain-item">
+                        <div class="original">\(\frac{d}{dx}[\sin(y)]\)</div>
+                        <div class="derivative">\(= \cos(y) \cdot \)<span class="dydx">\(\frac{dy}{dx}\)</span></div>
+                    </div>
+                    <div class="chain-item">
+                        <div class="original">\(\frac{d}{dx}[e^y]\)</div>
+                        <div class="derivative">\(= e^y \cdot \)<span class="dydx">\(\frac{dy}{dx}\)</span></div>
+                    </div>
+                </div>
+                <div class="rule-box" style="margin-top: 2rem;">
+                    <div class="rule-title">The Pattern</div>
+                    <div class="rule-content">
+                        Always multiply by <span class="dydx-highlight">\(\frac{dy}{dx}\)</span> when differentiating a <span class="y-highlight">y</span> term!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: The Process -->
+        <div class="slide slide-visual" data-slide="7" data-section="The Method" data-title="The Process">
+            <div class="slide-content">
+                <h2>The Implicit Differentiation Process</h2>
+                <ol class="process-list">
+                    <li><span class="step-circle">1</span> Differentiate both sides with respect to x</li>
+                    <li><span class="step-circle">2</span> Apply chain rule to all y terms (multiply by <span class="dydx-highlight">\(\frac{dy}{dx}\)</span>)</li>
+                    <li><span class="step-circle">3</span> Collect all <span class="dydx-highlight">\(\frac{dy}{dx}\)</span> terms on one side</li>
+                    <li><span class="step-circle">4</span> Factor out <span class="dydx-highlight">\(\frac{dy}{dx}\)</span></li>
+                    <li><span class="step-circle">5</span> Solve for <span class="dydx-highlight">\(\frac{dy}{dx}\)</span></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Slide 8: Example 1 -->
+        <div class="slide slide-visual" data-slide="8" data-section="Examples" data-title="Example 1: Circle">
+            <div class="slide-content">
+                <h2>Example 1: \(x^2 + y^2 = 25\)</h2>
+                <div class="impl-solution">
+                    <div class="impl-step">
+                        <span class="impl-step-num">1</span>
+                        <span class="impl-step-content">
+                            Differentiate: \(\frac{d}{dx}[x^2] + \frac{d}{dx}[\)<span class="y-highlight">\(y^2\)</span>\(] = \frac{d}{dx}[25]\)
+                        </span>
+                    </div>
+                    <div class="impl-step">
+                        <span class="impl-step-num">2</span>
+                        <span class="impl-step-content">
+                            Apply rules: \(2x + 2\)<span class="y-highlight">\(y\)</span>\( \cdot \)<span class="dydx-highlight">\(\frac{dy}{dx}\)</span>\( = 0\)
+                        </span>
+                    </div>
+                    <div class="impl-step">
+                        <span class="impl-step-num">3</span>
+                        <span class="impl-step-content">
+                            Isolate: \(2y \cdot \)<span class="dydx-highlight">\(\frac{dy}{dx}\)</span>\( = -2x\)
+                        </span>
+                    </div>
+                    <div class="impl-step">
+                        <span class="impl-step-num">4</span>
+                        <span class="impl-step-content" style="color: var(--success);">
+                            Solve: <span class="dydx-highlight">\(\frac{dy}{dx} = -\frac{x}{y}\)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Example 1 Verification -->
+        <div class="slide slide-visual" data-slide="9" data-section="Examples" data-title="Verification">
+            <div class="slide-content">
+                <h2>Checking Both Points</h2>
+                <div id="circle-tangent-viz" class="visualization"></div>
+                <div style="display: flex; justify-content: center; gap: 3rem; margin-top: 1rem;">
+                    <div style="text-align: center;">
+                        <p style="font-size: 1.25rem; color: var(--text-secondary);">At (3, 4):</p>
+                        <p style="font-size: 1.5rem; color: var(--success);">\(\frac{dy}{dx} = -\frac{3}{4}\)</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <p style="font-size: 1.25rem; color: var(--text-secondary);">At (3, -4):</p>
+                        <p style="font-size: 1.5rem; color: var(--success);">\(\frac{dy}{dx} = -\frac{3}{-4} = \frac{3}{4}\)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Example 2 -->
+        <div class="slide slide-visual" data-slide="10" data-section="Examples" data-title="Example 2: Product">
+            <div class="slide-content">
+                <h2>Example 2: \(xy + y^3 = 1\)</h2>
+                <div class="impl-solution">
+                    <div class="impl-step">
+                        <span class="impl-step-num">1</span>
+                        <span class="impl-step-content">
+                            Differentiate: \(\frac{d}{dx}[xy] + \frac{d}{dx}[y^3] = 0\)
+                        </span>
+                    </div>
+                    <div class="impl-step">
+                        <span class="impl-step-num">2</span>
+                        <span class="impl-step-content">
+                            Product rule + chain: \((x \cdot \)<span class="dydx-highlight">\(\frac{dy}{dx}\)</span>\( + y \cdot 1) + 3y^2 \cdot \)<span class="dydx-highlight">\(\frac{dy}{dx}\)</span>\( = 0\)
+                        </span>
+                    </div>
+                    <div class="impl-step">
+                        <span class="impl-step-num">3</span>
+                        <span class="impl-step-content">
+                            Collect terms: \(x \cdot \)<span class="dydx-highlight">\(\frac{dy}{dx}\)</span>\( + 3y^2 \cdot \)<span class="dydx-highlight">\(\frac{dy}{dx}\)</span>\( = -y\)
+                        </span>
+                    </div>
+                    <div class="impl-step">
+                        <span class="impl-step-num">4</span>
+                        <span class="impl-step-content">
+                            Factor: \((x + 3y^2) \cdot \)<span class="dydx-highlight">\(\frac{dy}{dx}\)</span>\( = -y\)
+                        </span>
+                    </div>
+                    <div class="impl-step">
+                        <span class="impl-step-num">5</span>
+                        <span class="impl-step-content" style="color: var(--success);">
+                            Solve: <span class="dydx-highlight">\(\frac{dy}{dx} = \frac{-y}{x + 3y^2}\)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Example 3 -->
+        <div class="slide slide-visual" data-slide="11" data-section="Examples" data-title="Example 3: Trig">
+            <div class="slide-content">
+                <h2>Example 3: \(\sin(xy) = y\)</h2>
+                <div class="impl-solution">
+                    <div class="impl-step">
+                        <span class="impl-step-num">1</span>
+                        <span class="impl-step-content">
+                            Differentiate: \(\cos(xy) \cdot \frac{d}{dx}[xy] = \)<span class="dydx-highlight">\(\frac{dy}{dx}\)</span>
+                        </span>
+                    </div>
+                    <div class="impl-step">
+                        <span class="impl-step-num">2</span>
+                        <span class="impl-step-content">
+                            Product rule on xy: \(\cos(xy) \cdot (y + x \cdot \)<span class="dydx-highlight">\(\frac{dy}{dx}\)</span>\() = \)<span class="dydx-highlight">\(\frac{dy}{dx}\)</span>
+                        </span>
+                    </div>
+                    <div class="impl-step">
+                        <span class="impl-step-num">3</span>
+                        <span class="impl-step-content">
+                            Expand: \(y\cos(xy) + x\cos(xy) \cdot \)<span class="dydx-highlight">\(\frac{dy}{dx}\)</span>\( = \)<span class="dydx-highlight">\(\frac{dy}{dx}\)</span>
+                        </span>
+                    </div>
+                    <div class="impl-step">
+                        <span class="impl-step-num">4</span>
+                        <span class="impl-step-content">
+                            Collect: \(y\cos(xy) = \)<span class="dydx-highlight">\(\frac{dy}{dx}\)</span>\((1 - x\cos(xy))\)
+                        </span>
+                    </div>
+                    <div class="impl-step">
+                        <span class="impl-step-num">5</span>
+                        <span class="impl-step-content" style="color: var(--success);">
+                            <span class="dydx-highlight">\(\frac{dy}{dx} = \frac{y\cos(xy)}{1 - x\cos(xy)}\)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Folium of Descartes -->
+        <div class="slide slide-visual" data-slide="12" data-section="Examples" data-title="Folium of Descartes">
+            <div class="slide-content">
+                <h2>The Folium of Descartes: \(x^3 + y^3 = 6xy\)</h2>
+                <div id="folium-viz" class="visualization"></div>
+                <p class="caption">Click on the curve to see the tangent line and slope</p>
+            </div>
+        </div>
+
+        <!-- Slide 13: Common Mistakes -->
+        <div class="slide slide-list" data-slide="13" data-section="Practice" data-title="Common Mistakes">
+            <div class="slide-content">
+                <h2>Watch Out For...</h2>
+                <ul>
+                    <li>
+                        <strong>Forgetting <span class="dydx-highlight">\(\frac{dy}{dx}\)</span>:</strong><br>
+                        <span style="color: var(--danger);">Wrong:</span> \(\frac{d}{dx}[y^2] = 2y\)<br>
+                        <span style="color: var(--success);">Right:</span> \(\frac{d}{dx}[y^2] = 2y \cdot \frac{dy}{dx}\)
+                    </li>
+                    <li>
+                        <strong>Product rule errors:</strong> Don't forget both terms in \(\frac{d}{dx}[xy]\)
+                    </li>
+                    <li>
+                        <strong>Algebraic mistakes:</strong> Be careful when solving for \(\frac{dy}{dx}\)
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 14: Vertical Tangents -->
+        <div class="slide slide-visual" data-slide="14" data-section="Practice" data-title="Vertical Tangents">
+            <div class="slide-content">
+                <h2>When \(\frac{dy}{dx}\) is Undefined</h2>
+                <div id="vertical-tangent-viz" class="visualization"></div>
+                <p class="caption">When the denominator equals zero, we get a vertical tangent line</p>
+            </div>
+        </div>
+
+        <!-- Slide 15: Practice -->
+        <div class="slide slide-visual" data-slide="15" data-section="Practice" data-title="Your Turn">
+            <div class="slide-content">
+                <h2>Practice: Find \(\frac{dy}{dx}\)</h2>
+                <div class="practice-grid">
+                    <div class="practice-item">
+                        <div class="num">1</div>
+                        <div class="problem">\(x^2 - y^2 = 16\)</div>
+                    </div>
+                    <div class="practice-item">
+                        <div class="num">2</div>
+                        <div class="problem">\(y^2 = x^3\)</div>
+                    </div>
+                    <div class="practice-item">
+                        <div class="num">3</div>
+                        <div class="problem">\(e^y = x + y\)</div>
+                    </div>
+                    <div class="practice-item">
+                        <div class="num">4</div>
+                        <div class="problem">\(x^2 + xy + y^2 = 7\)<br><span style="font-size: 1rem; color: var(--text-tertiary);">Find slope at (2, 1)</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Solutions -->
+        <div class="slide slide-list" data-slide="16" data-section="Practice" data-title="Solutions">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <ul>
+                    <li>\(\frac{dy}{dx} = \frac{x}{y}\) (from \(2x - 2y\frac{dy}{dx} = 0\))</li>
+                    <li>\(\frac{dy}{dx} = \frac{3x^2}{2y}\) (from \(2y\frac{dy}{dx} = 3x^2\))</li>
+                    <li>\(\frac{dy}{dx} = \frac{1}{e^y - 1}\) (from \(e^y\frac{dy}{dx} = 1 + \frac{dy}{dx}\))</li>
+                    <li>At (2,1): \(\frac{dy}{dx} = \frac{-(2(2)+1)}{2+2(1)} = \frac{-5}{4}\)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 17: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="17" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p>Use implicit differentiation to find \(\frac{dy}{dx}\):</p>
+                    <p style="font-size: 2.5rem; margin-top: 1.5rem; color: var(--accent-secondary);">
+                        \(x^2y + y^2 = 5\)
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Coming Up -->
+        <div class="slide slide-statement" data-slide="18" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Tomorrow: <em>Differentiating Inverse Functions</em></p>
+                <p style="margin-top: 1.5rem; font-size: 1.5rem; color: var(--text-secondary);">
+                    Using implicit differentiation to find derivatives of inverse functions
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 19</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>←</kbd> <kbd>→</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 15: Implicit Differentiation</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">← Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">← Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Circle Visualization =====
+        function drawCircle() {
+            const container = document.getElementById('circle-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 500;
+            const height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 50 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-7, 7]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-7, 7]).range([plotHeight, 0]);
+
+            // Grid
+            for (let i = -6; i <= 6; i += 2) {
+                g.append('line')
+                    .attr('x1', 0).attr('x2', plotWidth)
+                    .attr('y1', yScale(i)).attr('y2', yScale(i))
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+                g.append('line')
+                    .attr('x1', xScale(i)).attr('x2', xScale(i))
+                    .attr('y1', 0).attr('y2', plotHeight)
+                    .attr('stroke', '#1c2640').attr('stroke-width', 1);
+            }
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0).attr('x2', plotWidth)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#4a5568').attr('stroke-width', 2);
+            g.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', 0).attr('y2', plotHeight)
+                .attr('stroke', '#4a5568').attr('stroke-width', 2);
+
+            // Circle x^2 + y^2 = 25
+            const circlePoints = [];
+            for (let theta = 0; theta <= 2 * Math.PI; theta += 0.01) {
+                circlePoints.push({ x: 5 * Math.cos(theta), y: 5 * Math.sin(theta) });
+            }
+
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y));
+
+            g.append('path')
+                .datum(circlePoints)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Point at (3, 4)
+            g.append('circle')
+                .attr('cx', xScale(3))
+                .attr('cy', yScale(4))
+                .attr('r', 8)
+                .attr('fill', '#8b5cf6');
+
+            g.append('text')
+                .attr('x', xScale(3) + 12)
+                .attr('y', yScale(4) - 8)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#8b5cf6')
+                .text('(3, 4)');
+
+            // Tangent line at (3, 4): slope = -3/4
+            const slope = -3/4;
+            const x1 = 0, y1 = 4 - slope * (0 - 3);
+            const x2 = 6, y2 = 4 - slope * (6 - 3);
+
+            g.append('line')
+                .attr('x1', xScale(x1))
+                .attr('y1', yScale(y1))
+                .attr('x2', xScale(x2))
+                .attr('y2', yScale(y2))
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '8,4');
+
+            // Label
+            g.append('text')
+                .attr('x', xScale(0))
+                .attr('y', yScale(6))
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6')
+                .text('x² + y² = 25');
+        }
+
+        // ===== Circle with Both Halves =====
+        function drawCircleBoth() {
+            const container = document.getElementById('circle-both-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 500;
+            const height = 350;
+            const margin = { top: 30, right: 30, bottom: 50, left: 50 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-7, 7]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-7, 7]).range([plotHeight, 0]);
+
+            // Grid and axes (simplified)
+            g.append('line')
+                .attr('x1', 0).attr('x2', plotWidth)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#4a5568').attr('stroke-width', 1);
+            g.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', 0).attr('y2', plotHeight)
+                .attr('stroke', '#4a5568').attr('stroke-width', 1);
+
+            // Circle
+            const circlePoints = [];
+            for (let theta = 0; theta <= 2 * Math.PI; theta += 0.01) {
+                circlePoints.push({ x: 5 * Math.cos(theta), y: 5 * Math.sin(theta) });
+            }
+
+            g.append('path')
+                .datum(circlePoints)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Point at (3, 4) - top
+            g.append('circle')
+                .attr('cx', xScale(3)).attr('cy', yScale(4))
+                .attr('r', 8).attr('fill', '#22c55e');
+
+            g.append('text')
+                .attr('x', xScale(3) + 12).attr('y', yScale(4) - 8)
+                .attr('font-size', '1rem').attr('fill', '#22c55e')
+                .text('(3, 4)');
+
+            // Point at (3, -4) - bottom
+            g.append('circle')
+                .attr('cx', xScale(3)).attr('cy', yScale(-4))
+                .attr('r', 8).attr('fill', '#f97316');
+
+            g.append('text')
+                .attr('x', xScale(3) + 12).attr('y', yScale(-4) + 20)
+                .attr('font-size', '1rem').attr('fill', '#f97316')
+                .text('(3, -4)');
+        }
+
+        // ===== Circle with Tangent Lines =====
+        function drawCircleTangent() {
+            const container = document.getElementById('circle-tangent-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 500;
+            const height = 350;
+            const margin = { top: 30, right: 30, bottom: 30, left: 50 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-7, 7]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-7, 7]).range([plotHeight, 0]);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0).attr('x2', plotWidth)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#4a5568').attr('stroke-width', 1);
+            g.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', 0).attr('y2', plotHeight)
+                .attr('stroke', '#4a5568').attr('stroke-width', 1);
+
+            // Circle
+            const circlePoints = [];
+            for (let theta = 0; theta <= 2 * Math.PI; theta += 0.01) {
+                circlePoints.push({ x: 5 * Math.cos(theta), y: 5 * Math.sin(theta) });
+            }
+
+            g.append('path')
+                .datum(circlePoints)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Tangent at (3, 4): slope = -3/4
+            const drawTangent = (px, py, color) => {
+                const slope = -px / py;
+                const x1 = px - 3, y1 = py + slope * 3;
+                const x2 = px + 3, y2 = py - slope * 3;
+
+                g.append('line')
+                    .attr('x1', xScale(x1)).attr('y1', yScale(y1))
+                    .attr('x2', xScale(x2)).attr('y2', yScale(y2))
+                    .attr('stroke', color)
+                    .attr('stroke-width', 2);
+
+                g.append('circle')
+                    .attr('cx', xScale(px)).attr('cy', yScale(py))
+                    .attr('r', 6).attr('fill', color);
+            };
+
+            drawTangent(3, 4, '#22c55e');
+            drawTangent(3, -4, '#f97316');
+        }
+
+        // ===== Folium of Descartes =====
+        function drawFolium() {
+            const container = document.getElementById('folium-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 50 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-4, 6]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-4, 6]).range([plotHeight, 0]);
+
+            // Grid
+            for (let i = -4; i <= 6; i += 2) {
+                g.append('line')
+                    .attr('x1', 0).attr('x2', plotWidth)
+                    .attr('y1', yScale(i)).attr('y2', yScale(i))
+                    .attr('stroke', '#1c2640');
+                g.append('line')
+                    .attr('x1', xScale(i)).attr('x2', xScale(i))
+                    .attr('y1', 0).attr('y2', plotHeight)
+                    .attr('stroke', '#1c2640');
+            }
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0).attr('x2', plotWidth)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#4a5568').attr('stroke-width', 2);
+            g.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', 0).attr('y2', plotHeight)
+                .attr('stroke', '#4a5568').attr('stroke-width', 2);
+
+            // Folium: x^3 + y^3 = 6xy, parametric: x = 6t/(1+t^3), y = 6t^2/(1+t^3)
+            const foliumPoints = [];
+            for (let t = -20; t < -1.01; t += 0.02) {
+                const x = 6 * t / (1 + t * t * t);
+                const y = 6 * t * t / (1 + t * t * t);
+                if (Math.abs(x) < 10 && Math.abs(y) < 10) {
+                    foliumPoints.push({ x, y });
+                }
+            }
+            for (let t = -0.99; t < 20; t += 0.02) {
+                const x = 6 * t / (1 + t * t * t);
+                const y = 6 * t * t / (1 + t * t * t);
+                if (Math.abs(x) < 10 && Math.abs(y) < 10) {
+                    foliumPoints.push({ x, y });
+                }
+            }
+
+            g.append('path')
+                .datum(foliumPoints)
+                .attr('fill', 'none')
+                .attr('stroke', '#8b5cf6')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Point at (3, 3)
+            g.append('circle')
+                .attr('cx', xScale(3)).attr('cy', yScale(3))
+                .attr('r', 8).attr('fill', '#d4a028');
+
+            // Tangent at (3,3): dy/dx = (6y - 3x^2)/(3y^2 - 6x) = (18-27)/(27-18) = -9/9 = -1
+            g.append('line')
+                .attr('x1', xScale(0)).attr('y1', yScale(6))
+                .attr('x2', xScale(6)).attr('y2', yScale(0))
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 2);
+
+            g.append('text')
+                .attr('x', xScale(3) + 15).attr('y', yScale(3))
+                .attr('font-size', '1.25rem').attr('fill', '#d4a028')
+                .text('(3, 3), slope = -1');
+        }
+
+        // ===== Vertical Tangent Visualization =====
+        function drawVerticalTangent() {
+            const container = document.getElementById('vertical-tangent-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 500;
+            const height = 350;
+            const margin = { top: 30, right: 30, bottom: 30, left: 50 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-7, 7]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-5, 5]).range([plotHeight, 0]);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0).attr('x2', plotWidth)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#4a5568').attr('stroke-width', 1);
+            g.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', 0).attr('y2', plotHeight)
+                .attr('stroke', '#4a5568').attr('stroke-width', 1);
+
+            // Circle
+            const circlePoints = [];
+            for (let theta = 0; theta <= 2 * Math.PI; theta += 0.01) {
+                circlePoints.push({ x: 5 * Math.cos(theta), y: 5 * Math.sin(theta) });
+            }
+
+            g.append('path')
+                .datum(circlePoints)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Vertical tangent lines at (5, 0) and (-5, 0)
+            g.append('line')
+                .attr('x1', xScale(5)).attr('x2', xScale(5))
+                .attr('y1', yScale(-4)).attr('y2', yScale(4))
+                .attr('stroke', '#ef4444').attr('stroke-width', 3);
+
+            g.append('line')
+                .attr('x1', xScale(-5)).attr('x2', xScale(-5))
+                .attr('y1', yScale(-4)).attr('y2', yScale(4))
+                .attr('stroke', '#ef4444').attr('stroke-width', 3);
+
+            // Points
+            g.append('circle')
+                .attr('cx', xScale(5)).attr('cy', yScale(0))
+                .attr('r', 8).attr('fill', '#ef4444');
+
+            g.append('circle')
+                .attr('cx', xScale(-5)).attr('cy', yScale(0))
+                .attr('r', 8).attr('fill', '#ef4444');
+
+            // Labels
+            g.append('text')
+                .attr('x', xScale(5)).attr('y', yScale(-4.5))
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem').attr('fill', '#ef4444')
+                .text('y = 0: undefined!');
+
+            // Formula note
+            svg.append('text')
+                .attr('x', width / 2).attr('y', 25)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem').attr('fill', '#b8c4d6')
+                .text('dy/dx = -x/y is undefined when y = 0');
+        }
+
+        // ===== Trigger Visualizations =====
+        const visualizationSlides = {
+            1: drawCircle,
+            3: drawCircleBoth,
+            9: drawCircleTangent,
+            12: drawFolium,
+            14: drawVerticalTangent
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

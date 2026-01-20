@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divergence and Integral Tests | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <style>
+        :root {
+            --theme-color: #6366f1;
+            --theme-color-light: #818cf8;
+            --theme-color-dark: #4f46e5;
+            --converge-color: #10b981;
+            --diverge-color: #ef4444;
+            --function-color: #8b5cf6;
+            --area-color: #c4b5fd;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .bc-badge {
+            background: linear-gradient(135deg, var(--theme-color), var(--theme-color-dark));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .slide-title h1 {
+            color: var(--theme-color);
+        }
+
+        .viz-container {
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viz-container svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #f0f0ff 0%, #f8f8ff 100%);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .definition-box h3 {
+            color: var(--theme-color);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .theorem-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .theorem-box h3 {
+            color: #d97706;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);
+            border-left: 4px solid #ef4444;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box h3 {
+            color: #dc2626;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .formula-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .converge-box {
+            background: #d1fae5;
+            border: 2px solid var(--converge-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .diverge-box {
+            background: #fee2e2;
+            border: 2px solid var(--diverge-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .step-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .step-box .step-num {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: var(--theme-color);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .example-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.1rem;
+            margin: 1rem 0;
+        }
+
+        .example-table th,
+        .example-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .example-table th {
+            background: var(--theme-color);
+            color: white;
+        }
+
+        .example-table tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .controls-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--theme-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .control-btn:hover {
+            background: var(--theme-color-dark);
+        }
+
+        .control-btn.active {
+            background: var(--theme-color-dark);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .test-flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .flowchart-node {
+            background: white;
+            border: 2px solid var(--theme-color);
+            border-radius: 8px;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .flowchart-arrow {
+            font-size: 1.5rem;
+            color: var(--theme-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+
+        <!-- Slide 0: Title -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 10: Infinite Sequences and Series</span>
+                <span class="bc-badge">BC Only</span>
+                <h1>Divergence and Integral Tests</h1>
+                <p class="subtitle">Testing for Convergence</p>
+                <p class="meta">Class 57 | CED Topics 10.3, 10.4</p>
+            </div>
+        </section>
+
+        <!-- Slide 1: Warm-Up -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="exercise-box">
+                    <p>For each sequence, find \(\lim_{n \to \infty} a_n\):</p>
+                    <ol style="font-size: 1.25rem; line-height: 2.5;">
+                        <li>\(a_n = \frac{n}{n+1}\)</li>
+                        <li>\(a_n = \frac{1}{n^2}\)</li>
+                        <li>\(a_n = (-1)^n\)</li>
+                        <li>\(a_n = \frac{n^2}{2^n}\)</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: The Big Question -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>The Big Question</h2>
+                <div class="definition-box">
+                    <h3>Our Challenge</h3>
+                    <p>Given a series \(\sum_{n=1}^{\infty} a_n\), how do we determine if it converges or diverges?</p>
+                </div>
+                <div style="margin-top: 2rem;">
+                    <p style="font-size: 1.25rem;">We can't always find a formula for partial sums!</p>
+                    <p style="margin-top: 1rem; font-size: 1.25rem;">We need <strong>convergence tests</strong> - ways to determine convergence without computing the actual sum.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Divergence Test -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>The Divergence Test (nth Term Test)</h2>
+                <div class="theorem-box">
+                    <h3>Divergence Test</h3>
+                    <p>If \(\lim_{n \to \infty} a_n \neq 0\), then \(\sum_{n=1}^{\infty} a_n\) <strong>diverges</strong>.</p>
+                </div>
+                <div class="warning-box" style="margin-top: 1.5rem;">
+                    <h3>IMPORTANT: The Converse is FALSE!</h3>
+                    <p>If \(\lim_{n \to \infty} a_n = 0\), the series <em>might</em> converge or <em>might</em> diverge.</p>
+                    <p style="margin-top: 0.5rem;">Example: \(\sum \frac{1}{n}\) diverges even though \(\frac{1}{n} \to 0\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Divergence Test Logic -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Understanding the Divergence Test</h2>
+                <div class="comparison-grid">
+                    <div class="diverge-box">
+                        <p><strong>If \(a_n \not\to 0\):</strong></p>
+                        <p style="margin-top: 0.5rem;">Adding infinitely many non-zero terms cannot give a finite sum.</p>
+                        <p style="margin-top: 0.5rem; text-align: center; font-weight: bold;">Series DIVERGES</p>
+                    </div>
+                    <div class="formula-box">
+                        <p><strong>If \(a_n \to 0\):</strong></p>
+                        <p style="margin-top: 0.5rem;">Test is <em>inconclusive</em>!</p>
+                        <p style="margin-top: 0.5rem;">Need another test.</p>
+                    </div>
+                </div>
+                <div class="definition-box" style="margin-top: 1rem;">
+                    <h3>Contrapositive</h3>
+                    <p>If \(\sum a_n\) converges, then \(\lim_{n \to \infty} a_n = 0\)</p>
+                    <p style="margin-top: 0.5rem;">(\(a_n \to 0\) is <em>necessary</em> but not <em>sufficient</em> for convergence)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Divergence Test Examples -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Divergence Test Examples</h2>
+                <table class="example-table">
+                    <tr>
+                        <th>Series</th>
+                        <th>\(\lim a_n\)</th>
+                        <th>Conclusion</th>
+                    </tr>
+                    <tr>
+                        <td>\(\sum \frac{n}{n+1}\)</td>
+                        <td>1</td>
+                        <td style="color: #ef4444;">Diverges</td>
+                    </tr>
+                    <tr>
+                        <td>\(\sum \frac{n^2}{2n^2+1}\)</td>
+                        <td>\(\frac{1}{2}\)</td>
+                        <td style="color: #ef4444;">Diverges</td>
+                    </tr>
+                    <tr>
+                        <td>\(\sum (-1)^n\)</td>
+                        <td>DNE</td>
+                        <td style="color: #ef4444;">Diverges</td>
+                    </tr>
+                    <tr>
+                        <td>\(\sum \frac{1}{n}\)</td>
+                        <td>0</td>
+                        <td style="color: #6366f1;">Inconclusive</td>
+                    </tr>
+                    <tr>
+                        <td>\(\sum \frac{1}{n^2}\)</td>
+                        <td>0</td>
+                        <td style="color: #6366f1;">Inconclusive</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- Slide 6: Divergence Test Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Visualizing the Divergence Test</h2>
+                <div id="divergence-viz" class="viz-container"></div>
+                <div class="controls-container">
+                    <button class="control-btn active" data-series="fails">n/(n+1) - Diverges</button>
+                    <button class="control-btn" data-series="passes">1/n - Inconclusive</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Integral Test Introduction -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>The Integral Test</h2>
+                <div class="definition-box">
+                    <h3>Key Idea</h3>
+                    <p>Connect the convergence of a series to the convergence of an improper integral.</p>
+                </div>
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <p style="font-size: 1.5rem;">\(\sum_{n=1}^{\infty} a_n \longleftrightarrow \int_1^{\infty} f(x)\, dx\)</p>
+                    <p style="margin-top: 1rem; font-size: 1.25rem;">where \(f(n) = a_n\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Integral Test Statement -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Integral Test</h2>
+                <div class="theorem-box">
+                    <h3>Theorem</h3>
+                    <p>Let \(f\) be a function that is:</p>
+                    <ul style="margin: 0.5rem 0 0.5rem 1.5rem;">
+                        <li>Continuous on \([1, \infty)\)</li>
+                        <li>Positive on \([1, \infty)\)</li>
+                        <li>Decreasing on \([1, \infty)\)</li>
+                    </ul>
+                    <p style="margin-top: 1rem;">If \(a_n = f(n)\), then:</p>
+                    <p class="math-display">\[\sum_{n=1}^{\infty} a_n \text{ and } \int_1^{\infty} f(x)\, dx \text{ both converge or both diverge}\]</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Why It Works -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Why Does the Integral Test Work?</h2>
+                <div id="integral-test-viz" class="viz-container"></div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--function-color);"></div>
+                        <span>Function \(f(x)\)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--area-color);"></div>
+                        <span>Rectangle areas = series terms</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Integral Test Bounds -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>The Rectangles Tell the Story</h2>
+                <div class="formula-box">
+                    <p><strong>Left rectangles:</strong> \(\sum_{n=1}^{N} a_n \geq \int_1^{N+1} f(x)\, dx\)</p>
+                    <p style="margin-top: 1rem;"><strong>Right rectangles:</strong> \(\sum_{n=2}^{N} a_n \leq \int_1^{N} f(x)\, dx\)</p>
+                </div>
+                <div class="comparison-grid" style="margin-top: 1rem;">
+                    <div class="converge-box">
+                        <p><strong>If integral converges:</strong></p>
+                        <p>Series is bounded above</p>
+                        <p>Series converges!</p>
+                    </div>
+                    <div class="diverge-box">
+                        <p><strong>If integral diverges:</strong></p>
+                        <p>Series is bounded below by infinity</p>
+                        <p>Series diverges!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: Example - Harmonic Series -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example: Harmonic Series</h2>
+                <div class="formula-box">
+                    <p>Show that \(\sum_{n=1}^{\infty} \frac{1}{n}\) diverges using the Integral Test.</p>
+                </div>
+                <div class="step-box" style="margin-top: 1rem;">
+                    <p><span class="step-num">1</span><strong>Check conditions:</strong> \(f(x) = \frac{1}{x}\) is continuous, positive, decreasing on \([1, \infty)\) ✓</p>
+                </div>
+                <div class="step-box">
+                    <p><span class="step-num">2</span><strong>Evaluate integral:</strong></p>
+                    <p style="margin-left: 2.5rem;">\(\int_1^{\infty} \frac{1}{x}\, dx = \lim_{b \to \infty} [\ln x]_1^b = \lim_{b \to \infty} (\ln b - 0) = \infty\)</p>
+                </div>
+                <div class="diverge-box" style="margin-top: 1rem;">
+                    <p><strong>Conclusion:</strong> The integral diverges, so the harmonic series diverges.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: Example - 1/n^2 -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example: \(\sum \frac{1}{n^2}\)</h2>
+                <div class="formula-box">
+                    <p>Show that \(\sum_{n=1}^{\infty} \frac{1}{n^2}\) converges using the Integral Test.</p>
+                </div>
+                <div class="step-box" style="margin-top: 1rem;">
+                    <p><span class="step-num">1</span><strong>Check conditions:</strong> \(f(x) = \frac{1}{x^2}\) is continuous, positive, decreasing on \([1, \infty)\) ✓</p>
+                </div>
+                <div class="step-box">
+                    <p><span class="step-num">2</span><strong>Evaluate integral:</strong></p>
+                    <p style="margin-left: 2.5rem;">\(\int_1^{\infty} \frac{1}{x^2}\, dx = \lim_{b \to \infty} \left[-\frac{1}{x}\right]_1^b = \lim_{b \to \infty} \left(-\frac{1}{b} + 1\right) = 1\)</p>
+                </div>
+                <div class="converge-box" style="margin-top: 1rem;">
+                    <p><strong>Conclusion:</strong> The integral converges, so \(\sum \frac{1}{n^2}\) converges.</p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">(The sum is actually \(\frac{\pi^2}{6}\), but the integral test doesn't tell us the value!)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 13: Integral Test Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Comparing Series and Integrals</h2>
+                <div id="comparison-viz" class="viz-container"></div>
+                <div class="controls-container">
+                    <button class="control-btn active" data-fn="1n">1/n - Diverges</button>
+                    <button class="control-btn" data-fn="1n2">1/n^2 - Converges</button>
+                    <button class="control-btn" data-fn="1sqrtn">1/sqrt(n) - ?</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 14: Remainder Estimate -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Remainder Estimate</h2>
+                <div class="theorem-box">
+                    <h3>Integral Test Remainder Bound</h3>
+                    <p>If \(\sum a_n\) converges by the Integral Test, then the remainder after \(n\) terms satisfies:</p>
+                    <p class="math-display">\[\int_{n+1}^{\infty} f(x)\, dx \leq R_n \leq \int_n^{\infty} f(x)\, dx\]</p>
+                </div>
+                <p style="margin-top: 1.5rem; text-align: center; font-size: 1.25rem;">
+                    This helps us estimate <em>how close</em> partial sums are to the actual sum!
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 15: Remainder Example -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Remainder Example</h2>
+                <div class="formula-box">
+                    <p>For \(\sum_{n=1}^{\infty} \frac{1}{n^2}\), estimate the error if we use \(S_{10}\).</p>
+                </div>
+                <div class="step-box" style="margin-top: 1rem;">
+                    <p><span class="step-num">1</span>\(\int_{10}^{\infty} \frac{1}{x^2}\, dx = \left[-\frac{1}{x}\right]_{10}^{\infty} = 0 + \frac{1}{10} = 0.1\)</p>
+                </div>
+                <div class="step-box">
+                    <p><span class="step-num">2</span>\(\int_{11}^{\infty} \frac{1}{x^2}\, dx = \frac{1}{11} \approx 0.091\)</p>
+                </div>
+                <div class="converge-box" style="margin-top: 1rem;">
+                    <p><strong>Result:</strong> \(0.091 \leq R_{10} \leq 0.1\)</p>
+                    <p style="margin-top: 0.5rem;">The error from using only 10 terms is at most 0.1!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 16: When to Use Each Test -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Test Selection Strategy</h2>
+                <div class="test-flowchart">
+                    <div class="flowchart-node">
+                        <strong>First:</strong> Check if \(\lim a_n \neq 0\)
+                    </div>
+                    <div class="flowchart-arrow">&#8595;</div>
+                    <div class="comparison-grid" style="width: 100%;">
+                        <div class="diverge-box" style="text-align: center;">
+                            <p><strong>If limit \(\neq 0\):</strong></p>
+                            <p>DIVERGES by Divergence Test</p>
+                        </div>
+                        <div class="formula-box" style="text-align: center;">
+                            <p><strong>If limit = 0:</strong></p>
+                            <p>Need another test</p>
+                        </div>
+                    </div>
+                    <div class="flowchart-arrow">&#8595;</div>
+                    <div class="flowchart-node">
+                        <strong>Integral Test:</strong> When \(a_n = f(n)\) for nice \(f(x)\)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 17: Practice Problems -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Practice Problems</h2>
+                <div class="exercise-box">
+                    <p><strong>Determine convergence or divergence:</strong></p>
+                    <ol style="font-size: 1.2rem; line-height: 2.5;">
+                        <li>\(\sum_{n=1}^{\infty} \frac{2n}{3n+1}\)</li>
+                        <li>\(\sum_{n=1}^{\infty} \frac{1}{n^3}\)</li>
+                        <li>\(\sum_{n=2}^{\infty} \frac{1}{n \ln n}\)</li>
+                        <li>\(\sum_{n=1}^{\infty} \frac{1}{\sqrt{n}}\)</li>
+                        <li>\(\sum_{n=1}^{\infty} e^{-n}\)</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 18: Solutions -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <ol style="font-size: 1.1rem; line-height: 2.2;">
+                    <li>\(\lim \frac{2n}{3n+1} = \frac{2}{3} \neq 0\): <strong style="color: #ef4444;">Diverges</strong> (Divergence Test)</li>
+                    <li>\(\int_1^{\infty} x^{-3}\, dx = \frac{1}{2}\): <strong style="color: #10b981;">Converges</strong> (Integral Test)</li>
+                    <li>\(\int_2^{\infty} \frac{1}{x \ln x}\, dx = [\ln(\ln x)]_2^{\infty} = \infty\): <strong style="color: #ef4444;">Diverges</strong></li>
+                    <li>\(\int_1^{\infty} x^{-1/2}\, dx = [2\sqrt{x}]_1^{\infty} = \infty\): <strong style="color: #ef4444;">Diverges</strong></li>
+                    <li>Geometric with \(r = e^{-1} < 1\): <strong style="color: #10b981;">Converges</strong></li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Slide 19: Key Takeaways -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Key Takeaways</h2>
+                <div class="comparison-grid">
+                    <div class="definition-box">
+                        <h3>Divergence Test</h3>
+                        <ul style="line-height: 1.8;">
+                            <li>Quick first check</li>
+                            <li>\(a_n \not\to 0 \Rightarrow\) diverges</li>
+                            <li>Can only prove divergence</li>
+                            <li>\(a_n \to 0\) is inconclusive</li>
+                        </ul>
+                    </div>
+                    <div class="definition-box">
+                        <h3>Integral Test</h3>
+                        <ul style="line-height: 1.8;">
+                            <li>For positive, decreasing \(a_n\)</li>
+                            <li>Compare to improper integral</li>
+                            <li>Can prove convergence or divergence</li>
+                            <li>Provides remainder estimates</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 20: Looking Ahead -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <h2>Looking Ahead</h2>
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--theme-color);">Next: p-Series and Comparison Tests</h3>
+                    <ul style="font-size: 1.35rem; line-height: 2; list-style: none; padding: 0; margin-top: 1.5rem;">
+                        <li>The p-Series test</li>
+                        <li>Direct Comparison Test</li>
+                        <li>Limit Comparison Test</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="slide-nav">
+        <button id="prevBtn" aria-label="Previous slide">&#8592;</button>
+        <span id="slideCounter">1 / 21</span>
+        <button id="nextBtn" aria-label="Next slide">&#8594;</button>
+        <button id="tocBtn" aria-label="Table of contents">&#9776;</button>
+    </nav>
+
+    <!-- Table of Contents -->
+    <div id="toc" class="toc-overlay">
+        <div class="toc-content">
+            <h3>Contents</h3>
+            <ul id="tocList"></ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <script src="../shared/presentation.js"></script>
+
+    <script>
+        // Visualization management
+        const visualizationSlides = {
+            6: drawDivergenceViz,
+            9: drawIntegralTestViz,
+            13: drawComparisonViz
+        };
+
+        let lastSlide = -1;
+        let currentSeries = 'fails';
+        let currentFn = '1n';
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Divergence Test Visualization
+        function drawDivergenceViz() {
+            const container = d3.select('#divergence-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const series = {
+                fails: { fn: n => n / (n + 1), limit: 1, label: 'aₙ = n/(n+1) → 1' },
+                passes: { fn: n => 1 / n, limit: 0, label: 'aₙ = 1/n → 0' }
+            };
+
+            const current = series[currentSeries];
+            const nValues = d3.range(1, 21);
+            const data = nValues.map(n => ({ n, value: current.fn(n) }));
+
+            const xScale = d3.scaleLinear()
+                .domain([0, 21])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, 1.5])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line')
+                .data([0, 0.5, 1, 1.5])
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', margin.left)
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Limit line
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(current.limit))
+                .attr('y2', yScale(current.limit))
+                .attr('stroke', currentSeries === 'fails' ? '#ef4444' : '#10b981')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,5');
+
+            // Limit label
+            svg.append('text')
+                .attr('x', width - margin.right - 10)
+                .attr('y', yScale(current.limit) - 10)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1rem')
+                .attr('fill', currentSeries === 'fails' ? '#ef4444' : '#10b981')
+                .text(`L = ${current.limit}`);
+
+            // Points
+            svg.selectAll('.point')
+                .data(data)
+                .enter().append('circle')
+                .attr('cx', d => xScale(d.n))
+                .attr('cy', d => yScale(d.value))
+                .attr('r', 6)
+                .attr('fill', '#6366f1');
+
+            // Title
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', margin.top - 5)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.1rem')
+                .attr('font-weight', 'bold')
+                .text(current.label);
+
+            // Conclusion
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height - 10)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .attr('fill', currentSeries === 'fails' ? '#ef4444' : '#6366f1')
+                .text(currentSeries === 'fails' ? 'Limit ≠ 0: DIVERGES' : 'Limit = 0: INCONCLUSIVE (need another test)');
+
+            // Button listeners
+            document.querySelectorAll('#divergence-viz ~ .controls-container .control-btn').forEach(btn => {
+                btn.onclick = function() {
+                    currentSeries = this.dataset.series;
+                    document.querySelectorAll('#divergence-viz ~ .controls-container .control-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    drawDivergenceViz();
+                };
+            });
+        }
+
+        // Integral Test Visualization
+        function drawIntegralTestViz() {
+            const container = d3.select('#integral-test-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const f = x => 1 / x;
+            const nMax = 8;
+
+            const xScale = d3.scaleLinear()
+                .domain([0, nMax + 1])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, 1.2])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line')
+                .data([0, 0.5, 1])
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(1))
+                .attr('x2', xScale(1))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Draw rectangles (right-hand rule to show under-approximation)
+            for (let n = 1; n <= nMax; n++) {
+                svg.append('rect')
+                    .attr('x', xScale(n))
+                    .attr('y', yScale(f(n)))
+                    .attr('width', xScale(2) - xScale(1))
+                    .attr('height', yScale(0) - yScale(f(n)))
+                    .attr('fill', '#c4b5fd')
+                    .attr('stroke', '#6366f1')
+                    .attr('stroke-width', 1)
+                    .attr('opacity', 0.7);
+            }
+
+            // Draw function curve
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const curveData = d3.range(0.5, nMax + 1, 0.1).map(x => ({ x, y: f(x) }));
+            svg.append('path')
+                .datum(curveData)
+                .attr('fill', 'none')
+                .attr('stroke', '#8b5cf6')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Points on curve at integers
+            for (let n = 1; n <= nMax; n++) {
+                svg.append('circle')
+                    .attr('cx', xScale(n))
+                    .attr('cy', yScale(f(n)))
+                    .attr('r', 5)
+                    .attr('fill', '#8b5cf6');
+            }
+
+            // Labels
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', margin.top - 5)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.1rem')
+                .text('f(x) = 1/x with rectangle areas = series terms');
+
+            // X-axis labels
+            for (let n = 1; n <= nMax; n++) {
+                svg.append('text')
+                    .attr('x', xScale(n))
+                    .attr('y', height - margin.bottom + 20)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '0.9rem')
+                    .text(n);
+            }
+        }
+
+        // Comparison Visualization
+        function drawComparisonViz() {
+            const container = d3.select('#comparison-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 40, right: 80, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const functions = {
+                '1n': { fn: n => 1 / n, integral: n => Math.log(n), diverges: true, label: '1/n' },
+                '1n2': { fn: n => 1 / (n * n), integral: n => 1 - 1/n, diverges: false, label: '1/n²' },
+                '1sqrtn': { fn: n => 1 / Math.sqrt(n), integral: n => 2 * Math.sqrt(n) - 2, diverges: true, label: '1/sqrt(n)' }
+            };
+
+            const current = functions[currentFn];
+            const nMax = 20;
+            const nValues = d3.range(1, nMax + 1);
+
+            // Calculate partial sums
+            let sum = 0;
+            const sumData = nValues.map(n => {
+                sum += current.fn(n);
+                return { n, sum };
+            });
+
+            // Calculate integral values
+            const integralData = nValues.map(n => ({ n, value: current.integral(n) }));
+
+            const maxY = Math.max(d3.max(sumData, d => d.sum), d3.max(integralData, d => d.value)) * 1.1;
+
+            const xScale = d3.scaleLinear()
+                .domain([0, nMax + 1])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, maxY])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line')
+                .data(yScale.ticks(5))
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', margin.left)
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Series partial sums
+            const sumLine = d3.line()
+                .x(d => xScale(d.n))
+                .y(d => yScale(d.sum));
+
+            svg.append('path')
+                .datum(sumData)
+                .attr('fill', 'none')
+                .attr('stroke', '#6366f1')
+                .attr('stroke-width', 3)
+                .attr('d', sumLine);
+
+            // Integral
+            const intLine = d3.line()
+                .x(d => xScale(d.n))
+                .y(d => yScale(d.value))
+                .curve(d3.curveNatural);
+
+            svg.append('path')
+                .datum(integralData)
+                .attr('fill', 'none')
+                .attr('stroke', '#ec4899')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,5')
+                .attr('d', intLine);
+
+            // Legend
+            svg.append('line')
+                .attr('x1', width - margin.right + 10)
+                .attr('y1', margin.top + 20)
+                .attr('x2', width - margin.right + 30)
+                .attr('y2', margin.top + 20)
+                .attr('stroke', '#6366f1')
+                .attr('stroke-width', 3);
+
+            svg.append('text')
+                .attr('x', width - margin.right + 35)
+                .attr('y', margin.top + 25)
+                .attr('font-size', '0.8rem')
+                .text('Sₙ');
+
+            svg.append('line')
+                .attr('x1', width - margin.right + 10)
+                .attr('y1', margin.top + 45)
+                .attr('x2', width - margin.right + 30)
+                .attr('y2', margin.top + 45)
+                .attr('stroke', '#ec4899')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,5');
+
+            svg.append('text')
+                .attr('x', width - margin.right + 35)
+                .attr('y', margin.top + 50)
+                .attr('font-size', '0.8rem')
+                .text('Integral');
+
+            // Title
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', margin.top - 15)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.1rem')
+                .attr('font-weight', 'bold')
+                .attr('fill', current.diverges ? '#ef4444' : '#10b981')
+                .text(current.label + ': ' + (current.diverges ? 'DIVERGES' : 'CONVERGES'));
+
+            // Button listeners
+            document.querySelectorAll('#comparison-viz ~ .controls-container .control-btn').forEach(btn => {
+                btn.onclick = function() {
+                    currentFn = this.dataset.fn;
+                    document.querySelectorAll('#comparison-viz ~ .controls-container .control-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    drawComparisonViz();
+                };
+            });
+        }
+    </script>
+</body>
+</html>

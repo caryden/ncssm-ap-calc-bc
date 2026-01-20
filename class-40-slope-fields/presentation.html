@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slope Fields | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <style>
+        :root {
+            --theme-color: #f97316;
+            --theme-color-light: #fb923c;
+            --theme-color-dark: #ea580c;
+            --solution-curve: #3b82f6;
+            --slope-segment: #6b7280;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .slide-title h1 {
+            color: var(--theme-color);
+        }
+
+        .viz-container {
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viz-container svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .definition-box h3 {
+            color: var(--theme-color);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .example-box {
+            background: #f8fafc;
+            border: 2px solid var(--theme-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .step-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--theme-color);
+            margin: 0.75rem 0;
+        }
+
+        .step-card h4 {
+            color: var(--theme-color);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .controls-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--theme-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .control-btn:hover {
+            background: var(--theme-color-dark);
+        }
+
+        .control-btn.active {
+            background: var(--theme-color-dark);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .matching-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .matching-item {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .matching-item svg {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .slope-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .slope-table th,
+        .slope-table td {
+            padding: 0.5rem;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+            font-size: 1.1rem;
+        }
+
+        .slope-table th {
+            background: var(--theme-color);
+            color: white;
+        }
+
+        .slope-table tr:nth-child(even) {
+            background: #fff7ed;
+        }
+
+        .key-insight {
+            background: #fef3c7;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .key-insight strong {
+            color: #b45309;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+
+        <!-- Slide 0: Title -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 7: Differential Equations</span>
+                <h1>Slope Fields</h1>
+                <p class="subtitle">Visualizing Differential Equations</p>
+                <p class="meta">Class 40 | CED Topics 7.3, 7.4</p>
+            </div>
+        </section>
+
+        <!-- Slide 1: Warm-Up -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="exercise-box">
+                    <p>For the differential equation \(\dfrac{dy}{dx} = x + y\):</p>
+                    <ol style="margin-top: 1rem; font-size: 1.25rem; line-height: 2;">
+                        <li>What is the slope at the point (0, 0)?</li>
+                        <li>What is the slope at the point (1, 2)?</li>
+                        <li>What is the slope at the point (-1, 1)?</li>
+                        <li>What is the slope at the point (2, -2)?</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: What is a Slope Field? -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>What is a Slope Field?</h2>
+                <div class="definition-box">
+                    <h3>Definition</h3>
+                    <p>A <strong>slope field</strong> (or direction field) is a graphical representation of a differential equation.</p>
+                    <p style="margin-top: 0.5rem;">At each point \((x, y)\), we draw a short line segment with slope equal to \(\dfrac{dy}{dx}\) at that point.</p>
+                </div>
+                <div class="key-insight" style="margin-top: 1.5rem;">
+                    <strong>Key Idea:</strong> A slope field shows the slope of <em>every possible</em> solution curve at many points in the plane.
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Building a Slope Field -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Building a Slope Field: \(\frac{dy}{dx} = x\)</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <table class="slope-table">
+                            <tr>
+                                <th>Point (x, y)</th>
+                                <th>Slope</th>
+                            </tr>
+                            <tr><td>(-2, any)</td><td>-2</td></tr>
+                            <tr><td>(-1, any)</td><td>-1</td></tr>
+                            <tr><td>(0, any)</td><td>0</td></tr>
+                            <tr><td>(1, any)</td><td>1</td></tr>
+                            <tr><td>(2, any)</td><td>2</td></tr>
+                        </table>
+                        <p class="note" style="margin-top: 1rem;">Notice: slope depends <strong>only on x</strong>, not on y.</p>
+                    </div>
+                    <div class="column">
+                        <div id="simple-slope-field" class="viz-container" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Interactive Slope Field -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Slope Field: \(\frac{dy}{dx} = x\)</h2>
+                <div id="slope-field-x" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.1rem;">Click anywhere to trace a solution curve through that point</p>
+            </div>
+        </section>
+
+        <!-- Slide 5: Slope Fields for dy/dx = y -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Slope Field: \(\frac{dy}{dx} = y\)</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <table class="slope-table">
+                            <tr>
+                                <th>Point (x, y)</th>
+                                <th>Slope</th>
+                            </tr>
+                            <tr><td>(any, -2)</td><td>-2</td></tr>
+                            <tr><td>(any, -1)</td><td>-1</td></tr>
+                            <tr><td>(any, 0)</td><td>0</td></tr>
+                            <tr><td>(any, 1)</td><td>1</td></tr>
+                            <tr><td>(any, 2)</td><td>2</td></tr>
+                        </table>
+                        <p class="note" style="margin-top: 1rem;">Now slope depends <strong>only on y</strong>!</p>
+                    </div>
+                    <div class="column">
+                        <div id="slope-field-y-small" class="viz-container" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Full Slope Field dy/dx = y -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Slope Field: \(\frac{dy}{dx} = y\)</h2>
+                <div id="slope-field-y" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.1rem;">Solutions are exponential functions: \(y = Ce^x\)</p>
+            </div>
+        </section>
+
+        <!-- Slide 7: Slope Fields for dy/dx = x + y -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Slope Field: \(\frac{dy}{dx} = x + y\)</h2>
+                <div id="slope-field-xy" class="viz-container"></div>
+                <div class="key-insight">
+                    <strong>Isoclines:</strong> Lines where slope is constant. Here, \(x + y = k\) gives slope \(k\).
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Drawing Solution Curves -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Sketching Solution Curves</h2>
+                <div class="definition-box">
+                    <h3>Process</h3>
+                    <p>To sketch a solution curve through a point:</p>
+                    <ol style="margin-top: 0.5rem;">
+                        <li>Start at the given initial point</li>
+                        <li>Follow the direction indicated by nearby slope segments</li>
+                        <li>Draw a smooth curve that is tangent to each segment</li>
+                    </ol>
+                </div>
+                <div class="key-insight" style="margin-top: 1rem;">
+                    <strong>Important:</strong> Solution curves cannot cross each other (uniqueness theorem). If they did, there would be two different solutions passing through the crossing point.
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Interactive Solution Curves -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Drawing Solutions: \(\frac{dy}{dx} = y - x\)</h2>
+                <div id="slope-field-interactive" class="viz-container"></div>
+                <div class="controls-container">
+                    <button class="control-btn" id="clearCurves">Clear Curves</button>
+                    <span style="margin-left: 1rem;">Click to draw solution curves</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Identifying Equilibrium Solutions -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Equilibrium Solutions</h2>
+                <div class="definition-box">
+                    <h3>Definition</h3>
+                    <p>An <strong>equilibrium solution</strong> is a constant solution \(y = k\) where \(\dfrac{dy}{dx} = 0\) for all \(x\).</p>
+                </div>
+                <div class="two-column" style="margin-top: 1rem;">
+                    <div class="column">
+                        <div class="step-card">
+                            <h4>Finding Equilibrium</h4>
+                            <p>Set \(\dfrac{dy}{dx} = 0\) and solve for \(y\).</p>
+                            <p style="margin-top: 0.5rem;"><strong>Example:</strong> For \(\dfrac{dy}{dx} = y(2-y)\)</p>
+                            <p>\(0 = y(2-y)\) gives \(y = 0\) or \(y = 2\)</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="step-card">
+                            <h4>On the Slope Field</h4>
+                            <p>Equilibrium solutions appear as <strong>horizontal lines</strong> of flat slope segments.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: Logistic Slope Field -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Slope Field: \(\frac{dy}{dx} = y(2-y)\)</h2>
+                <div id="slope-field-logistic" class="viz-container"></div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ef4444; height: 2px;"></div>
+                        <span>Equilibrium at y = 0</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #22c55e; height: 2px;"></div>
+                        <span>Equilibrium at y = 2</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: Matching Equations to Slope Fields -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Matching Equations to Slope Fields</h2>
+                <div class="definition-box">
+                    <h3>Strategy</h3>
+                    <p>Look for these key features:</p>
+                </div>
+                <div class="matching-grid" style="margin-top: 1rem;">
+                    <div class="step-card">
+                        <h4>1. Where is slope = 0?</h4>
+                        <p>Find horizontal segments</p>
+                    </div>
+                    <div class="step-card">
+                        <h4>2. Does slope depend on x, y, or both?</h4>
+                        <p>Check vertical vs horizontal patterns</p>
+                    </div>
+                    <div class="step-card">
+                        <h4>3. Where is slope positive/negative?</h4>
+                        <p>Check direction changes</p>
+                    </div>
+                    <div class="step-card">
+                        <h4>4. Are there vertical tangents?</h4>
+                        <p>Look for undefined slopes</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 13: Practice Matching -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Match the Equation to the Slope Field</h2>
+                <div id="matching-practice" class="viz-container" style="height: 500px;"></div>
+            </div>
+        </section>
+
+        <!-- Slide 14: Creating Slope Fields by Hand -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Drawing Slope Fields by Hand</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <div class="step-card">
+                            <h4>Step 1: Create a Grid</h4>
+                            <p>Mark points at regular intervals</p>
+                        </div>
+                        <div class="step-card">
+                            <h4>Step 2: Calculate Slopes</h4>
+                            <p>Evaluate \(\dfrac{dy}{dx}\) at each point</p>
+                        </div>
+                        <div class="step-card">
+                            <h4>Step 3: Draw Segments</h4>
+                            <p>Short line with computed slope at each point</p>
+                        </div>
+                        <div class="step-card">
+                            <h4>Step 4: Look for Patterns</h4>
+                            <p>Isoclines, equilibria, symmetry</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="example-box">
+                            <p><strong>Example:</strong> \(\dfrac{dy}{dx} = x - y\)</p>
+                            <table class="slope-table" style="font-size: 0.95rem;">
+                                <tr>
+                                    <th>(x, y)</th>
+                                    <th>Slope</th>
+                                </tr>
+                                <tr><td>(0, 0)</td><td>0</td></tr>
+                                <tr><td>(1, 0)</td><td>1</td></tr>
+                                <tr><td>(0, 1)</td><td>-1</td></tr>
+                                <tr><td>(1, 1)</td><td>0</td></tr>
+                                <tr><td>(2, 1)</td><td>1</td></tr>
+                                <tr><td>(-1, -1)</td><td>0</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 15: Slope Field for x - y -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Slope Field: \(\frac{dy}{dx} = x - y\)</h2>
+                <div id="slope-field-x-minus-y" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.1rem;">Isocline: slope = 0 along the line y = x</p>
+            </div>
+        </section>
+
+        <!-- Slide 16: Autonomous Equations -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Autonomous Differential Equations</h2>
+                <div class="definition-box">
+                    <h3>Definition</h3>
+                    <p>An <strong>autonomous</strong> differential equation has the form \(\dfrac{dy}{dx} = f(y)\)</p>
+                    <p style="margin-top: 0.5rem;">The slope depends <strong>only on y</strong>, not on x.</p>
+                </div>
+                <div class="key-insight" style="margin-top: 1.5rem;">
+                    <strong>Visual Feature:</strong> In the slope field, all segments in a horizontal row have the <em>same</em> slope.
+                </div>
+                <div class="example-box" style="margin-top: 1rem;">
+                    <p><strong>Examples:</strong></p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li>\(\dfrac{dy}{dx} = y\) (exponential)</li>
+                        <li>\(\dfrac{dy}{dx} = y(1-y)\) (logistic)</li>
+                        <li>\(\dfrac{dy}{dx} = y^2 - 4\)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 17: Practice Problems -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Practice Problems</h2>
+                <div class="exercise-box">
+                    <p><strong>For each differential equation, describe the slope field:</strong></p>
+                    <ol style="margin-top: 1rem; font-size: 1.2rem; line-height: 2.5;">
+                        <li>\(\dfrac{dy}{dx} = 2\) — What does this slope field look like?</li>
+                        <li>\(\dfrac{dy}{dx} = -y\) — Where is slope = 0? Where positive? Negative?</li>
+                        <li>\(\dfrac{dy}{dx} = xy\) — In which quadrants is slope positive?</li>
+                        <li>\(\dfrac{dy}{dx} = y^2 - 1\) — Find the equilibrium solutions.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 18: Solutions -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <ol style="font-size: 1.1rem; line-height: 2.2;">
+                    <li><strong>\(\frac{dy}{dx} = 2\):</strong> All segments have slope 2 (parallel lines going up-right)</li>
+                    <li><strong>\(\frac{dy}{dx} = -y\):</strong> Slope = 0 on x-axis; positive below x-axis, negative above</li>
+                    <li><strong>\(\frac{dy}{dx} = xy\):</strong> Positive in Q1 and Q3; negative in Q2 and Q4; zero on both axes</li>
+                    <li><strong>\(\frac{dy}{dx} = y^2 - 1\):</strong> Set \(y^2 - 1 = 0\), so \(y = \pm 1\) are equilibria</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Slide 19: Exit Ticket -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="exercise-box">
+                    <p><strong>1.</strong> For \(\dfrac{dy}{dx} = x^2 - y\), find the slope at (1, 3) and at (-2, 4).</p>
+                    <div style="height: 1.5rem;"></div>
+                    <p><strong>2.</strong> Describe how you would identify an autonomous equation from its slope field.</p>
+                    <div style="height: 1.5rem;"></div>
+                    <p><strong>3.</strong> Why can't solution curves cross each other?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 20: Looking Ahead -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <h2>Looking Ahead</h2>
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--theme-color);">Next Class: Euler's Method</h3>
+                    <ul style="font-size: 1.35rem; line-height: 2; list-style: none; padding: 0; margin-top: 1.5rem;">
+                        <li>Numerical approximation of solutions</li>
+                        <li>Following the slope field step-by-step</li>
+                        <li>Error analysis</li>
+                        <li>BC Topic: Applications and limitations</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="slide-nav">
+        <button id="prevBtn" aria-label="Previous slide">←</button>
+        <span id="slideCounter">1 / 21</span>
+        <button id="nextBtn" aria-label="Next slide">→</button>
+        <button id="tocBtn" aria-label="Table of contents">☰</button>
+    </nav>
+
+    <!-- Table of Contents -->
+    <div id="toc" class="toc-overlay">
+        <div class="toc-content">
+            <h3>Contents</h3>
+            <ul id="tocList"></ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <script src="../shared/presentation.js"></script>
+
+    <script>
+        // Visualization functions
+        const visualizationSlides = {
+            3: drawSimpleSlopeField,
+            4: drawSlopeFieldX,
+            5: drawSlopeFieldYSmall,
+            6: drawSlopeFieldY,
+            7: drawSlopeFieldXY,
+            9: drawSlopeFieldInteractive,
+            11: drawSlopeFieldLogistic,
+            13: drawMatchingPractice,
+            15: drawSlopeFieldXMinusY
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Helper function to draw slope segments
+        function drawSlopeSegment(svg, xScale, yScale, x, y, slope, length = 0.3) {
+            const angle = Math.atan(slope);
+            const dx = length * Math.cos(angle) / 2;
+            const dy = length * Math.sin(angle) / 2;
+
+            svg.append('line')
+                .attr('x1', xScale(x - dx))
+                .attr('y1', yScale(y - dy))
+                .attr('x2', xScale(x + dx))
+                .attr('y2', yScale(y + dy))
+                .attr('stroke', '#6b7280')
+                .attr('stroke-width', 1.5)
+                .attr('stroke-linecap', 'round');
+        }
+
+        // Generic slope field drawing function
+        function drawSlopeField(containerId, slopeFunc, xDomain = [-3, 3], yDomain = [-3, 3], options = {}) {
+            const container = d3.select(containerId);
+            container.selectAll('*').remove();
+
+            const width = options.width || 600;
+            const height = options.height || 400;
+            const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear()
+                .domain(xDomain)
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain(yDomain)
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line.h')
+                .data(d3.range(yDomain[0], yDomain[1] + 0.5, 1))
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            svg.append('g')
+                .selectAll('line.v')
+                .data(d3.range(xDomain[0], xDomain[1] + 0.5, 1))
+                .enter().append('line')
+                .attr('x1', d => xScale(d))
+                .attr('x2', d => xScale(d))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Draw slope segments
+            const step = options.step || 0.5;
+            for (let x = xDomain[0]; x <= xDomain[1]; x += step) {
+                for (let y = yDomain[0]; y <= yDomain[1]; y += step) {
+                    const slope = slopeFunc(x, y);
+                    if (isFinite(slope) && Math.abs(slope) < 100) {
+                        drawSlopeSegment(svg, xScale, yScale, x, y, slope, options.segmentLength || 0.35);
+                    }
+                }
+            }
+
+            return { svg, xScale, yScale, margin, width, height };
+        }
+
+        // Visualization 1: Simple slope field for dy/dx = x
+        function drawSimpleSlopeField() {
+            drawSlopeField('#simple-slope-field', (x, y) => x, [-3, 3], [-3, 3], {
+                width: 350, height: 280, step: 0.75
+            });
+        }
+
+        // Visualization 2: Full slope field for dy/dx = x with click interaction
+        function drawSlopeFieldX() {
+            const { svg, xScale, yScale, margin, width, height } = drawSlopeField(
+                '#slope-field-x', (x, y) => x, [-4, 4], [-5, 10], { width: 700, height: 420, step: 0.5 }
+            );
+
+            // Click handler to draw solution curves
+            svg.on('click', function(event) {
+                const [mx, my] = d3.pointer(event);
+                const x0 = xScale.invert(mx);
+                const y0 = yScale.invert(my);
+
+                // Solution: y = x^2/2 + C, where C = y0 - x0^2/2
+                const C = y0 - x0 * x0 / 2;
+
+                const line = d3.line()
+                    .x(d => xScale(d.x))
+                    .y(d => yScale(d.y))
+                    .curve(d3.curveNatural);
+
+                const xValues = d3.range(-4, 4.01, 0.1);
+                const data = xValues.map(x => ({ x, y: x * x / 2 + C }))
+                    .filter(d => d.y >= -5 && d.y <= 10);
+
+                svg.append('path')
+                    .datum(data)
+                    .attr('fill', 'none')
+                    .attr('stroke', '#3b82f6')
+                    .attr('stroke-width', 2.5)
+                    .attr('d', line);
+
+                svg.append('circle')
+                    .attr('cx', xScale(x0))
+                    .attr('cy', yScale(y0))
+                    .attr('r', 5)
+                    .attr('fill', '#f97316');
+            });
+        }
+
+        // Visualization 3: Small slope field for dy/dx = y
+        function drawSlopeFieldYSmall() {
+            drawSlopeField('#slope-field-y-small', (x, y) => y, [-3, 3], [-3, 3], {
+                width: 320, height: 280, step: 0.75
+            });
+        }
+
+        // Visualization 4: Full slope field for dy/dx = y
+        function drawSlopeFieldY() {
+            const { svg, xScale, yScale } = drawSlopeField(
+                '#slope-field-y', (x, y) => y, [-3, 3], [-3, 3], { width: 650, height: 420, step: 0.4 }
+            );
+
+            // Draw some solution curves y = Ce^x
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            const xValues = d3.range(-3, 3.01, 0.1);
+            const cValues = [-2, -1, -0.5, 0.5, 1, 2];
+
+            cValues.forEach(C => {
+                const data = xValues.map(x => ({ x, y: C * Math.exp(x) }))
+                    .filter(d => d.y >= -3 && d.y <= 3);
+
+                if (data.length > 1) {
+                    svg.append('path')
+                        .datum(data)
+                        .attr('fill', 'none')
+                        .attr('stroke', '#3b82f6')
+                        .attr('stroke-width', 2)
+                        .attr('opacity', 0.7)
+                        .attr('d', line);
+                }
+            });
+        }
+
+        // Visualization 5: Slope field for dy/dx = x + y
+        function drawSlopeFieldXY() {
+            const { svg, xScale, yScale } = drawSlopeField(
+                '#slope-field-xy', (x, y) => x + y, [-4, 4], [-4, 4], { width: 650, height: 420, step: 0.5 }
+            );
+
+            // Draw isocline where slope = 0 (x + y = 0, or y = -x)
+            svg.append('line')
+                .attr('x1', xScale(-4))
+                .attr('y1', yScale(4))
+                .attr('x2', xScale(4))
+                .attr('y2', yScale(-4))
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,5');
+        }
+
+        // Visualization 6: Interactive slope field with solution drawing
+        let interactiveCurves = [];
+
+        function drawSlopeFieldInteractive() {
+            const container = d3.select('#slope-field-interactive');
+            container.selectAll('*').remove();
+
+            const { svg, xScale, yScale } = drawSlopeField(
+                '#slope-field-interactive', (x, y) => y - x, [-4, 4], [-4, 4], { width: 700, height: 400, step: 0.5 }
+            );
+
+            // Draw stored curves
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveNatural);
+
+            interactiveCurves.forEach(curve => {
+                svg.append('path')
+                    .datum(curve.data)
+                    .attr('fill', 'none')
+                    .attr('stroke', '#3b82f6')
+                    .attr('stroke-width', 2.5)
+                    .attr('d', line);
+
+                svg.append('circle')
+                    .attr('cx', xScale(curve.x0))
+                    .attr('cy', yScale(curve.y0))
+                    .attr('r', 5)
+                    .attr('fill', '#f97316');
+            });
+
+            // Click handler for Euler's method approximation
+            svg.on('click', function(event) {
+                const [mx, my] = d3.pointer(event);
+                const x0 = xScale.invert(mx);
+                const y0 = yScale.invert(my);
+
+                // Euler's method to trace the curve
+                const dt = 0.05;
+                const forwardData = [{ x: x0, y: y0 }];
+                const backwardData = [{ x: x0, y: y0 }];
+
+                // Forward
+                let x = x0, y = y0;
+                for (let i = 0; i < 200; i++) {
+                    const slope = y - x;
+                    y += slope * dt;
+                    x += dt;
+                    if (x > 4 || y > 4 || y < -4) break;
+                    forwardData.push({ x, y });
+                }
+
+                // Backward
+                x = x0; y = y0;
+                for (let i = 0; i < 200; i++) {
+                    const slope = y - x;
+                    y -= slope * dt;
+                    x -= dt;
+                    if (x < -4 || y > 4 || y < -4) break;
+                    backwardData.unshift({ x, y });
+                }
+
+                const data = [...backwardData, ...forwardData.slice(1)];
+
+                interactiveCurves.push({ x0, y0, data });
+
+                svg.append('path')
+                    .datum(data)
+                    .attr('fill', 'none')
+                    .attr('stroke', '#3b82f6')
+                    .attr('stroke-width', 2.5)
+                    .attr('d', line);
+
+                svg.append('circle')
+                    .attr('cx', xScale(x0))
+                    .attr('cy', yScale(y0))
+                    .attr('r', 5)
+                    .attr('fill', '#f97316');
+            });
+
+            // Clear button
+            document.getElementById('clearCurves').onclick = function() {
+                interactiveCurves = [];
+                drawSlopeFieldInteractive();
+            };
+        }
+
+        // Visualization 7: Logistic slope field
+        function drawSlopeFieldLogistic() {
+            const { svg, xScale, yScale } = drawSlopeField(
+                '#slope-field-logistic', (x, y) => y * (2 - y), [-3, 3], [-1, 4], { width: 700, height: 420, step: 0.4 }
+            );
+
+            // Equilibrium lines
+            svg.append('line')
+                .attr('x1', xScale(-3))
+                .attr('y1', yScale(0))
+                .attr('x2', xScale(3))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#ef4444')
+                .attr('stroke-width', 2.5);
+
+            svg.append('line')
+                .attr('x1', xScale(-3))
+                .attr('y1', yScale(2))
+                .attr('x2', xScale(3))
+                .attr('y2', yScale(2))
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 2.5);
+        }
+
+        // Visualization 8: Matching practice
+        function drawMatchingPractice() {
+            const container = d3.select('#matching-practice');
+            container.selectAll('*').remove();
+
+            const width = 800;
+            const height = 480;
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Four slope fields in a 2x2 grid
+            const equations = [
+                { label: 'A', func: (x, y) => -y, eq: 'dy/dx = ?' },
+                { label: 'B', func: (x, y) => x * y, eq: 'dy/dx = ?' },
+                { label: 'C', func: (x, y) => 1 / y, eq: 'dy/dx = ?' },
+                { label: 'D', func: (x, y) => x, eq: 'dy/dx = ?' }
+            ];
+
+            const positions = [
+                { x: 0, y: 0 },
+                { x: 400, y: 0 },
+                { x: 0, y: 240 },
+                { x: 400, y: 240 }
+            ];
+
+            equations.forEach((eq, i) => {
+                const g = svg.append('g')
+                    .attr('transform', `translate(${positions[i].x}, ${positions[i].y})`);
+
+                const fieldWidth = 380;
+                const fieldHeight = 220;
+                const margin = { top: 30, right: 20, bottom: 20, left: 35 };
+
+                const xScale = d3.scaleLinear()
+                    .domain([-3, 3])
+                    .range([margin.left, fieldWidth - margin.right]);
+
+                const yScale = d3.scaleLinear()
+                    .domain([-3, 3])
+                    .range([fieldHeight - margin.bottom, margin.top]);
+
+                // Border
+                g.append('rect')
+                    .attr('x', 5)
+                    .attr('y', 5)
+                    .attr('width', fieldWidth - 10)
+                    .attr('height', fieldHeight - 10)
+                    .attr('fill', 'white')
+                    .attr('stroke', '#e5e7eb')
+                    .attr('stroke-width', 1);
+
+                // Label
+                g.append('text')
+                    .attr('x', 15)
+                    .attr('y', 25)
+                    .attr('font-size', '1.2rem')
+                    .attr('font-weight', 'bold')
+                    .attr('fill', '#f97316')
+                    .text(eq.label);
+
+                // Axes
+                g.append('line')
+                    .attr('x1', margin.left)
+                    .attr('x2', fieldWidth - margin.right)
+                    .attr('y1', yScale(0))
+                    .attr('y2', yScale(0))
+                    .attr('stroke', '#999')
+                    .attr('stroke-width', 1);
+
+                g.append('line')
+                    .attr('x1', xScale(0))
+                    .attr('x2', xScale(0))
+                    .attr('y1', margin.top)
+                    .attr('y2', fieldHeight - margin.bottom)
+                    .attr('stroke', '#999')
+                    .attr('stroke-width', 1);
+
+                // Slope segments
+                for (let x = -3; x <= 3; x += 0.6) {
+                    for (let y = -3; y <= 3; y += 0.6) {
+                        const slope = eq.func(x, y);
+                        if (isFinite(slope) && Math.abs(slope) < 20) {
+                            const angle = Math.atan(slope);
+                            const len = 0.25;
+                            const dx = len * Math.cos(angle) / 2;
+                            const dy = len * Math.sin(angle) / 2;
+
+                            g.append('line')
+                                .attr('x1', xScale(x - dx))
+                                .attr('y1', yScale(y - dy))
+                                .attr('x2', xScale(x + dx))
+                                .attr('y2', yScale(y + dy))
+                                .attr('stroke', '#6b7280')
+                                .attr('stroke-width', 1.5)
+                                .attr('stroke-linecap', 'round');
+                        }
+                    }
+                }
+            });
+
+            // Equations to match
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height - 5)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .text('Match: 1) dy/dx = x    2) dy/dx = -y    3) dy/dx = xy    4) dy/dx = 1/y');
+        }
+
+        // Visualization 9: Slope field for x - y
+        function drawSlopeFieldXMinusY() {
+            const { svg, xScale, yScale } = drawSlopeField(
+                '#slope-field-x-minus-y', (x, y) => x - y, [-4, 4], [-4, 4], { width: 700, height: 420, step: 0.5 }
+            );
+
+            // Isocline where slope = 0 (y = x)
+            svg.append('line')
+                .attr('x1', xScale(-4))
+                .attr('y1', yScale(-4))
+                .attr('x2', xScale(4))
+                .attr('y2', yScale(4))
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,5');
+
+            // Label
+            svg.append('text')
+                .attr('x', xScale(3.2))
+                .attr('y', yScale(3.2) - 10)
+                .attr('font-size', '1rem')
+                .attr('fill', '#f97316')
+                .text('y = x (slope = 0)');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,936 @@
+/* ===================================================================
+   AP Calculus BC - Shared Presentation Styles
+   NCSSM (North Carolina School of Science and Mathematics)
+   =================================================================== */
+
+/* ===== CSS Variables ===== */
+:root {
+  /* NCSSM Brand Colors */
+  --ncssm-blue: #356093;
+  --ncssm-blue-light: #4a7ab8;
+  --ncssm-blue-dark: #264570;
+  --ncssm-blue-glow: rgba(53, 96, 147, 0.4);
+  --ncssm-gray: #6b7280;
+  --ncssm-gray-light: #9ca3af;
+  --ncssm-gray-dark: #4b5563;
+
+  /* Backgrounds (Dark Mode) */
+  --bg-primary: #0c1220;
+  --bg-secondary: #141c2e;
+  --bg-tertiary: #1c2640;
+  --bg-hover: #243352;
+
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: #b8c4d6;
+  --text-tertiary: #6b7a94;
+  --text-dim: #4a5568;
+
+  /* Primary Accent (NCSSM Blue) */
+  --accent: #356093;
+  --accent-bright: #4a7ab8;
+  --accent-glow: rgba(53, 96, 147, 0.4);
+
+  /* Secondary Accent (Mathematical Gold) */
+  --accent-secondary: #d4a028;
+  --accent-secondary-bright: #e8b84a;
+  --accent-secondary-glow: rgba(212, 160, 40, 0.3);
+
+  /* Status Colors */
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #356093;
+
+  /* Calculus-Specific Colors */
+  --color-function: #60a5fa;
+  --color-derivative: #f97316;
+  --color-integral: #22c55e;
+  --color-tangent: #fbbf24;
+  --color-secant: #a78bfa;
+  --color-limit: #ec4899;
+
+  /* Unit Theme Colors */
+  --unit-1-limits: #356093;
+  --unit-2-diff-fund: #7c3aed;
+  --unit-3-diff-adv: #8b5cf6;
+  --unit-4-context: #059669;
+  --unit-5-analysis: #0d9488;
+  --unit-6-integration: #d4a028;
+  --unit-7-diffeq: #ea580c;
+  --unit-8-int-apps: #e11d48;
+  --unit-9-param: #0891b2;
+  --unit-10-series: #4f46e5;
+
+  /* Default theme color (override per presentation) */
+  --theme-color: var(--ncssm-blue);
+  --theme-color-light: var(--ncssm-blue-light);
+
+  /* Gradients */
+  --gradient-hero: linear-gradient(135deg, #356093 0%, #d4a028 100%);
+  --gradient-ncssm: linear-gradient(135deg, #264570 0%, #4a7ab8 100%);
+  --gradient-text: linear-gradient(135deg, #ffffff 0%, #d4a028 100%);
+  --gradient-dark: linear-gradient(180deg, #0c1220 0%, #141c2e 100%);
+
+  /* Typography */
+  --font-display: 'Montserrat', Verdana, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Georgia', 'Times New Roman', serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease;
+  --transition-slow: 500ms ease;
+  --transition-enter: 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===== Reset & Base ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* ===== Presentation Container ===== */
+.presentation {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ===== Slide Base ===== */
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  background: var(--bg-primary);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(30px);
+  transition:
+    opacity var(--transition-slow),
+    transform var(--transition-slow),
+    visibility var(--transition-slow);
+}
+
+.slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  z-index: 10;
+}
+
+.slide.prev {
+  transform: translateX(-30px);
+}
+
+.slide-content {
+  max-width: 1200px;
+  width: 100%;
+  text-align: center;
+}
+
+/* ===== Slide Types ===== */
+
+/* Title Slide */
+.slide-title {
+  background: var(--gradient-dark);
+}
+
+.slide-title h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.slide-title .subtitle {
+  font-size: 1.75rem;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  margin-bottom: 2rem;
+}
+
+.slide-title .unit-badge {
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  background: var(--theme-color);
+  color: var(--text-primary);
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.slide-title .meta {
+  font-size: 1.25rem;
+  color: var(--text-tertiary);
+  margin-top: 2rem;
+}
+
+/* Statement Slide */
+.slide-statement .statement {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.slide-statement .statement em {
+  color: var(--accent-secondary);
+  font-style: normal;
+}
+
+/* Two-Part Slide */
+.slide-two-part .primary {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.slide-two-part .secondary {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Visual Slide */
+.slide-visual h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.slide-visual .visualization {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide-visual .visualization svg {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+}
+
+.slide-visual .caption {
+  font-size: 1.25rem;
+  color: var(--text-tertiary);
+  margin-top: 1.5rem;
+}
+
+/* List Slide */
+.slide-list h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.slide-list ul,
+.slide-list ol {
+  list-style: none;
+  text-align: left;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.slide-list li {
+  font-size: 1.5rem;
+  padding: 1rem 0;
+  padding-left: 2rem;
+  border-bottom: 1px solid var(--bg-tertiary);
+  position: relative;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.slide-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--theme-color);
+  border-radius: 50%;
+}
+
+.slide-list ol li {
+  counter-increment: list-counter;
+}
+
+.slide-list ol li::before {
+  content: counter(list-counter);
+  width: 24px;
+  height: 24px;
+  background: var(--theme-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: var(--font-display);
+}
+
+.slide.active .slide-list li {
+  animation: fadeUp 500ms ease forwards;
+}
+
+.slide.active .slide-list li:nth-child(1) { animation-delay: 100ms; }
+.slide.active .slide-list li:nth-child(2) { animation-delay: 200ms; }
+.slide.active .slide-list li:nth-child(3) { animation-delay: 300ms; }
+.slide.active .slide-list li:nth-child(4) { animation-delay: 400ms; }
+.slide.active .slide-list li:nth-child(5) { animation-delay: 500ms; }
+.slide.active .slide-list li:nth-child(6) { animation-delay: 600ms; }
+.slide.active .slide-list li:nth-child(7) { animation-delay: 700ms; }
+.slide.active .slide-list li:nth-child(8) { animation-delay: 800ms; }
+
+/* Comparison Slide */
+.slide-comparison h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.slide-comparison .columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.slide-comparison .column {
+  background: var(--bg-secondary);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: left;
+}
+
+.slide-comparison .column h3 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--theme-color);
+}
+
+.slide-comparison .column p,
+.slide-comparison .column li {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+}
+
+/* Quote Slide */
+.slide-quote .quote {
+  font-size: 2.5rem;
+  font-style: italic;
+  line-height: 1.4;
+  max-width: 900px;
+  margin: 0 auto 2rem;
+  position: relative;
+}
+
+.slide-quote .quote::before {
+  content: '"';
+  position: absolute;
+  top: -2rem;
+  left: -2rem;
+  font-size: 8rem;
+  color: var(--theme-color);
+  opacity: 0.3;
+  font-family: Georgia, serif;
+}
+
+.slide-quote .attribution {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.slide-quote .attribution::before {
+  content: '— ';
+}
+
+/* Example Slide */
+.slide-example h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.slide-example .problem {
+  background: var(--bg-secondary);
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: left;
+  border-left: 4px solid var(--theme-color);
+}
+
+.slide-example .solution {
+  text-align: left;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.slide-example .step {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  align-items: flex-start;
+}
+
+.slide-example .step-number {
+  background: var(--theme-color);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* Exercise Slide */
+.slide-exercise h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.slide-exercise .prompt {
+  background: var(--bg-secondary);
+  padding: 2rem;
+  border-radius: 12px;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  border: 2px dashed var(--accent-secondary);
+}
+
+.slide-exercise .instructions {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+}
+
+/* Rule of Four Slide */
+.slide-gnaw h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.slide-gnaw .quadrants {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 1.5rem;
+  max-width: 1000px;
+  max-height: 60vh;
+  margin: 0 auto;
+}
+
+.slide-gnaw .quadrant {
+  background: var(--bg-secondary);
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.slide-gnaw .quadrant h3 {
+  font-size: 1.25rem;
+  color: var(--theme-color);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--theme-color);
+}
+
+.slide-gnaw .quadrant.graphical h3 { color: var(--color-function); border-color: var(--color-function); }
+.slide-gnaw .quadrant.numerical h3 { color: var(--accent-secondary); border-color: var(--accent-secondary); }
+.slide-gnaw .quadrant.analytical h3 { color: var(--color-derivative); border-color: var(--color-derivative); }
+.slide-gnaw .quadrant.verbal h3 { color: var(--success); border-color: var(--success); }
+
+/* ===== Mathematical Content ===== */
+
+/* Theorem Box */
+.theorem-box {
+  background: var(--bg-secondary);
+  border-left: 4px solid var(--accent-secondary);
+  padding: 1.5rem 2rem;
+  margin: 1.5rem auto;
+  border-radius: 0 8px 8px 0;
+  text-align: left;
+  max-width: 900px;
+}
+
+.theorem-box .theorem-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--accent-secondary);
+  font-family: var(--font-display);
+  margin-bottom: 0.75rem;
+}
+
+.theorem-box .theorem-statement {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+}
+
+/* Definition Box */
+.definition-box {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--accent);
+  padding: 1.5rem 2rem;
+  margin: 1.5rem auto;
+  border-radius: 8px;
+  text-align: left;
+  max-width: 900px;
+}
+
+.definition-box .term {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-bright);
+  font-family: var(--font-display);
+}
+
+.definition-box .definition {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+}
+
+/* Math Display */
+.math-display {
+  font-size: 2rem;
+  line-height: 2;
+  text-align: center;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+.math-inline {
+  font-size: inherit;
+}
+
+/* Big Number */
+.big-number {
+  font-size: 6rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== Navigation UI ===== */
+
+/* Progress Bar */
+.progress-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--bg-tertiary);
+  z-index: 100;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--gradient-hero);
+  transition: width var(--transition-normal);
+}
+
+/* Slide Counter */
+.slide-counter {
+  position: fixed;
+  bottom: 1rem;
+  right: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--text-tertiary);
+  z-index: 100;
+}
+
+/* Keyboard Hint */
+.keyboard-hint {
+  position: fixed;
+  bottom: 1rem;
+  left: 1.5rem;
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  z-index: 100;
+}
+
+.keyboard-hint kbd {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  margin: 0 0.25rem;
+}
+
+/* ===== TOC Overlay ===== */
+.overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-normal), visibility var(--transition-normal);
+  z-index: 200;
+}
+
+.overlay-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.toc-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 400px;
+  max-width: 90vw;
+  background: var(--bg-secondary);
+  transform: translateX(-100%);
+  transition: transform var(--transition-slow);
+  z-index: 210;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.toc-overlay.active {
+  transform: translateX(0);
+}
+
+.toc-header {
+  padding: 2rem;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.toc-header h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.toc-header .class-info {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.toc-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 0;
+}
+
+.toc-section {
+  padding: 0.5rem 2rem;
+}
+
+.toc-section-title {
+  font-size: 0.875rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.toc-item {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: background var(--transition-fast), color var(--transition-fast);
+  cursor: pointer;
+}
+
+.toc-item:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.toc-item.current {
+  background: var(--accent);
+  color: var(--text-primary);
+}
+
+.toc-footer {
+  padding: 1.5rem 2rem;
+  border-top: 1px solid var(--bg-tertiary);
+}
+
+.toc-footer a {
+  color: var(--accent-bright);
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.toc-footer a:hover {
+  text-decoration: underline;
+}
+
+.toc-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  line-height: 1;
+}
+
+.toc-close:hover {
+  color: var(--text-primary);
+}
+
+/* ===== Appendix Overlay ===== */
+.appendix-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 80vw;
+  max-width: 1200px;
+  background: var(--bg-primary);
+  transform: translateX(100%);
+  transition: transform var(--transition-slow);
+  z-index: 210;
+  display: flex;
+  flex-direction: column;
+}
+
+.appendix-overlay.active {
+  transform: translateX(0);
+}
+
+.appendix-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.appendix-header h3 {
+  font-size: 1.5rem;
+}
+
+.appendix-close {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.appendix-close:hover {
+  color: var(--text-primary);
+}
+
+.appendix-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem;
+}
+
+.appendix-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem 2rem;
+  border-top: 1px solid var(--bg-tertiary);
+}
+
+.appendix-nav-btn {
+  background: var(--bg-tertiary);
+  border: none;
+  color: var(--text-secondary);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.appendix-nav-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.appendix-counter {
+  font-family: var(--font-mono);
+  color: var(--text-tertiary);
+}
+
+/* ===== Animations ===== */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ===== Utility Classes ===== */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.text-accent { color: var(--accent); }
+.text-gold { color: var(--accent-secondary); }
+
+.bg-primary { background: var(--bg-primary); }
+.bg-secondary { background: var(--bg-secondary); }
+.bg-tertiary { background: var(--bg-tertiary); }
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .slide {
+    padding: 2rem;
+  }
+
+  .slide-title h1 {
+    font-size: 3rem;
+  }
+
+  .slide-statement .statement {
+    font-size: 2.5rem;
+  }
+
+  .slide-comparison .columns {
+    grid-template-columns: 1fr;
+  }
+
+  .slide-gnaw .quadrants {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .slide-title h1 {
+    font-size: 2.5rem;
+  }
+
+  .slide h2 {
+    font-size: 2rem;
+  }
+
+  .toc-overlay {
+    width: 100vw;
+  }
+
+  .appendix-overlay {
+    width: 100vw;
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===== Print ===== */
+@media print {
+  .slide {
+    position: relative;
+    page-break-after: always;
+    height: auto;
+    min-height: 100vh;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .progress-bar,
+  .slide-counter,
+  .keyboard-hint,
+  .toc-overlay,
+  .appendix-overlay,
+  .overlay-backdrop {
+    display: none;
+  }
+}

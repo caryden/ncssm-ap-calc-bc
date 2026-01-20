@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vector-Valued Functions | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <style>
+        :root {
+            --theme-color: #06b6d4;
+            --theme-color-light: #22d3ee;
+            --theme-color-dark: #0891b2;
+            --vector-position: #8b5cf6;
+            --vector-velocity: #10b981;
+            --vector-accel: #f59e0b;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .bc-badge {
+            background: linear-gradient(135deg, var(--theme-color), var(--theme-color-dark));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .slide-title h1 {
+            color: var(--theme-color);
+        }
+
+        .viz-container {
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viz-container svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #ecfeff, #cffafe);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+
+        .definition-box h3 {
+            color: var(--theme-color-dark);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .formula-box {
+            background: white;
+            border: 2px solid var(--theme-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 1rem 0;
+            box-shadow: 0 4px 6px rgba(6, 182, 212, 0.1);
+        }
+
+        .formula-box.highlight {
+            background: linear-gradient(135deg, #ecfeff, #ffffff);
+            border-width: 3px;
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .example-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 4px solid var(--theme-color);
+        }
+
+        .example-card h4 {
+            color: var(--theme-color-dark);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-list li {
+            counter-increment: step;
+            margin: 0.75rem 0;
+            padding-left: 2.5rem;
+            position: relative;
+        }
+
+        .step-list li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            width: 1.75rem;
+            height: 1.75rem;
+            background: var(--theme-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .slider-container input[type="range"] {
+            width: 200px;
+            accent-color: var(--theme-color);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .vector-notation {
+            background: #f0fdfa;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.25rem;
+        }
+
+        .controls-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--theme-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .control-btn:hover {
+            background: var(--theme-color-dark);
+        }
+
+        .control-btn.active {
+            background: var(--theme-color-dark);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.1rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .comparison-table th {
+            background: var(--theme-color);
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f0fdfa;
+        }
+
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .info-box {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .info-box h4 {
+            margin: 0 0 0.5rem 0;
+        }
+
+        .info-box.position { border-top: 4px solid var(--vector-position); }
+        .info-box.velocity { border-top: 4px solid var(--vector-velocity); }
+        .info-box.accel { border-top: 4px solid var(--vector-accel); }
+
+        .info-box h4.position { color: var(--vector-position); }
+        .info-box h4.velocity { color: var(--vector-velocity); }
+        .info-box h4.accel { color: var(--vector-accel); }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+
+        <!-- Slide 0: Title -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 9: Parametric, Polar, and Vectors</span>
+                <span class="bc-badge">BC Only</span>
+                <h1>Vector-Valued Functions</h1>
+                <p class="subtitle">Differentiation and Integration</p>
+                <p class="meta">Class 51 | CED Topics 9.4, 9.5</p>
+            </div>
+        </section>
+
+        <!-- Slide 1: Warm-Up -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="exercise-box">
+                    <p>A particle moves so that its position at time \(t\) is:</p>
+                    <p class="math-display">\[x(t) = t^2 - 1, \quad y(t) = 3t\]</p>
+                    <hr style="margin: 1.5rem 0; border-color: #e5e7eb;">
+                    <ol style="font-size: 1.15rem;">
+                        <li>Find \(\frac{dx}{dt}\) and \(\frac{dy}{dt}\)</li>
+                        <li>How could we combine these into a single mathematical object?</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: What is a Vector? -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>What is a Vector?</h2>
+                <div class="definition-box">
+                    <h3>Definition</h3>
+                    <p>A <strong>vector</strong> is a quantity with both <strong>magnitude</strong> (size) and <strong>direction</strong>.</p>
+                </div>
+                <div class="example-grid" style="margin-top: 1.5rem;">
+                    <div class="example-card">
+                        <h4>Scalars (just magnitude)</h4>
+                        <ul style="font-size: 1.1rem; line-height: 1.8;">
+                            <li>Temperature: 72°F</li>
+                            <li>Mass: 5 kg</li>
+                            <li>Speed: 60 mph</li>
+                        </ul>
+                    </div>
+                    <div class="example-card">
+                        <h4>Vectors (magnitude + direction)</h4>
+                        <ul style="font-size: 1.1rem; line-height: 1.8;">
+                            <li>Velocity: 60 mph north</li>
+                            <li>Force: 10 N at 30°</li>
+                            <li>Displacement: 5 m east</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Vector Notation -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Vector Notation</h2>
+                <div class="example-grid">
+                    <div class="formula-box">
+                        <h3 style="color: var(--theme-color);">Component Form</h3>
+                        <p class="math-display">\[\vec{v} = \langle a, b \rangle\]</p>
+                        <p style="font-size: 1.1rem;">Horizontal and vertical components</p>
+                    </div>
+                    <div class="formula-box">
+                        <h3 style="color: var(--theme-color);">Unit Vector Form</h3>
+                        <p class="math-display">\[\vec{v} = a\mathbf{i} + b\mathbf{j}\]</p>
+                        <p style="font-size: 1.1rem;">Using standard unit vectors</p>
+                    </div>
+                </div>
+                <div class="definition-box" style="margin-top: 1.5rem;">
+                    <h3>Standard Unit Vectors</h3>
+                    <p>\(\mathbf{i} = \langle 1, 0 \rangle\) points in the positive \(x\)-direction</p>
+                    <p>\(\mathbf{j} = \langle 0, 1 \rangle\) points in the positive \(y\)-direction</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Vector Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Vectors in the Plane</h2>
+                <div id="vector-basics-viz" class="viz-container"></div>
+                <div class="slider-container">
+                    <span>\(a\) = </span>
+                    <input type="range" id="vec-a-slider" min="-3" max="3" step="0.5" value="2">
+                    <span id="vec-a-value">2</span>
+                    <span style="margin-left: 1rem;">\(b\) = </span>
+                    <input type="range" id="vec-b-slider" min="-3" max="3" step="0.5" value="1">
+                    <span id="vec-b-value">1</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Vector-Valued Functions -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Vector-Valued Functions</h2>
+                <div class="formula-box highlight">
+                    <p style="font-size: 1.3rem;"><strong>Definition</strong></p>
+                    <p class="math-display">\[\vec{r}(t) = \langle x(t), y(t) \rangle = x(t)\mathbf{i} + y(t)\mathbf{j}\]</p>
+                </div>
+                <div class="definition-box" style="margin-top: 1.5rem;">
+                    <h3>Key Insight</h3>
+                    <p>A vector-valued function assigns a <strong>vector</strong> to each value of the parameter \(t\).</p>
+                    <p style="margin-top: 0.5rem;">This is equivalent to parametric equations, but packaged differently!</p>
+                </div>
+                <div class="vector-notation" style="margin-top: 1rem;">
+                    <p>Parametric: \(x = t^2, y = 2t\) &nbsp; ↔ &nbsp; Vector: \(\vec{r}(t) = \langle t^2, 2t \rangle\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Position Vector Animation -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Position Vector: \(\vec{r}(t) = \langle \cos t, \sin t \rangle\)</h2>
+                <div id="position-viz" class="viz-container"></div>
+                <div class="slider-container">
+                    <span>t = </span>
+                    <input type="range" id="pos-t-slider" min="0" max="6.28" step="0.05" value="0">
+                    <span id="pos-t-value">0.00</span>
+                    <span style="margin-left: 1rem;">\(\vec{r}(t)\) = </span>
+                    <span id="pos-r-value">(1.00, 0.00)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Derivative of Vector-Valued Function -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Differentiating Vector-Valued Functions</h2>
+                <div class="formula-box highlight">
+                    <p style="font-size: 1.3rem;"><strong>Derivative</strong></p>
+                    <p class="math-display">\[\vec{r}'(t) = \langle x'(t), y'(t) \rangle = \frac{dx}{dt}\mathbf{i} + \frac{dy}{dt}\mathbf{j}\]</p>
+                </div>
+                <div class="definition-box" style="margin-top: 1.5rem;">
+                    <h3>Process</h3>
+                    <p>Differentiate each component <strong>separately</strong>!</p>
+                    <p style="margin-top: 0.5rem;">\(\vec{r}'(t) = \langle x'(t), y'(t) \rangle\) is the <strong>velocity vector</strong>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Velocity Vector -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>The Velocity Vector</h2>
+                <div class="formula-box">
+                    <p style="font-size: 1.2rem;"><strong>Velocity</strong></p>
+                    <p class="math-display">\[\vec{v}(t) = \vec{r}'(t) = \langle x'(t), y'(t) \rangle\]</p>
+                </div>
+                <div class="example-grid" style="margin-top: 1.5rem;">
+                    <div class="example-card">
+                        <h4>Properties</h4>
+                        <ul style="font-size: 1.1rem; line-height: 1.8;">
+                            <li>Points in direction of motion</li>
+                            <li>Tangent to the path</li>
+                            <li>Magnitude = speed</li>
+                        </ul>
+                    </div>
+                    <div class="example-card">
+                        <h4>Speed Formula</h4>
+                        <p class="math-display">\[|\vec{v}(t)| = \sqrt{(x')^2 + (y')^2}\]</p>
+                        <p style="font-size: 0.95rem; color: #666;">Same as our arc length integrand!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Velocity Vector Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Position and Velocity Vectors</h2>
+                <div id="velocity-viz" class="viz-container"></div>
+                <div class="slider-container">
+                    <span>t = </span>
+                    <input type="range" id="vel-t-slider" min="0" max="6.28" step="0.05" value="0.785">
+                    <span id="vel-t-value">0.79</span>
+                </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--vector-position);"></div>
+                        <span>Position \(\vec{r}(t)\)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--vector-velocity);"></div>
+                        <span>Velocity \(\vec{v}(t)\)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Example 1 -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example: Find the Velocity Vector</h2>
+                <div class="two-column">
+                    <div>
+                        <p><strong>Given:</strong> \(\vec{r}(t) = \langle t^2 - 1, e^t \rangle\)</p>
+                        <ul class="step-list" style="margin-top: 1.5rem;">
+                            <li>\(x(t) = t^2 - 1 \Rightarrow x'(t) = 2t\)</li>
+                            <li>\(y(t) = e^t \Rightarrow y'(t) = e^t\)</li>
+                            <li>\(\vec{v}(t) = \langle 2t, e^t \rangle\)</li>
+                        </ul>
+                        <div style="margin-top: 1rem; padding: 0.75rem; background: #f0fdfa; border-radius: 4px;">
+                            <p>At \(t = 1\):</p>
+                            <p>\(\vec{v}(1) = \langle 2, e \rangle\)</p>
+                            <p>Speed \(= \sqrt{4 + e^2} \approx 2.90\)</p>
+                        </div>
+                    </div>
+                    <div id="example1-viz" class="viz-container" style="height: 300px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: Acceleration Vector -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>The Acceleration Vector</h2>
+                <div class="formula-box highlight">
+                    <p style="font-size: 1.2rem;"><strong>Acceleration</strong></p>
+                    <p class="math-display">\[\vec{a}(t) = \vec{v}'(t) = \vec{r}''(t) = \langle x''(t), y''(t) \rangle\]</p>
+                </div>
+                <div class="three-column" style="margin-top: 2rem;">
+                    <div class="info-box position">
+                        <h4 class="position">Position</h4>
+                        <p>\(\vec{r}(t)\)</p>
+                        <p style="font-size: 0.9rem;">Where is it?</p>
+                    </div>
+                    <div class="info-box velocity">
+                        <h4 class="velocity">Velocity</h4>
+                        <p>\(\vec{v}(t) = \vec{r}'(t)\)</p>
+                        <p style="font-size: 0.9rem;">How fast & which way?</p>
+                    </div>
+                    <div class="info-box accel">
+                        <h4 class="accel">Acceleration</h4>
+                        <p>\(\vec{a}(t) = \vec{r}''(t)\)</p>
+                        <p style="font-size: 0.9rem;">How is velocity changing?</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: All Three Vectors -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Position, Velocity, and Acceleration</h2>
+                <div id="all-vectors-viz" class="viz-container"></div>
+                <div class="slider-container">
+                    <span>t = </span>
+                    <input type="range" id="all-t-slider" min="0" max="6.28" step="0.05" value="0.785">
+                    <span id="all-t-value">0.79</span>
+                </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--vector-position);"></div>
+                        <span>\(\vec{r}(t)\)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--vector-velocity);"></div>
+                        <span>\(\vec{v}(t)\)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--vector-accel);"></div>
+                        <span>\(\vec{a}(t)\)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 13: Integration of Vectors -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Integrating Vector-Valued Functions</h2>
+                <div class="formula-box highlight">
+                    <p style="font-size: 1.2rem;"><strong>Indefinite Integral</strong></p>
+                    <p class="math-display">\[\int \vec{r}(t) \, dt = \left\langle \int x(t) \, dt, \int y(t) \, dt \right\rangle + \vec{C}\]</p>
+                </div>
+                <div class="definition-box" style="margin-top: 1.5rem;">
+                    <h3>Key Points</h3>
+                    <ul style="font-size: 1.15rem; line-height: 2;">
+                        <li>Integrate each component separately</li>
+                        <li>\(\vec{C} = \langle C_1, C_2 \rangle\) is a constant <strong>vector</strong></li>
+                        <li>Use initial conditions to find \(\vec{C}\)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 14: Integration Example -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example: Finding Position from Velocity</h2>
+                <div class="two-column">
+                    <div>
+                        <p><strong>Given:</strong> \(\vec{v}(t) = \langle 2t, 3 \rangle\)</p>
+                        <p>and \(\vec{r}(0) = \langle 1, 2 \rangle\)</p>
+                        <ul class="step-list" style="margin-top: 1rem;">
+                            <li>\(\vec{r}(t) = \int \langle 2t, 3 \rangle \, dt\)</li>
+                            <li>\(\vec{r}(t) = \langle t^2 + C_1, 3t + C_2 \rangle\)</li>
+                            <li>Use \(\vec{r}(0) = \langle 1, 2 \rangle\):<br>
+                                \(C_1 = 1, C_2 = 2\)</li>
+                            <li>\(\vec{r}(t) = \langle t^2 + 1, 3t + 2 \rangle\)</li>
+                        </ul>
+                    </div>
+                    <div id="integration-viz" class="viz-container" style="height: 300px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 15: Definite Integrals -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Definite Integrals of Vectors</h2>
+                <div class="formula-box">
+                    <p style="font-size: 1.2rem;"><strong>Definite Integral</strong></p>
+                    <p class="math-display">\[\int_a^b \vec{r}(t) \, dt = \left\langle \int_a^b x(t) \, dt, \int_a^b y(t) \, dt \right\rangle\]</p>
+                </div>
+                <div class="example-grid" style="margin-top: 1.5rem;">
+                    <div class="example-card">
+                        <h4>Example</h4>
+                        <p>\(\displaystyle \int_0^2 \langle t, t^2 \rangle \, dt\)</p>
+                        <p style="margin-top: 0.5rem;">\(= \left\langle \left[\frac{t^2}{2}\right]_0^2, \left[\frac{t^3}{3}\right]_0^2 \right\rangle\)</p>
+                        <p>\(= \langle 2, \frac{8}{3} \rangle\)</p>
+                    </div>
+                    <div class="example-card">
+                        <h4>Displacement</h4>
+                        <p>\(\displaystyle \vec{r}(b) - \vec{r}(a) = \int_a^b \vec{v}(t) \, dt\)</p>
+                        <p style="font-size: 0.95rem; color: #666; margin-top: 0.5rem;">Net change in position</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 16: Calculus Summary Table -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Vector Calculus Summary</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Operation</th>
+                        <th>Position \(\vec{r}(t)\)</th>
+                        <th>Velocity \(\vec{v}(t)\)</th>
+                        <th>Acceleration \(\vec{a}(t)\)</th>
+                    </tr>
+                    <tr>
+                        <td>Differentiate</td>
+                        <td>\(\vec{r}'(t) = \vec{v}(t)\)</td>
+                        <td>\(\vec{v}'(t) = \vec{a}(t)\)</td>
+                        <td>--</td>
+                    </tr>
+                    <tr>
+                        <td>Integrate</td>
+                        <td>--</td>
+                        <td>\(\int \vec{v}(t) \, dt = \vec{r}(t) + \vec{C}\)</td>
+                        <td>\(\int \vec{a}(t) \, dt = \vec{v}(t) + \vec{C}\)</td>
+                    </tr>
+                    <tr>
+                        <td>Magnitude</td>
+                        <td>Distance from origin</td>
+                        <td>Speed</td>
+                        <td>Magnitude of accel.</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- Slide 17: Practice Problems -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Practice Problems</h2>
+                <div class="exercise-box">
+                    <ol style="font-size: 1.1rem; line-height: 2.2;">
+                        <li>Find \(\vec{v}(t)\) and \(\vec{a}(t)\) for \(\vec{r}(t) = \langle t^3, \sin t \rangle\)</li>
+                        <li>Find speed at \(t = 2\) for \(\vec{r}(t) = \langle e^t, t^2 \rangle\)</li>
+                        <li>Evaluate \(\displaystyle \int_0^1 \langle 2t, e^t \rangle \, dt\)</li>
+                        <li>Given \(\vec{a}(t) = \langle 0, -10 \rangle\) and \(\vec{v}(0) = \langle 5, 20 \rangle\), find \(\vec{v}(t)\)</li>
+                        <li>Find when \(\vec{r}(t) = \langle t^2-4, t-2 \rangle\) passes through the origin</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 18: Solutions -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <ol style="font-size: 1.05rem; line-height: 2.2;">
+                    <li>\(\vec{v}(t) = \langle 3t^2, \cos t \rangle\), \(\vec{a}(t) = \langle 6t, -\sin t \rangle\)</li>
+                    <li>\(\vec{v}(2) = \langle e^2, 4 \rangle\); Speed \(= \sqrt{e^4 + 16} \approx 8.56\)</li>
+                    <li>\(\langle [t^2]_0^1, [e^t]_0^1 \rangle = \langle 1, e - 1 \rangle\)</li>
+                    <li>\(\vec{v}(t) = \int \langle 0, -10 \rangle \, dt = \langle C_1, -10t + C_2 \rangle\); Using ICs: \(\vec{v}(t) = \langle 5, 20 - 10t \rangle\)</li>
+                    <li>Origin: \(t^2 - 4 = 0\) and \(t - 2 = 0\) both give \(t = 2\) (check: \(t = -2\) gives \((0, -4)\))</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Slide 19: Exit Ticket -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="exercise-box">
+                    <p>A particle has position vector:</p>
+                    <p class="math-display">\[\vec{r}(t) = \langle 2\cos t, 2\sin t \rangle\]</p>
+                    <ol style="font-size: 1.2rem; margin-top: 1rem;">
+                        <li>Find the velocity vector \(\vec{v}(t)\).</li>
+                        <li>Find the speed of the particle.</li>
+                        <li>Find the acceleration vector \(\vec{a}(t)\).</li>
+                        <li>What is the relationship between \(\vec{r}(t)\) and \(\vec{a}(t)\)?</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 20: Looking Ahead -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <h2>Looking Ahead</h2>
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--theme-color);">Next Class: Motion with Vectors</h3>
+                    <ul style="font-size: 1.25rem; line-height: 2; list-style: none; padding: 0; margin-top: 1.5rem;">
+                        <li>Projectile motion problems</li>
+                        <li>Total distance traveled</li>
+                        <li>Finding position from velocity</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="slide-nav">
+        <button id="prevBtn" aria-label="Previous slide">&#8592;</button>
+        <span id="slideCounter">1 / 21</span>
+        <button id="nextBtn" aria-label="Next slide">&#8594;</button>
+        <button id="tocBtn" aria-label="Table of contents">&#9776;</button>
+    </nav>
+
+    <!-- Table of Contents -->
+    <div id="toc" class="toc-overlay">
+        <div class="toc-content">
+            <h3>Contents</h3>
+            <ul id="tocList"></ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <script src="../shared/presentation.js"></script>
+
+    <script>
+        const visualizationSlides = {
+            4: drawVectorBasicsViz,
+            6: drawPositionViz,
+            9: drawVelocityViz,
+            10: drawExample1Viz,
+            12: drawAllVectorsViz,
+            14: drawIntegrationViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Arrow marker helper
+        function addArrowMarker(svg, id, color) {
+            svg.append('defs').append('marker')
+                .attr('id', id)
+                .attr('viewBox', '0 0 10 10')
+                .attr('refX', 9)
+                .attr('refY', 5)
+                .attr('markerWidth', 6)
+                .attr('markerHeight', 6)
+                .attr('orient', 'auto')
+                .append('path')
+                .attr('d', 'M 0 0 L 10 5 L 0 10 z')
+                .attr('fill', color);
+        }
+
+        // Visualization 1: Vector Basics
+        function drawVectorBasicsViz() {
+            const container = d3.select('#vector-basics-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-4, 4]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-3, 3]).range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g').selectAll('line.h').data(d3.range(-3, 4)).enter().append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d)).attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
+
+            svg.append('g').selectAll('line.v').data(d3.range(-4, 5)).enter().append('line')
+                .attr('x1', d => xScale(d)).attr('x2', d => xScale(d))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#333').attr('stroke-width', 2);
+            svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 2);
+
+            addArrowMarker(svg, 'vec-arrow', '#06b6d4');
+            addArrowMarker(svg, 'i-arrow', '#ef4444');
+            addArrowMarker(svg, 'j-arrow', '#10b981');
+
+            const vectorLine = svg.append('line')
+                .attr('stroke', '#06b6d4').attr('stroke-width', 4)
+                .attr('marker-end', 'url(#vec-arrow)');
+
+            const iComponent = svg.append('line')
+                .attr('stroke', '#ef4444').attr('stroke-width', 2).attr('stroke-dasharray', '5,3')
+                .attr('marker-end', 'url(#i-arrow)');
+
+            const jComponent = svg.append('line')
+                .attr('stroke', '#10b981').attr('stroke-width', 2).attr('stroke-dasharray', '5,3')
+                .attr('marker-end', 'url(#j-arrow)');
+
+            const infoText = svg.append('text')
+                .attr('x', width - margin.right - 10).attr('y', margin.top + 20)
+                .attr('text-anchor', 'end').attr('font-size', '1.2rem');
+
+            const sliderA = document.getElementById('vec-a-slider');
+            const sliderB = document.getElementById('vec-b-slider');
+            const aDisplay = document.getElementById('vec-a-value');
+            const bDisplay = document.getElementById('vec-b-value');
+
+            function update() {
+                const a = parseFloat(sliderA.value);
+                const b = parseFloat(sliderB.value);
+
+                aDisplay.textContent = a;
+                bDisplay.textContent = b;
+
+                vectorLine.attr('x1', xScale(0)).attr('y1', yScale(0))
+                    .attr('x2', xScale(a)).attr('y2', yScale(b));
+
+                iComponent.attr('x1', xScale(0)).attr('y1', yScale(0))
+                    .attr('x2', xScale(a)).attr('y2', yScale(0));
+
+                jComponent.attr('x1', xScale(a)).attr('y1', yScale(0))
+                    .attr('x2', xScale(a)).attr('y2', yScale(b));
+
+                const magnitude = Math.sqrt(a * a + b * b);
+                infoText.text(`|v| = ${magnitude.toFixed(2)}`);
+            }
+
+            sliderA.oninput = update;
+            sliderB.oninput = update;
+            update();
+        }
+
+        // Visualization 2: Position Vector
+        function drawPositionViz() {
+            const container = d3.select('#position-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-1.5, 1.5]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-1.5, 1.5]).range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g').selectAll('line.h').data([-1, 0, 1]).enter().append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d)).attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
+
+            svg.append('g').selectAll('line.v').data([-1, 0, 1]).enter().append('line')
+                .attr('x1', d => xScale(d)).attr('x2', d => xScale(d))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#333').attr('stroke-width', 2);
+            svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 2);
+
+            // Path
+            const tValues = d3.range(0, 2 * Math.PI + 0.01, 0.05);
+            const pathData = tValues.map(t => ({ x: Math.cos(t), y: Math.sin(t) }));
+            const lineFn = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y));
+
+            svg.append('path').datum(pathData).attr('fill', 'none')
+                .attr('stroke', '#e5e7eb').attr('stroke-width', 2).attr('d', lineFn);
+
+            addArrowMarker(svg, 'pos-arrow', '#8b5cf6');
+
+            const posVector = svg.append('line')
+                .attr('stroke', '#8b5cf6').attr('stroke-width', 4)
+                .attr('marker-end', 'url(#pos-arrow)');
+
+            const point = svg.append('circle').attr('r', 8).attr('fill', '#06b6d4');
+
+            const slider = document.getElementById('pos-t-slider');
+            const tDisplay = document.getElementById('pos-t-value');
+            const rDisplay = document.getElementById('pos-r-value');
+
+            function update() {
+                const t = parseFloat(slider.value);
+                const x = Math.cos(t);
+                const y = Math.sin(t);
+
+                tDisplay.textContent = t.toFixed(2);
+                rDisplay.textContent = `(${x.toFixed(2)}, ${y.toFixed(2)})`;
+
+                posVector.attr('x1', xScale(0)).attr('y1', yScale(0))
+                    .attr('x2', xScale(x)).attr('y2', yScale(y));
+
+                point.attr('cx', xScale(x)).attr('cy', yScale(y));
+            }
+
+            slider.oninput = update;
+            update();
+        }
+
+        // Visualization 3: Velocity Vector
+        function drawVelocityViz() {
+            const container = d3.select('#velocity-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-2, 2]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-2, 2]).range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g').selectAll('line.h').data([-1, 0, 1]).enter().append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d)).attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
+
+            svg.append('g').selectAll('line.v').data([-1, 0, 1]).enter().append('line')
+                .attr('x1', d => xScale(d)).attr('x2', d => xScale(d))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#333').attr('stroke-width', 2);
+            svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 2);
+
+            // Path
+            const tValues = d3.range(0, 2 * Math.PI + 0.01, 0.05);
+            const pathData = tValues.map(t => ({ x: Math.cos(t), y: Math.sin(t) }));
+            const lineFn = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y));
+
+            svg.append('path').datum(pathData).attr('fill', 'none')
+                .attr('stroke', '#ccc').attr('stroke-width', 2).attr('d', lineFn);
+
+            addArrowMarker(svg, 'pos-arrow2', '#8b5cf6');
+            addArrowMarker(svg, 'vel-arrow', '#10b981');
+
+            const posVector = svg.append('line')
+                .attr('stroke', '#8b5cf6').attr('stroke-width', 3)
+                .attr('marker-end', 'url(#pos-arrow2)');
+
+            const velVector = svg.append('line')
+                .attr('stroke', '#10b981').attr('stroke-width', 3)
+                .attr('marker-end', 'url(#vel-arrow)');
+
+            const point = svg.append('circle').attr('r', 8).attr('fill', '#06b6d4');
+
+            const slider = document.getElementById('vel-t-slider');
+            const tDisplay = document.getElementById('vel-t-value');
+
+            function update() {
+                const t = parseFloat(slider.value);
+                const x = Math.cos(t);
+                const y = Math.sin(t);
+                const vx = -Math.sin(t);
+                const vy = Math.cos(t);
+
+                tDisplay.textContent = t.toFixed(2);
+
+                posVector.attr('x1', xScale(0)).attr('y1', yScale(0))
+                    .attr('x2', xScale(x)).attr('y2', yScale(y));
+
+                const scale = 0.7;
+                velVector.attr('x1', xScale(x)).attr('y1', yScale(y))
+                    .attr('x2', xScale(x + vx * scale)).attr('y2', yScale(y + vy * scale));
+
+                point.attr('cx', xScale(x)).attr('cy', yScale(y));
+            }
+
+            slider.oninput = update;
+            update();
+        }
+
+        // Visualization 4: Example 1
+        function drawExample1Viz() {
+            const container = d3.select('#example1-viz');
+            container.selectAll('*').remove();
+
+            const width = 300;
+            const height = 280;
+            const margin = { top: 10, right: 20, bottom: 30, left: 40 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-2, 4]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-1, 4]).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#333').attr('stroke-width', 1);
+            svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 1);
+
+            // Curve: r(t) = <t^2 - 1, e^t> for t in [-1, 1.5]
+            const tValues = d3.range(-1, 1.51, 0.05);
+            const curveData = tValues.map(t => ({ x: t * t - 1, y: Math.exp(t) }));
+            const lineFn = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural);
+
+            svg.append('path').datum(curveData).attr('fill', 'none')
+                .attr('stroke', '#8b5cf6').attr('stroke-width', 2).attr('d', lineFn);
+
+            // Point at t = 1
+            const t = 1;
+            const x = t * t - 1;
+            const y = Math.exp(t);
+            svg.append('circle').attr('cx', xScale(x)).attr('cy', yScale(y)).attr('r', 6).attr('fill', '#06b6d4');
+
+            addArrowMarker(svg, 'ex1-arrow', '#10b981');
+
+            // Velocity vector at t = 1
+            const vx = 2 * t;
+            const vy = Math.exp(t);
+            const vscale = 0.3;
+            svg.append('line')
+                .attr('x1', xScale(x)).attr('y1', yScale(y))
+                .attr('x2', xScale(x + vx * vscale)).attr('y2', yScale(y + vy * vscale))
+                .attr('stroke', '#10b981').attr('stroke-width', 2)
+                .attr('marker-end', 'url(#ex1-arrow)');
+        }
+
+        // Visualization 5: All Three Vectors
+        function drawAllVectorsViz() {
+            const container = d3.select('#all-vectors-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-2.5, 2.5]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-2.5, 2.5]).range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g').selectAll('line.h').data([-2, -1, 0, 1, 2]).enter().append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d)).attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
+
+            svg.append('g').selectAll('line.v').data([-2, -1, 0, 1, 2]).enter().append('line')
+                .attr('x1', d => xScale(d)).attr('x2', d => xScale(d))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#333').attr('stroke-width', 2);
+            svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 2);
+
+            // Path (ellipse)
+            const a = 2, b = 1;
+            const tValues = d3.range(0, 2 * Math.PI + 0.01, 0.05);
+            const pathData = tValues.map(t => ({ x: a * Math.cos(t), y: b * Math.sin(t) }));
+            const lineFn = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y));
+
+            svg.append('path').datum(pathData).attr('fill', 'none')
+                .attr('stroke', '#ccc').attr('stroke-width', 2).attr('d', lineFn);
+
+            addArrowMarker(svg, 'all-pos', '#8b5cf6');
+            addArrowMarker(svg, 'all-vel', '#10b981');
+            addArrowMarker(svg, 'all-acc', '#f59e0b');
+
+            const posVector = svg.append('line')
+                .attr('stroke', '#8b5cf6').attr('stroke-width', 3)
+                .attr('marker-end', 'url(#all-pos)');
+
+            const velVector = svg.append('line')
+                .attr('stroke', '#10b981').attr('stroke-width', 3)
+                .attr('marker-end', 'url(#all-vel)');
+
+            const accVector = svg.append('line')
+                .attr('stroke', '#f59e0b').attr('stroke-width', 3)
+                .attr('marker-end', 'url(#all-acc)');
+
+            const point = svg.append('circle').attr('r', 8).attr('fill', '#06b6d4');
+
+            const slider = document.getElementById('all-t-slider');
+            const tDisplay = document.getElementById('all-t-value');
+
+            function update() {
+                const t = parseFloat(slider.value);
+                const x = a * Math.cos(t);
+                const y = b * Math.sin(t);
+                const vx = -a * Math.sin(t);
+                const vy = b * Math.cos(t);
+                const ax = -a * Math.cos(t);
+                const ay = -b * Math.sin(t);
+
+                tDisplay.textContent = t.toFixed(2);
+
+                posVector.attr('x1', xScale(0)).attr('y1', yScale(0))
+                    .attr('x2', xScale(x)).attr('y2', yScale(y));
+
+                const vscale = 0.5;
+                velVector.attr('x1', xScale(x)).attr('y1', yScale(y))
+                    .attr('x2', xScale(x + vx * vscale)).attr('y2', yScale(y + vy * vscale));
+
+                const ascale = 0.3;
+                accVector.attr('x1', xScale(x)).attr('y1', yScale(y))
+                    .attr('x2', xScale(x + ax * ascale)).attr('y2', yScale(y + ay * ascale));
+
+                point.attr('cx', xScale(x)).attr('cy', yScale(y));
+            }
+
+            slider.oninput = update;
+            update();
+        }
+
+        // Visualization 6: Integration Example
+        function drawIntegrationViz() {
+            const container = d3.select('#integration-viz');
+            container.selectAll('*').remove();
+
+            const width = 300;
+            const height = 280;
+            const margin = { top: 10, right: 20, bottom: 30, left: 40 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const xScale = d3.scaleLinear().domain([-0.5, 6]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-0.5, 10]).range([height - margin.bottom, margin.top]);
+
+            // Axes
+            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#333').attr('stroke-width', 1);
+            svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 1);
+
+            // Curve: r(t) = <t^2 + 1, 3t + 2> for t in [0, 2]
+            const tValues = d3.range(0, 2.01, 0.05);
+            const curveData = tValues.map(t => ({ x: t * t + 1, y: 3 * t + 2 }));
+            const lineFn = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural);
+
+            svg.append('path').datum(curveData).attr('fill', 'none')
+                .attr('stroke', '#8b5cf6').attr('stroke-width', 3).attr('d', lineFn);
+
+            // Initial point
+            svg.append('circle').attr('cx', xScale(1)).attr('cy', yScale(2)).attr('r', 6).attr('fill', '#10b981');
+            svg.append('text').attr('x', xScale(1) - 10).attr('y', yScale(2) + 20)
+                .attr('font-size', '0.9rem').text('t=0');
+
+            // Final point
+            svg.append('circle').attr('cx', xScale(5)).attr('cy', yScale(8)).attr('r', 6).attr('fill', '#06b6d4');
+            svg.append('text').attr('x', xScale(5) + 5).attr('y', yScale(8) + 5)
+                .attr('font-size', '0.9rem').text('t=2');
+        }
+    </script>
+</body>
+</html>

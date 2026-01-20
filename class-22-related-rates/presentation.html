@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 22: Related Rates Problem Solving | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #10b981;
+            --theme-color-light: #34d399;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .concept-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            border-radius: 0 8px 8px 0;
+            max-width: 850px;
+            text-align: left;
+        }
+
+        .concept-box h4 {
+            color: var(--theme-color-light);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .strategy-box {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--accent-secondary);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            max-width: 750px;
+        }
+
+        .strategy-box h4 {
+            color: var(--accent-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .slider-control label {
+            font-size: 1.25rem;
+            font-family: var(--font-display);
+        }
+
+        .slider-control input[type="range"] {
+            width: 350px;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--theme-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .info-display {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-family: var(--font-mono);
+            font-size: 1.15rem;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+        }
+
+        .problem-type {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            max-width: 900px;
+            margin: 1.5rem auto;
+        }
+
+        .type-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-top: 4px solid var(--theme-color);
+        }
+
+        .type-card h4 {
+            color: var(--theme-color-light);
+            margin-bottom: 0.75rem;
+        }
+
+        .type-card p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+        }
+
+        .trig-box {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem auto;
+            max-width: 600px;
+        }
+
+        .equation-highlight {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--theme-color);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Related Rates Problem Solving">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 4: Contextual Applications of Differentiation</div>
+                <h1>Related Rates</h1>
+                <p class="subtitle">Problem Solving Strategies</p>
+                <p class="meta">Class 22 | CED Topic 4.5 | AP Calculus BC | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: Opening -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="Today's Focus">
+            <div class="slide-content">
+                <p class="statement">Building problem-solving <em>fluency</em> with related rates</p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    Shadows, distances, angles, and more complex scenarios
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Warm-Up -->
+        <div class="slide slide-exercise" data-slide="2" data-section="Opening" data-title="Warm-Up">
+            <div class="slide-content">
+                <h2>Warm-Up Review</h2>
+                <div class="prompt">
+                    <p>A 10-foot ladder slides down a wall. When the bottom is 6 feet from the wall, it slides away at 1 ft/s.</p>
+                    <p style="margin-top: 0.75rem;">How fast is the top sliding down?</p>
+                </div>
+                <div class="instructions" style="margin-top: 1.5rem;">
+                    <p style="font-size: 1.15rem; color: var(--text-tertiary);">
+                        Hint: \( x^2 + y^2 = 100 \), when \( x = 6 \), \( y = 8 \)
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Problem Types -->
+        <div class="slide slide-visual" data-slide="3" data-section="Problem Types" data-title="Common Problem Types">
+            <div class="slide-content">
+                <h2>Common Related Rates Problems</h2>
+                <div class="problem-type">
+                    <div class="type-card">
+                        <h4>Pythagorean</h4>
+                        <p>Ladders, distances, shadows</p>
+                        <p style="margin-top: 0.5rem;">\( a^2 + b^2 = c^2 \)</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>Similar Triangles</h4>
+                        <p>Cones, shadows, proportions</p>
+                        <p style="margin-top: 0.5rem;">\( \frac{r}{h} = k \)</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>Trigonometric</h4>
+                        <p>Angles, rotating objects</p>
+                        <p style="margin-top: 0.5rem;">\( \tan\theta = \frac{y}{x} \)</p>
+                    </div>
+                    <div class="type-card">
+                        <h4>Volume/Area</h4>
+                        <p>Expanding shapes, filling tanks</p>
+                        <p style="margin-top: 0.5rem;">\( V = f(r, h) \)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Shadow Problem Setup -->
+        <div class="slide slide-example" data-slide="4" data-section="Shadows" data-title="Shadow Problem">
+            <div class="slide-content">
+                <h2>Example: Shadow Problem</h2>
+                <div class="problem">
+                    <p>A 6-foot person walks away from a 15-foot lamppost at 4 ft/s.</p>
+                    <p style="margin-top: 0.5rem;">How fast is the tip of the shadow moving when the person is 9 feet from the pole?</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>Let \( x \) = person's distance from pole, \( s \) = shadow length</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span><strong>Given:</strong> \( \frac{dx}{dt} = 4 \) ft/s, \( x = 9 \) ft</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span><strong>Find:</strong> Rate at which shadow tip moves = \( \frac{d(x+s)}{dt} \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Shadow Problem Solution -->
+        <div class="slide slide-example" data-slide="5" data-section="Shadows" data-title="Shadow Solution">
+            <div class="slide-content">
+                <h2>Shadow Problem: Solution</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span><strong>Similar triangles:</strong> \( \frac{15}{x+s} = \frac{6}{s} \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">5</span>
+                        <span>Cross-multiply: \( 15s = 6(x+s) \implies 15s = 6x + 6s \implies 9s = 6x \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">6</span>
+                        <span>So \( s = \frac{2x}{3} \) and \( x + s = x + \frac{2x}{3} = \frac{5x}{3} \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">7</span>
+                        <span><strong>Differentiate:</strong> \( \frac{d(x+s)}{dt} = \frac{5}{3} \cdot \frac{dx}{dt} = \frac{5}{3}(4) = \frac{20}{3} \) ft/s</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Shadow Visualization -->
+        <div class="slide slide-visual" data-slide="6" data-section="Shadows" data-title="Shadow Animation">
+            <div class="slide-content">
+                <h2>Visualizing the Shadow</h2>
+                <div id="shadow-viz" class="visualization"></div>
+                <div class="slider-control">
+                    <label>Person's position x = </label>
+                    <input type="range" id="shadow-slider" min="1" max="20" step="0.1" value="9">
+                    <span id="shadow-x" style="font-family: var(--font-mono); min-width: 80px;">x = 9.0 ft</span>
+                </div>
+                <div class="info-display">
+                    <div class="info-item" id="shadow-s">Shadow s = 6.0 ft</div>
+                    <div class="info-item" id="shadow-tip">Tip at x+s = 15.0 ft</div>
+                    <div class="info-item" id="shadow-rate">d(x+s)/dt = 6.67 ft/s</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Key Insight -->
+        <div class="slide slide-statement" data-slide="7" data-section="Shadows" data-title="Shadow Insight">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Notice: The shadow tip's speed is <em>constant</em></p>
+                <div class="concept-box" style="margin-top: 2rem;">
+                    <p style="font-size: 1.25rem;">
+                        Because \( x + s = \frac{5x}{3} \), we have \( \frac{d(x+s)}{dt} = \frac{5}{3}\frac{dx}{dt} \), which doesn't depend on \( x \)!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Angle Problem -->
+        <div class="slide slide-example" data-slide="8" data-section="Angles" data-title="Angle Problem">
+            <div class="slide-content">
+                <h2>Example: Angle of Elevation</h2>
+                <div class="problem">
+                    <p>A balloon rises at 3 m/s from a point 100 m from an observer.</p>
+                    <p style="margin-top: 0.5rem;">How fast is the angle of elevation changing when the balloon is 100 m high?</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>Let \( h \) = height, \( \theta \) = angle of elevation</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span><strong>Given:</strong> \( \frac{dh}{dt} = 3 \) m/s, \( h = 100 \) m, horizontal distance = 100 m</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Angle Problem Solution -->
+        <div class="slide slide-example" data-slide="9" data-section="Angles" data-title="Angle Solution">
+            <div class="slide-content">
+                <h2>Angle Problem: Solution</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span><strong>Equation:</strong> \( \tan\theta = \frac{h}{100} \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span><strong>Differentiate:</strong> \( \sec^2\theta \cdot \frac{d\theta}{dt} = \frac{1}{100} \cdot \frac{dh}{dt} \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">5</span>
+                        <span>When \( h = 100 \): \( \tan\theta = 1 \), so \( \theta = \frac{\pi}{4} \) and \( \sec^2\theta = 2 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">6</span>
+                        <span>\( 2 \cdot \frac{d\theta}{dt} = \frac{3}{100} \implies \frac{d\theta}{dt} = \frac{3}{200} = 0.015 \) rad/s</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Angle Visualization -->
+        <div class="slide slide-visual" data-slide="10" data-section="Angles" data-title="Balloon Animation">
+            <div class="slide-content">
+                <h2>Visualizing the Rising Balloon</h2>
+                <div id="balloon-viz" class="visualization"></div>
+                <div class="slider-control">
+                    <label>Height h = </label>
+                    <input type="range" id="balloon-slider" min="0" max="200" step="1" value="100">
+                    <span id="balloon-h" style="font-family: var(--font-mono); min-width: 80px;">h = 100 m</span>
+                </div>
+                <div class="info-display">
+                    <div class="info-item" id="balloon-theta">Angle = 45.0 deg</div>
+                    <div class="info-item" id="balloon-rate">dtheta/dt = 0.0150 rad/s</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Trig Derivatives Reminder -->
+        <div class="slide slide-visual" data-slide="11" data-section="Tools" data-title="Trig Derivatives">
+            <div class="slide-content">
+                <h2>Trig Functions in Related Rates</h2>
+                <div class="trig-box">
+                    <p style="font-size: 1.35rem; margin-bottom: 1rem;"><strong>Common derivatives needed:</strong></p>
+                    <div class="math-display" style="font-size: 1.5rem; line-height: 2.5;">
+                        \[ \frac{d}{dt}[\sin\theta] = \cos\theta \cdot \frac{d\theta}{dt} \]
+                        \[ \frac{d}{dt}[\cos\theta] = -\sin\theta \cdot \frac{d\theta}{dt} \]
+                        \[ \frac{d}{dt}[\tan\theta] = \sec^2\theta \cdot \frac{d\theta}{dt} \]
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Distance Problem -->
+        <div class="slide slide-example" data-slide="12" data-section="Distance" data-title="Distance Problem">
+            <div class="slide-content">
+                <h2>Example: Two Moving Objects</h2>
+                <div class="problem">
+                    <p>Car A travels east at 60 mph. Car B travels north at 45 mph.</p>
+                    <p style="margin-top: 0.5rem;">At noon, car A is 50 miles west of an intersection, and car B is 30 miles south.</p>
+                    <p style="margin-top: 0.5rem;">How fast is the distance between them changing at noon?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Distance Solution -->
+        <div class="slide slide-example" data-slide="13" data-section="Distance" data-title="Distance Solution">
+            <div class="slide-content">
+                <h2>Two Cars: Solution</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>Let \( x \) = A's position (east of intersection), \( y \) = B's position (north)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>At noon: \( x = -50 \), \( y = -30 \), \( \frac{dx}{dt} = 60 \), \( \frac{dy}{dt} = 45 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span><strong>Distance:</strong> \( D^2 = x^2 + y^2 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>\( 2D\frac{dD}{dt} = 2x\frac{dx}{dt} + 2y\frac{dy}{dt} \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Distance Solution Continued -->
+        <div class="slide slide-example" data-slide="14" data-section="Distance" data-title="Distance Solution 2">
+            <div class="slide-content">
+                <h2>Two Cars: Completing the Solution</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">5</span>
+                        <span>At noon: \( D = \sqrt{50^2 + 30^2} = \sqrt{3400} = 10\sqrt{34} \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">6</span>
+                        <span>\( 2(10\sqrt{34})\frac{dD}{dt} = 2(-50)(60) + 2(-30)(45) \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">7</span>
+                        <span>\( 20\sqrt{34} \cdot \frac{dD}{dt} = -6000 - 2700 = -8700 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">8</span>
+                        <span>\( \frac{dD}{dt} = \frac{-8700}{20\sqrt{34}} \approx -74.6 \) mph</span>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 1rem; font-size: 1.25rem; color: var(--accent-secondary);">
+                    The cars are getting closer at about 74.6 mph
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 15: Cars Visualization -->
+        <div class="slide slide-visual" data-slide="15" data-section="Distance" data-title="Cars Animation">
+            <div class="slide-content">
+                <h2>Visualizing the Two Cars</h2>
+                <div id="cars-viz" class="visualization"></div>
+                <div class="slider-control">
+                    <label>Time t = </label>
+                    <input type="range" id="cars-slider" min="-1" max="1" step="0.02" value="0">
+                    <span id="cars-time" style="font-family: var(--font-mono); min-width: 100px;">t = 0 hours</span>
+                </div>
+                <div class="info-display">
+                    <div class="info-item" id="cars-dist">D = 58.31 mi</div>
+                    <div class="info-item" id="cars-rate">dD/dt = -74.6 mph</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Strategy Summary -->
+        <div class="slide slide-list" data-slide="16" data-section="Strategy" data-title="Strategy Recap">
+            <div class="slide-content">
+                <h2>Related Rates Strategy Recap</h2>
+                <ul>
+                    <li>Draw and label a diagram with variables</li>
+                    <li>Identify known rates and the rate to find</li>
+                    <li>Write an equation relating all variables</li>
+                    <li>Eliminate extra variables using constraints</li>
+                    <li>Differentiate implicitly with respect to time</li>
+                    <li>Substitute known values and solve</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 17: Practice Problem -->
+        <div class="slide slide-exercise" data-slide="17" data-section="Practice" data-title="Practice 1">
+            <div class="slide-content">
+                <h2>Your Turn: Conical Tank</h2>
+                <div class="prompt">
+                    <p>Water drains from a conical tank at 5 ft\(^3\)/min.</p>
+                    <p style="margin-top: 0.5rem;">The tank has radius 4 ft and height 10 ft (vertex at bottom).</p>
+                    <p style="margin-top: 0.5rem;">How fast is the water level dropping when the depth is 6 ft?</p>
+                </div>
+                <div class="instructions" style="margin-top: 1.5rem;">
+                    <p style="font-size: 1.15rem; color: var(--text-tertiary);">
+                        Hint: Use similar triangles to write \( r \) in terms of \( h \)
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Practice Problem 2 -->
+        <div class="slide slide-exercise" data-slide="18" data-section="Practice" data-title="Practice 2">
+            <div class="slide-content">
+                <h2>Your Turn: Spotlight</h2>
+                <div class="prompt">
+                    <p>A spotlight on the ground shines on a wall 12 m away.</p>
+                    <p style="margin-top: 0.5rem;">A person 2 m tall walks toward the wall at 1.6 m/s.</p>
+                    <p style="margin-top: 0.5rem;">How fast is the shadow height changing when the person is 4 m from the wall?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="19" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p>A plane flies horizontally at 500 mph at an altitude of 1 mile.</p>
+                    <p style="margin-top: 0.5rem;">The plane passes directly over a radar station.</p>
+                </div>
+                <div class="instructions" style="text-align: left; max-width: 700px; margin: 1.5rem auto 0;">
+                    <ol style="list-style-position: inside; font-size: 1.25rem;">
+                        <li style="padding: 0.5rem 0;">Set up the relationship between horizontal distance and slant distance</li>
+                        <li style="padding: 0.5rem 0;">How fast is the slant distance increasing when the plane is 2 miles (horizontally) from the station?</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Looking Ahead -->
+        <div class="slide slide-statement" data-slide="20" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Next: <em>Linearization and L'Hospital's Rule</em></p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    Approximating functions locally<br>
+                    and evaluating indeterminate limits
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 21</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 22: Related Rates Problem Solving</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Shadow Visualization (Slide 6) =====
+        function drawShadowViz() {
+            const container = document.getElementById('shadow-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 350;
+            const margin = { left: 60, right: 40, top: 40, bottom: 60 };
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const groundY = height - margin.bottom;
+            const scale = 20; // pixels per foot
+
+            // Ground
+            svg.append('line')
+                .attr('x1', margin.left - 20)
+                .attr('x2', width - margin.right)
+                .attr('y1', groundY)
+                .attr('y2', groundY)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Lamppost
+            const lampX = margin.left + 20;
+            const lampHeight = 15 * scale;
+
+            svg.append('line')
+                .attr('x1', lampX)
+                .attr('x2', lampX)
+                .attr('y1', groundY)
+                .attr('y2', groundY - lampHeight)
+                .attr('stroke', 'var(--accent-secondary)')
+                .attr('stroke-width', 4);
+
+            // Light bulb
+            svg.append('circle')
+                .attr('cx', lampX)
+                .attr('cy', groundY - lampHeight)
+                .attr('r', 8)
+                .attr('fill', 'var(--accent-secondary)');
+
+            // Person
+            const personHeight = 6;
+            const person = svg.append('line')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 4)
+                .attr('stroke-linecap', 'round');
+
+            // Shadow (on ground)
+            const shadow = svg.append('line')
+                .attr('y1', groundY)
+                .attr('y2', groundY)
+                .attr('stroke', 'var(--text-dim)')
+                .attr('stroke-width', 6)
+                .attr('opacity', 0.5);
+
+            // Light ray
+            const lightRay = svg.append('line')
+                .attr('x1', lampX)
+                .attr('y1', groundY - lampHeight)
+                .attr('stroke', 'var(--accent-secondary)')
+                .attr('stroke-width', 1)
+                .attr('stroke-dasharray', '8,4')
+                .attr('opacity', 0.6);
+
+            function update(x) {
+                const s = (2/3) * x; // shadow length
+                const tipX = x + s;
+
+                const personX = lampX + x * scale;
+                person
+                    .attr('x1', personX)
+                    .attr('x2', personX)
+                    .attr('y1', groundY)
+                    .attr('y2', groundY - personHeight * scale);
+
+                const shadowTipX = lampX + tipX * scale;
+                shadow
+                    .attr('x1', personX)
+                    .attr('x2', shadowTipX);
+
+                lightRay
+                    .attr('x2', shadowTipX)
+                    .attr('y2', groundY);
+
+                document.getElementById('shadow-x').textContent = `x = ${x.toFixed(1)} ft`;
+                document.getElementById('shadow-s').textContent = `Shadow s = ${s.toFixed(1)} ft`;
+                document.getElementById('shadow-tip').textContent = `Tip at x+s = ${tipX.toFixed(1)} ft`;
+                document.getElementById('shadow-rate').textContent = `d(x+s)/dt = ${(5/3 * 4).toFixed(2)} ft/s`;
+            }
+
+            update(9);
+
+            const slider = document.getElementById('shadow-slider');
+            if (slider) {
+                slider.addEventListener('input', function(e) {
+                    update(parseFloat(e.target.value));
+                });
+            }
+        }
+
+        // ===== Balloon Visualization (Slide 10) =====
+        function drawBalloonViz() {
+            const container = document.getElementById('balloon-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 400;
+            const margin = { left: 80, right: 60, top: 40, bottom: 60 };
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const groundY = height - margin.bottom;
+            const observerX = margin.left + 50;
+            const horizontalDist = 100; // meters
+            const scale = 1.5; // pixels per meter
+
+            // Ground
+            svg.append('line')
+                .attr('x1', margin.left - 20)
+                .attr('x2', width - margin.right)
+                .attr('y1', groundY)
+                .attr('y2', groundY)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Observer
+            svg.append('circle')
+                .attr('cx', observerX)
+                .attr('cy', groundY - 10)
+                .attr('r', 8)
+                .attr('fill', 'var(--color-function)');
+
+            svg.append('text')
+                .attr('x', observerX)
+                .attr('y', groundY + 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .attr('fill', 'var(--text-tertiary)')
+                .text('Observer');
+
+            // Horizontal distance marker
+            const balloonX = observerX + horizontalDist * scale;
+
+            svg.append('line')
+                .attr('x1', observerX)
+                .attr('x2', balloonX)
+                .attr('y1', groundY + 35)
+                .attr('y2', groundY + 35)
+                .attr('stroke', 'var(--text-tertiary)')
+                .attr('stroke-width', 1);
+
+            svg.append('text')
+                .attr('x', (observerX + balloonX) / 2)
+                .attr('y', groundY + 50)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .attr('fill', 'var(--text-tertiary)')
+                .text('100 m');
+
+            // Balloon
+            const balloon = svg.append('circle')
+                .attr('cx', balloonX)
+                .attr('r', 12)
+                .attr('fill', 'var(--danger)');
+
+            // Sight line
+            const sightLine = svg.append('line')
+                .attr('x1', observerX)
+                .attr('y1', groundY - 10)
+                .attr('stroke', 'var(--theme-color)')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '6,4');
+
+            // Angle arc
+            const angleArc = svg.append('path')
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--accent-secondary)')
+                .attr('stroke-width', 2);
+
+            function update(h) {
+                const balloonY = groundY - h * scale;
+                balloon.attr('cy', balloonY);
+
+                sightLine
+                    .attr('x2', balloonX)
+                    .attr('y2', balloonY);
+
+                const theta = Math.atan(h / horizontalDist);
+                const thetaDeg = theta * 180 / Math.PI;
+
+                // Angle arc
+                const arcRadius = 40;
+                const arcPath = d3.arc()
+                    .innerRadius(arcRadius - 2)
+                    .outerRadius(arcRadius)
+                    .startAngle(0)
+                    .endAngle(-theta);
+
+                angleArc
+                    .attr('transform', `translate(${observerX}, ${groundY - 10}) rotate(90)`)
+                    .attr('d', arcPath);
+
+                const dhdt = 3;
+                const secTheta = 1 / Math.cos(theta);
+                const dthetadt = (dhdt / 100) / (secTheta * secTheta);
+
+                document.getElementById('balloon-h').textContent = `h = ${h.toFixed(0)} m`;
+                document.getElementById('balloon-theta').textContent = `Angle = ${thetaDeg.toFixed(1)} deg`;
+                document.getElementById('balloon-rate').textContent = `dtheta/dt = ${dthetadt.toFixed(4)} rad/s`;
+            }
+
+            update(100);
+
+            const slider = document.getElementById('balloon-slider');
+            if (slider) {
+                slider.addEventListener('input', function(e) {
+                    update(parseFloat(e.target.value));
+                });
+            }
+        }
+
+        // ===== Cars Visualization (Slide 15) =====
+        function drawCarsViz() {
+            const container = document.getElementById('cars-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 400;
+            const margin = { left: 60, right: 60, top: 60, bottom: 60 };
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 3; // pixels per mile
+
+            // Axes (roads)
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', centerY)
+                .attr('y2', centerY)
+                .attr('stroke', 'var(--text-tertiary)')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', centerX)
+                .attr('x2', centerX)
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', 'var(--text-tertiary)')
+                .attr('stroke-width', 2);
+
+            // Labels
+            svg.append('text')
+                .attr('x', width - margin.right + 10)
+                .attr('y', centerY + 5)
+                .attr('font-size', '1rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('E');
+
+            svg.append('text')
+                .attr('x', centerX - 5)
+                .attr('y', margin.top - 10)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('N');
+
+            // Intersection label
+            svg.append('text')
+                .attr('x', centerX + 10)
+                .attr('y', centerY + 20)
+                .attr('font-size', '1rem')
+                .attr('fill', 'var(--text-tertiary)')
+                .text('Intersection');
+
+            // Car A (east-west)
+            const carA = svg.append('rect')
+                .attr('y', centerY - 8)
+                .attr('width', 16)
+                .attr('height', 16)
+                .attr('fill', 'var(--color-derivative)')
+                .attr('rx', 3);
+
+            // Car B (north-south)
+            const carB = svg.append('rect')
+                .attr('x', centerX - 8)
+                .attr('width', 16)
+                .attr('height', 16)
+                .attr('fill', 'var(--color-function)')
+                .attr('rx', 3);
+
+            // Distance line
+            const distLine = svg.append('line')
+                .attr('stroke', 'var(--accent-secondary)')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '6,4');
+
+            function update(t) {
+                // At noon (t=0): A at (-50, 0), B at (0, -30)
+                // A moves east at 60, B moves north at 45
+                const xA = -50 + 60 * t;
+                const yB = -30 + 45 * t;
+
+                const carAx = centerX + xA * scale - 8;
+                const carBy = centerY - yB * scale - 8;
+
+                carA.attr('x', carAx);
+                carB.attr('y', carBy);
+
+                distLine
+                    .attr('x1', carAx + 8)
+                    .attr('y1', centerY)
+                    .attr('x2', centerX)
+                    .attr('y2', carBy + 8);
+
+                const D = Math.sqrt(xA*xA + yB*yB);
+                const dDdt = (xA * 60 + yB * 45) / D;
+
+                document.getElementById('cars-time').textContent = `t = ${t.toFixed(2)} hours`;
+                document.getElementById('cars-dist').textContent = `D = ${D.toFixed(2)} mi`;
+                document.getElementById('cars-rate').textContent = `dD/dt = ${dDdt.toFixed(1)} mph`;
+            }
+
+            update(0);
+
+            const slider = document.getElementById('cars-slider');
+            if (slider) {
+                slider.addEventListener('input', function(e) {
+                    update(parseFloat(e.target.value));
+                });
+            }
+        }
+
+        // ===== Visualization Trigger =====
+        const visualizationSlides = {
+            6: drawShadowViz,
+            10: drawBalloonViz,
+            15: drawCarsViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

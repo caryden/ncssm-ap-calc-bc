@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 14: The Chain Rule | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #8b5cf6;
+            --theme-color-light: #a78bfa;
+            --outer-color: #8b5cf6;
+            --inner-color: #d4a028;
+        }
+
+        /* Chain diagram styling */
+        .chain-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 800px;
+        }
+
+        .chain-box {
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .chain-box.outer {
+            background: var(--outer-color);
+            color: white;
+        }
+
+        .chain-box.inner {
+            background: var(--inner-color);
+            color: white;
+        }
+
+        .chain-arrow {
+            font-size: 2rem;
+            color: var(--text-tertiary);
+        }
+
+        .chain-value {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        /* Identification exercise */
+        .identify-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 2rem auto;
+        }
+
+        .identify-card {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .identify-card .function {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .identify-card .breakdown {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .identify-card.revealed .breakdown {
+            opacity: 1;
+        }
+
+        .identify-card .outer-label {
+            color: var(--outer-color);
+        }
+
+        .identify-card .inner-label {
+            color: var(--inner-color);
+        }
+
+        /* Example solution styling */
+        .solution-steps {
+            text-align: left;
+            max-width: 800px;
+            margin: 1.5rem auto;
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 12px;
+        }
+
+        .solution-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            font-size: 1.25rem;
+        }
+
+        .step-label {
+            background: var(--theme-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        /* Rate visualization */
+        .rate-viz-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 2rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .rate-track {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .rate-label {
+            width: 80px;
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        .rate-bar {
+            flex: 1;
+            height: 40px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rate-dot {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            top: 5px;
+            left: 10px;
+        }
+
+        .rate-calculation {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--accent-secondary);
+            font-family: var(--font-mono);
+        }
+
+        /* Common mistakes */
+        .mistake-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid var(--danger);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .mistake-box .wrong {
+            color: var(--danger);
+            text-decoration: line-through;
+        }
+
+        .mistake-box .correct {
+            color: var(--success);
+        }
+
+        /* Practice grid */
+        .practice-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 1.5rem auto;
+        }
+
+        .practice-problem {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .practice-problem .number {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: var(--theme-color);
+            color: white;
+            border-radius: 50%;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1rem;
+            line-height: 28px;
+            margin-bottom: 0.75rem;
+        }
+
+        .practice-problem .function {
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="The Chain Rule">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 3: Advanced Differentiation</div>
+                <h1>The Chain Rule</h1>
+                <p class="subtitle">Derivatives of Composite Functions</p>
+                <p class="meta">Class 14 | February 27, 2026 | CED 3.1</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: Warm-Up -->
+        <div class="slide slide-exercise" data-slide="1" data-section="Opening" data-title="Warm-Up Challenge">
+            <div class="slide-content">
+                <h2>Warm-Up Challenge</h2>
+                <div class="prompt">
+                    <p>Find the derivative of \(f(x) = (x^2 + 1)^5\)</p>
+                    <p style="margin-top: 1rem; color: var(--text-secondary);">by expanding first...</p>
+                </div>
+                <p style="margin-top: 2rem; color: var(--text-tertiary); font-size: 1.25rem;">
+                    This requires expanding to a 10th degree polynomial!
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: The Problem -->
+        <div class="slide slide-statement" data-slide="2" data-section="Opening" data-title="A Better Way">
+            <div class="slide-content">
+                <p class="statement">What if there's a <em>better way</em> to differentiate composite functions?</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Composite Functions -->
+        <div class="slide slide-visual" data-slide="3" data-section="Concept" data-title="Composite Functions">
+            <div class="slide-content">
+                <h2>Composite Functions: \(f(g(x))\)</h2>
+                <div id="composition-flow-viz" class="visualization"></div>
+                <p class="caption">Input flows through the inner function, then the outer function</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Inner and Outer -->
+        <div class="slide slide-two-part" data-slide="4" data-section="Concept" data-title="Inner and Outer">
+            <div class="slide-content">
+                <p class="primary">Every composite has an <span style="color: var(--outer-color);">outer</span> and <span style="color: var(--inner-color);">inner</span> function</p>
+                <div style="margin-top: 2rem;">
+                    <p style="font-size: 2rem;">\(h(x) = \sin(x^2)\)</p>
+                    <div class="chain-diagram" style="margin-top: 1.5rem;">
+                        <div>
+                            <span style="color: var(--outer-color); font-size: 1.25rem;">Outer:</span>
+                            <span style="font-size: 1.5rem; font-family: var(--font-mono);"> \(\sin(u)\)</span>
+                        </div>
+                        <div style="margin-left: 3rem;">
+                            <span style="color: var(--inner-color); font-size: 1.25rem;">Inner:</span>
+                            <span style="font-size: 1.5rem; font-family: var(--font-mono);"> \(u = x^2\)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Identify Practice -->
+        <div class="slide slide-visual" data-slide="5" data-section="Concept" data-title="Identify Inner/Outer">
+            <div class="slide-content">
+                <h2>Identify the Inner and Outer Functions</h2>
+                <div class="identify-grid">
+                    <div class="identify-card" onclick="this.classList.toggle('revealed')">
+                        <div class="function">\(h(x) = (3x + 1)^4\)</div>
+                        <div class="breakdown">
+                            <span class="outer-label">Outer: \(u^4\)</span><br>
+                            <span class="inner-label">Inner: \(u = 3x + 1\)</span>
+                        </div>
+                    </div>
+                    <div class="identify-card" onclick="this.classList.toggle('revealed')">
+                        <div class="function">\(h(x) = e^{\cos x}\)</div>
+                        <div class="breakdown">
+                            <span class="outer-label">Outer: \(e^u\)</span><br>
+                            <span class="inner-label">Inner: \(u = \cos x\)</span>
+                        </div>
+                    </div>
+                    <div class="identify-card" onclick="this.classList.toggle('revealed')">
+                        <div class="function">\(h(x) = \sqrt{\ln x}\)</div>
+                        <div class="breakdown">
+                            <span class="outer-label">Outer: \(\sqrt{u}\)</span><br>
+                            <span class="inner-label">Inner: \(u = \ln x\)</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="caption">Click each card to reveal the breakdown</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Chain Rule Statement -->
+        <div class="slide slide-statement" data-slide="6" data-section="The Rule" data-title="The Chain Rule">
+            <div class="slide-content">
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-bottom: 1rem;">The Chain Rule</p>
+                <p class="statement" style="font-size: 2.5rem;">
+                    \[\frac{d}{dx}[f(g(x))] = f'(g(x)) \cdot g'(x)\]
+                </p>
+                <p style="margin-top: 2rem; font-size: 1.5rem; color: var(--text-secondary);">
+                    <span style="color: var(--outer-color);">Derivative of outer</span> (keeping inner)
+                    <span style="color: var(--text-tertiary);">times</span>
+                    <span style="color: var(--inner-color);">derivative of inner</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 7: Leibniz Notation -->
+        <div class="slide slide-visual" data-slide="7" data-section="The Rule" data-title="Leibniz Notation">
+            <div class="slide-content">
+                <h2>Leibniz Notation</h2>
+                <div class="math-display" style="font-size: 3rem; margin: 2rem 0;">
+                    \[\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}\]
+                </div>
+                <div id="leibniz-viz" class="visualization" style="min-height: 200px;"></div>
+                <p class="caption" style="margin-top: 1rem;">
+                    The \(du\)'s appear to "cancel" - a useful mnemonic!
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 8: Intuition -->
+        <div class="slide slide-visual" data-slide="8" data-section="The Rule" data-title="Why It Works">
+            <div class="slide-content">
+                <h2>Why Do Rates Multiply?</h2>
+                <div id="rate-multiplier-viz" class="visualization"></div>
+                <p class="caption">If y changes 3x as fast as u, and u changes 2x as fast as x, then y changes 6x as fast as x</p>
+            </div>
+        </div>
+
+        <!-- Slide 9: Example 1 -->
+        <div class="slide slide-visual" data-slide="9" data-section="Examples" data-title="Example 1">
+            <div class="slide-content">
+                <h2>Example 1</h2>
+                <p style="font-size: 1.75rem; margin-bottom: 1.5rem;">Find \(f'(x)\) if \(f(x) = (x^2 + 1)^5\)</p>
+                <div class="solution-steps">
+                    <div class="solution-step">
+                        <span class="step-label">Identify</span>
+                        <span class="step-content">
+                            <span style="color: var(--outer-color);">Outer: \(u^5\)</span>,
+                            <span style="color: var(--inner-color);">Inner: \(u = x^2 + 1\)</span>
+                        </span>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-label">Outer'</span>
+                        <span class="step-content">\(\frac{d}{du}[u^5] = 5u^4 = 5(x^2 + 1)^4\)</span>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-label">Inner'</span>
+                        <span class="step-content">\(\frac{d}{dx}[x^2 + 1] = 2x\)</span>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-label">Multiply</span>
+                        <span class="step-content" style="color: var(--success);">\(f'(x) = 5(x^2 + 1)^4 \cdot 2x = \boxed{10x(x^2 + 1)^4}\)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Example 2 -->
+        <div class="slide slide-visual" data-slide="10" data-section="Examples" data-title="Example 2">
+            <div class="slide-content">
+                <h2>Example 2</h2>
+                <p style="font-size: 1.75rem; margin-bottom: 1.5rem;">Find \(f'(x)\) if \(f(x) = \sin(3x)\)</p>
+                <div class="solution-steps">
+                    <div class="solution-step">
+                        <span class="step-label">Identify</span>
+                        <span class="step-content">
+                            <span style="color: var(--outer-color);">Outer: \(\sin(u)\)</span>,
+                            <span style="color: var(--inner-color);">Inner: \(u = 3x\)</span>
+                        </span>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-label">Outer'</span>
+                        <span class="step-content">\(\frac{d}{du}[\sin u] = \cos u = \cos(3x)\)</span>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-label">Inner'</span>
+                        <span class="step-content">\(\frac{d}{dx}[3x] = 3\)</span>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-label">Multiply</span>
+                        <span class="step-content" style="color: var(--success);">\(f'(x) = \cos(3x) \cdot 3 = \boxed{3\cos(3x)}\)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Example 3 -->
+        <div class="slide slide-visual" data-slide="11" data-section="Examples" data-title="Example 3">
+            <div class="slide-content">
+                <h2>Example 3</h2>
+                <p style="font-size: 1.75rem; margin-bottom: 1.5rem;">Find \(f'(x)\) if \(f(x) = e^{x^2}\)</p>
+                <div class="solution-steps">
+                    <div class="solution-step">
+                        <span class="step-label">Identify</span>
+                        <span class="step-content">
+                            <span style="color: var(--outer-color);">Outer: \(e^u\)</span>,
+                            <span style="color: var(--inner-color);">Inner: \(u = x^2\)</span>
+                        </span>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-label">Outer'</span>
+                        <span class="step-content">\(\frac{d}{du}[e^u] = e^u = e^{x^2}\)</span>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-label">Inner'</span>
+                        <span class="step-content">\(\frac{d}{dx}[x^2] = 2x\)</span>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-label">Multiply</span>
+                        <span class="step-content" style="color: var(--success);">\(f'(x) = e^{x^2} \cdot 2x = \boxed{2xe^{x^2}}\)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Example 4 -->
+        <div class="slide slide-visual" data-slide="12" data-section="Examples" data-title="Example 4">
+            <div class="slide-content">
+                <h2>Example 4</h2>
+                <p style="font-size: 1.75rem; margin-bottom: 1.5rem;">Find \(f'(x)\) if \(f(x) = \ln(\cos x)\)</p>
+                <div class="solution-steps">
+                    <div class="solution-step">
+                        <span class="step-label">Identify</span>
+                        <span class="step-content">
+                            <span style="color: var(--outer-color);">Outer: \(\ln(u)\)</span>,
+                            <span style="color: var(--inner-color);">Inner: \(u = \cos x\)</span>
+                        </span>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-label">Outer'</span>
+                        <span class="step-content">\(\frac{d}{du}[\ln u] = \frac{1}{u} = \frac{1}{\cos x}\)</span>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-label">Inner'</span>
+                        <span class="step-content">\(\frac{d}{dx}[\cos x] = -\sin x\)</span>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-label">Multiply</span>
+                        <span class="step-content" style="color: var(--success);">\(f'(x) = \frac{1}{\cos x} \cdot (-\sin x) = \boxed{-\tan x}\)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Visualization -->
+        <div class="slide slide-visual" data-slide="13" data-section="Examples" data-title="Chain Rule Graph">
+            <div class="slide-content">
+                <h2>Visualizing the Chain Rule</h2>
+                <div id="chain-graph-viz" class="visualization"></div>
+                <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1rem;">
+                    <label style="font-size: 1.25rem;">
+                        k = <input type="range" id="k-slider" min="0.5" max="3" step="0.1" value="2" style="width: 150px; vertical-align: middle;">
+                        <span id="k-value" style="font-family: var(--font-mono);">2.0</span>
+                    </label>
+                </div>
+                <p class="caption">\(f(x) = \sin(kx)\) and \(f'(x) = k\cos(kx)\)</p>
+            </div>
+        </div>
+
+        <!-- Slide 14: Common Mistakes -->
+        <div class="slide slide-list" data-slide="14" data-section="Practice" data-title="Common Mistakes">
+            <div class="slide-content">
+                <h2>Watch Out For...</h2>
+                <ul>
+                    <li>
+                        <strong>Forgetting the inner derivative:</strong>
+                        <div class="mistake-box">
+                            <span class="wrong">\(\frac{d}{dx}[\sin(x^2)] = \cos(x^2)\)</span><br>
+                            <span class="correct">\(\frac{d}{dx}[\sin(x^2)] = \cos(x^2) \cdot 2x = 2x\cos(x^2)\)</span>
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Wrong identification:</strong> Make sure you know which is inner and which is outer
+                    </li>
+                    <li>
+                        <strong>Sign errors:</strong> Especially with negative inner functions like \(e^{-x}\)
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 15: Practice -->
+        <div class="slide slide-visual" data-slide="15" data-section="Practice" data-title="Your Turn">
+            <div class="slide-content">
+                <h2>Your Turn</h2>
+                <div class="practice-grid">
+                    <div class="practice-problem">
+                        <div class="number">1</div>
+                        <div class="function">\(g(x) = (5x - 2)^7\)</div>
+                    </div>
+                    <div class="practice-problem">
+                        <div class="number">2</div>
+                        <div class="function">\(h(x) = \cos(x^3)\)</div>
+                    </div>
+                    <div class="practice-problem">
+                        <div class="number">3</div>
+                        <div class="function">\(f(x) = \sqrt{4x + 1}\)</div>
+                    </div>
+                    <div class="practice-problem">
+                        <div class="number">4</div>
+                        <div class="function">\(y = \tan(2x)\)</div>
+                    </div>
+                    <div class="practice-problem" style="grid-column: 1 / -1;">
+                        <div class="number">5</div>
+                        <div class="function">\(f(x) = e^{-x}\)</div>
+                    </div>
+                </div>
+                <p style="margin-top: 1.5rem; color: var(--accent-secondary);">Work time: 5 minutes</p>
+            </div>
+        </div>
+
+        <!-- Slide 16: Solutions -->
+        <div class="slide slide-list" data-slide="16" data-section="Practice" data-title="Solutions">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <ul>
+                    <li>\(g'(x) = 7(5x-2)^6 \cdot 5 = 35(5x-2)^6\)</li>
+                    <li>\(h'(x) = -\sin(x^3) \cdot 3x^2 = -3x^2\sin(x^3)\)</li>
+                    <li>\(f'(x) = \frac{1}{2\sqrt{4x+1}} \cdot 4 = \frac{2}{\sqrt{4x+1}}\)</li>
+                    <li>\(y' = \sec^2(2x) \cdot 2 = 2\sec^2(2x)\)</li>
+                    <li>\(f'(x) = e^{-x} \cdot (-1) = -e^{-x}\)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 17: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="17" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p>Find \(f'(x)\) if</p>
+                    <p style="font-size: 2.5rem; margin-top: 1rem; color: var(--accent-secondary);">
+                        \(f(x) = (\sin x)^3\)
+                    </p>
+                </div>
+                <p style="margin-top: 2rem; color: var(--text-tertiary); font-size: 1.25rem;">
+                    Hint: What's the outer function? What's the inner function?
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 18: Coming Up -->
+        <div class="slide slide-statement" data-slide="18" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Tomorrow: <em>Implicit Differentiation</em></p>
+                <p style="margin-top: 1.5rem; font-size: 1.5rem; color: var(--text-secondary);">
+                    What happens when we can't solve for y explicitly?
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 19</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>←</kbd> <kbd>→</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 14: The Chain Rule</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">← Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">← Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Composition Flow Visualization =====
+        function drawCompositionFlow() {
+            const container = document.getElementById('composition-flow-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 200;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const boxWidth = 100;
+            const boxHeight = 60;
+            const spacing = 120;
+            const startX = 80;
+            const y = height / 2;
+
+            // Define the elements
+            const elements = [
+                { x: startX, label: 'x', type: 'value' },
+                { x: startX + spacing, label: 'g', type: 'inner' },
+                { x: startX + 2 * spacing, label: 'g(x)', type: 'value' },
+                { x: startX + 3 * spacing, label: 'f', type: 'outer' },
+                { x: startX + 4 * spacing, label: 'f(g(x))', type: 'value' }
+            ];
+
+            // Draw arrows
+            const arrowPositions = [
+                { x1: startX + 40, x2: startX + spacing - boxWidth/2 },
+                { x1: startX + spacing + boxWidth/2, x2: startX + 2 * spacing - 40 },
+                { x1: startX + 2 * spacing + 50, x2: startX + 3 * spacing - boxWidth/2 },
+                { x1: startX + 3 * spacing + boxWidth/2, x2: startX + 4 * spacing - 50 }
+            ];
+
+            // Define arrow marker
+            svg.append('defs')
+                .append('marker')
+                .attr('id', 'arrowhead')
+                .attr('viewBox', '0 -5 10 10')
+                .attr('refX', 8)
+                .attr('refY', 0)
+                .attr('markerWidth', 6)
+                .attr('markerHeight', 6)
+                .attr('orient', 'auto')
+                .append('path')
+                .attr('d', 'M0,-5L10,0L0,5')
+                .attr('fill', '#6b7a94');
+
+            arrowPositions.forEach((pos, i) => {
+                svg.append('line')
+                    .attr('x1', pos.x1)
+                    .attr('y1', y)
+                    .attr('x2', pos.x2)
+                    .attr('y2', y)
+                    .attr('stroke', '#6b7a94')
+                    .attr('stroke-width', 2)
+                    .attr('marker-end', 'url(#arrowhead)')
+                    .attr('opacity', 0)
+                    .transition()
+                    .delay(i * 300 + 200)
+                    .duration(300)
+                    .attr('opacity', 1);
+            });
+
+            // Draw elements
+            elements.forEach((el, i) => {
+                const g = svg.append('g')
+                    .attr('transform', `translate(${el.x}, ${y})`)
+                    .attr('opacity', 0);
+
+                if (el.type === 'inner' || el.type === 'outer') {
+                    g.append('rect')
+                        .attr('x', -boxWidth/2)
+                        .attr('y', -boxHeight/2)
+                        .attr('width', boxWidth)
+                        .attr('height', boxHeight)
+                        .attr('rx', 12)
+                        .attr('fill', el.type === 'inner' ? '#d4a028' : '#8b5cf6');
+
+                    g.append('text')
+                        .attr('text-anchor', 'middle')
+                        .attr('dy', '0.35em')
+                        .attr('font-size', '1.5rem')
+                        .attr('font-family', 'Montserrat, sans-serif')
+                        .attr('font-weight', '600')
+                        .attr('fill', 'white')
+                        .text(el.label);
+                } else {
+                    g.append('text')
+                        .attr('text-anchor', 'middle')
+                        .attr('dy', '0.35em')
+                        .attr('font-size', '1.25rem')
+                        .attr('font-family', 'JetBrains Mono, monospace')
+                        .attr('fill', '#b8c4d6')
+                        .text(el.label);
+                }
+
+                g.transition()
+                    .delay(i * 300)
+                    .duration(400)
+                    .attr('opacity', 1);
+            });
+
+            // Labels
+            svg.append('text')
+                .attr('x', startX + spacing)
+                .attr('y', y + boxHeight/2 + 25)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .attr('fill', '#d4a028')
+                .text('Inner');
+
+            svg.append('text')
+                .attr('x', startX + 3 * spacing)
+                .attr('y', y + boxHeight/2 + 25)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .attr('fill', '#8b5cf6')
+                .text('Outer');
+        }
+
+        // ===== Leibniz Notation Visualization =====
+        function drawLeibnizViz() {
+            const container = document.getElementById('leibniz-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 500;
+            const height = 150;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Draw chain showing du cancellation visual
+            const centerY = height / 2;
+
+            // dy/du box
+            svg.append('rect')
+                .attr('x', 80)
+                .attr('y', centerY - 30)
+                .attr('width', 80)
+                .attr('height', 60)
+                .attr('rx', 8)
+                .attr('fill', 'var(--bg-secondary)')
+                .attr('stroke', '#8b5cf6')
+                .attr('stroke-width', 2);
+
+            svg.append('text')
+                .attr('x', 120)
+                .attr('y', centerY - 5)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'white')
+                .text('dy');
+
+            svg.append('line')
+                .attr('x1', 90)
+                .attr('x2', 150)
+                .attr('y1', centerY)
+                .attr('y2', centerY)
+                .attr('stroke', 'white')
+                .attr('stroke-width', 2);
+
+            svg.append('text')
+                .attr('x', 120)
+                .attr('y', centerY + 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#d4a028')
+                .text('du');
+
+            // Multiplication symbol
+            svg.append('text')
+                .attr('x', 200)
+                .attr('y', centerY + 5)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.5rem')
+                .attr('fill', 'white')
+                .text('×');
+
+            // du/dx box
+            svg.append('rect')
+                .attr('x', 240)
+                .attr('y', centerY - 30)
+                .attr('width', 80)
+                .attr('height', 60)
+                .attr('rx', 8)
+                .attr('fill', 'var(--bg-secondary)')
+                .attr('stroke', '#d4a028')
+                .attr('stroke-width', 2);
+
+            svg.append('text')
+                .attr('x', 280)
+                .attr('y', centerY - 5)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#d4a028')
+                .text('du');
+
+            svg.append('line')
+                .attr('x1', 250)
+                .attr('x2', 310)
+                .attr('y1', centerY)
+                .attr('y2', centerY)
+                .attr('stroke', 'white')
+                .attr('stroke-width', 2);
+
+            svg.append('text')
+                .attr('x', 280)
+                .attr('y', centerY + 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'white')
+                .text('dx');
+
+            // Equals
+            svg.append('text')
+                .attr('x', 360)
+                .attr('y', centerY + 5)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.5rem')
+                .attr('fill', 'white')
+                .text('=');
+
+            // Result dy/dx
+            svg.append('text')
+                .attr('x', 420)
+                .attr('y', centerY - 5)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'white')
+                .text('dy');
+
+            svg.append('line')
+                .attr('x1', 395)
+                .attr('x2', 445)
+                .attr('y1', centerY)
+                .attr('y2', centerY)
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 2);
+
+            svg.append('text')
+                .attr('x', 420)
+                .attr('y', centerY + 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'white')
+                .text('dx');
+        }
+
+        // ===== Rate Multiplier Visualization =====
+        function drawRateMultiplier() {
+            const container = document.getElementById('rate-multiplier-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 250;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const trackY = [60, 120, 180];
+            const trackWidth = 400;
+            const startX = 100;
+
+            const labels = ['x', 'u', 'y'];
+            const colors = ['#60a5fa', '#d4a028', '#8b5cf6'];
+            const rates = [1, 2, 3];
+
+            labels.forEach((label, i) => {
+                // Label
+                svg.append('text')
+                    .attr('x', startX - 30)
+                    .attr('y', trackY[i] + 5)
+                    .attr('text-anchor', 'end')
+                    .attr('font-size', '1.25rem')
+                    .attr('font-family', 'JetBrains Mono, monospace')
+                    .attr('fill', colors[i])
+                    .text(label);
+
+                // Track
+                svg.append('rect')
+                    .attr('x', startX)
+                    .attr('y', trackY[i] - 15)
+                    .attr('width', trackWidth)
+                    .attr('height', 30)
+                    .attr('rx', 6)
+                    .attr('fill', 'var(--bg-tertiary)');
+
+                // Dot
+                const dot = svg.append('circle')
+                    .attr('cx', startX + 20)
+                    .attr('cy', trackY[i])
+                    .attr('r', 12)
+                    .attr('fill', colors[i]);
+
+                // Animate dot
+                function animateDot() {
+                    dot.transition()
+                        .duration(3000 / rates[i])
+                        .ease(d3.easeLinear)
+                        .attr('cx', startX + trackWidth - 20)
+                        .transition()
+                        .duration(0)
+                        .attr('cx', startX + 20)
+                        .on('end', animateDot);
+                }
+                animateDot();
+
+                // Rate label
+                svg.append('text')
+                    .attr('x', startX + trackWidth + 20)
+                    .attr('y', trackY[i] + 5)
+                    .attr('font-size', '1rem')
+                    .attr('fill', '#6b7a94')
+                    .text(`×${rates[i]}`);
+            });
+
+            // Explanation
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', 30)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6')
+                .text('u changes 2× as fast as x, y changes 3× as fast as u');
+
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', 230)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#d4a028')
+                .text('So y changes 6× as fast as x');
+        }
+
+        // ===== Chain Rule Graph Visualization =====
+        function drawChainGraph() {
+            const container = document.getElementById('chain-graph-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 350;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            let k = 2;
+            const f = x => Math.sin(k * x);
+            const fPrime = x => k * Math.cos(k * x);
+
+            const xScale = d3.scaleLinear().domain([-Math.PI, Math.PI]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-3, 3]).range([plotHeight, 0]);
+
+            // Grid
+            g.selectAll('line.gridH')
+                .data(d3.range(-3, 4, 1))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#1c2640')
+                .attr('stroke-width', 1);
+
+            g.selectAll('line.gridV')
+                .data(d3.range(-4, 5, 1))
+                .enter()
+                .append('line')
+                .attr('x1', d => xScale(d * Math.PI / 4))
+                .attr('x2', d => xScale(d * Math.PI / 4))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', '#1c2640')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${yScale(0)})`)
+                .call(d3.axisBottom(xScale).tickFormat(d => {
+                    if (d === 0) return '0';
+                    if (d === Math.PI) return 'π';
+                    if (d === -Math.PI) return '-π';
+                    return '';
+                }))
+                .selectAll('text')
+                .attr('font-size', '1rem')
+                .attr('fill', '#b8c4d6');
+
+            g.append('g')
+                .call(d3.axisLeft(yScale).ticks(6))
+                .selectAll('text')
+                .attr('font-size', '1rem')
+                .attr('fill', '#b8c4d6');
+
+            // Function paths
+            const lineF = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(f(d)))
+                .curve(d3.curveCatmullRom);
+
+            const lineFPrime = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(fPrime(d)))
+                .curve(d3.curveCatmullRom);
+
+            const xValues = d3.range(-Math.PI, Math.PI + 0.05, 0.05);
+
+            const pathF = g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', lineF);
+
+            const pathFPrime = g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 3)
+                .attr('d', lineFPrime);
+
+            // Labels
+            g.append('text')
+                .attr('x', plotWidth - 10)
+                .attr('y', yScale(f(Math.PI - 0.2)) - 10)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#60a5fa')
+                .attr('class', 'f-label')
+                .text('f(x) = sin(kx)');
+
+            g.append('text')
+                .attr('x', plotWidth - 10)
+                .attr('y', yScale(fPrime(Math.PI - 0.5)) + 20)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#f97316')
+                .attr('class', 'fprime-label')
+                .text("f'(x) = k·cos(kx)");
+
+            // Update function
+            function updateGraph(newK) {
+                k = newK;
+                pathF.datum(xValues)
+                    .transition()
+                    .duration(300)
+                    .attr('d', lineF);
+
+                pathFPrime.datum(xValues)
+                    .transition()
+                    .duration(300)
+                    .attr('d', lineFPrime);
+            }
+
+            // Slider handler
+            const slider = document.getElementById('k-slider');
+            const kDisplay = document.getElementById('k-value');
+
+            if (slider) {
+                slider.addEventListener('input', function() {
+                    const newK = parseFloat(this.value);
+                    kDisplay.textContent = newK.toFixed(1);
+                    updateGraph(newK);
+                });
+            }
+        }
+
+        // ===== Trigger Visualizations on Slide Entry =====
+        const visualizationSlides = {
+            3: drawCompositionFlow,
+            7: drawLeibnizViz,
+            8: drawRateMultiplier,
+            13: drawChainGraph
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        // Poll for slide changes
+        setInterval(checkAndDrawVisualization, 200);
+
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

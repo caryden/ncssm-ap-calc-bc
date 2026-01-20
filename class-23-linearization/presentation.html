@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 23: Linearization and L'Hospital's Rule | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #10b981;
+            --theme-color-light: #34d399;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .formula-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .formula-box h4 {
+            color: var(--theme-color-light);
+            margin-bottom: 1rem;
+        }
+
+        .concept-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            border-radius: 0 8px 8px 0;
+            max-width: 850px;
+            text-align: left;
+        }
+
+        .concept-box h4 {
+            color: var(--theme-color-light);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .slider-control label {
+            font-size: 1.25rem;
+            font-family: var(--font-display);
+        }
+
+        .slider-control input[type="range"] {
+            width: 300px;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--theme-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .info-display {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-family: var(--font-mono);
+            font-size: 1.15rem;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+        }
+
+        .motion-legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-size: 1.15rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .indeterminate-box {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--danger);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem auto;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .lhopital-step {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            font-size: 1.35rem;
+        }
+
+        .lhopital-step .arrow {
+            color: var(--accent-secondary);
+            margin: 0 0.5rem;
+        }
+
+        .section-divider {
+            border-top: 2px solid var(--bg-tertiary);
+            margin: 2rem 0;
+            padding-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Linearization and L'Hospital's Rule">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 4: Contextual Applications of Differentiation</div>
+                <h1>Linearization & L'Hospital's Rule</h1>
+                <p class="subtitle">Local Linear Approximation and Indeterminate Forms</p>
+                <p class="meta">Class 23 | CED Topics 4.6, 4.7 | AP Calculus BC | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: Two Topics -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="Today's Topics">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Two powerful applications of the derivative:</p>
+                <div style="display: flex; justify-content: center; gap: 3rem; margin-top: 2rem;">
+                    <div style="text-align: center;">
+                        <p style="font-size: 1.75rem; color: var(--theme-color-light);">Linearization</p>
+                        <p style="font-size: 1.25rem; color: var(--text-secondary);">Approximating functions</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <p style="font-size: 1.75rem; color: var(--accent-secondary);">L'Hospital's Rule</p>
+                        <p style="font-size: 1.25rem; color: var(--text-secondary);">Evaluating limits</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Warm-Up -->
+        <div class="slide slide-exercise" data-slide="2" data-section="Opening" data-title="Warm-Up">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="prompt">
+                    <p>Find the equation of the tangent line to \( f(x) = \sqrt{x} \) at \( x = 4 \).</p>
+                </div>
+                <div class="instructions" style="margin-top: 1.5rem;">
+                    <p style="font-size: 1.25rem; color: var(--text-secondary);">
+                        You'll need: \( f(4) \), \( f'(x) \), and \( f'(4) \)
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PART 1: LINEARIZATION -->
+
+        <!-- Slide 3: Linearization Idea -->
+        <div class="slide slide-statement" data-slide="3" data-section="Linearization" data-title="The Big Idea">
+            <div class="slide-content">
+                <p class="statement">Near a point, a curve looks like its <em>tangent line</em></p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    We can use the tangent line to approximate function values
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Linearization Formula -->
+        <div class="slide slide-two-part" data-slide="4" data-section="Linearization" data-title="The Formula">
+            <div class="slide-content">
+                <p class="primary" style="color: var(--theme-color-light);">Local Linear Approximation</p>
+                <div class="formula-box">
+                    <div class="math-display">
+                        \[ L(x) = f(a) + f'(a)(x - a) \]
+                    </div>
+                </div>
+                <div class="concept-box">
+                    <h4>This is just the tangent line equation!</h4>
+                    <p style="font-size: 1.25rem;">
+                        \( f(x) \approx L(x) \) for \( x \) near \( a \)
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Linearization Visualization -->
+        <div class="slide slide-visual" data-slide="5" data-section="Linearization" data-title="Visualizing Linearization">
+            <div class="slide-content">
+                <h2>Linearization of \( f(x) = \sqrt{x} \) at \( a = 4 \)</h2>
+                <div id="linear-viz" class="visualization"></div>
+                <div class="motion-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-function);"></div>
+                        <span>\( f(x) = \sqrt{x} \)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--color-derivative);"></div>
+                        <span>\( L(x) = 2 + \frac{1}{4}(x-4) \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Example Calculation -->
+        <div class="slide slide-example" data-slide="6" data-section="Linearization" data-title="Example">
+            <div class="slide-content">
+                <h2>Example: Approximating \( \sqrt{4.1} \)</h2>
+                <div class="problem">
+                    <p>Use linearization of \( f(x) = \sqrt{x} \) at \( a = 4 \) to estimate \( \sqrt{4.1} \)</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>\( f(4) = 2 \), \( f'(x) = \frac{1}{2\sqrt{x}} \), \( f'(4) = \frac{1}{4} \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>\( L(x) = 2 + \frac{1}{4}(x - 4) \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( L(4.1) = 2 + \frac{1}{4}(0.1) = 2.025 \)</span>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 1rem; font-size: 1.25rem; color: var(--text-tertiary);">
+                    Actual value: \( \sqrt{4.1} \approx 2.0248 \). Error is only 0.0002!
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 7: Interactive Approximation -->
+        <div class="slide slide-visual" data-slide="7" data-section="Linearization" data-title="Error Analysis">
+            <div class="slide-content">
+                <h2>Approximation Accuracy</h2>
+                <div id="error-viz" class="visualization"></div>
+                <div class="slider-control">
+                    <label>x = </label>
+                    <input type="range" id="error-slider" min="1" max="9" step="0.1" value="4.1">
+                    <span id="error-x" style="font-family: var(--font-mono); min-width: 80px;">x = 4.1</span>
+                </div>
+                <div class="info-display">
+                    <div class="info-item" id="actual-val">Actual: 2.0248</div>
+                    <div class="info-item" id="approx-val">L(x): 2.0250</div>
+                    <div class="info-item" id="error-val">Error: 0.0002</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Differentials -->
+        <div class="slide slide-two-part" data-slide="8" data-section="Linearization" data-title="Differentials">
+            <div class="slide-content">
+                <p class="primary" style="color: var(--theme-color-light);">Differentials</p>
+                <div class="formula-box">
+                    <p style="font-size: 1.25rem; margin-bottom: 1rem;">If \( y = f(x) \), then</p>
+                    <div class="math-display">
+                        \[ dy = f'(x) \, dx \]
+                    </div>
+                </div>
+                <div class="concept-box">
+                    <p style="font-size: 1.25rem;">
+                        \( dy \) approximates \( \Delta y = f(x + dx) - f(x) \) for small \( dx \)
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PART 2: L'HOSPITAL'S RULE -->
+
+        <!-- Slide 9: Transition -->
+        <div class="slide slide-statement" data-slide="9" data-section="L'Hospital's Rule" data-title="Indeterminate Forms">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">What happens when limits give us \( \frac{0}{0} \) or \( \frac{\infty}{\infty} \)?</p>
+                <div class="indeterminate-box">
+                    <p style="font-size: 1.5rem; color: var(--danger);"><strong>Indeterminate Forms</strong></p>
+                    <p style="font-size: 1.25rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                        These don't have obvious values!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: L'Hospital's Rule Statement -->
+        <div class="slide slide-two-part" data-slide="10" data-section="L'Hospital's Rule" data-title="The Rule">
+            <div class="slide-content">
+                <p class="primary" style="color: var(--accent-secondary);">L'Hospital's Rule</p>
+                <div class="formula-box" style="border-color: var(--accent-secondary);">
+                    <p style="font-size: 1.15rem; margin-bottom: 1rem;">If \( \lim_{x \to a} \frac{f(x)}{g(x)} \) gives \( \frac{0}{0} \) or \( \frac{\pm\infty}{\pm\infty} \), then:</p>
+                    <div class="math-display">
+                        \[ \lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)} \]
+                    </div>
+                    <p style="font-size: 1.15rem; color: var(--text-secondary); margin-top: 0.5rem;">(if the right side exists)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Simple Example -->
+        <div class="slide slide-example" data-slide="11" data-section="L'Hospital's Rule" data-title="Example 1">
+            <div class="slide-content">
+                <h2>Example: Basic L'Hospital</h2>
+                <div class="problem">
+                    <p>Evaluate \( \displaystyle\lim_{x \to 0} \frac{\sin x}{x} \)</p>
+                </div>
+                <div class="lhopital-step">
+                    \( \frac{\sin 0}{0} = \frac{0}{0} \) <span class="arrow">\(\Rightarrow\)</span> indeterminate!
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>Apply L'Hospital: \( \lim_{x \to 0} \frac{\sin x}{x} = \lim_{x \to 0} \frac{\cos x}{1} \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>Evaluate: \( \frac{\cos 0}{1} = \frac{1}{1} = 1 \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Another Example -->
+        <div class="slide slide-example" data-slide="12" data-section="L'Hospital's Rule" data-title="Example 2">
+            <div class="slide-content">
+                <h2>Example: Repeated Application</h2>
+                <div class="problem">
+                    <p>Evaluate \( \displaystyle\lim_{x \to 0} \frac{1 - \cos x}{x^2} \)</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>Check: \( \frac{1 - 1}{0} = \frac{0}{0} \) - apply L'Hospital</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>\( \lim_{x \to 0} \frac{\sin x}{2x} \) - still \( \frac{0}{0} \)! Apply again.</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( \lim_{x \to 0} \frac{\cos x}{2} = \frac{1}{2} \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Infinity Example -->
+        <div class="slide slide-example" data-slide="13" data-section="L'Hospital's Rule" data-title="Infinity Form">
+            <div class="slide-content">
+                <h2>Example: \( \frac{\infty}{\infty} \) Form</h2>
+                <div class="problem">
+                    <p>Evaluate \( \displaystyle\lim_{x \to \infty} \frac{\ln x}{x} \)</p>
+                </div>
+                <div class="lhopital-step">
+                    As \( x \to \infty \): \( \frac{\infty}{\infty} \) <span class="arrow">\(\Rightarrow\)</span> L'Hospital applies!
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>\( \lim_{x \to \infty} \frac{\ln x}{x} = \lim_{x \to \infty} \frac{1/x}{1} = \lim_{x \to \infty} \frac{1}{x} = 0 \)</span>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 1rem; font-size: 1.25rem; color: var(--accent-secondary);">
+                    \( \ln x \) grows much slower than \( x \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 14: L'Hospital Visualization -->
+        <div class="slide slide-visual" data-slide="14" data-section="L'Hospital's Rule" data-title="Visualizing L'Hospital">
+            <div class="slide-content">
+                <h2>Why L'Hospital Works</h2>
+                <div id="lhopital-viz" class="visualization"></div>
+                <p class="caption">Near \( x = 0 \): \( \sin x \approx x \), so \( \frac{\sin x}{x} \approx 1 \)</p>
+            </div>
+        </div>
+
+        <!-- Slide 15: When NOT to Use -->
+        <div class="slide slide-list" data-slide="15" data-section="L'Hospital's Rule" data-title="Cautions">
+            <div class="slide-content">
+                <h2>When NOT to Use L'Hospital</h2>
+                <ul>
+                    <li>When the limit is NOT indeterminate</li>
+                    <li>When algebraic simplification is easier</li>
+                    <li>When differentiation creates more complexity</li>
+                    <li>For limits that aren't quotients (directly)</li>
+                    <li>Without checking the form first!</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 16: Practice -->
+        <div class="slide slide-exercise" data-slide="16" data-section="Practice" data-title="Practice 1">
+            <div class="slide-content">
+                <h2>Your Turn: Linearization</h2>
+                <div class="prompt">
+                    <p>Use linearization to approximate \( \cos(0.1) \)</p>
+                    <p style="margin-top: 0.5rem; font-size: 1.25rem;">(Hint: linearize \( \cos x \) at \( a = 0 \))</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Practice 2 -->
+        <div class="slide slide-exercise" data-slide="17" data-section="Practice" data-title="Practice 2">
+            <div class="slide-content">
+                <h2>Your Turn: L'Hospital</h2>
+                <div class="prompt">
+                    <p>Evaluate each limit:</p>
+                </div>
+                <div class="instructions" style="text-align: left; max-width: 600px; margin: 1.5rem auto 0;">
+                    <ol style="list-style-position: inside; font-size: 1.35rem;">
+                        <li style="padding: 0.75rem 0;">\( \displaystyle\lim_{x \to 0} \frac{e^x - 1}{x} \)</li>
+                        <li style="padding: 0.75rem 0;">\( \displaystyle\lim_{x \to 0} \frac{x - \sin x}{x^3} \)</li>
+                        <li style="padding: 0.75rem 0;">\( \displaystyle\lim_{x \to \infty} \frac{e^x}{x^2} \)</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Summary -->
+        <div class="slide slide-comparison" data-slide="18" data-section="Closing" data-title="Summary">
+            <div class="slide-content">
+                <h2>Today's Key Ideas</h2>
+                <div class="columns">
+                    <div class="column" style="border-top: 3px solid var(--theme-color);">
+                        <h3 style="color: var(--theme-color);">Linearization</h3>
+                        <p style="font-size: 1.25rem; margin: 1rem 0;">\( L(x) = f(a) + f'(a)(x-a) \)</p>
+                        <p style="font-size: 1.15rem; color: var(--text-secondary);">
+                            Approximates \( f(x) \) near \( x = a \) using the tangent line
+                        </p>
+                    </div>
+                    <div class="column" style="border-top: 3px solid var(--accent-secondary);">
+                        <h3 style="color: var(--accent-secondary);">L'Hospital's Rule</h3>
+                        <p style="font-size: 1.25rem; margin: 1rem 0;">\( \lim \frac{f}{g} = \lim \frac{f'}{g'} \)</p>
+                        <p style="font-size: 1.15rem; color: var(--text-secondary);">
+                            Only for \( \frac{0}{0} \) or \( \frac{\infty}{\infty} \) forms
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="19" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p><strong>1.</strong> Find the linearization of \( f(x) = e^x \) at \( a = 0 \)</p>
+                    <p style="margin-top: 1rem;"><strong>2.</strong> Evaluate \( \displaystyle\lim_{x \to 0} \frac{e^x - 1 - x}{x^2} \)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Looking Ahead -->
+        <div class="slide slide-statement" data-slide="20" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Next: <em>The Mean Value Theorem</em></p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    A fundamental theorem connecting<br>
+                    average rate and instantaneous rate of change
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 21</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 23: Linearization and L'Hospital's Rule</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Linearization Visualization (Slide 5) =====
+        function drawLinearViz() {
+            const container = document.getElementById('linear-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const xScale = d3.scaleLinear().domain([0, 10]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([0, 4]).range([plotHeight, 0]);
+
+            // f(x) = sqrt(x), L(x) = 2 + (1/4)(x - 4)
+            const f = x => Math.sqrt(x);
+            const L = x => 2 + 0.25 * (x - 4);
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(0, 5, 1))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            g.append('g')
+                .selectAll('line.v')
+                .data(d3.range(0, 11, 2))
+                .enter()
+                .append('line')
+                .attr('x1', d => xScale(d))
+                .attr('x2', d => xScale(d))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // sqrt(x) curve
+            const xValues = d3.range(0.01, 10.01, 0.1);
+            const fLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(f(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', fLine);
+
+            // Linearization (tangent line)
+            const lLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(L(d)));
+
+            g.append('path')
+                .datum([0, 10])
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-derivative)')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '8,4')
+                .attr('d', lLine);
+
+            // Point of tangency
+            g.append('circle')
+                .attr('cx', xScale(4))
+                .attr('cy', yScale(2))
+                .attr('r', 8)
+                .attr('fill', 'var(--theme-color)');
+
+            // Labels
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height - 10)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('x');
+
+            svg.append('text')
+                .attr('x', margin.left - 40)
+                .attr('y', height / 2)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)')
+                .attr('transform', `rotate(-90, ${margin.left - 40}, ${height/2})`)
+                .text('y');
+
+            g.append('text')
+                .attr('x', xScale(4) + 15)
+                .attr('y', yScale(2) - 15)
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--theme-color)')
+                .text('(4, 2)');
+        }
+
+        // ===== Error Visualization (Slide 7) =====
+        function drawErrorViz() {
+            const container = document.getElementById('error-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 350;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const xScale = d3.scaleLinear().domain([1, 9]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([0.5, 3.5]).range([plotHeight, 0]);
+
+            const f = x => Math.sqrt(x);
+            const L = x => 2 + 0.25 * (x - 4);
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(0.5, 4, 0.5))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Curves
+            const xValues = d3.range(1, 9.01, 0.1);
+
+            const fLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(f(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', fLine);
+
+            const lLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(L(d)));
+
+            g.append('path')
+                .datum([1, 9])
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-derivative)')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '8,4')
+                .attr('d', lLine);
+
+            // Tangent point
+            g.append('circle')
+                .attr('cx', xScale(4))
+                .attr('cy', yScale(2))
+                .attr('r', 6)
+                .attr('fill', 'var(--theme-color)');
+
+            // Movable point
+            const actualPoint = g.append('circle')
+                .attr('r', 6)
+                .attr('fill', 'var(--color-function)');
+
+            const approxPoint = g.append('circle')
+                .attr('r', 6)
+                .attr('fill', 'var(--color-derivative)');
+
+            const errorLine = g.append('line')
+                .attr('stroke', 'var(--danger)')
+                .attr('stroke-width', 2);
+
+            function update(x) {
+                const actual = f(x);
+                const approx = L(x);
+                const error = Math.abs(actual - approx);
+
+                actualPoint
+                    .attr('cx', xScale(x))
+                    .attr('cy', yScale(actual));
+
+                approxPoint
+                    .attr('cx', xScale(x))
+                    .attr('cy', yScale(approx));
+
+                errorLine
+                    .attr('x1', xScale(x))
+                    .attr('y1', yScale(actual))
+                    .attr('x2', xScale(x))
+                    .attr('y2', yScale(approx));
+
+                document.getElementById('error-x').textContent = `x = ${x.toFixed(1)}`;
+                document.getElementById('actual-val').textContent = `Actual: ${actual.toFixed(4)}`;
+                document.getElementById('approx-val').textContent = `L(x): ${approx.toFixed(4)}`;
+                document.getElementById('error-val').textContent = `Error: ${error.toFixed(4)}`;
+            }
+
+            update(4.1);
+
+            const slider = document.getElementById('error-slider');
+            if (slider) {
+                slider.addEventListener('input', function(e) {
+                    update(parseFloat(e.target.value));
+                });
+            }
+        }
+
+        // ===== L'Hospital Visualization (Slide 14) =====
+        function drawLhopitalViz() {
+            const container = document.getElementById('lhopital-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const xScale = d3.scaleLinear().domain([-3, 3]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-1.5, 1.5]).range([plotHeight, 0]);
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-1.5, 2, 0.5))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // y = sin(x)
+            const xValues = d3.range(-3, 3.01, 0.05);
+
+            const sinLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(Math.sin(d)))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', sinLine);
+
+            // y = x (the linear approximation at 0)
+            const linLine = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(d));
+
+            g.append('path')
+                .datum([-1.5, 1.5])
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-derivative)')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '8,4')
+                .attr('d', linLine);
+
+            // sin(x)/x ratio line at y = 1
+            g.append('line')
+                .attr('x1', xScale(-2))
+                .attr('x2', xScale(2))
+                .attr('y1', yScale(1))
+                .attr('y2', yScale(1))
+                .attr('stroke', 'var(--accent-secondary)')
+                .attr('stroke-width', 1)
+                .attr('stroke-dasharray', '4,4');
+
+            g.append('text')
+                .attr('x', xScale(2.2))
+                .attr('y', yScale(1))
+                .attr('font-size', '1rem')
+                .attr('fill', 'var(--accent-secondary)')
+                .text('y = 1');
+
+            // Labels
+            g.append('text')
+                .attr('x', xScale(2.5))
+                .attr('y', yScale(Math.sin(2.5)) + 20)
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--color-function)')
+                .text('sin x');
+
+            g.append('text')
+                .attr('x', xScale(1.2))
+                .attr('y', yScale(1.2) - 10)
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--color-derivative)')
+                .text('y = x');
+
+            // Highlight the origin
+            g.append('circle')
+                .attr('cx', xScale(0))
+                .attr('cy', yScale(0))
+                .attr('r', 8)
+                .attr('fill', 'var(--theme-color)');
+        }
+
+        // ===== Visualization Trigger =====
+        const visualizationSlides = {
+            5: drawLinearViz,
+            7: drawErrorViz,
+            14: drawLhopitalViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

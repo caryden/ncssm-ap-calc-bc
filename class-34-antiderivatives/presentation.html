@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 34: Antiderivatives | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #d4a028;
+            --theme-color-light: #fbbf24;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .formula-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 700px;
+        }
+
+        .formula-box h4 {
+            color: var(--theme-color-light);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .formula-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-size: 1.25rem;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+
+        .formula-row:last-child {
+            border-bottom: none;
+        }
+
+        .concept-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            border-radius: 0 8px 8px 0;
+            max-width: 850px;
+            text-align: left;
+        }
+
+        .concept-box h4 {
+            color: var(--theme-color-light);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .theorem-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--accent-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 850px;
+        }
+
+        .theorem-box h4 {
+            color: var(--accent-secondary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .rule-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            max-width: 800px;
+            margin: 1.5rem auto;
+        }
+
+        .rule-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .rule-card h5 {
+            color: var(--theme-color-light);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .rule-card .math {
+            font-size: 1.15rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Antiderivatives">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 6: Integration</div>
+                <h1>Antiderivatives</h1>
+                <p class="subtitle">Reversing the Derivative</p>
+                <p class="meta">Class 34 | CED Topic 6.8 | AP Calculus BC | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: Opening Question -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="Opening Question">
+            <div class="slide-content">
+                <p class="statement">If differentiation goes forward, what goes backward?</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Warm-Up -->
+        <div class="slide slide-exercise" data-slide="2" data-section="Opening" data-title="Warm-Up">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="prompt">
+                    <p>Find a function \( F(x) \) such that:</p>
+                    <ol style="text-align: left; max-width: 500px; margin: 1.5rem auto; font-size: 1.25rem;">
+                        <li style="padding: 0.5rem 0;">\( F'(x) = 2x \)</li>
+                        <li style="padding: 0.5rem 0;">\( F'(x) = \cos(x) \)</li>
+                        <li style="padding: 0.5rem 0;">\( F'(x) = e^x \)</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Definition -->
+        <div class="slide slide-visual" data-slide="3" data-section="Concept" data-title="Definition">
+            <div class="slide-content">
+                <h2>What is an Antiderivative?</h2>
+                <div class="theorem-box">
+                    <h4>Definition</h4>
+                    <p style="font-size: 1.35rem; text-align: center;">A function \( F \) is an <strong>antiderivative</strong> of \( f \) on an interval \( I \) if</p>
+                    <p style="font-size: 1.75rem; text-align: center; margin-top: 1rem;">\( F'(x) = f(x) \) for all \( x \) in \( I \)</p>
+                </div>
+                <div class="concept-box" style="margin-top: 1rem;">
+                    <p style="font-size: 1.15rem;"><strong>Example:</strong> \( F(x) = x^2 \) is an antiderivative of \( f(x) = 2x \) because \( \frac{d}{dx}[x^2] = 2x \)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: The + C -->
+        <div class="slide slide-visual" data-slide="4" data-section="Concept" data-title="The Constant">
+            <div class="slide-content">
+                <h2>The Family of Antiderivatives</h2>
+                <div class="concept-box">
+                    <h4>Key Insight</h4>
+                    <p style="font-size: 1.25rem;">If \( F \) is an antiderivative of \( f \), then so is \( F + C \) for any constant \( C \).</p>
+                    <p style="font-size: 1.15rem; margin-top: 1rem;">This is because \( \frac{d}{dx}[F(x) + C] = F'(x) + 0 = f(x) \)</p>
+                </div>
+                <div class="theorem-box" style="margin-top: 1rem;">
+                    <p style="font-size: 1.25rem; text-align: center;">The <strong>general antiderivative</strong> of \( f(x) \) is \( F(x) + C \)</p>
+                    <p style="font-size: 1.1rem; text-align: center; color: var(--text-secondary); margin-top: 0.5rem;">where \( C \) is the constant of integration</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Visualization -->
+        <div class="slide slide-visual" data-slide="5" data-section="Concept" data-title="Family Visualization">
+            <div class="slide-content">
+                <h2>A Family of Curves</h2>
+                <div id="family-viz" class="visualization"></div>
+                <p style="font-size: 1.15rem; color: var(--text-secondary); margin-top: 0.5rem;">All antiderivatives of \( f(x) = 2x \) are vertical shifts of each other</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Notation -->
+        <div class="slide slide-visual" data-slide="6" data-section="Concept" data-title="Notation">
+            <div class="slide-content">
+                <h2>Indefinite Integral Notation</h2>
+                <div class="theorem-box">
+                    <p style="font-size: 1.75rem; text-align: center;">\( \int f(x) \, dx = F(x) + C \)</p>
+                </div>
+                <div class="concept-box" style="margin-top: 1rem;">
+                    <p style="font-size: 1.15rem;"><strong>\( \int \)</strong> is the integral sign (elongated S for "sum")</p>
+                    <p style="font-size: 1.15rem; margin-top: 0.5rem;"><strong>\( f(x) \)</strong> is the integrand</p>
+                    <p style="font-size: 1.15rem; margin-top: 0.5rem;"><strong>\( dx \)</strong> indicates integration with respect to \( x \)</p>
+                    <p style="font-size: 1.15rem; margin-top: 0.5rem;"><strong>\( C \)</strong> is the constant of integration</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Power Rule -->
+        <div class="slide slide-visual" data-slide="7" data-section="Rules" data-title="Power Rule">
+            <div class="slide-content">
+                <h2>Power Rule for Integration</h2>
+                <div class="theorem-box">
+                    <h4>Power Rule</h4>
+                    <p style="font-size: 1.75rem; text-align: center;">\( \int x^n \, dx = \frac{x^{n+1}}{n+1} + C \) for \( n \neq -1 \)</p>
+                </div>
+                <div class="concept-box" style="margin-top: 1rem;">
+                    <h4>Verification</h4>
+                    <p style="font-size: 1.15rem;">\( \frac{d}{dx}\left[\frac{x^{n+1}}{n+1} + C\right] = \frac{(n+1)x^n}{n+1} = x^n \) ✓</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Basic Rules -->
+        <div class="slide slide-visual" data-slide="8" data-section="Rules" data-title="Basic Rules">
+            <div class="slide-content">
+                <h2>Basic Integration Rules</h2>
+                <div class="formula-box">
+                    <div class="formula-row">
+                        <span>\( \int k \, dx \)</span>
+                        <span>\( = kx + C \)</span>
+                    </div>
+                    <div class="formula-row">
+                        <span>\( \int x^n \, dx \)</span>
+                        <span>\( = \frac{x^{n+1}}{n+1} + C \) (n ≠ -1)</span>
+                    </div>
+                    <div class="formula-row">
+                        <span>\( \int \frac{1}{x} \, dx \)</span>
+                        <span>\( = \ln|x| + C \)</span>
+                    </div>
+                    <div class="formula-row">
+                        <span>\( \int e^x \, dx \)</span>
+                        <span>\( = e^x + C \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Trig Rules -->
+        <div class="slide slide-visual" data-slide="9" data-section="Rules" data-title="Trig Rules">
+            <div class="slide-content">
+                <h2>Trigonometric Integrals</h2>
+                <div class="formula-box">
+                    <div class="formula-row">
+                        <span>\( \int \cos(x) \, dx \)</span>
+                        <span>\( = \sin(x) + C \)</span>
+                    </div>
+                    <div class="formula-row">
+                        <span>\( \int \sin(x) \, dx \)</span>
+                        <span>\( = -\cos(x) + C \)</span>
+                    </div>
+                    <div class="formula-row">
+                        <span>\( \int \sec^2(x) \, dx \)</span>
+                        <span>\( = \tan(x) + C \)</span>
+                    </div>
+                    <div class="formula-row">
+                        <span>\( \int \csc^2(x) \, dx \)</span>
+                        <span>\( = -\cot(x) + C \)</span>
+                    </div>
+                    <div class="formula-row">
+                        <span>\( \int \sec(x)\tan(x) \, dx \)</span>
+                        <span>\( = \sec(x) + C \)</span>
+                    </div>
+                    <div class="formula-row">
+                        <span>\( \int \csc(x)\cot(x) \, dx \)</span>
+                        <span>\( = -\csc(x) + C \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Sum/Difference and Constant Multiple -->
+        <div class="slide slide-visual" data-slide="10" data-section="Rules" data-title="Linearity">
+            <div class="slide-content">
+                <h2>Properties of Integrals</h2>
+                <div class="rule-grid">
+                    <div class="rule-card">
+                        <h5>Constant Multiple</h5>
+                        <p class="math">\( \int k \cdot f(x) \, dx = k \int f(x) \, dx \)</p>
+                    </div>
+                    <div class="rule-card">
+                        <h5>Sum Rule</h5>
+                        <p class="math">\( \int [f(x) + g(x)] \, dx = \int f(x) \, dx + \int g(x) \, dx \)</p>
+                    </div>
+                    <div class="rule-card">
+                        <h5>Difference Rule</h5>
+                        <p class="math">\( \int [f(x) - g(x)] \, dx = \int f(x) \, dx - \int g(x) \, dx \)</p>
+                    </div>
+                    <div class="rule-card">
+                        <h5>Linearity</h5>
+                        <p class="math">\( \int [af + bg] \, dx = a\int f \, dx + b\int g \, dx \)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Examples -->
+        <div class="slide slide-example" data-slide="11" data-section="Examples" data-title="Examples">
+            <div class="slide-content">
+                <h2>Examples</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>\( \int 3x^4 \, dx = 3 \cdot \frac{x^5}{5} + C = \frac{3x^5}{5} + C \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>\( \int (x^2 + 2x - 5) \, dx = \frac{x^3}{3} + x^2 - 5x + C \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( \int \frac{1}{x^3} \, dx = \int x^{-3} \, dx = \frac{x^{-2}}{-2} + C = -\frac{1}{2x^2} + C \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>\( \int \sqrt{x} \, dx = \int x^{1/2} \, dx = \frac{x^{3/2}}{3/2} + C = \frac{2x^{3/2}}{3} + C \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Rewriting First -->
+        <div class="slide slide-example" data-slide="12" data-section="Examples" data-title="Rewriting">
+            <div class="slide-content">
+                <h2>Rewrite Before Integrating</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>\( \int \frac{x^3 + 2x}{x} \, dx = \int (x^2 + 2) \, dx = \frac{x^3}{3} + 2x + C \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>\( \int (x + 1)^2 \, dx = \int (x^2 + 2x + 1) \, dx = \frac{x^3}{3} + x^2 + x + C \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( \int \frac{1}{\sqrt{x}} \, dx = \int x^{-1/2} \, dx = 2x^{1/2} + C = 2\sqrt{x} + C \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Initial Value Problems -->
+        <div class="slide slide-visual" data-slide="13" data-section="IVP" data-title="Initial Value Problems">
+            <div class="slide-content">
+                <h2>Initial Value Problems</h2>
+                <div class="concept-box">
+                    <h4>Finding the Specific Antiderivative</h4>
+                    <p style="font-size: 1.15rem;">Given \( f'(x) \) and a point \( (a, b) \) on the curve, we can find the specific function \( f(x) \).</p>
+                </div>
+                <div class="theorem-box" style="margin-top: 1rem;">
+                    <p style="font-size: 1.25rem;"><strong>Example:</strong> Find \( f(x) \) if \( f'(x) = 3x^2 \) and \( f(1) = 5 \)</p>
+                    <p style="font-size: 1.15rem; margin-top: 1rem;">1. \( f(x) = \int 3x^2 \, dx = x^3 + C \)</p>
+                    <p style="font-size: 1.15rem; margin-top: 0.5rem;">2. Use initial condition: \( f(1) = 1^3 + C = 5 \), so \( C = 4 \)</p>
+                    <p style="font-size: 1.15rem; margin-top: 0.5rem;">3. Answer: \( f(x) = x^3 + 4 \)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: IVP Visualization -->
+        <div class="slide slide-visual" data-slide="14" data-section="IVP" data-title="IVP Visualization">
+            <div class="slide-content">
+                <h2>Selecting the Right Curve</h2>
+                <div id="ivp-viz" class="visualization"></div>
+                <p style="font-size: 1.15rem; color: var(--text-secondary); margin-top: 0.5rem;">The initial condition picks the specific curve from the family</p>
+            </div>
+        </div>
+
+        <!-- Slide 15: Practice -->
+        <div class="slide slide-exercise" data-slide="15" data-section="Practice" data-title="Practice">
+            <div class="slide-content">
+                <h2>Your Turn</h2>
+                <div class="prompt">
+                    <p>Find the following antiderivatives:</p>
+                    <ol style="text-align: left; max-width: 600px; margin: 1.5rem auto; font-size: 1.25rem;">
+                        <li style="padding: 0.5rem 0;">\( \int (4x^3 - 6x + 2) \, dx \)</li>
+                        <li style="padding: 0.5rem 0;">\( \int (\sin x + e^x) \, dx \)</li>
+                        <li style="padding: 0.5rem 0;">\( \int \frac{x^4 - 3}{x^2} \, dx \)</li>
+                        <li style="padding: 0.5rem 0;">Find \( f(x) \) if \( f'(x) = 2x + 1 \) and \( f(0) = 3 \)</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Summary -->
+        <div class="slide slide-visual" data-slide="16" data-section="Closing" data-title="Key Takeaways">
+            <div class="slide-content">
+                <h2>Antiderivatives Summary</h2>
+                <div class="theorem-box" style="border-color: var(--theme-color);">
+                    <p style="font-size: 1.15rem; margin-bottom: 0.75rem;">\( \int x^n \, dx = \frac{x^{n+1}}{n+1} + C \) for \( n \neq -1 \)</p>
+                    <p style="font-size: 1.15rem; margin-bottom: 0.75rem;">\( \int \frac{1}{x} \, dx = \ln|x| + C \)</p>
+                    <p style="font-size: 1.15rem; margin-bottom: 0.75rem;">Always add \( +C \) to indefinite integrals</p>
+                    <p style="font-size: 1.15rem;">Use initial conditions to find specific solutions</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="17" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p><strong>1.</strong> Find \( \int (x^3 - 4\sqrt{x} + \frac{2}{x}) \, dx \)</p>
+                    <p style="margin-top: 1.5rem;"><strong>2.</strong> If the acceleration of a particle is \( a(t) = 6t \) and \( v(0) = 2 \), find \( v(t) \).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Looking Ahead -->
+        <div class="slide slide-statement" data-slide="18" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Coming Up Next:</p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    U-Substitution<br>
+                    Reversing the Chain Rule
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 19</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 34: Antiderivatives</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Family of Antiderivatives Visualization (Slide 5) =====
+        function drawFamilyViz() {
+            const container = document.getElementById('family-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-3, 3]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-4, 10]).range([plotHeight, 0]);
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-4, 11, 2))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Family of curves F(x) = x² + C
+            const constants = [-3, -1, 0, 1, 3, 5];
+            const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6'];
+
+            constants.forEach((C, i) => {
+                const xValues = d3.range(-3, 3.1, 0.1);
+                const line = d3.line()
+                    .x(d => xScale(d))
+                    .y(d => yScale(d * d + C))
+                    .curve(d3.curveNatural);
+
+                g.append('path')
+                    .datum(xValues)
+                    .attr('fill', 'none')
+                    .attr('stroke', colors[i])
+                    .attr('stroke-width', 2)
+                    .attr('d', line);
+
+                g.append('text')
+                    .attr('x', xScale(2.8))
+                    .attr('y', yScale(2.8 * 2.8 + C))
+                    .attr('fill', colors[i])
+                    .attr('font-size', '1rem')
+                    .text(`C=${C}`);
+            });
+
+            // Label
+            g.append('text')
+                .attr('x', plotWidth / 2)
+                .attr('y', -10)
+                .attr('text-anchor', 'middle')
+                .attr('fill', 'var(--text-primary)')
+                .attr('font-size', '1.25rem')
+                .text('F(x) = x² + C');
+        }
+
+        // ===== IVP Visualization (Slide 14) =====
+        function drawIvpViz() {
+            const container = document.getElementById('ivp-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([-2, 3]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-5, 15]).range([plotHeight, 0]);
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-4, 16, 2))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Family of curves f(x) = x³ + C (faded)
+            const constants = [-2, 0, 2, 6];
+
+            constants.forEach((C) => {
+                const xValues = d3.range(-1.5, 2.5, 0.05);
+                const line = d3.line()
+                    .x(d => xScale(d))
+                    .y(d => yScale(d * d * d + C))
+                    .curve(d3.curveNatural);
+
+                g.append('path')
+                    .datum(xValues)
+                    .attr('fill', 'none')
+                    .attr('stroke', C === 4 ? 'var(--color-function)' : 'var(--text-tertiary)')
+                    .attr('stroke-width', C === 4 ? 3 : 1)
+                    .attr('d', line);
+            });
+
+            // The specific curve f(x) = x³ + 4
+            const xValues = d3.range(-1.5, 2.5, 0.05);
+            const line = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(d * d * d + 4))
+                .curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Initial condition point (1, 5)
+            g.append('circle')
+                .attr('cx', xScale(1))
+                .attr('cy', yScale(5))
+                .attr('r', 8)
+                .attr('fill', 'var(--color-error)');
+
+            g.append('text')
+                .attr('x', xScale(1) + 15)
+                .attr('y', yScale(5) + 5)
+                .attr('fill', 'var(--text-primary)')
+                .attr('font-size', '1.25rem')
+                .text('(1, 5)');
+        }
+
+        // ===== Visualization Trigger =====
+        const visualizationSlides = {
+            5: drawFamilyViz,
+            14: drawIvpViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

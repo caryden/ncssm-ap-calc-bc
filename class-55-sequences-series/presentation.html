@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sequences and Series Introduction | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <style>
+        :root {
+            --theme-color: #6366f1;
+            --theme-color-light: #818cf8;
+            --theme-color-dark: #4f46e5;
+            --sequence-color: #6366f1;
+            --sum-color: #ec4899;
+            --partial-color: #f59e0b;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .bc-badge {
+            background: linear-gradient(135deg, var(--theme-color), var(--theme-color-dark));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .slide-title h1 {
+            color: var(--theme-color);
+        }
+
+        .viz-container {
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viz-container svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #f0f0ff 0%, #f8f8ff 100%);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .definition-box h3 {
+            color: var(--theme-color);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .sequence-display {
+            font-family: 'Georgia', serif;
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .comparison-card {
+            background: white;
+            border: 2px solid var(--theme-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .comparison-card h3 {
+            color: var(--theme-color);
+            margin-bottom: 1rem;
+        }
+
+        .comparison-card.series {
+            border-color: var(--sum-color);
+        }
+
+        .comparison-card.series h3 {
+            color: var(--sum-color);
+        }
+
+        .formula-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .controls-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: var(--theme-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .control-btn:hover {
+            background: var(--theme-color-dark);
+        }
+
+        .control-btn.active {
+            background: var(--theme-color-dark);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .notation-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.25rem;
+            margin: 1rem 0;
+        }
+
+        .notation-table th,
+        .notation-table td {
+            padding: 0.75rem 1rem;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .notation-table th {
+            background: var(--theme-color);
+            color: white;
+        }
+
+        .notation-table tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .example-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .example-row .label {
+            font-weight: bold;
+            color: var(--theme-color);
+            min-width: 100px;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .slider-container input[type="range"] {
+            width: 200px;
+        }
+
+        .slider-value {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--theme-color);
+            min-width: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+
+        <!-- Slide 0: Title -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 10: Infinite Sequences and Series</span>
+                <span class="bc-badge">BC Only</span>
+                <h1>Sequences and Series</h1>
+                <p class="subtitle">Introduction to Infinite Patterns</p>
+                <p class="meta">Class 55 | CED Topic 10.1</p>
+            </div>
+        </section>
+
+        <!-- Slide 1: Warm-Up -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="exercise-box">
+                    <p>Consider the pattern: \(1, \frac{1}{2}, \frac{1}{4}, \frac{1}{8}, \frac{1}{16}, ...\)</p>
+                    <hr style="margin: 1.5rem 0; border-color: #e5e7eb;">
+                    <p><strong>Questions:</strong></p>
+                    <ol style="line-height: 2;">
+                        <li>What is the 10th term?</li>
+                        <li>What formula gives the \(n\)th term?</li>
+                        <li>What happens as \(n \to \infty\)?</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: What is a Sequence? -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>What is a Sequence?</h2>
+                <div class="definition-box">
+                    <h3>Definition</h3>
+                    <p>A <strong>sequence</strong> is a function whose domain is the positive integers (or non-negative integers).</p>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <p style="font-size: 1.25rem;">Instead of writing \(f(1), f(2), f(3), ...\), we write:</p>
+                    <p class="math-display">\[a_1, a_2, a_3, ... \text{ or } \{a_n\}_{n=1}^{\infty}\]</p>
+                </div>
+                <div class="sequence-display" style="margin-top: 1.5rem;">
+                    \(a_n\) = the <strong>general term</strong> or <strong>nth term</strong>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Sequence Examples -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Common Sequence Examples</h2>
+                <div class="example-row">
+                    <span class="label">Arithmetic:</span>
+                    <span>\(a_n = 2n + 1\) gives \(3, 5, 7, 9, 11, ...\)</span>
+                </div>
+                <div class="example-row">
+                    <span class="label">Geometric:</span>
+                    <span>\(a_n = 2 \cdot 3^{n-1}\) gives \(2, 6, 18, 54, ...\)</span>
+                </div>
+                <div class="example-row">
+                    <span class="label">Harmonic:</span>
+                    <span>\(a_n = \frac{1}{n}\) gives \(1, \frac{1}{2}, \frac{1}{3}, \frac{1}{4}, ...\)</span>
+                </div>
+                <div class="example-row">
+                    <span class="label">Alternating:</span>
+                    <span>\(a_n = \frac{(-1)^n}{n}\) gives \(-1, \frac{1}{2}, -\frac{1}{3}, \frac{1}{4}, ...\)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Sequence Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Visualizing Sequences</h2>
+                <div id="sequence-viz" class="viz-container"></div>
+                <div class="controls-container">
+                    <button class="control-btn active" data-seq="harmonic">1/n</button>
+                    <button class="control-btn" data-seq="geometric">1/2^n</button>
+                    <button class="control-btn" data-seq="alternating">(-1)^n/n</button>
+                    <button class="control-btn" data-seq="sqrt">1/sqrt(n)</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Convergence Definition -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Convergence of Sequences</h2>
+                <div class="definition-box">
+                    <h3>Definition</h3>
+                    <p>A sequence \(\{a_n\}\) <strong>converges</strong> to a limit \(L\) if for every \(\epsilon > 0\), there exists an integer \(N\) such that</p>
+                    <p class="math-display">\[|a_n - L| < \epsilon \text{ whenever } n > N\]</p>
+                    <p>We write: \(\lim_{n \to \infty} a_n = L\) or \(a_n \to L\)</p>
+                </div>
+                <p style="margin-top: 1.5rem; text-align: center; font-size: 1.25rem;">
+                    <strong>Intuition:</strong> The terms get arbitrarily close to \(L\) as \(n\) gets large.
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 6: Convergence Examples -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Convergence Examples</h2>
+                <table class="notation-table">
+                    <tr>
+                        <th>Sequence</th>
+                        <th>Converges?</th>
+                        <th>Limit</th>
+                    </tr>
+                    <tr>
+                        <td>\(a_n = \frac{1}{n}\)</td>
+                        <td>Yes</td>
+                        <td>\(0\)</td>
+                    </tr>
+                    <tr>
+                        <td>\(a_n = \frac{n}{n+1}\)</td>
+                        <td>Yes</td>
+                        <td>\(1\)</td>
+                    </tr>
+                    <tr>
+                        <td>\(a_n = (-1)^n\)</td>
+                        <td>No</td>
+                        <td>Oscillates</td>
+                    </tr>
+                    <tr>
+                        <td>\(a_n = n^2\)</td>
+                        <td>No</td>
+                        <td>\(\infty\)</td>
+                    </tr>
+                    <tr>
+                        <td>\(a_n = \frac{(-1)^n}{n}\)</td>
+                        <td>Yes</td>
+                        <td>\(0\)</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- Slide 7: What is a Series? -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>From Sequence to Series</h2>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h3>Sequence</h3>
+                        <p>A <em>list</em> of numbers</p>
+                        <p class="math-display">\[a_1, a_2, a_3, ...\]</p>
+                    </div>
+                    <div class="comparison-card series">
+                        <h3>Series</h3>
+                        <p>A <em>sum</em> of numbers</p>
+                        <p class="math-display">\[a_1 + a_2 + a_3 + ...\]</p>
+                    </div>
+                </div>
+                <div class="definition-box" style="margin-top: 1.5rem;">
+                    <h3>Series Notation</h3>
+                    <p class="math-display">\[\sum_{n=1}^{\infty} a_n = a_1 + a_2 + a_3 + \cdots\]</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Partial Sums -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Partial Sums</h2>
+                <div class="definition-box">
+                    <h3>Definition</h3>
+                    <p>The \(n\)th <strong>partial sum</strong> of a series is:</p>
+                    <p class="math-display">\[S_n = \sum_{k=1}^{n} a_k = a_1 + a_2 + \cdots + a_n\]</p>
+                </div>
+                <div class="formula-box" style="margin-top: 1.5rem;">
+                    <p>The <strong>sequence of partial sums</strong> is:</p>
+                    <p style="font-size: 1.25rem;">\(S_1 = a_1\)</p>
+                    <p style="font-size: 1.25rem;">\(S_2 = a_1 + a_2\)</p>
+                    <p style="font-size: 1.25rem;">\(S_3 = a_1 + a_2 + a_3\)</p>
+                    <p style="font-size: 1.25rem;">\(\vdots\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Series Convergence -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Convergence of Series</h2>
+                <div class="definition-box">
+                    <h3>Definition</h3>
+                    <p>The infinite series \(\sum_{n=1}^{\infty} a_n\) <strong>converges</strong> if the sequence of partial sums \(\{S_n\}\) converges:</p>
+                    <p class="math-display">\[\sum_{n=1}^{\infty} a_n = \lim_{n \to \infty} S_n = S\]</p>
+                </div>
+                <p style="margin-top: 1.5rem; text-align: center; font-size: 1.25rem;">
+                    If the limit does not exist, the series <strong>diverges</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 10: Partial Sums Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Building Partial Sums</h2>
+                <div id="partial-sums-viz" class="viz-container"></div>
+                <div class="slider-container">
+                    <span>Terms: </span>
+                    <input type="range" id="terms-slider" min="1" max="20" value="5">
+                    <span class="slider-value" id="terms-value">n = 5</span>
+                </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--sequence-color);"></div>
+                        <span>Terms \(a_n = \frac{1}{2^n}\)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--sum-color);"></div>
+                        <span>Partial Sum \(S_n\)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: Classic Example -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example: \(\sum_{n=1}^{\infty} \frac{1}{2^n}\)</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <p><strong>Terms:</strong></p>
+                        <p>\(a_1 = \frac{1}{2}\)</p>
+                        <p>\(a_2 = \frac{1}{4}\)</p>
+                        <p>\(a_3 = \frac{1}{8}\)</p>
+                        <p>\(a_4 = \frac{1}{16}\)</p>
+                    </div>
+                    <div class="column">
+                        <p><strong>Partial Sums:</strong></p>
+                        <p>\(S_1 = \frac{1}{2}\)</p>
+                        <p>\(S_2 = \frac{3}{4}\)</p>
+                        <p>\(S_3 = \frac{7}{8}\)</p>
+                        <p>\(S_4 = \frac{15}{16}\)</p>
+                    </div>
+                </div>
+                <div class="formula-box" style="margin-top: 1.5rem;">
+                    <p>Pattern: \(S_n = \frac{2^n - 1}{2^n} = 1 - \frac{1}{2^n}\)</p>
+                    <p style="margin-top: 1rem; font-size: 1.5rem; color: var(--theme-color);">
+                        \(\lim_{n \to \infty} S_n = 1\), so \(\sum_{n=1}^{\infty} \frac{1}{2^n} = 1\)
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: Visual Proof -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Visual Proof: \(\frac{1}{2} + \frac{1}{4} + \frac{1}{8} + ... = 1\)</h2>
+                <div id="visual-proof-viz" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.25rem; margin-top: 1rem;">
+                    Each term fills half of the remaining space!
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 13: Harmonic Series -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>The Harmonic Series</h2>
+                <div class="formula-box">
+                    <p class="math-display">\[\sum_{n=1}^{\infty} \frac{1}{n} = 1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \cdots\]</p>
+                </div>
+                <div class="definition-box" style="margin-top: 1.5rem;">
+                    <h3>Does it converge?</h3>
+                    <p>Even though \(a_n = \frac{1}{n} \to 0\), the harmonic series <strong>diverges</strong>!</p>
+                    <p style="margin-top: 1rem;">This shows: terms going to 0 is <em>necessary</em> but <em>not sufficient</em> for convergence.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 14: Harmonic Divergence Proof -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Why Does the Harmonic Series Diverge?</h2>
+                <div class="formula-box">
+                    <p style="text-align: left; line-height: 2;">
+                        \(1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \frac{1}{5} + \frac{1}{6} + \frac{1}{7} + \frac{1}{8} + ...\)
+                    </p>
+                    <p style="text-align: left; line-height: 2; margin-top: 1rem;">
+                        \(> 1 + \frac{1}{2} + (\frac{1}{4} + \frac{1}{4}) + (\frac{1}{8} + \frac{1}{8} + \frac{1}{8} + \frac{1}{8}) + ...\)
+                    </p>
+                    <p style="text-align: left; line-height: 2; margin-top: 1rem;">
+                        \(= 1 + \frac{1}{2} + \frac{1}{2} + \frac{1}{2} + ... \to \infty\)
+                    </p>
+                </div>
+                <p style="text-align: center; margin-top: 1.5rem; font-size: 1.25rem;">
+                    Each group of terms sums to at least \(\frac{1}{2}\), so the series grows without bound.
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 15: Harmonic Series Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Harmonic Series Growth</h2>
+                <div id="harmonic-viz" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.1rem;">
+                    Partial sums grow slowly but unboundedly: \(S_{10} \approx 2.93\), \(S_{100} \approx 5.19\), \(S_{1000} \approx 7.49\)
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 16: Sequence Limit Theorems -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Sequence Limit Theorems</h2>
+                <p style="margin-bottom: 1rem;">If \(\lim_{n \to \infty} a_n = L\) and \(\lim_{n \to \infty} b_n = M\), then:</p>
+                <div class="formula-box">
+                    <p style="text-align: left; line-height: 2.5;">
+                        <strong>Sum:</strong> \(\lim_{n \to \infty} (a_n + b_n) = L + M\)<br>
+                        <strong>Product:</strong> \(\lim_{n \to \infty} (a_n \cdot b_n) = L \cdot M\)<br>
+                        <strong>Quotient:</strong> \(\lim_{n \to \infty} \frac{a_n}{b_n} = \frac{L}{M}\) (if \(M \neq 0\))<br>
+                        <strong>Scalar:</strong> \(\lim_{n \to \infty} (c \cdot a_n) = c \cdot L\)
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 17: Practice Problems -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Practice Problems</h2>
+                <div class="exercise-box">
+                    <p><strong>Find the limits of these sequences:</strong></p>
+                    <ol style="font-size: 1.25rem; line-height: 2.5;">
+                        <li>\(a_n = \frac{3n^2 + 1}{n^2 - 2}\)</li>
+                        <li>\(a_n = \frac{n}{2^n}\)</li>
+                        <li>\(a_n = \left(1 + \frac{1}{n}\right)^n\)</li>
+                        <li>\(a_n = \frac{\sin(n)}{n}\)</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 18: Solutions -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <ol style="font-size: 1.2rem; line-height: 2.2;">
+                    <li>\(\lim_{n \to \infty} \frac{3n^2 + 1}{n^2 - 2} = \frac{3}{1} = 3\) (divide by highest power)</li>
+                    <li>\(\lim_{n \to \infty} \frac{n}{2^n} = 0\) (exponential beats polynomial)</li>
+                    <li>\(\lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n = e\) (famous limit!)</li>
+                    <li>\(\lim_{n \to \infty} \frac{\sin(n)}{n} = 0\) (Squeeze Theorem: \(\frac{-1}{n} \leq \frac{\sin(n)}{n} \leq \frac{1}{n}\))</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Slide 19: Key Takeaways -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Key Takeaways</h2>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h3>Sequences</h3>
+                        <ul style="text-align: left; line-height: 1.8;">
+                            <li>Ordered list of numbers</li>
+                            <li>Converges if terms approach limit</li>
+                            <li>Use standard limit techniques</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card series">
+                        <h3>Series</h3>
+                        <ul style="text-align: left; line-height: 1.8;">
+                            <li>Sum of sequence terms</li>
+                            <li>Converges if partial sums converge</li>
+                            <li>\(a_n \to 0\) is necessary but not sufficient</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 20: Looking Ahead -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <h2>Looking Ahead</h2>
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--theme-color);">Next: Geometric Series</h3>
+                    <ul style="font-size: 1.35rem; line-height: 2; list-style: none; padding: 0; margin-top: 1.5rem;">
+                        <li>Geometric series formula</li>
+                        <li>Conditions for convergence</li>
+                        <li>Applications to real-world problems</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="slide-nav">
+        <button id="prevBtn" aria-label="Previous slide">&#8592;</button>
+        <span id="slideCounter">1 / 21</span>
+        <button id="nextBtn" aria-label="Next slide">&#8594;</button>
+        <button id="tocBtn" aria-label="Table of contents">&#9776;</button>
+    </nav>
+
+    <!-- Table of Contents -->
+    <div id="toc" class="toc-overlay">
+        <div class="toc-content">
+            <h3>Contents</h3>
+            <ul id="tocList"></ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <script src="../shared/presentation.js"></script>
+
+    <script>
+        // Visualization management
+        const visualizationSlides = {
+            4: drawSequenceViz,
+            10: drawPartialSumsViz,
+            12: drawVisualProofViz,
+            15: drawHarmonicViz
+        };
+
+        let lastSlide = -1;
+        let currentSeqType = 'harmonic';
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Sequence Visualization
+        function drawSequenceViz() {
+            const container = d3.select('#sequence-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const sequences = {
+                harmonic: n => 1 / n,
+                geometric: n => 1 / Math.pow(2, n),
+                alternating: n => Math.pow(-1, n) / n,
+                sqrt: n => 1 / Math.sqrt(n)
+            };
+
+            const nValues = d3.range(1, 21);
+            const data = nValues.map(n => ({ n, value: sequences[currentSeqType](n) }));
+
+            const xScale = d3.scaleLinear()
+                .domain([0, 21])
+                .range([margin.left, width - margin.right]);
+
+            const yMin = currentSeqType === 'alternating' ? -1.2 : -0.2;
+            const yMax = currentSeqType === 'alternating' ? 1.2 : 1.2;
+
+            const yScale = d3.scaleLinear()
+                .domain([yMin, yMax])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line')
+                .data(yScale.ticks(6))
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', margin.left)
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Axis labels
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height - 10)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.1rem')
+                .text('n');
+
+            svg.append('text')
+                .attr('transform', 'rotate(-90)')
+                .attr('x', -height / 2)
+                .attr('y', 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.1rem')
+                .text('aₙ');
+
+            // Limit line at y=0
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#ec4899')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,5');
+
+            // Points
+            svg.selectAll('.point')
+                .data(data)
+                .enter().append('circle')
+                .attr('cx', d => xScale(d.n))
+                .attr('cy', d => yScale(d.value))
+                .attr('r', 6)
+                .attr('fill', '#6366f1');
+
+            // X-axis ticks
+            svg.selectAll('.tick-label')
+                .data([1, 5, 10, 15, 20])
+                .enter().append('text')
+                .attr('x', d => xScale(d))
+                .attr('y', height - margin.bottom + 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '0.9rem')
+                .text(d => d);
+
+            // Setup button listeners
+            document.querySelectorAll('.control-btn[data-seq]').forEach(btn => {
+                btn.onclick = function() {
+                    currentSeqType = this.dataset.seq;
+                    document.querySelectorAll('.control-btn[data-seq]').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    drawSequenceViz();
+                };
+            });
+        }
+
+        // Partial Sums Visualization
+        function drawPartialSumsViz() {
+            const container = d3.select('#partial-sums-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const slider = document.getElementById('terms-slider');
+            const valueDisplay = document.getElementById('terms-value');
+            let numTerms = parseInt(slider.value);
+
+            function update() {
+                svg.selectAll('*').remove();
+                numTerms = parseInt(slider.value);
+                valueDisplay.textContent = `n = ${numTerms}`;
+
+                const terms = d3.range(1, numTerms + 1).map(n => ({
+                    n,
+                    term: 1 / Math.pow(2, n),
+                    sum: d3.range(1, n + 1).reduce((acc, k) => acc + 1 / Math.pow(2, k), 0)
+                }));
+
+                const xScale = d3.scaleLinear()
+                    .domain([0, 21])
+                    .range([margin.left, width - margin.right]);
+
+                const yScale = d3.scaleLinear()
+                    .domain([0, 1.2])
+                    .range([height - margin.bottom, margin.top]);
+
+                // Grid
+                svg.append('g')
+                    .selectAll('line')
+                    .data([0, 0.25, 0.5, 0.75, 1])
+                    .enter().append('line')
+                    .attr('x1', margin.left)
+                    .attr('x2', width - margin.right)
+                    .attr('y1', d => yScale(d))
+                    .attr('y2', d => yScale(d))
+                    .attr('stroke', '#e5e7eb')
+                    .attr('stroke-width', 1);
+
+                // Limit line at y=1
+                svg.append('line')
+                    .attr('x1', margin.left)
+                    .attr('x2', width - margin.right)
+                    .attr('y1', yScale(1))
+                    .attr('y2', yScale(1))
+                    .attr('stroke', '#10b981')
+                    .attr('stroke-width', 2)
+                    .attr('stroke-dasharray', '5,5');
+
+                svg.append('text')
+                    .attr('x', width - margin.right + 5)
+                    .attr('y', yScale(1))
+                    .attr('dy', '0.35em')
+                    .attr('font-size', '0.9rem')
+                    .attr('fill', '#10b981')
+                    .text('S = 1');
+
+                // Axes
+                svg.append('line')
+                    .attr('x1', margin.left)
+                    .attr('x2', width - margin.right)
+                    .attr('y1', yScale(0))
+                    .attr('y2', yScale(0))
+                    .attr('stroke', '#333')
+                    .attr('stroke-width', 2);
+
+                svg.append('line')
+                    .attr('x1', margin.left)
+                    .attr('x2', margin.left)
+                    .attr('y1', margin.top)
+                    .attr('y2', height - margin.bottom)
+                    .attr('stroke', '#333')
+                    .attr('stroke-width', 2);
+
+                // Term bars
+                svg.selectAll('.term-bar')
+                    .data(terms)
+                    .enter().append('rect')
+                    .attr('x', d => xScale(d.n) - 8)
+                    .attr('y', d => yScale(d.term))
+                    .attr('width', 16)
+                    .attr('height', d => yScale(0) - yScale(d.term))
+                    .attr('fill', '#6366f1')
+                    .attr('opacity', 0.6);
+
+                // Partial sum line
+                const line = d3.line()
+                    .x(d => xScale(d.n))
+                    .y(d => yScale(d.sum));
+
+                svg.append('path')
+                    .datum(terms)
+                    .attr('fill', 'none')
+                    .attr('stroke', '#ec4899')
+                    .attr('stroke-width', 3)
+                    .attr('d', line);
+
+                // Partial sum points
+                svg.selectAll('.sum-point')
+                    .data(terms)
+                    .enter().append('circle')
+                    .attr('cx', d => xScale(d.n))
+                    .attr('cy', d => yScale(d.sum))
+                    .attr('r', 5)
+                    .attr('fill', '#ec4899');
+
+                // Display current partial sum
+                if (terms.length > 0) {
+                    const lastSum = terms[terms.length - 1].sum;
+                    svg.append('text')
+                        .attr('x', width / 2)
+                        .attr('y', margin.top - 5)
+                        .attr('text-anchor', 'middle')
+                        .attr('font-size', '1.1rem')
+                        .attr('fill', '#ec4899')
+                        .text(`S${numTerms} = ${lastSum.toFixed(6)}`);
+                }
+            }
+
+            slider.oninput = update;
+            update();
+        }
+
+        // Visual Proof Visualization
+        function drawVisualProofViz() {
+            const container = d3.select('#visual-proof-viz');
+            container.selectAll('*').remove();
+
+            const width = 600;
+            const height = 400;
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const squareSize = 350;
+            const startX = (width - squareSize) / 2;
+            const startY = (height - squareSize) / 2;
+
+            // Outer square (represents 1)
+            svg.append('rect')
+                .attr('x', startX)
+                .attr('y', startY)
+                .attr('width', squareSize)
+                .attr('height', squareSize)
+                .attr('fill', 'none')
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            const colors = ['#6366f1', '#818cf8', '#a5b4fc', '#c7d2fe', '#e0e7ff', '#eef2ff'];
+
+            // Draw subdivisions
+            let x = startX;
+            let size = squareSize / 2;
+
+            for (let i = 0; i < 6; i++) {
+                svg.append('rect')
+                    .attr('x', x)
+                    .attr('y', startY)
+                    .attr('width', size)
+                    .attr('height', squareSize)
+                    .attr('fill', colors[i])
+                    .attr('stroke', '#333')
+                    .attr('stroke-width', 1)
+                    .attr('opacity', 0.8);
+
+                // Label
+                if (i < 4) {
+                    svg.append('text')
+                        .attr('x', x + size / 2)
+                        .attr('y', startY + squareSize / 2)
+                        .attr('text-anchor', 'middle')
+                        .attr('dy', '0.35em')
+                        .attr('font-size', i < 2 ? '1.25rem' : '0.9rem')
+                        .attr('fill', i < 2 ? 'white' : '#333')
+                        .text(`1/${Math.pow(2, i + 1)}`);
+                }
+
+                x += size;
+                size /= 2;
+            }
+
+            // "..." indicator
+            svg.append('text')
+                .attr('x', width - 30)
+                .attr('y', startY + squareSize / 2)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.5rem')
+                .text('...');
+        }
+
+        // Harmonic Series Visualization
+        function drawHarmonicViz() {
+            const container = d3.select('#harmonic-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Calculate harmonic partial sums
+            const nValues = d3.range(1, 51);
+            let sum = 0;
+            const data = nValues.map(n => {
+                sum += 1 / n;
+                return { n, sum };
+            });
+
+            const xScale = d3.scaleLinear()
+                .domain([0, 52])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, 5])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line')
+                .data(d3.range(0, 6))
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', margin.left)
+                .attr('y1', margin.top)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Axis labels
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height - 10)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.1rem')
+                .text('n');
+
+            svg.append('text')
+                .attr('transform', 'rotate(-90)')
+                .attr('x', -height / 2)
+                .attr('y', 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.1rem')
+                .text('Sₙ');
+
+            // Partial sum curve
+            const line = d3.line()
+                .x(d => xScale(d.n))
+                .y(d => yScale(d.sum))
+                .curve(d3.curveMonotoneX);
+
+            svg.append('path')
+                .datum(data)
+                .attr('fill', 'none')
+                .attr('stroke', '#6366f1')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Arrow indicating growth
+            svg.append('text')
+                .attr('x', width - margin.right - 10)
+                .attr('y', margin.top + 20)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#ef4444')
+                .text('Diverges!');
+
+            // Y-axis labels
+            svg.selectAll('.y-label')
+                .data([1, 2, 3, 4])
+                .enter().append('text')
+                .attr('x', margin.left - 10)
+                .attr('y', d => yScale(d))
+                .attr('text-anchor', 'end')
+                .attr('dy', '0.35em')
+                .attr('font-size', '0.9rem')
+                .text(d => d);
+        }
+    </script>
+</body>
+</html>

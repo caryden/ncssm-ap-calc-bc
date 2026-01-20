@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometric Series | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <style>
+        :root {
+            --theme-color: #6366f1;
+            --theme-color-light: #818cf8;
+            --theme-color-dark: #4f46e5;
+            --converge-color: #10b981;
+            --diverge-color: #ef4444;
+            --partial-color: #f59e0b;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .bc-badge {
+            background: linear-gradient(135deg, var(--theme-color), var(--theme-color-dark));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .slide-title h1 {
+            color: var(--theme-color);
+        }
+
+        .viz-container {
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viz-container svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #f0f0ff 0%, #f8f8ff 100%);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .definition-box h3 {
+            color: var(--theme-color);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .theorem-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .theorem-box h3 {
+            color: #d97706;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .formula-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .converge-box {
+            background: #d1fae5;
+            border: 2px solid var(--converge-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .diverge-box {
+            background: #fee2e2;
+            border: 2px solid var(--diverge-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .controls-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .slider-container input[type="range"] {
+            width: 250px;
+        }
+
+        .slider-value {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--theme-color);
+            min-width: 80px;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .example-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.1rem;
+            margin: 1rem 0;
+        }
+
+        .example-table th,
+        .example-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .example-table th {
+            background: var(--theme-color);
+            color: white;
+        }
+
+        .example-table tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .step-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .step-box .step-num {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: var(--theme-color);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+
+        <!-- Slide 0: Title -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 10: Infinite Sequences and Series</span>
+                <span class="bc-badge">BC Only</span>
+                <h1>Geometric Series</h1>
+                <p class="subtitle">The Foundation of Series Analysis</p>
+                <p class="meta">Class 56 | CED Topic 10.2</p>
+            </div>
+        </section>
+
+        <!-- Slide 1: Warm-Up -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="exercise-box">
+                    <p>A ball is dropped from 10 meters. Each bounce reaches 80% of the previous height.</p>
+                    <hr style="margin: 1.5rem 0; border-color: #e5e7eb;">
+                    <p><strong>Questions:</strong></p>
+                    <ol style="line-height: 2;">
+                        <li>What heights does it reach on bounces 1, 2, 3?</li>
+                        <li>What pattern do you notice?</li>
+                        <li>What is the total distance traveled (up and down)?</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: What is a Geometric Series? -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>What is a Geometric Series?</h2>
+                <div class="definition-box">
+                    <h3>Definition</h3>
+                    <p>A <strong>geometric series</strong> is a series where each term is obtained by multiplying the previous term by a fixed constant \(r\) (the <strong>common ratio</strong>):</p>
+                    <p class="math-display">\[\sum_{n=0}^{\infty} ar^n = a + ar + ar^2 + ar^3 + \cdots\]</p>
+                </div>
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <p style="font-size: 1.25rem;">\(a\) = first term, \(r\) = common ratio</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Identifying Geometric Series -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Recognizing Geometric Series</h2>
+                <table class="example-table">
+                    <tr>
+                        <th>Series</th>
+                        <th>First term \(a\)</th>
+                        <th>Ratio \(r\)</th>
+                        <th>Geometric?</th>
+                    </tr>
+                    <tr>
+                        <td>\(3 + 6 + 12 + 24 + ...\)</td>
+                        <td>3</td>
+                        <td>2</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>\(1 - \frac{1}{2} + \frac{1}{4} - \frac{1}{8} + ...\)</td>
+                        <td>1</td>
+                        <td>\(-\frac{1}{2}\)</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>\(\frac{1}{3} + \frac{1}{9} + \frac{1}{27} + ...\)</td>
+                        <td>\(\frac{1}{3}\)</td>
+                        <td>\(\frac{1}{3}\)</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>\(1 + 2 + 3 + 4 + ...\)</td>
+                        <td>1</td>
+                        <td>N/A</td>
+                        <td>No (arithmetic)</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- Slide 4: Partial Sum Formula -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Finite Geometric Sum</h2>
+                <div class="theorem-box">
+                    <h3>Theorem: Partial Sum Formula</h3>
+                    <p>For a geometric series with \(r \neq 1\):</p>
+                    <p class="math-display">\[S_n = a + ar + ar^2 + \cdots + ar^{n-1} = a \cdot \frac{1 - r^n}{1 - r}\]</p>
+                </div>
+                <div class="step-box" style="margin-top: 1.5rem;">
+                    <p><strong>Proof sketch:</strong></p>
+                    <p>\(S_n = a + ar + ar^2 + \cdots + ar^{n-1}\)</p>
+                    <p>\(rS_n = ar + ar^2 + \cdots + ar^n\)</p>
+                    <p>\(S_n - rS_n = a - ar^n\)</p>
+                    <p>\(S_n(1 - r) = a(1 - r^n)\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Convergence Condition -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>When Does It Converge?</h2>
+                <div class="theorem-box">
+                    <h3>Geometric Series Convergence</h3>
+                    <p>The geometric series \(\sum_{n=0}^{\infty} ar^n\) converges if and only if \(|r| < 1\).</p>
+                    <p style="margin-top: 1rem;">When it converges:</p>
+                    <p class="math-display">\[\sum_{n=0}^{\infty} ar^n = \frac{a}{1 - r}\]</p>
+                </div>
+                <div class="comparison-grid" style="margin-top: 1.5rem;">
+                    <div class="converge-box">
+                        <p><strong>Converges:</strong> \(|r| < 1\)</p>
+                        <p>Sum = \(\frac{a}{1-r}\)</p>
+                    </div>
+                    <div class="diverge-box">
+                        <p><strong>Diverges:</strong> \(|r| \geq 1\)</p>
+                        <p>Terms don't approach 0</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Convergence Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Geometric Series Convergence</h2>
+                <div id="convergence-viz" class="viz-container"></div>
+                <div class="slider-container">
+                    <span>Ratio r = </span>
+                    <input type="range" id="ratio-slider" min="-150" max="150" value="50">
+                    <span class="slider-value" id="ratio-value">0.50</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Why |r| < 1? -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Why Must \(|r| < 1\)?</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <div class="converge-box">
+                            <p><strong>When \(|r| < 1\):</strong></p>
+                            <p>\(r^n \to 0\) as \(n \to \infty\)</p>
+                            <p style="margin-top: 0.5rem;">So: \(S_n = \frac{a(1-r^n)}{1-r} \to \frac{a}{1-r}\)</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="diverge-box">
+                            <p><strong>When \(|r| \geq 1\):</strong></p>
+                            <p>\(r^n\) doesn't approach 0</p>
+                            <p style="margin-top: 0.5rem;">\(|r| > 1\): \(r^n \to \pm\infty\)</p>
+                            <p>\(r = 1\): \(S_n = na \to \infty\)</p>
+                            <p>\(r = -1\): oscillates</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Example 1 -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example 1: Basic Geometric Series</h2>
+                <div class="formula-box">
+                    <p>Find the sum: \(\sum_{n=0}^{\infty} \left(\frac{2}{3}\right)^n\)</p>
+                </div>
+                <div class="step-box" style="margin-top: 1rem;">
+                    <p><span class="step-num">1</span>Identify: \(a = 1\), \(r = \frac{2}{3}\)</p>
+                </div>
+                <div class="step-box">
+                    <p><span class="step-num">2</span>Check: \(|r| = \frac{2}{3} < 1\) ✓ Converges</p>
+                </div>
+                <div class="step-box">
+                    <p><span class="step-num">3</span>Apply formula: \(S = \frac{a}{1-r} = \frac{1}{1 - \frac{2}{3}} = \frac{1}{\frac{1}{3}} = 3\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Example 2 -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example 2: Starting Index</h2>
+                <div class="formula-box">
+                    <p>Find the sum: \(\sum_{n=1}^{\infty} \frac{3}{4^n}\)</p>
+                </div>
+                <div class="step-box" style="margin-top: 1rem;">
+                    <p><span class="step-num">1</span>Rewrite: \(\frac{3}{4^1} + \frac{3}{4^2} + \frac{3}{4^3} + ... = 3 \cdot \left(\frac{1}{4} + \frac{1}{16} + \frac{1}{64} + ...\right)\)</p>
+                </div>
+                <div class="step-box">
+                    <p><span class="step-num">2</span>First term \(a = \frac{3}{4}\), ratio \(r = \frac{1}{4}\)</p>
+                </div>
+                <div class="step-box">
+                    <p><span class="step-num">3</span>Sum: \(S = \frac{3/4}{1 - 1/4} = \frac{3/4}{3/4} = 1\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Example 3 - Alternating -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Example 3: Alternating Series</h2>
+                <div class="formula-box">
+                    <p>Find the sum: \(\sum_{n=0}^{\infty} \frac{(-1)^n}{2^n} = 1 - \frac{1}{2} + \frac{1}{4} - \frac{1}{8} + ...\)</p>
+                </div>
+                <div class="step-box" style="margin-top: 1rem;">
+                    <p><span class="step-num">1</span>Identify: \(a = 1\), \(r = -\frac{1}{2}\)</p>
+                </div>
+                <div class="step-box">
+                    <p><span class="step-num">2</span>Check: \(|r| = \frac{1}{2} < 1\) ✓ Converges</p>
+                </div>
+                <div class="step-box">
+                    <p><span class="step-num">3</span>Sum: \(S = \frac{1}{1 - (-\frac{1}{2})} = \frac{1}{\frac{3}{2}} = \frac{2}{3}\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: Alternating Visualization -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Visualizing Alternating Series</h2>
+                <div id="alternating-viz" class="viz-container"></div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--theme-color);"></div>
+                        <span>Partial sums oscillate around limit</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: Repeating Decimals -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Application: Repeating Decimals</h2>
+                <div class="definition-box">
+                    <h3>Converting \(0.\overline{36}\) to a Fraction</h3>
+                    <p>\(0.363636... = 0.36 + 0.0036 + 0.000036 + ...\)</p>
+                </div>
+                <div class="step-box" style="margin-top: 1rem;">
+                    <p><span class="step-num">1</span>\(= \frac{36}{100} + \frac{36}{10000} + \frac{36}{1000000} + ...\)</p>
+                </div>
+                <div class="step-box">
+                    <p><span class="step-num">2</span>\(= \frac{36}{100}\left(1 + \frac{1}{100} + \frac{1}{10000} + ...\right)\)</p>
+                </div>
+                <div class="step-box">
+                    <p><span class="step-num">3</span>\(= \frac{36}{100} \cdot \frac{1}{1 - \frac{1}{100}} = \frac{36}{100} \cdot \frac{100}{99} = \frac{36}{99} = \frac{4}{11}\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 13: Bouncing Ball Problem -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Application: Bouncing Ball</h2>
+                <div id="ball-viz" class="viz-container"></div>
+                <p style="text-align: center; font-size: 1.1rem;">
+                    Ball dropped from 10m, bounces to 80% of previous height
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 14: Bouncing Ball Solution -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Bouncing Ball: Total Distance</h2>
+                <div class="formula-box">
+                    <p><strong>Total distance</strong> = Down + Up + Down + Up + ...</p>
+                    <p style="margin-top: 1rem;">\(= 10 + 2(10 \cdot 0.8) + 2(10 \cdot 0.8^2) + 2(10 \cdot 0.8^3) + ...\)</p>
+                </div>
+                <div class="step-box" style="margin-top: 1rem;">
+                    <p><span class="step-num">1</span>\(= 10 + 2 \cdot 10 \cdot 0.8 \cdot (1 + 0.8 + 0.8^2 + ...)\)</p>
+                </div>
+                <div class="step-box">
+                    <p><span class="step-num">2</span>\(= 10 + 16 \cdot \frac{1}{1 - 0.8}\)</p>
+                </div>
+                <div class="step-box">
+                    <p><span class="step-num">3</span>\(= 10 + 16 \cdot 5 = 10 + 80 = \mathbf{90 \text{ meters}}\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 15: Telescoping Introduction -->
+        <section class="slide slide-statement">
+            <div class="slide-content">
+                <h2>Bonus: Telescoping Series</h2>
+                <div class="definition-box">
+                    <h3>Telescoping Series</h3>
+                    <p>A series where most terms cancel when computing partial sums.</p>
+                </div>
+                <div class="formula-box" style="margin-top: 1.5rem;">
+                    <p>Example: \(\sum_{n=1}^{\infty} \frac{1}{n(n+1)}\)</p>
+                    <p style="margin-top: 1rem;">Using partial fractions: \(\frac{1}{n(n+1)} = \frac{1}{n} - \frac{1}{n+1}\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 16: Telescoping Example -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Telescoping in Action</h2>
+                <div class="formula-box">
+                    <p>\(S_n = \sum_{k=1}^{n} \left(\frac{1}{k} - \frac{1}{k+1}\right)\)</p>
+                </div>
+                <div style="margin-top: 1rem; line-height: 2;">
+                    <p>\(= \left(\frac{1}{1} - \frac{1}{2}\right) + \left(\frac{1}{2} - \frac{1}{3}\right) + \left(\frac{1}{3} - \frac{1}{4}\right) + ... + \left(\frac{1}{n} - \frac{1}{n+1}\right)\)</p>
+                    <p style="margin-top: 1rem;">\(= 1 - \frac{1}{n+1}\)</p>
+                </div>
+                <div class="converge-box" style="margin-top: 1.5rem; text-align: center;">
+                    <p>\(\lim_{n \to \infty} S_n = 1 - 0 = 1\)</p>
+                    <p style="margin-top: 0.5rem;">\(\sum_{n=1}^{\infty} \frac{1}{n(n+1)} = 1\)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 17: Practice Problems -->
+        <section class="slide slide-exercise">
+            <div class="slide-content">
+                <h2>Practice Problems</h2>
+                <div class="exercise-box">
+                    <p><strong>Determine if each series converges. If so, find the sum:</strong></p>
+                    <ol style="font-size: 1.2rem; line-height: 2.5;">
+                        <li>\(\sum_{n=0}^{\infty} \left(\frac{3}{5}\right)^n\)</li>
+                        <li>\(\sum_{n=1}^{\infty} \frac{2^n}{3^n}\)</li>
+                        <li>\(\sum_{n=0}^{\infty} (-1)^n \cdot \frac{5}{3^n}\)</li>
+                        <li>\(\sum_{n=2}^{\infty} \left(\frac{1}{2}\right)^n\)</li>
+                        <li>\(\sum_{n=0}^{\infty} \frac{5^n}{4^n}\)</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 18: Solutions -->
+        <section class="slide slide-list">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <ol style="font-size: 1.15rem; line-height: 2.2;">
+                    <li>\(a=1, r=\frac{3}{5}\): Converges to \(\frac{1}{1-3/5} = \frac{5}{2}\)</li>
+                    <li>\(= \sum \left(\frac{2}{3}\right)^n\) starting at \(n=1\): \(a=\frac{2}{3}, r=\frac{2}{3}\), Sum = \(\frac{2/3}{1/3} = 2\)</li>
+                    <li>\(a=5, r=-\frac{1}{3}\): Converges to \(\frac{5}{1+1/3} = \frac{5}{4/3} = \frac{15}{4}\)</li>
+                    <li>Starting at \(n=2\): \(a=\frac{1}{4}, r=\frac{1}{2}\), Sum = \(\frac{1/4}{1/2} = \frac{1}{2}\)</li>
+                    <li>\(r = \frac{5}{4} > 1\): <strong>Diverges</strong></li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Slide 19: Key Formulas Summary -->
+        <section class="slide slide-visual">
+            <div class="slide-content">
+                <h2>Key Formulas Summary</h2>
+                <div class="comparison-grid">
+                    <div class="formula-box">
+                        <h3 style="color: var(--theme-color);">Finite Sum</h3>
+                        <p class="math-display">\[S_n = a \cdot \frac{1 - r^n}{1 - r}\]</p>
+                        <p style="font-size: 0.9rem;">For \(r \neq 1\)</p>
+                    </div>
+                    <div class="formula-box">
+                        <h3 style="color: var(--theme-color);">Infinite Sum</h3>
+                        <p class="math-display">\[S = \frac{a}{1 - r}\]</p>
+                        <p style="font-size: 0.9rem;">For \(|r| < 1\)</p>
+                    </div>
+                </div>
+                <div class="theorem-box" style="margin-top: 1rem;">
+                    <h3>Remember</h3>
+                    <p>Always check \(|r| < 1\) before using the infinite sum formula!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 20: Looking Ahead -->
+        <section class="slide slide-title">
+            <div class="slide-content">
+                <h2>Looking Ahead</h2>
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--theme-color);">Next: Convergence Tests</h3>
+                    <ul style="font-size: 1.35rem; line-height: 2; list-style: none; padding: 0; margin-top: 1.5rem;">
+                        <li>Divergence Test (nth Term Test)</li>
+                        <li>Integral Test</li>
+                        <li>Testing series that aren't geometric</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="slide-nav">
+        <button id="prevBtn" aria-label="Previous slide">&#8592;</button>
+        <span id="slideCounter">1 / 21</span>
+        <button id="nextBtn" aria-label="Next slide">&#8594;</button>
+        <button id="tocBtn" aria-label="Table of contents">&#9776;</button>
+    </nav>
+
+    <!-- Table of Contents -->
+    <div id="toc" class="toc-overlay">
+        <div class="toc-content">
+            <h3>Contents</h3>
+            <ul id="tocList"></ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <script src="../shared/presentation.js"></script>
+
+    <script>
+        // Visualization management
+        const visualizationSlides = {
+            6: drawConvergenceViz,
+            11: drawAlternatingViz,
+            13: drawBallViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Convergence Visualization
+        function drawConvergenceViz() {
+            const container = d3.select('#convergence-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 30, right: 80, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const slider = document.getElementById('ratio-slider');
+            const valueDisplay = document.getElementById('ratio-value');
+
+            function update() {
+                svg.selectAll('*').remove();
+
+                const r = parseInt(slider.value) / 100;
+                valueDisplay.textContent = r.toFixed(2);
+                valueDisplay.style.color = Math.abs(r) < 1 ? '#10b981' : '#ef4444';
+
+                const nValues = d3.range(0, 21);
+                let sum = 0;
+                const data = nValues.map(n => {
+                    sum += Math.pow(r, n);
+                    return { n, term: Math.pow(r, n), sum };
+                });
+
+                const maxY = Math.abs(r) < 1 ? Math.max(3, 1 / (1 - Math.abs(r)) * 1.2) : d3.max(data, d => Math.abs(d.sum)) * 1.2;
+                const minY = Math.abs(r) < 1 ? Math.min(-0.5, d3.min(data, d => d.sum) - 0.5) : d3.min(data, d => d.sum) - 0.5;
+
+                const xScale = d3.scaleLinear()
+                    .domain([0, 21])
+                    .range([margin.left, width - margin.right]);
+
+                const yScale = d3.scaleLinear()
+                    .domain([minY, maxY])
+                    .range([height - margin.bottom, margin.top]);
+
+                // Grid
+                svg.append('g')
+                    .selectAll('line')
+                    .data(yScale.ticks(6))
+                    .enter().append('line')
+                    .attr('x1', margin.left)
+                    .attr('x2', width - margin.right)
+                    .attr('y1', d => yScale(d))
+                    .attr('y2', d => yScale(d))
+                    .attr('stroke', '#e5e7eb')
+                    .attr('stroke-width', 1);
+
+                // Axes
+                svg.append('line')
+                    .attr('x1', margin.left)
+                    .attr('x2', width - margin.right)
+                    .attr('y1', yScale(0))
+                    .attr('y2', yScale(0))
+                    .attr('stroke', '#333')
+                    .attr('stroke-width', 2);
+
+                svg.append('line')
+                    .attr('x1', margin.left)
+                    .attr('x2', margin.left)
+                    .attr('y1', margin.top)
+                    .attr('y2', height - margin.bottom)
+                    .attr('stroke', '#333')
+                    .attr('stroke-width', 2);
+
+                // Limit line if converges
+                if (Math.abs(r) < 1 && r !== 1) {
+                    const limit = 1 / (1 - r);
+                    svg.append('line')
+                        .attr('x1', margin.left)
+                        .attr('x2', width - margin.right)
+                        .attr('y1', yScale(limit))
+                        .attr('y2', yScale(limit))
+                        .attr('stroke', '#10b981')
+                        .attr('stroke-width', 2)
+                        .attr('stroke-dasharray', '5,5');
+
+                    svg.append('text')
+                        .attr('x', width - margin.right + 5)
+                        .attr('y', yScale(limit))
+                        .attr('dy', '0.35em')
+                        .attr('font-size', '0.9rem')
+                        .attr('fill', '#10b981')
+                        .text(`S = ${limit.toFixed(2)}`);
+                }
+
+                // Partial sums line
+                const line = d3.line()
+                    .x(d => xScale(d.n))
+                    .y(d => yScale(d.sum));
+
+                svg.append('path')
+                    .datum(data)
+                    .attr('fill', 'none')
+                    .attr('stroke', '#6366f1')
+                    .attr('stroke-width', 3)
+                    .attr('d', line);
+
+                // Points
+                svg.selectAll('.point')
+                    .data(data)
+                    .enter().append('circle')
+                    .attr('cx', d => xScale(d.n))
+                    .attr('cy', d => yScale(d.sum))
+                    .attr('r', 4)
+                    .attr('fill', '#6366f1');
+
+                // Status label
+                svg.append('text')
+                    .attr('x', width / 2)
+                    .attr('y', margin.top - 5)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1.1rem')
+                    .attr('font-weight', 'bold')
+                    .attr('fill', Math.abs(r) < 1 ? '#10b981' : '#ef4444')
+                    .text(Math.abs(r) < 1 ? 'CONVERGES' : 'DIVERGES');
+            }
+
+            slider.oninput = update;
+            update();
+        }
+
+        // Alternating Series Visualization
+        function drawAlternatingViz() {
+            const container = d3.select('#alternating-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 30, right: 80, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const r = -0.5;
+            const nValues = d3.range(0, 16);
+            let sum = 0;
+            const data = nValues.map(n => {
+                sum += Math.pow(r, n);
+                return { n, sum };
+            });
+
+            const xScale = d3.scaleLinear()
+                .domain([0, 16])
+                .range([margin.left, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, 1.5])
+                .range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g')
+                .selectAll('line')
+                .data([0, 0.5, 1, 1.5])
+                .enter().append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#333')
+                .attr('stroke-width', 2);
+
+            // Limit line at 2/3
+            const limit = 2/3;
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', yScale(limit))
+                .attr('y2', yScale(limit))
+                .attr('stroke', '#10b981')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,5');
+
+            svg.append('text')
+                .attr('x', width - margin.right + 5)
+                .attr('y', yScale(limit))
+                .attr('dy', '0.35em')
+                .attr('font-size', '1rem')
+                .attr('fill', '#10b981')
+                .text('S = 2/3');
+
+            // Draw oscillating path
+            for (let i = 0; i < data.length - 1; i++) {
+                svg.append('line')
+                    .attr('x1', xScale(data[i].n))
+                    .attr('y1', yScale(data[i].sum))
+                    .attr('x2', xScale(data[i+1].n))
+                    .attr('y2', yScale(data[i+1].sum))
+                    .attr('stroke', '#6366f1')
+                    .attr('stroke-width', 2);
+            }
+
+            // Points
+            svg.selectAll('.point')
+                .data(data)
+                .enter().append('circle')
+                .attr('cx', d => xScale(d.n))
+                .attr('cy', d => yScale(d.sum))
+                .attr('r', 6)
+                .attr('fill', d => d.sum > limit ? '#ec4899' : '#6366f1');
+
+            // Labels
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height - 10)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1rem')
+                .text('n');
+        }
+
+        // Bouncing Ball Visualization
+        function drawBallViz() {
+            const container = d3.select('#ball-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 20, right: 30, bottom: 50, left: 60 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const initialHeight = 10;
+            const ratio = 0.8;
+            const bounces = 8;
+
+            // Ground
+            svg.append('line')
+                .attr('x1', margin.left)
+                .attr('x2', width - margin.right)
+                .attr('y1', height - margin.bottom)
+                .attr('y2', height - margin.bottom)
+                .attr('stroke', '#333')
+                .attr('stroke-width', 3);
+
+            // Scale
+            const xScale = d3.scaleLinear()
+                .domain([0, bounces + 1])
+                .range([margin.left + 50, width - margin.right]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, 12])
+                .range([height - margin.bottom, margin.top]);
+
+            // Y-axis labels
+            [0, 2, 4, 6, 8, 10].forEach(h => {
+                svg.append('text')
+                    .attr('x', margin.left + 30)
+                    .attr('y', yScale(h))
+                    .attr('text-anchor', 'end')
+                    .attr('dy', '0.35em')
+                    .attr('font-size', '0.9rem')
+                    .text(h + 'm');
+
+                svg.append('line')
+                    .attr('x1', margin.left + 35)
+                    .attr('x2', width - margin.right)
+                    .attr('y1', yScale(h))
+                    .attr('y2', yScale(h))
+                    .attr('stroke', '#e5e7eb')
+                    .attr('stroke-width', 1);
+            });
+
+            // Draw bounce heights
+            let currentHeight = initialHeight;
+            const pathData = [];
+
+            // Starting drop
+            pathData.push({ x: 0, y: initialHeight });
+            pathData.push({ x: 0.5, y: 0 });
+
+            for (let i = 0; i < bounces; i++) {
+                currentHeight *= ratio;
+                pathData.push({ x: i + 1, y: currentHeight });
+                pathData.push({ x: i + 1.5, y: 0 });
+            }
+
+            // Draw path
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveCardinal.tension(0.3));
+
+            svg.append('path')
+                .datum(pathData)
+                .attr('fill', 'none')
+                .attr('stroke', '#6366f1')
+                .attr('stroke-width', 2)
+                .attr('d', line);
+
+            // Draw ball at each peak
+            currentHeight = initialHeight;
+            svg.append('circle')
+                .attr('cx', xScale(0))
+                .attr('cy', yScale(initialHeight))
+                .attr('r', 10)
+                .attr('fill', '#ec4899');
+
+            for (let i = 0; i < bounces; i++) {
+                currentHeight *= ratio;
+                svg.append('circle')
+                    .attr('cx', xScale(i + 1))
+                    .attr('cy', yScale(currentHeight))
+                    .attr('r', 8)
+                    .attr('fill', '#6366f1')
+                    .attr('opacity', 1 - i * 0.1);
+
+                // Height label
+                if (i < 4) {
+                    svg.append('text')
+                        .attr('x', xScale(i + 1))
+                        .attr('y', yScale(currentHeight) - 15)
+                        .attr('text-anchor', 'middle')
+                        .attr('font-size', '0.8rem')
+                        .attr('fill', '#666')
+                        .text(currentHeight.toFixed(1) + 'm');
+                }
+            }
+
+            // Title
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', margin.top)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.1rem')
+                .attr('font-weight', 'bold')
+                .text('Ball bouncing at 80% height retention');
+        }
+    </script>
+</body>
+</html>

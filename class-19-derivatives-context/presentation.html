@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 19: Interpreting Derivatives in Context | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #10b981;
+            --theme-color-light: #34d399;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .context-card {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+            text-align: left;
+        }
+
+        .context-card h4 {
+            color: var(--theme-color-light);
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .units-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 700px;
+        }
+
+        .template-box {
+            background: var(--bg-tertiary);
+            border-left: 4px solid var(--accent-secondary);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            max-width: 800px;
+            font-size: 1.5rem;
+            line-height: 1.8;
+            text-align: left;
+        }
+
+        .template-box .highlight {
+            color: var(--accent-secondary);
+            font-weight: 600;
+        }
+
+        .interpretation-result {
+            background: var(--bg-secondary);
+            border: 1px solid var(--success);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            font-size: 1.35rem;
+            color: var(--success);
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .slider-control label {
+            font-size: 1.25rem;
+            font-family: var(--font-display);
+        }
+
+        .slider-control input[type="range"] {
+            width: 300px;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--theme-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .value-display {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--accent-secondary);
+            min-width: 200px;
+        }
+
+        .data-table {
+            width: 100%;
+            max-width: 750px;
+            margin: 1rem auto;
+            border-collapse: collapse;
+            font-size: 1.25rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 0.75rem 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+
+        .data-table th {
+            background: var(--bg-secondary);
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--theme-color-light);
+        }
+
+        .data-table .highlight-cell {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-secondary);
+            font-weight: 600;
+        }
+
+        .ap-tip {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(212, 160, 40, 0.1));
+            border: 1px solid var(--theme-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem auto;
+            max-width: 800px;
+        }
+
+        .ap-tip h4 {
+            color: var(--accent-secondary);
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            max-width: 900px;
+            margin: 1rem auto;
+        }
+
+        .mistake-box {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .mistake-box.wrong {
+            border-top: 3px solid var(--danger);
+        }
+
+        .mistake-box.right {
+            border-top: 3px solid var(--success);
+        }
+
+        .mistake-box h4 {
+            margin-bottom: 1rem;
+        }
+
+        .mistake-box.wrong h4 {
+            color: var(--danger);
+        }
+
+        .mistake-box.right h4 {
+            color: var(--success);
+        }
+
+        .mistake-list {
+            list-style: none;
+            text-align: left;
+        }
+
+        .mistake-list li {
+            font-size: 1.15rem;
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Interpreting Derivatives in Context">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 4: Contextual Applications of Differentiation</div>
+                <h1>Interpreting Derivatives in Context</h1>
+                <p class="subtitle">Making Meaning from Rates of Change</p>
+                <p class="meta">Class 19 | CED Topic 4.1 | AP Calculus BC | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: Opening Question -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="The Big Question">
+            <div class="slide-content">
+                <p class="statement">If \( f'(3) = 5 \), what does that <em>mean</em>?</p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    Computation is only half the story.
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Warm-Up -->
+        <div class="slide slide-exercise" data-slide="2" data-section="Opening" data-title="Warm-Up">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <div class="prompt">
+                    <p>The temperature of coffee \( T(t) \) (in degrees Fahrenheit) after \( t \) minutes is given by:</p>
+                    <p style="font-size: 1.75rem; margin-top: 1rem;">\[ T(t) = 70 + 130e^{-0.05t} \]</p>
+                </div>
+                <div class="instructions" style="text-align: left; max-width: 700px; margin: 1.5rem auto 0;">
+                    <ol style="list-style-position: inside; font-size: 1.25rem;">
+                        <li style="padding: 0.5rem 0;">Find \( T'(t) \)</li>
+                        <li style="padding: 0.5rem 0;">Calculate \( T'(10) \)</li>
+                        <li style="padding: 0.5rem 0;">What does \( T'(10) \) represent in this context?</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: The Core Principle -->
+        <div class="slide slide-statement" data-slide="3" data-section="Core Concepts" data-title="The Core Principle">
+            <div class="slide-content">
+                <p class="statement">The derivative \( f'(a) \) represents the <em>instantaneous rate of change</em> of \( f \) with respect to its input, at \( x = a \)</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Units Framework -->
+        <div class="slide slide-two-part" data-slide="4" data-section="Core Concepts" data-title="Units Framework">
+            <div class="slide-content">
+                <p class="primary" style="color: var(--theme-color-light);">The Units Framework</p>
+                <div class="units-box">
+                    <div class="math-display">
+                        \[ \text{Units of } f'(x) = \frac{\text{Units of output}}{\text{Units of input}} \]
+                    </div>
+                </div>
+                <p class="secondary" style="margin-top: 1.5rem;">This ratio tells you exactly what the derivative measures</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Units Examples -->
+        <div class="slide slide-visual" data-slide="5" data-section="Core Concepts" data-title="Units in Practice">
+            <div class="slide-content">
+                <h2>Rate Units in Context</h2>
+                <div id="units-viz" class="visualization"></div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Interpretation Template -->
+        <div class="slide slide-two-part" data-slide="6" data-section="Core Concepts" data-title="Interpretation Template">
+            <div class="slide-content">
+                <p class="primary">The Interpretation Template</p>
+                <div class="template-box">
+                    "At <span class="highlight">[input value with units]</span>, the <span class="highlight">[output quantity]</span> is<br>
+                    <span class="highlight">[increasing/decreasing]</span> at a rate of<br>
+                    <span class="highlight">[|derivative value|]</span> <span class="highlight">[output units per input unit]</span>"
+                </div>
+                <div class="ap-tip" style="margin-top: 1.5rem;">
+                    <h4>AP Exam Tip</h4>
+                    <p style="font-size: 1.15rem; color: var(--text-secondary);">Use "increasing/decreasing" not "positive/negative" when interpreting in context</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Population Example -->
+        <div class="slide slide-example" data-slide="7" data-section="Examples" data-title="Population Example">
+            <div class="slide-content">
+                <h2>Example: Population Growth</h2>
+                <div class="problem">
+                    <p>\( P(t) \) represents the population of a town (in thousands) \( t \) years after 2020.</p>
+                    <p style="margin-top: 1rem;"><strong>Given:</strong> \( P(5) = 42 \) and \( P'(5) = 1.8 \)</p>
+                    <p style="margin-top: 0.5rem;"><strong>Interpret \( P'(5) = 1.8 \) in context.</strong></p>
+                </div>
+                <div class="interpretation-result">
+                    In 2025, the population of the town is <strong>increasing</strong> at a rate of 1,800 people per year.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Population Visualization -->
+        <div class="slide slide-visual" data-slide="8" data-section="Examples" data-title="Population Graph">
+            <div class="slide-content">
+                <h2>Visualizing the Rate</h2>
+                <div id="population-viz" class="visualization"></div>
+                <p class="caption">The tangent line's slope represents the instantaneous rate of change</p>
+            </div>
+        </div>
+
+        <!-- Slide 9: Negative Derivative Example -->
+        <div class="slide slide-example" data-slide="9" data-section="Examples" data-title="Negative Derivative">
+            <div class="slide-content">
+                <h2>Example: Cooling Coffee</h2>
+                <div class="problem">
+                    <p>Returning to our warm-up: \( T(t) = 70 + 130e^{-0.05t} \)</p>
+                    <p style="margin-top: 1rem;">\( T'(t) = -6.5e^{-0.05t} \), so \( T'(10) \approx -3.94 \)</p>
+                </div>
+                <div class="interpretation-result" style="border-color: var(--danger); color: var(--text-primary);">
+                    After 10 minutes, the temperature of the coffee is <strong style="color: var(--danger);">decreasing</strong> at a rate of approximately 3.94 degrees Fahrenheit per minute.
+                </div>
+                <p style="font-size: 1.25rem; color: var(--text-tertiary); margin-top: 1.5rem;">
+                    Note: We say "decreasing at a rate of 3.94" not "changing at -3.94"
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Temperature Visualization -->
+        <div class="slide slide-visual" data-slide="10" data-section="Examples" data-title="Cooling Graph">
+            <div class="slide-content">
+                <h2>Cooling Coffee: \( f'(t) < 0 \)</h2>
+                <div id="cooling-viz" class="visualization"></div>
+                <div class="slider-control">
+                    <label>t = </label>
+                    <input type="range" id="temp-slider" min="0" max="60" step="1" value="10">
+                    <span class="value-display" id="temp-display">T'(10) = -3.94</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Economics Example -->
+        <div class="slide slide-example" data-slide="11" data-section="Examples" data-title="Marginal Cost">
+            <div class="slide-content">
+                <h2>Example: Marginal Cost</h2>
+                <div class="problem">
+                    <p>\( C(x) \) = total cost (dollars) to produce \( x \) items</p>
+                    <p style="margin-top: 1rem;"><strong>Given:</strong> \( C(500) = 12,000 \) and \( C'(500) = 8.50 \)</p>
+                </div>
+                <div class="interpretation-result">
+                    When producing 500 items, the cost is <strong>increasing</strong> at a rate of $8.50 per item.
+                </div>
+                <div class="ap-tip" style="margin-top: 1.5rem;">
+                    <h4>Economic Interpretation</h4>
+                    <p style="font-size: 1.15rem; color: var(--text-secondary);">\( C'(500) \approx \) the cost of producing the 501st item (marginal cost)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Table Data -->
+        <div class="slide slide-visual" data-slide="12" data-section="Techniques" data-title="From Tables">
+            <div class="slide-content">
+                <h2>Estimating from Tables</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>\( t \) (hours)</th>
+                            <th>0</th>
+                            <th>2</th>
+                            <th class="highlight-cell">4</th>
+                            <th>6</th>
+                            <th>8</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>\( W(t) \) (gallons)</th>
+                            <td>500</td>
+                            <td>420</td>
+                            <td class="highlight-cell">350</td>
+                            <td>295</td>
+                            <td>260</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="table-estimate-viz" class="visualization" style="min-height: 180px;"></div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Estimating Derivatives -->
+        <div class="slide slide-example" data-slide="13" data-section="Techniques" data-title="Estimation Methods">
+            <div class="slide-content">
+                <h2>Estimating \( W'(4) \)</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span><strong>Left difference:</strong> \( \frac{350 - 420}{4 - 2} = -35 \) gal/hr</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span><strong>Right difference:</strong> \( \frac{295 - 350}{6 - 4} = -27.5 \) gal/hr</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span><strong>Average (best estimate):</strong> \( \frac{-35 + (-27.5)}{2} = -31.25 \) gal/hr</span>
+                    </div>
+                </div>
+                <div class="interpretation-result" style="border-color: var(--danger); color: var(--text-primary);">
+                    At \( t = 4 \) hours, the water in the tank is <strong style="color: var(--danger);">decreasing</strong> at approximately 31.25 gallons per hour.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Graphical Interpretation -->
+        <div class="slide slide-visual" data-slide="14" data-section="Techniques" data-title="From Graphs">
+            <div class="slide-content">
+                <h2>Reading Derivatives from Graphs</h2>
+                <div id="graph-slope-viz" class="visualization"></div>
+                <p class="caption">The slope of the tangent line at any point equals \( f'(x) \) at that point</p>
+            </div>
+        </div>
+
+        <!-- Slide 15: Sign of Derivative -->
+        <div class="slide slide-comparison" data-slide="15" data-section="Techniques" data-title="Sign Analysis">
+            <div class="slide-content">
+                <h2>What the Sign Tells Us</h2>
+                <div class="columns">
+                    <div class="column" style="border-top: 3px solid var(--success);">
+                        <h3 style="color: var(--success);">When \( f'(a) > 0 \)</h3>
+                        <p style="font-size: 1.25rem; color: var(--text-secondary); margin-top: 1rem;">
+                            The function is <strong>increasing</strong> at \( x = a \)
+                        </p>
+                        <p style="font-size: 1.15rem; color: var(--text-tertiary); margin-top: 0.5rem;">
+                            Output grows as input increases
+                        </p>
+                    </div>
+                    <div class="column" style="border-top: 3px solid var(--danger);">
+                        <h3 style="color: var(--danger);">When \( f'(a) < 0 \)</h3>
+                        <p style="font-size: 1.25rem; color: var(--text-secondary); margin-top: 1rem;">
+                            The function is <strong>decreasing</strong> at \( x = a \)
+                        </p>
+                        <p style="font-size: 1.15rem; color: var(--text-tertiary); margin-top: 0.5rem;">
+                            Output shrinks as input increases
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Common Mistakes -->
+        <div class="slide slide-visual" data-slide="16" data-section="Practice" data-title="Common Mistakes">
+            <div class="slide-content">
+                <h2>Common Interpretation Mistakes</h2>
+                <div class="example-grid">
+                    <div class="mistake-box wrong">
+                        <h4>Incorrect</h4>
+                        <ul class="mistake-list">
+                            <li><span style="color: var(--danger);">X</span> "The derivative is 5"</li>
+                            <li><span style="color: var(--danger);">X</span> "f is positive"</li>
+                            <li><span style="color: var(--danger);">X</span> "The rate is negative"</li>
+                            <li><span style="color: var(--danger);">X</span> Missing units</li>
+                        </ul>
+                    </div>
+                    <div class="mistake-box right">
+                        <h4>Correct</h4>
+                        <ul class="mistake-list">
+                            <li><span style="color: var(--success);">+</span> Include the input value</li>
+                            <li><span style="color: var(--success);">+</span> Use "increasing/decreasing"</li>
+                            <li><span style="color: var(--success);">+</span> State "rate of |value|"</li>
+                            <li><span style="color: var(--success);">+</span> Include units</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Practice Problem 1 -->
+        <div class="slide slide-exercise" data-slide="17" data-section="Practice" data-title="Your Turn 1">
+            <div class="slide-content">
+                <h2>Your Turn: Fuel Consumption</h2>
+                <div class="prompt">
+                    <p>\( F(v) \) = fuel efficiency (miles per gallon) at speed \( v \) (mph)</p>
+                    <p style="margin-top: 1rem;"><strong>Given:</strong> \( F(55) = 32 \) and \( F'(55) = -0.4 \)</p>
+                </div>
+                <div class="instructions" style="margin-top: 1.5rem;">
+                    <p style="font-size: 1.5rem; color: var(--accent-secondary);">Write a complete interpretation of \( F'(55) \)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Practice Problem 2 -->
+        <div class="slide slide-exercise" data-slide="18" data-section="Practice" data-title="Your Turn 2">
+            <div class="slide-content">
+                <h2>Your Turn: Revenue</h2>
+                <div class="prompt">
+                    <p>\( R(p) \) = revenue (dollars) when price is \( p \) dollars</p>
+                    <p style="margin-top: 1rem;"><strong>Given:</strong> \( R(25) = 50,000 \) and \( R'(25) = 800 \)</p>
+                </div>
+                <div class="instructions" style="margin-top: 1.5rem;">
+                    <ol style="list-style-position: inside; font-size: 1.25rem; text-align: left; max-width: 600px; margin: 0 auto;">
+                        <li style="padding: 0.5rem 0;">What are the units of \( R'(25) \)?</li>
+                        <li style="padding: 0.5rem 0;">Interpret \( R'(25) = 800 \) in context.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="19" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p>A company's profit \( P(t) \) (in thousands of dollars) after \( t \) months is modeled by:</p>
+                    <p style="font-size: 1.75rem; margin-top: 1rem;">\[ P(t) = 100 + 20t - 0.5t^2 \]</p>
+                </div>
+                <div class="instructions" style="text-align: left; max-width: 700px; margin: 1.5rem auto 0;">
+                    <ol style="list-style-position: inside; font-size: 1.25rem;">
+                        <li style="padding: 0.5rem 0;">Find \( P'(t) \)</li>
+                        <li style="padding: 0.5rem 0;">Calculate \( P'(12) \)</li>
+                        <li style="padding: 0.5rem 0;">Interpret \( P'(12) \) in the context of this problem</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Looking Ahead -->
+        <div class="slide slide-statement" data-slide="20" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Next: <em>Position, Velocity, and Acceleration</em></p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    The most important application of derivatives:<br>
+                    describing motion along a line
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 21</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 19: Interpreting Derivatives in Context</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Units Visualization (Slide 5) =====
+        function drawUnitsViz() {
+            const container = document.getElementById('units-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 800;
+            const height = 320;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const examples = [
+                { fn: 'Distance s(t)', out: 'miles', inp: 'hours', deriv: "s'(t)", result: 'mph (velocity)' },
+                { fn: 'Population P(t)', out: 'people', inp: 'years', deriv: "P'(t)", result: 'people/year' },
+                { fn: 'Cost C(x)', out: 'dollars', inp: 'items', deriv: "C'(x)", result: '$/item' },
+                { fn: 'Temperature T(t)', out: 'degrees F', inp: 'minutes', deriv: "T'(t)", result: 'deg F/min' }
+            ];
+
+            const rowHeight = 70;
+            const startY = 30;
+
+            examples.forEach((ex, i) => {
+                const y = startY + i * rowHeight;
+                const g = svg.append('g');
+
+                // Function
+                g.append('text')
+                    .attr('x', 100)
+                    .attr('y', y + 25)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1.25rem')
+                    .attr('fill', 'var(--color-function)')
+                    .text(ex.fn);
+
+                // Arrow
+                g.append('text')
+                    .attr('x', 200)
+                    .attr('y', y + 25)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1.5rem')
+                    .attr('fill', 'var(--text-tertiary)')
+                    .text('\u2192');
+
+                // Derivative
+                g.append('text')
+                    .attr('x', 280)
+                    .attr('y', y + 25)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1.25rem')
+                    .attr('fill', 'var(--color-derivative)')
+                    .text(ex.deriv);
+
+                // Equals
+                g.append('text')
+                    .attr('x', 350)
+                    .attr('y', y + 25)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1.25rem')
+                    .attr('fill', 'var(--text-tertiary)')
+                    .text('=');
+
+                // Fraction
+                g.append('text')
+                    .attr('x', 470)
+                    .attr('y', y + 15)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1.1rem')
+                    .attr('fill', 'var(--text-secondary)')
+                    .text(ex.out);
+
+                g.append('line')
+                    .attr('x1', 400)
+                    .attr('y1', y + 25)
+                    .attr('x2', 540)
+                    .attr('y2', y + 25)
+                    .attr('stroke', 'var(--text-tertiary)')
+                    .attr('stroke-width', 2);
+
+                g.append('text')
+                    .attr('x', 470)
+                    .attr('y', y + 45)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1.1rem')
+                    .attr('fill', 'var(--text-secondary)')
+                    .text(ex.inp);
+
+                // Arrow to result
+                g.append('text')
+                    .attr('x', 580)
+                    .attr('y', y + 25)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1.5rem')
+                    .attr('fill', 'var(--text-tertiary)')
+                    .text('\u2192');
+
+                // Result
+                g.append('text')
+                    .attr('x', 700)
+                    .attr('y', y + 25)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1.25rem')
+                    .attr('fill', 'var(--theme-color-light)')
+                    .text(ex.result);
+            });
+        }
+
+        // ===== Population Visualization (Slide 8) =====
+        function drawPopulationViz() {
+            const container = document.getElementById('population-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 60, left: 70 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const xScale = d3.scaleLinear().domain([0, 10]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([30, 60]).range([plotHeight, 0]);
+
+            // Population function: P(t) = 30 + 2t + 0.08t^2 adjusted for P(5) = 42
+            const P = t => 30 + 2*t + 0.16*t*t;
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(30, 65, 5))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            const xAxis = d3.axisBottom(xScale).ticks(10);
+            const yAxis = d3.axisLeft(yScale).ticks(6);
+
+            g.append('g')
+                .attr('transform', `translate(0,${plotHeight})`)
+                .call(xAxis)
+                .selectAll('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)');
+
+            g.append('g')
+                .call(yAxis)
+                .selectAll('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)');
+
+            // Axis labels
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height - 10)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('Years since 2020');
+
+            svg.append('text')
+                .attr('x', 20)
+                .attr('y', height / 2)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)')
+                .attr('transform', `rotate(-90, 20, ${height/2})`)
+                .text('Population (thousands)');
+
+            // Draw curve
+            const line = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(P(d)))
+                .curve(d3.curveCatmullRom);
+
+            const xValues = d3.range(0, 10.1, 0.1);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Point at t = 5
+            const t5 = 5;
+            const P5 = 42;
+
+            g.append('circle')
+                .attr('cx', xScale(t5))
+                .attr('cy', yScale(P5))
+                .attr('r', 8)
+                .attr('fill', 'var(--theme-color)');
+
+            // Tangent line at t = 5 with slope 1.8
+            const slope = 1.8;
+            const tangentX1 = 2;
+            const tangentX2 = 8;
+            const tangentY1 = P5 + slope * (tangentX1 - t5);
+            const tangentY2 = P5 + slope * (tangentX2 - t5);
+
+            g.append('line')
+                .attr('x1', xScale(tangentX1))
+                .attr('y1', yScale(tangentY1))
+                .attr('x2', xScale(tangentX2))
+                .attr('y2', yScale(tangentY2))
+                .attr('stroke', 'var(--accent-secondary)')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '8,4');
+
+            // Labels
+            g.append('text')
+                .attr('x', xScale(t5) + 15)
+                .attr('y', yScale(P5) - 15)
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--theme-color)')
+                .text('(5, 42)');
+
+            g.append('text')
+                .attr('x', xScale(7))
+                .attr('y', yScale(tangentY2) - 10)
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--accent-secondary)')
+                .text("P'(5) = 1.8");
+        }
+
+        // ===== Cooling Visualization (Slide 10) =====
+        function drawCoolingViz() {
+            const container = document.getElementById('cooling-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 380;
+            const margin = { top: 30, right: 40, bottom: 60, left: 70 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const xScale = d3.scaleLinear().domain([0, 60]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([60, 210]).range([plotHeight, 0]);
+
+            // Temperature function
+            const T = t => 70 + 130 * Math.exp(-0.05 * t);
+            const Tprime = t => -6.5 * Math.exp(-0.05 * t);
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(60, 220, 20))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            const xAxis = d3.axisBottom(xScale).ticks(12);
+            const yAxis = d3.axisLeft(yScale).ticks(8);
+
+            g.append('g')
+                .attr('transform', `translate(0,${plotHeight})`)
+                .call(xAxis)
+                .selectAll('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)');
+
+            g.append('g')
+                .call(yAxis)
+                .selectAll('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)');
+
+            // Axis labels
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height - 10)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('Time (minutes)');
+
+            svg.append('text')
+                .attr('x', 20)
+                .attr('y', height / 2)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)')
+                .attr('transform', `rotate(-90, 20, ${height/2})`)
+                .text('Temperature (deg F)');
+
+            // Draw curve
+            const line = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(T(d)))
+                .curve(d3.curveCatmullRom);
+
+            const xValues = d3.range(0, 61, 0.5);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Room temperature line
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(70))
+                .attr('y2', yScale(70))
+                .attr('stroke', 'var(--text-tertiary)')
+                .attr('stroke-width', 1)
+                .attr('stroke-dasharray', '4,4');
+
+            g.append('text')
+                .attr('x', plotWidth - 5)
+                .attr('y', yScale(70) - 8)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1rem')
+                .attr('fill', 'var(--text-tertiary)')
+                .text('Room temp');
+
+            // Interactive point and tangent
+            const point = g.append('circle')
+                .attr('r', 8)
+                .attr('fill', 'var(--danger)');
+
+            const tangent = g.append('line')
+                .attr('stroke', 'var(--danger)')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '8,4');
+
+            function update(t) {
+                const temp = T(t);
+                const slope = Tprime(t);
+
+                point
+                    .attr('cx', xScale(t))
+                    .attr('cy', yScale(temp));
+
+                const dt = 15;
+                tangent
+                    .attr('x1', xScale(t - dt))
+                    .attr('y1', yScale(temp - slope * dt))
+                    .attr('x2', xScale(t + dt))
+                    .attr('y2', yScale(temp + slope * dt));
+
+                const display = document.getElementById('temp-display');
+                if (display) {
+                    display.textContent = `T'(${t}) = ${slope.toFixed(2)}`;
+                }
+            }
+
+            update(10);
+
+            const slider = document.getElementById('temp-slider');
+            if (slider) {
+                slider.addEventListener('input', function(e) {
+                    update(parseFloat(e.target.value));
+                });
+            }
+        }
+
+        // ===== Table Estimate Visualization (Slide 12) =====
+        function drawTableEstimateViz() {
+            const container = document.getElementById('table-estimate-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 150;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', 'translate(50, 30)');
+
+            g.append('text')
+                .attr('x', 0)
+                .attr('y', 0)
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('Left: (350 - 420)/(4 - 2) = -35 gal/hr');
+
+            g.append('text')
+                .attr('x', 0)
+                .attr('y', 35)
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--text-secondary)')
+                .text('Right: (295 - 350)/(6 - 4) = -27.5 gal/hr');
+
+            g.append('text')
+                .attr('x', 0)
+                .attr('y', 80)
+                .attr('font-size', '1.5rem')
+                .attr('fill', 'var(--theme-color-light)')
+                .text("Best estimate: W'(4) \u2248 -31.25 gal/hr");
+        }
+
+        // ===== Graph Slope Visualization (Slide 14) =====
+        function drawGraphSlopeViz() {
+            const container = document.getElementById('graph-slope-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const xScale = d3.scaleLinear().domain([-1, 5]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-2, 8]).range([plotHeight, 0]);
+
+            // Function: f(x) = x^2 - 2x + 1 = (x-1)^2
+            const f = x => (x - 1) * (x - 1);
+            const fPrime = x => 2 * (x - 1);
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(-2, 9, 2))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            g.append('g')
+                .selectAll('line.v')
+                .data(d3.range(-1, 6, 1))
+                .enter()
+                .append('line')
+                .attr('x1', d => xScale(d))
+                .attr('x2', d => xScale(d))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--bg-tertiary)')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            g.append('line')
+                .attr('x1', xScale(0))
+                .attr('x2', xScale(0))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 2);
+
+            // Draw curve
+            const line = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(f(d)))
+                .curve(d3.curveCatmullRom);
+
+            const xValues = d3.range(-0.5, 4.6, 0.1);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Show tangent lines at different points
+            const points = [
+                { x: 0, color: 'var(--danger)' },
+                { x: 1, color: 'var(--accent-secondary)' },
+                { x: 3, color: 'var(--success)' }
+            ];
+
+            points.forEach(pt => {
+                const y = f(pt.x);
+                const slope = fPrime(pt.x);
+
+                g.append('circle')
+                    .attr('cx', xScale(pt.x))
+                    .attr('cy', yScale(y))
+                    .attr('r', 6)
+                    .attr('fill', pt.color);
+
+                const dt = 1;
+                g.append('line')
+                    .attr('x1', xScale(pt.x - dt))
+                    .attr('y1', yScale(y - slope * dt))
+                    .attr('x2', xScale(pt.x + dt))
+                    .attr('y2', yScale(y + slope * dt))
+                    .attr('stroke', pt.color)
+                    .attr('stroke-width', 2)
+                    .attr('stroke-dasharray', '6,4');
+
+                g.append('text')
+                    .attr('x', xScale(pt.x + dt) + 5)
+                    .attr('y', yScale(y + slope * dt))
+                    .attr('font-size', '1.1rem')
+                    .attr('fill', pt.color)
+                    .text(`f'(${pt.x}) = ${slope}`);
+            });
+
+            // Function label
+            g.append('text')
+                .attr('x', xScale(4))
+                .attr('y', yScale(f(4)) - 15)
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--color-function)')
+                .text('f(x) = (x - 1)^2');
+        }
+
+        // ===== Visualization Trigger =====
+        const visualizationSlides = {
+            5: drawUnitsViz,
+            8: drawPopulationViz,
+            10: drawCoolingViz,
+            12: drawTableEstimateViz,
+            14: drawGraphSlopeViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

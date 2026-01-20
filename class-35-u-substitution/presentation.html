@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 35: U-Substitution | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #d4a028;
+            --theme-color-light: #fbbf24;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .strategy-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 800px;
+        }
+
+        .strategy-box h4 {
+            color: var(--theme-color-light);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .strategy-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.6rem 0;
+            font-size: 1.15rem;
+        }
+
+        .strategy-step .number {
+            background: var(--theme-color);
+            color: var(--bg-primary);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .concept-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            border-radius: 0 8px 8px 0;
+            max-width: 850px;
+            text-align: left;
+        }
+
+        .concept-box h4 {
+            color: var(--theme-color-light);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .theorem-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--accent-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 850px;
+        }
+
+        .theorem-box h4 {
+            color: var(--accent-secondary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .pattern-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            max-width: 800px;
+            margin: 1.5rem auto;
+        }
+
+        .pattern-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .pattern-card h5 {
+            color: var(--theme-color-light);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="U-Substitution">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 6: Integration</div>
+                <h1>U-Substitution</h1>
+                <p class="subtitle">Reversing the Chain Rule</p>
+                <p class="meta">Class 35 | CED Topic 6.9 | AP Calculus BC | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: Opening Question -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="Opening Question">
+            <div class="slide-content">
+                <p class="statement">How do we integrate \( \int 2x \cos(x^2) \, dx \)?</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: The Chain Rule Connection -->
+        <div class="slide slide-visual" data-slide="2" data-section="Concept" data-title="Chain Rule Connection">
+            <div class="slide-content">
+                <h2>The Chain Rule in Reverse</h2>
+                <div class="theorem-box">
+                    <h4>Chain Rule</h4>
+                    <p style="font-size: 1.5rem; text-align: center;">\( \frac{d}{dx}[f(g(x))] = f'(g(x)) \cdot g'(x) \)</p>
+                </div>
+                <div class="concept-box" style="margin-top: 1rem;">
+                    <h4>Reversing It</h4>
+                    <p style="font-size: 1.25rem; text-align: center;">\( \int f'(g(x)) \cdot g'(x) \, dx = f(g(x)) + C \)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: The Method -->
+        <div class="slide slide-visual" data-slide="3" data-section="Concept" data-title="The Method">
+            <div class="slide-content">
+                <h2>U-Substitution Method</h2>
+                <div class="strategy-box">
+                    <h4>Steps</h4>
+                    <div class="strategy-step"><span class="number">1</span> Identify the "inside function" and let \( u = \) that function</div>
+                    <div class="strategy-step"><span class="number">2</span> Find \( \frac{du}{dx} \), then solve for \( du \)</div>
+                    <div class="strategy-step"><span class="number">3</span> Rewrite the integral entirely in terms of \( u \)</div>
+                    <div class="strategy-step"><span class="number">4</span> Integrate with respect to \( u \)</div>
+                    <div class="strategy-step"><span class="number">5</span> Substitute back to get the answer in terms of \( x \)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Example 1 -->
+        <div class="slide slide-example" data-slide="4" data-section="Examples" data-title="Example 1">
+            <div class="slide-content">
+                <h2>Example: \( \int 2x \cos(x^2) \, dx \)</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>Let \( u = x^2 \) (the inside function)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>\( \frac{du}{dx} = 2x \), so \( du = 2x \, dx \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( \int 2x \cos(x^2) \, dx = \int \cos(u) \, du \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>\( = \sin(u) + C \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">5</span>
+                        <span>\( = \sin(x^2) + C \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Example 2 -->
+        <div class="slide slide-example" data-slide="5" data-section="Examples" data-title="Example 2">
+            <div class="slide-content">
+                <h2>Example: \( \int (3x+1)^5 \, dx \)</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>Let \( u = 3x + 1 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>\( du = 3 \, dx \), so \( dx = \frac{1}{3} du \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( \int (3x+1)^5 \, dx = \int u^5 \cdot \frac{1}{3} \, du = \frac{1}{3} \int u^5 \, du \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>\( = \frac{1}{3} \cdot \frac{u^6}{6} + C = \frac{u^6}{18} + C \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">5</span>
+                        <span>\( = \frac{(3x+1)^6}{18} + C \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Example 3 - Exponential -->
+        <div class="slide slide-example" data-slide="6" data-section="Examples" data-title="Example 3">
+            <div class="slide-content">
+                <h2>Example: \( \int x e^{x^2} \, dx \)</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>Let \( u = x^2 \), so \( du = 2x \, dx \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>Need \( x \, dx \), have \( 2x \, dx = du \), so \( x \, dx = \frac{1}{2} du \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( \int x e^{x^2} \, dx = \int e^u \cdot \frac{1}{2} \, du = \frac{1}{2} \int e^u \, du \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>\( = \frac{1}{2} e^u + C = \frac{1}{2} e^{x^2} + C \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Common Patterns -->
+        <div class="slide slide-visual" data-slide="7" data-section="Patterns" data-title="Common Patterns">
+            <div class="slide-content">
+                <h2>Recognizing U-Sub Patterns</h2>
+                <div class="pattern-grid">
+                    <div class="pattern-card">
+                        <h5>Inside × Its Derivative</h5>
+                        <p>\( \int f(g(x)) \cdot g'(x) \, dx \)</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h5>Composite Functions</h5>
+                        <p>\( \int (ax+b)^n \, dx \)</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h5>Trig of Linear</h5>
+                        <p>\( \int \sin(ax) \, dx \)</p>
+                    </div>
+                    <div class="pattern-card">
+                        <h5>Natural Log</h5>
+                        <p>\( \int \frac{f'(x)}{f(x)} \, dx = \ln|f(x)| + C \)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: The Natural Log Pattern -->
+        <div class="slide slide-example" data-slide="8" data-section="Patterns" data-title="Log Pattern">
+            <div class="slide-content">
+                <h2>The Natural Log Pattern</h2>
+                <div class="theorem-box">
+                    <h4>Key Pattern</h4>
+                    <p style="font-size: 1.5rem; text-align: center;">\( \int \frac{f'(x)}{f(x)} \, dx = \ln|f(x)| + C \)</p>
+                </div>
+                <div class="solution" style="margin-top: 1rem;">
+                    <div class="step">
+                        <span class="step-number">Ex</span>
+                        <span>\( \int \frac{2x}{x^2 + 1} \, dx = \ln|x^2 + 1| + C = \ln(x^2 + 1) + C \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">Ex</span>
+                        <span>\( \int \tan(x) \, dx = \int \frac{\sin x}{\cos x} \, dx = -\ln|\cos x| + C \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Definite Integrals -->
+        <div class="slide slide-visual" data-slide="9" data-section="Definite" data-title="Definite Integrals">
+            <div class="slide-content">
+                <h2>U-Sub with Definite Integrals</h2>
+                <div class="concept-box">
+                    <h4>Two Approaches</h4>
+                    <p style="font-size: 1.15rem;"><strong>Method 1:</strong> Find indefinite integral, then evaluate at original limits</p>
+                    <p style="font-size: 1.15rem; margin-top: 0.75rem;"><strong>Method 2:</strong> Change the limits when you substitute!</p>
+                </div>
+                <div class="theorem-box" style="margin-top: 1rem;">
+                    <p style="font-size: 1.25rem; text-align: center;">If \( u = g(x) \), then when \( x = a \), \( u = g(a) \)</p>
+                    <p style="font-size: 1.25rem; text-align: center; margin-top: 0.5rem;">and when \( x = b \), \( u = g(b) \)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Definite Example -->
+        <div class="slide slide-example" data-slide="10" data-section="Definite" data-title="Definite Example">
+            <div class="slide-content">
+                <h2>Example: \( \int_0^2 x(x^2+1)^3 \, dx \)</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>Let \( u = x^2 + 1 \), \( du = 2x \, dx \), so \( x \, dx = \frac{1}{2} du \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>Change limits: When \( x = 0 \), \( u = 1 \). When \( x = 2 \), \( u = 5 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( = \frac{1}{2} \int_1^5 u^3 \, du = \frac{1}{2} \left[ \frac{u^4}{4} \right]_1^5 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span>\( = \frac{1}{8} (5^4 - 1^4) = \frac{1}{8}(625 - 1) = \frac{624}{8} = 78 \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Practice 1 -->
+        <div class="slide slide-exercise" data-slide="11" data-section="Practice" data-title="Practice">
+            <div class="slide-content">
+                <h2>Your Turn</h2>
+                <div class="prompt">
+                    <p>Evaluate each integral:</p>
+                    <ol style="text-align: left; max-width: 600px; margin: 1.5rem auto; font-size: 1.25rem;">
+                        <li style="padding: 0.5rem 0;">\( \int \sin(5x) \, dx \)</li>
+                        <li style="padding: 0.5rem 0;">\( \int x^2 \sqrt{x^3 + 4} \, dx \)</li>
+                        <li style="padding: 0.5rem 0;">\( \int \frac{e^x}{1 + e^x} \, dx \)</li>
+                        <li style="padding: 0.5rem 0;">\( \int_0^{\pi/4} \sec^2(x) \tan(x) \, dx \)</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Summary -->
+        <div class="slide slide-visual" data-slide="12" data-section="Closing" data-title="Key Takeaways">
+            <div class="slide-content">
+                <h2>U-Substitution Summary</h2>
+                <div class="strategy-box" style="border-color: var(--accent-secondary);">
+                    <p style="font-size: 1.15rem; margin-bottom: 0.75rem;"><strong>Identify:</strong> Look for "inside function" and its derivative</p>
+                    <p style="font-size: 1.15rem; margin-bottom: 0.75rem;"><strong>Substitute:</strong> Let \( u \) = inside, find \( du \), rewrite integral</p>
+                    <p style="font-size: 1.15rem; margin-bottom: 0.75rem;"><strong>Integrate:</strong> Solve in terms of \( u \)</p>
+                    <p style="font-size: 1.15rem; margin-bottom: 0.75rem;"><strong>Back-substitute:</strong> Replace \( u \) with original expression</p>
+                    <p style="font-size: 1.15rem;"><strong>Definite integrals:</strong> Change limits OR substitute back before evaluating</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="13" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p><strong>1.</strong> Find \( \int \cos(3x+1) \, dx \)</p>
+                    <p style="margin-top: 1.5rem;"><strong>2.</strong> Evaluate \( \int_0^1 \frac{x}{(x^2+1)^2} \, dx \)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Looking Ahead -->
+        <div class="slide slide-statement" data-slide="14" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Coming Up Next:</p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    Integration by Parts (BC)<br>
+                    When U-Sub Isn't Enough
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 15</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 35: U-Substitution</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+</body>
+</html>

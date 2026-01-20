@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 21: Related Rates Introduction | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #10b981;
+            --theme-color-light: #34d399;
+        }
+
+        .unit-badge {
+            background: var(--theme-color);
+        }
+
+        .concept-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            border-radius: 0 8px 8px 0;
+            max-width: 850px;
+            text-align: left;
+        }
+
+        .concept-box h4 {
+            color: var(--theme-color-light);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .strategy-steps {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 800px;
+        }
+
+        .strategy-step {
+            display: flex;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            align-items: flex-start;
+        }
+
+        .strategy-step .number {
+            background: var(--theme-color);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .strategy-step .content {
+            font-size: 1.25rem;
+            padding-top: 0.25rem;
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .slider-control label {
+            font-size: 1.25rem;
+            font-family: var(--font-display);
+        }
+
+        .slider-control input[type="range"] {
+            width: 350px;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--theme-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .info-display {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+        }
+
+        .info-item {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+        }
+
+        .rate-equation {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--accent-secondary);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .example-scenario {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 900px;
+            margin: 1.5rem auto;
+        }
+
+        .scenario-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .scenario-card h4 {
+            color: var(--theme-color-light);
+            margin-bottom: 1rem;
+        }
+
+        .scenario-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Related Rates Introduction">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 4: Contextual Applications of Differentiation</div>
+                <h1>Related Rates</h1>
+                <p class="subtitle">Introduction and Framework</p>
+                <p class="meta">Class 21 | CED Topic 4.4 | AP Calculus BC | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: Opening Question -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="The Big Idea">
+            <div class="slide-content">
+                <p class="statement">When two quantities change <em>together</em>, how are their rates of change <em>related</em>?</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Warm-Up -->
+        <div class="slide slide-exercise" data-slide="2" data-section="Opening" data-title="Warm-Up">
+            <div class="slide-content">
+                <h2>Warm-Up: Implicit Differentiation Review</h2>
+                <div class="prompt">
+                    <p>Given \( x^2 + y^2 = 25 \), find \( \dfrac{dy}{dx} \)</p>
+                </div>
+                <div class="instructions" style="margin-top: 2rem;">
+                    <p style="font-size: 1.25rem; color: var(--text-secondary);">
+                        Key insight: Both \( x \) and \( y \) can change. When we differentiate with respect to \( x \),<br>
+                        we use the chain rule on terms involving \( y \).
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Core Concept -->
+        <div class="slide slide-two-part" data-slide="3" data-section="Core Concepts" data-title="The Core Concept">
+            <div class="slide-content">
+                <p class="primary" style="color: var(--theme-color-light);">The Related Rates Idea</p>
+                <div class="concept-box">
+                    <p style="font-size: 1.35rem;">
+                        If two or more quantities are related by an equation, and each quantity is changing with respect to time, then their <strong>rates of change</strong> are also related.
+                    </p>
+                </div>
+                <p class="secondary" style="margin-top: 1.5rem;">
+                    We differentiate the relationship with respect to time to find the connection between rates.
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Time as the Variable -->
+        <div class="slide slide-statement" data-slide="4" data-section="Core Concepts" data-title="Time is the Variable">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.75rem;">In related rates, we differentiate with respect to <em>time</em></p>
+                <div class="math-display" style="margin-top: 2rem;">
+                    \[ \frac{d}{dt}[\text{relationship}] \]
+                </div>
+                <p style="font-size: 1.35rem; color: var(--text-secondary); margin-top: 1.5rem;">
+                    Every variable is a function of \( t \), even if we don't write it explicitly
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Circle Example Introduction -->
+        <div class="slide slide-example" data-slide="5" data-section="Examples" data-title="Expanding Circle">
+            <div class="slide-content">
+                <h2>Example: Expanding Circle</h2>
+                <div class="problem">
+                    <p>A circular ripple expands outward. The radius is increasing at 2 cm/s.</p>
+                    <p style="margin-top: 0.5rem;">How fast is the area increasing when the radius is 10 cm?</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span><strong>Identify:</strong> \( r \) = radius, \( A \) = area, both functions of \( t \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span><strong>Given:</strong> \( \frac{dr}{dt} = 2 \) cm/s, \( r = 10 \) cm</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span><strong>Find:</strong> \( \frac{dA}{dt} \) when \( r = 10 \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Circle Example Solution -->
+        <div class="slide slide-example" data-slide="6" data-section="Examples" data-title="Expanding Circle Solution">
+            <div class="slide-content">
+                <h2>Expanding Circle: Solution</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span><strong>Equation:</strong> \( A = \pi r^2 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">5</span>
+                        <span><strong>Differentiate with respect to \( t \):</strong></span>
+                    </div>
+                </div>
+                <div class="rate-equation">
+                    \[ \frac{dA}{dt} = 2\pi r \cdot \frac{dr}{dt} \]
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">6</span>
+                        <span><strong>Substitute:</strong> \( \frac{dA}{dt} = 2\pi (10)(2) = 40\pi \) cm\(^2\)/s</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Circle Visualization -->
+        <div class="slide slide-visual" data-slide="7" data-section="Examples" data-title="Circle Animation">
+            <div class="slide-content">
+                <h2>Visualizing the Expanding Circle</h2>
+                <div id="circle-viz" class="visualization"></div>
+                <div class="slider-control">
+                    <label>t = </label>
+                    <input type="range" id="circle-slider" min="0" max="5" step="0.05" value="0">
+                    <span id="circle-time" style="font-family: var(--font-mono); min-width: 80px;">t = 0.00 s</span>
+                </div>
+                <div class="info-display">
+                    <div class="info-item" id="radius-display">r = 5.00 cm</div>
+                    <div class="info-item" id="area-display">A = 78.54 cm^2</div>
+                    <div class="info-item" id="dAdt-display">dA/dt = 62.83 cm^2/s</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: The Strategy -->
+        <div class="slide slide-visual" data-slide="8" data-section="Strategy" data-title="Problem-Solving Strategy">
+            <div class="slide-content">
+                <h2>Related Rates Strategy</h2>
+                <div class="strategy-steps">
+                    <div class="strategy-step">
+                        <div class="number">1</div>
+                        <div class="content"><strong>Draw</strong> a picture and label variables</div>
+                    </div>
+                    <div class="strategy-step">
+                        <div class="number">2</div>
+                        <div class="content"><strong>Identify</strong> what's given and what's asked</div>
+                    </div>
+                    <div class="strategy-step">
+                        <div class="number">3</div>
+                        <div class="content"><strong>Write</strong> an equation relating the variables</div>
+                    </div>
+                    <div class="strategy-step">
+                        <div class="number">4</div>
+                        <div class="content"><strong>Differentiate</strong> both sides with respect to time</div>
+                    </div>
+                    <div class="strategy-step">
+                        <div class="number">5</div>
+                        <div class="content"><strong>Substitute</strong> known values and solve</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Ladder Example -->
+        <div class="slide slide-example" data-slide="9" data-section="Examples" data-title="Sliding Ladder">
+            <div class="slide-content">
+                <h2>Classic Example: Sliding Ladder</h2>
+                <div class="problem">
+                    <p>A 13-foot ladder leans against a wall. The bottom slides away at 2 ft/s.</p>
+                    <p style="margin-top: 0.5rem;">How fast is the top sliding down when the bottom is 5 feet from the wall?</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>Let \( x \) = distance from wall to bottom, \( y \) = height on wall</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span><strong>Given:</strong> \( \frac{dx}{dt} = 2 \) ft/s, \( x = 5 \) ft. <strong>Find:</strong> \( \frac{dy}{dt} \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Ladder Solution -->
+        <div class="slide slide-example" data-slide="10" data-section="Examples" data-title="Ladder Solution">
+            <div class="slide-content">
+                <h2>Ladder Problem: Solution</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span><strong>Equation:</strong> \( x^2 + y^2 = 169 \) (Pythagorean theorem)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span><strong>Differentiate:</strong> \( 2x\frac{dx}{dt} + 2y\frac{dy}{dt} = 0 \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">5</span>
+                        <span>When \( x = 5 \): \( y = \sqrt{169 - 25} = 12 \) ft</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">6</span>
+                        <span>\( 2(5)(2) + 2(12)\frac{dy}{dt} = 0 \implies \frac{dy}{dt} = -\frac{5}{6} \) ft/s</span>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 1.5rem; font-size: 1.35rem; color: var(--accent-secondary);">
+                    The top slides down at \( \frac{5}{6} \) ft/s
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 11: Ladder Visualization -->
+        <div class="slide slide-visual" data-slide="11" data-section="Examples" data-title="Ladder Animation">
+            <div class="slide-content">
+                <h2>Visualizing the Sliding Ladder</h2>
+                <div id="ladder-viz" class="visualization"></div>
+                <div class="slider-control">
+                    <label>x = </label>
+                    <input type="range" id="ladder-slider" min="0" max="12" step="0.1" value="5">
+                    <span id="ladder-x" style="font-family: var(--font-mono); min-width: 80px;">x = 5.0 ft</span>
+                </div>
+                <div class="info-display">
+                    <div class="info-item" id="ladder-y">y = 12.00 ft</div>
+                    <div class="info-item" id="ladder-dydt">dy/dt = -0.83 ft/s</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Key Insight -->
+        <div class="slide slide-statement" data-slide="12" data-section="Insights" data-title="Key Insight">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">The relationship between quantities stays <em>constant</em>, but the rates depend on the <em>current values</em></p>
+                <div class="concept-box" style="margin-top: 2rem;">
+                    <p style="font-size: 1.25rem;">In the ladder problem, \( x^2 + y^2 = 169 \) is always true. But \( \frac{dy}{dt} \) changes depending on where the ladder is.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Chain Rule Connection -->
+        <div class="slide slide-two-part" data-slide="13" data-section="Insights" data-title="Chain Rule Connection">
+            <div class="slide-content">
+                <p class="primary">Related Rates = Chain Rule in Disguise</p>
+                <div class="rate-equation">
+                    \[ \frac{d}{dt}[f(x(t))] = f'(x) \cdot \frac{dx}{dt} \]
+                </div>
+                <p class="secondary" style="margin-top: 1.5rem;">
+                    When \( x \) is a function of \( t \), differentiating with respect to \( t \) requires the chain rule
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 14: Common Relationships -->
+        <div class="slide slide-visual" data-slide="14" data-section="Tools" data-title="Common Formulas">
+            <div class="slide-content">
+                <h2>Common Geometric Relationships</h2>
+                <div class="example-scenario">
+                    <div class="scenario-card">
+                        <h4>Circles</h4>
+                        <p style="font-size: 1.25rem;">\( A = \pi r^2 \)</p>
+                        <p style="font-size: 1.25rem;">\( C = 2\pi r \)</p>
+                    </div>
+                    <div class="scenario-card">
+                        <h4>Spheres</h4>
+                        <p style="font-size: 1.25rem;">\( V = \frac{4}{3}\pi r^3 \)</p>
+                        <p style="font-size: 1.25rem;">\( S = 4\pi r^2 \)</p>
+                    </div>
+                    <div class="scenario-card">
+                        <h4>Cones</h4>
+                        <p style="font-size: 1.25rem;">\( V = \frac{1}{3}\pi r^2 h \)</p>
+                    </div>
+                    <div class="scenario-card">
+                        <h4>Right Triangles</h4>
+                        <p style="font-size: 1.25rem;">\( a^2 + b^2 = c^2 \)</p>
+                        <p style="font-size: 1.25rem;">\( \tan\theta = \frac{\text{opp}}{\text{adj}} \)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Cone Example -->
+        <div class="slide slide-example" data-slide="15" data-section="Examples" data-title="Filling Cone">
+            <div class="slide-content">
+                <h2>Example: Filling a Cone</h2>
+                <div class="problem">
+                    <p>Water fills a conical tank at 3 m\(^3\)/min. The tank has radius 4 m and height 8 m.</p>
+                    <p style="margin-top: 0.5rem;">How fast is the water level rising when the depth is 2 m?</p>
+                </div>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span><strong>Given:</strong> \( \frac{dV}{dt} = 3 \), \( h = 2 \). <strong>Find:</strong> \( \frac{dh}{dt} \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>By similar triangles: \( \frac{r}{h} = \frac{4}{8} = \frac{1}{2} \), so \( r = \frac{h}{2} \)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Cone Solution -->
+        <div class="slide slide-example" data-slide="16" data-section="Examples" data-title="Cone Solution">
+            <div class="slide-content">
+                <h2>Cone Problem: Solution</h2>
+                <div class="solution">
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>\( V = \frac{1}{3}\pi r^2 h = \frac{1}{3}\pi \left(\frac{h}{2}\right)^2 h = \frac{\pi h^3}{12} \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <span><strong>Differentiate:</strong> \( \frac{dV}{dt} = \frac{\pi h^2}{4} \cdot \frac{dh}{dt} \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">5</span>
+                        <span>When \( h = 2 \): \( 3 = \frac{\pi(4)}{4} \cdot \frac{dh}{dt} = \pi \cdot \frac{dh}{dt} \)</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">6</span>
+                        <span>\( \frac{dh}{dt} = \frac{3}{\pi} \approx 0.955 \) m/min</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Practice Problem -->
+        <div class="slide slide-exercise" data-slide="17" data-section="Practice" data-title="Your Turn">
+            <div class="slide-content">
+                <h2>Your Turn</h2>
+                <div class="prompt">
+                    <p>A spherical balloon is inflated at a rate of 100 cm\(^3\)/s.</p>
+                    <p style="margin-top: 0.5rem;">How fast is the radius increasing when \( r = 5 \) cm?</p>
+                </div>
+                <div class="instructions" style="margin-top: 1.5rem;">
+                    <p style="font-size: 1.25rem; color: var(--text-secondary);">
+                        Hint: \( V = \frac{4}{3}\pi r^3 \)
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Common Mistakes -->
+        <div class="slide slide-list" data-slide="18" data-section="Practice" data-title="Common Mistakes">
+            <div class="slide-content">
+                <h2>Common Mistakes to Avoid</h2>
+                <ul>
+                    <li>Substituting values BEFORE differentiating</li>
+                    <li>Forgetting \( \frac{dx}{dt} \) when differentiating \( x \)</li>
+                    <li>Confusing constants with variables</li>
+                    <li>Using wrong sign for decreasing quantities</li>
+                    <li>Not labeling units in the final answer</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 19: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="19" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p>The radius of a circle is increasing at 3 cm/s.</p>
+                </div>
+                <div class="instructions" style="text-align: left; max-width: 700px; margin: 1.5rem auto 0;">
+                    <ol style="list-style-position: inside; font-size: 1.25rem;">
+                        <li style="padding: 0.5rem 0;">At what rate is the area increasing when \( r = 4 \) cm?</li>
+                        <li style="padding: 0.5rem 0;">At what rate is the circumference increasing?</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Looking Ahead -->
+        <div class="slide slide-statement" data-slide="20" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">Next: <em>Related Rates Problem Solving</em></p>
+                <p style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">
+                    More complex scenarios involving<br>
+                    shadows, distances, and angles
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 21</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 21: Related Rates Introduction</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Circle Visualization (Slide 7) =====
+        function drawCircleViz() {
+            const container = document.getElementById('circle-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 350;
+            const centerX = width / 2;
+            const centerY = height / 2;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Scale for radius (max r = 15 cm, displayed as max 120 px)
+            const rScale = 8;
+            const drdt = 2; // cm/s
+
+            // Circle
+            const circle = svg.append('circle')
+                .attr('cx', centerX)
+                .attr('cy', centerY)
+                .attr('fill', 'rgba(16, 185, 129, 0.2)')
+                .attr('stroke', 'var(--theme-color)')
+                .attr('stroke-width', 3);
+
+            // Radius line
+            const radiusLine = svg.append('line')
+                .attr('x1', centerX)
+                .attr('y1', centerY)
+                .attr('stroke', 'var(--color-derivative)')
+                .attr('stroke-width', 2);
+
+            // Radius label
+            const radiusLabel = svg.append('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--color-derivative)');
+
+            function update(t) {
+                const r = 5 + drdt * t; // starts at 5 cm
+                const A = Math.PI * r * r;
+                const dAdt = 2 * Math.PI * r * drdt;
+
+                const displayR = r * rScale;
+
+                circle.attr('r', displayR);
+
+                radiusLine
+                    .attr('x2', centerX + displayR)
+                    .attr('y2', centerY);
+
+                radiusLabel
+                    .attr('x', centerX + displayR/2)
+                    .attr('y', centerY - 10)
+                    .text(`r = ${r.toFixed(1)} cm`);
+
+                document.getElementById('circle-time').textContent = `t = ${t.toFixed(2)} s`;
+                document.getElementById('radius-display').textContent = `r = ${r.toFixed(2)} cm`;
+                document.getElementById('area-display').textContent = `A = ${A.toFixed(2)} cm\u00B2`;
+                document.getElementById('dAdt-display').textContent = `dA/dt = ${dAdt.toFixed(2)} cm\u00B2/s`;
+            }
+
+            update(0);
+
+            const slider = document.getElementById('circle-slider');
+            if (slider) {
+                slider.addEventListener('input', function(e) {
+                    update(parseFloat(e.target.value));
+                });
+            }
+        }
+
+        // ===== Ladder Visualization (Slide 11) =====
+        function drawLadderViz() {
+            const container = document.getElementById('ladder-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 500;
+            const height = 400;
+            const margin = { top: 30, right: 50, bottom: 50, left: 50 };
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const ladderLen = 13;
+            const scale = 20; // pixels per foot
+            const groundY = height - margin.bottom;
+            const wallX = margin.left;
+
+            // Ground
+            svg.append('line')
+                .attr('x1', margin.left - 20)
+                .attr('x2', width - margin.right)
+                .attr('y1', groundY)
+                .attr('y2', groundY)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 3);
+
+            // Wall
+            svg.append('line')
+                .attr('x1', wallX)
+                .attr('x2', wallX)
+                .attr('y1', margin.top)
+                .attr('y2', groundY)
+                .attr('stroke', 'var(--text-secondary)')
+                .attr('stroke-width', 3);
+
+            // Ladder
+            const ladder = svg.append('line')
+                .attr('stroke', 'var(--accent-secondary)')
+                .attr('stroke-width', 6)
+                .attr('stroke-linecap', 'round');
+
+            // x dimension line
+            const xLine = svg.append('line')
+                .attr('y1', groundY + 15)
+                .attr('y2', groundY + 15)
+                .attr('stroke', 'var(--theme-color)')
+                .attr('stroke-width', 2);
+
+            const xLabel = svg.append('text')
+                .attr('y', groundY + 35)
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--theme-color)')
+                .attr('text-anchor', 'middle');
+
+            // y dimension line
+            const yLine = svg.append('line')
+                .attr('x1', wallX - 15)
+                .attr('x2', wallX - 15)
+                .attr('stroke', 'var(--color-function)')
+                .attr('stroke-width', 2);
+
+            const yLabel = svg.append('text')
+                .attr('x', wallX - 25)
+                .attr('font-size', '1.25rem')
+                .attr('fill', 'var(--color-function)')
+                .attr('text-anchor', 'middle');
+
+            function update(x) {
+                const y = Math.sqrt(ladderLen * ladderLen - x * x);
+                const dxdt = 2; // ft/s
+                const dydt = -(x * dxdt) / y;
+
+                const bottomX = wallX + x * scale;
+                const topY = groundY - y * scale;
+
+                ladder
+                    .attr('x1', bottomX)
+                    .attr('y1', groundY)
+                    .attr('x2', wallX)
+                    .attr('y2', topY);
+
+                xLine
+                    .attr('x1', wallX)
+                    .attr('x2', bottomX);
+
+                xLabel
+                    .attr('x', wallX + (x * scale) / 2)
+                    .text(`x = ${x.toFixed(1)} ft`);
+
+                yLine
+                    .attr('y1', groundY)
+                    .attr('y2', topY);
+
+                yLabel
+                    .attr('y', groundY - (y * scale) / 2)
+                    .attr('transform', `rotate(-90, ${wallX - 25}, ${groundY - (y * scale) / 2})`)
+                    .text(`y = ${y.toFixed(2)} ft`);
+
+                document.getElementById('ladder-x').textContent = `x = ${x.toFixed(1)} ft`;
+                document.getElementById('ladder-y').textContent = `y = ${y.toFixed(2)} ft`;
+                document.getElementById('ladder-dydt').textContent = `dy/dt = ${dydt.toFixed(2)} ft/s`;
+            }
+
+            update(5);
+
+            const slider = document.getElementById('ladder-slider');
+            if (slider) {
+                slider.addEventListener('input', function(e) {
+                    update(parseFloat(e.target.value));
+                });
+            }
+        }
+
+        // ===== Visualization Trigger =====
+        const visualizationSlides = {
+            7: drawCircleViz,
+            11: drawLadderViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

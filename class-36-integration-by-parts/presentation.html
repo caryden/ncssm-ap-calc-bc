@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 36: Integration by Parts | AP Calculus BC</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        :root {
+            --theme-color: #d4a028;
+            --theme-light: #fef3c7;
+            --theme-dark: #b8860b;
+        }
+        .unit-badge {
+            background: var(--theme-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .formula-box {
+            background: var(--theme-light);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+            font-size: 1.75rem;
+        }
+        .example-box {
+            background: #f8fafc;
+            border: 2px solid var(--theme-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        .step-list {
+            list-style: none;
+            padding: 0;
+            counter-reset: step;
+        }
+        .step-list li {
+            counter-increment: step;
+            padding: 0.75rem 0 0.75rem 3rem;
+            position: relative;
+            font-size: 1.5rem;
+        }
+        .step-list li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0.75rem;
+            width: 2rem;
+            height: 2rem;
+            background: var(--theme-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+        .mnemonic {
+            font-size: 2.5rem;
+            font-weight: bold;
+            letter-spacing: 0.5rem;
+            color: var(--theme-color);
+        }
+        .mnemonic-explain {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        .mnemonic-item {
+            text-align: center;
+        }
+        .mnemonic-item .letter {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--theme-color);
+        }
+        .mnemonic-item .word {
+            font-size: 1.25rem;
+            color: #64748b;
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            width: 100%;
+        }
+        .column {
+            padding: 1rem;
+        }
+        .tabular-method {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.5rem;
+        }
+        .tabular-method th, .tabular-method td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1rem;
+            text-align: center;
+        }
+        .tabular-method th {
+            background: var(--theme-light);
+            color: var(--theme-dark);
+        }
+        .tabular-method .sign-col {
+            width: 60px;
+        }
+        .viz-container {
+            width: 100%;
+            max-width: 700px;
+            height: 400px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Title Slide -->
+        <div class="slide slide-title active" data-slide="0" data-title="Integration by Parts">
+            <div class="slide-content">
+                <span class="unit-badge">Unit 6: Integration</span>
+                <h1>Integration by Parts</h1>
+                <h2>Class 36 | CED Topic 6.11</h2>
+                <p style="font-size: 1.25rem; color: #64748b; margin-top: 2rem;">
+                    The Product Rule in Reverse
+                </p>
+            </div>
+        </div>
+
+        <!-- Warm-Up -->
+        <div class="slide slide-statement" data-slide="1" data-title="Warm-Up">
+            <div class="slide-content">
+                <h2>Warm-Up</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    Find the derivative of \( x \cdot e^x \)
+                </p>
+                <div class="formula-box" style="margin-top: 2rem;">
+                    \( \frac{d}{dx}[x \cdot e^x] = x \cdot e^x + e^x \cdot 1 = e^x(x + 1) \)
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 2rem; color: #64748b;">
+                    The product rule creates a sum. Can we reverse this process?
+                </p>
+            </div>
+        </div>
+
+        <!-- Motivation -->
+        <div class="slide slide-statement" data-slide="2" data-title="The Problem">
+            <div class="slide-content">
+                <h2>The Challenge</h2>
+                <p style="font-size: 1.75rem; margin-bottom: 2rem;">
+                    How do we evaluate \( \displaystyle\int x \cdot e^x \, dx \)?
+                </p>
+                <p style="font-size: 1.5rem; color: #64748b;">
+                    This is a product of two functions.<br>
+                    U-substitution doesn't work directly.<br><br>
+                    We need a new technique!
+                </p>
+            </div>
+        </div>
+
+        <!-- Product Rule Reversal -->
+        <div class="slide slide-content" data-slide="3" data-title="From Product Rule">
+            <div class="slide-content">
+                <h2>Deriving the Formula</h2>
+                <p style="font-size: 1.5rem;">Start with the Product Rule:</p>
+                <div class="formula-box">
+                    \( \frac{d}{dx}[u \cdot v] = u \cdot \frac{dv}{dx} + v \cdot \frac{du}{dx} \)
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 1.5rem;">Integrate both sides:</p>
+                <div class="formula-box">
+                    \( u \cdot v = \int u \, dv + \int v \, du \)
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 1.5rem;">Rearrange:</p>
+                <div class="formula-box" style="background: #fef3c7; border-color: var(--theme-dark);">
+                    \( \int u \, dv = u \cdot v - \int v \, du \)
+                </div>
+            </div>
+        </div>
+
+        <!-- The Formula -->
+        <div class="slide slide-statement" data-slide="4" data-title="IBP Formula">
+            <div class="slide-content">
+                <h2>Integration by Parts Formula</h2>
+                <div class="formula-box" style="font-size: 2.25rem; text-align: center;">
+                    \( \displaystyle\int u \, dv = uv - \int v \, du \)
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 2rem; color: #64748b;">
+                    The goal: Transform a difficult integral into an easier one
+                </p>
+            </div>
+        </div>
+
+        <!-- LIATE Rule -->
+        <div class="slide slide-content" data-slide="5" data-title="LIATE Rule">
+            <div class="slide-content">
+                <h2>Choosing u: The LIATE Rule</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 1.5rem;">
+                    Choose \(u\) to be the function that comes first in this list:
+                </p>
+                <div class="mnemonic">L I A T E</div>
+                <div class="mnemonic-explain">
+                    <div class="mnemonic-item">
+                        <div class="letter">L</div>
+                        <div class="word">Logarithmic</div>
+                    </div>
+                    <div class="mnemonic-item">
+                        <div class="letter">I</div>
+                        <div class="word">Inverse trig</div>
+                    </div>
+                    <div class="mnemonic-item">
+                        <div class="letter">A</div>
+                        <div class="word">Algebraic</div>
+                    </div>
+                    <div class="mnemonic-item">
+                        <div class="letter">T</div>
+                        <div class="word">Trigonometric</div>
+                    </div>
+                    <div class="mnemonic-item">
+                        <div class="letter">E</div>
+                        <div class="word">Exponential</div>
+                    </div>
+                </div>
+                <p style="font-size: 1.25rem; margin-top: 2rem; color: #64748b;">
+                    This is a guideline, not a strict rule. Choose \(u\) so that \(du\) simplifies!
+                </p>
+            </div>
+        </div>
+
+        <!-- Example 1 -->
+        <div class="slide slide-content" data-slide="6" data-title="Example 1">
+            <div class="slide-content">
+                <h2>Example 1: \( \displaystyle\int x e^x \, dx \)</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <p style="font-size: 1.5rem;"><strong>Setup:</strong></p>
+                        <p style="font-size: 1.5rem;">
+                            Let \( u = x \) → \( du = dx \)<br>
+                            Let \( dv = e^x \, dx \) → \( v = e^x \)
+                        </p>
+                    </div>
+                    <div class="column">
+                        <p style="font-size: 1.5rem;"><strong>Apply formula:</strong></p>
+                        <p style="font-size: 1.5rem;">
+                            \( \int u \, dv = uv - \int v \, du \)
+                        </p>
+                    </div>
+                </div>
+                <div class="formula-box" style="margin-top: 1.5rem;">
+                    \( \int x e^x \, dx = x \cdot e^x - \int e^x \, dx = xe^x - e^x + C \)
+                </div>
+                <p style="font-size: 1.5rem; color: var(--theme-dark); margin-top: 1rem;">
+                    ✓ Check: \( \frac{d}{dx}[xe^x - e^x] = e^x + xe^x - e^x = xe^x \) ✓
+                </p>
+            </div>
+        </div>
+
+        <!-- Example 2 -->
+        <div class="slide slide-content" data-slide="7" data-title="Example 2">
+            <div class="slide-content">
+                <h2>Example 2: \( \displaystyle\int x \sin x \, dx \)</h2>
+                <p style="font-size: 1.5rem;"><strong>Setup (LIATE: A before T):</strong></p>
+                <p style="font-size: 1.5rem;">
+                    \( u = x \), \( du = dx \)<br>
+                    \( dv = \sin x \, dx \), \( v = -\cos x \)
+                </p>
+                <div class="formula-box">
+                    \( \int x \sin x \, dx = -x\cos x - \int (-\cos x) \, dx \)
+                </div>
+                <div class="formula-box" style="margin-top: 1rem;">
+                    \( = -x\cos x + \int \cos x \, dx = -x\cos x + \sin x + C \)
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 3: ln(x) -->
+        <div class="slide slide-content" data-slide="8" data-title="Example 3">
+            <div class="slide-content">
+                <h2>Example 3: \( \displaystyle\int \ln x \, dx \)</h2>
+                <p style="font-size: 1.5rem;">
+                    <strong>Key insight:</strong> Write this as \( \int 1 \cdot \ln x \, dx \)
+                </p>
+                <p style="font-size: 1.5rem; margin-top: 1rem;">
+                    \( u = \ln x \), \( du = \frac{1}{x} dx \)<br>
+                    \( dv = 1 \cdot dx \), \( v = x \)
+                </p>
+                <div class="formula-box">
+                    \( \int \ln x \, dx = x \ln x - \int x \cdot \frac{1}{x} \, dx \)
+                </div>
+                <div class="formula-box" style="margin-top: 1rem;">
+                    \( = x \ln x - \int 1 \, dx = x \ln x - x + C \)
+                </div>
+            </div>
+        </div>
+
+        <!-- Repeated IBP -->
+        <div class="slide slide-statement" data-slide="9" data-title="Repeated IBP">
+            <div class="slide-content">
+                <h2>Repeated Integration by Parts</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    Sometimes one application isn't enough!
+                </p>
+                <p style="font-size: 1.75rem;">
+                    \( \displaystyle\int x^2 e^x \, dx \)
+                </p>
+                <p style="font-size: 1.5rem; color: #64748b; margin-top: 2rem;">
+                    After one IBP, you'll have \( \int x e^x \, dx \)<br>
+                    which requires IBP again!
+                </p>
+            </div>
+        </div>
+
+        <!-- Tabular Method -->
+        <div class="slide slide-content" data-slide="10" data-title="Tabular Method">
+            <div class="slide-content">
+                <h2>Tabular Method</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 1.5rem;">
+                    For repeated IBP with polynomials, use the tabular method:
+                </p>
+                <p style="font-size: 1.5rem; margin-bottom: 1rem;">
+                    \( \displaystyle\int x^2 e^x \, dx \)
+                </p>
+                <table class="tabular-method" style="margin: 0 auto; max-width: 500px;">
+                    <tr>
+                        <th class="sign-col">Sign</th>
+                        <th>D (differentiate)</th>
+                        <th>I (integrate)</th>
+                    </tr>
+                    <tr>
+                        <td>+</td>
+                        <td>\( x^2 \)</td>
+                        <td>\( e^x \)</td>
+                    </tr>
+                    <tr>
+                        <td>−</td>
+                        <td>\( 2x \)</td>
+                        <td>\( e^x \)</td>
+                    </tr>
+                    <tr>
+                        <td>+</td>
+                        <td>\( 2 \)</td>
+                        <td>\( e^x \)</td>
+                    </tr>
+                    <tr>
+                        <td>−</td>
+                        <td>\( 0 \)</td>
+                        <td>\( e^x \)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tabular Result -->
+        <div class="slide slide-statement" data-slide="11" data-title="Tabular Result">
+            <div class="slide-content">
+                <h2>Reading the Tabular Method</h2>
+                <p style="font-size: 1.5rem;">Multiply diagonally with alternating signs:</p>
+                <div class="formula-box">
+                    \( \int x^2 e^x \, dx = (+)(x^2)(e^x) + (-)(2x)(e^x) + (+)(2)(e^x) + C \)
+                </div>
+                <div class="formula-box" style="margin-top: 1rem; font-size: 2rem;">
+                    \( = e^x(x^2 - 2x + 2) + C \)
+                </div>
+            </div>
+        </div>
+
+        <!-- Cycling IBP -->
+        <div class="slide slide-content" data-slide="12" data-title="Cycling IBP">
+            <div class="slide-content">
+                <h2>Special Case: Cycling</h2>
+                <p style="font-size: 1.5rem;">
+                    \( \displaystyle\int e^x \sin x \, dx \)
+                </p>
+                <p style="font-size: 1.35rem; margin-top: 1rem;">
+                    First IBP: Let \( u = e^x \), \( dv = \sin x \, dx \)
+                </p>
+                <p style="font-size: 1.35rem;">
+                    \( = -e^x \cos x + \int e^x \cos x \, dx \)
+                </p>
+                <p style="font-size: 1.35rem; margin-top: 1rem;">
+                    Second IBP: Let \( u = e^x \), \( dv = \cos x \, dx \)
+                </p>
+                <p style="font-size: 1.35rem;">
+                    \( = -e^x \cos x + e^x \sin x - \int e^x \sin x \, dx \)
+                </p>
+                <p style="font-size: 1.5rem; color: var(--theme-dark); margin-top: 1rem;">
+                    The original integral appears on the right! Solve algebraically.
+                </p>
+            </div>
+        </div>
+
+        <!-- Cycling Solution -->
+        <div class="slide slide-statement" data-slide="13" data-title="Cycling Solution">
+            <div class="slide-content">
+                <h2>Solving the Cycling Case</h2>
+                <p style="font-size: 1.5rem;">Let \( I = \int e^x \sin x \, dx \)</p>
+                <p style="font-size: 1.5rem; margin-top: 1rem;">
+                    We found: \( I = -e^x \cos x + e^x \sin x - I \)
+                </p>
+                <div class="formula-box">
+                    \( 2I = e^x(\sin x - \cos x) \)
+                </div>
+                <div class="formula-box" style="margin-top: 1rem; font-size: 2rem;">
+                    \( I = \frac{e^x(\sin x - \cos x)}{2} + C \)
+                </div>
+            </div>
+        </div>
+
+        <!-- Definite Integrals -->
+        <div class="slide slide-statement" data-slide="14" data-title="Definite Integrals">
+            <div class="slide-content">
+                <h2>IBP with Definite Integrals</h2>
+                <div class="formula-box" style="font-size: 2rem;">
+                    \( \displaystyle\int_a^b u \, dv = \left[uv\right]_a^b - \int_a^b v \, du \)
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 2rem;">
+                    Apply the limits to the \(uv\) term, then evaluate the remaining integral.
+                </p>
+            </div>
+        </div>
+
+        <!-- Practice 1 -->
+        <div class="slide slide-exercise" data-slide="15" data-title="Practice 1">
+            <div class="slide-content">
+                <h2>Practice Problem 1</h2>
+                <p style="font-size: 1.75rem; margin-bottom: 2rem;">
+                    Evaluate: \( \displaystyle\int x \cos x \, dx \)
+                </p>
+                <div class="example-box">
+                    <p style="font-size: 1.5rem;"><strong>Steps:</strong></p>
+                    <ol class="step-list">
+                        <li>Identify \(u\) and \(dv\) using LIATE</li>
+                        <li>Find \(du\) and \(v\)</li>
+                        <li>Apply the IBP formula</li>
+                        <li>Simplify and verify</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice 2 -->
+        <div class="slide slide-exercise" data-slide="16" data-title="Practice 2">
+            <div class="slide-content">
+                <h2>Practice Problem 2</h2>
+                <p style="font-size: 1.75rem; margin-bottom: 2rem;">
+                    Evaluate: \( \displaystyle\int x^2 \cos x \, dx \)
+                </p>
+                <p style="font-size: 1.5rem; color: #64748b;">
+                    Hint: You'll need to apply IBP twice, or use the tabular method.
+                </p>
+            </div>
+        </div>
+
+        <!-- Practice 3 -->
+        <div class="slide slide-exercise" data-slide="17" data-title="Practice 3">
+            <div class="slide-content">
+                <h2>Practice Problem 3</h2>
+                <p style="font-size: 1.75rem; margin-bottom: 2rem;">
+                    Evaluate: \( \displaystyle\int_0^1 x e^{-x} \, dx \)
+                </p>
+                <p style="font-size: 1.5rem; color: #64748b;">
+                    Don't forget to apply the bounds after finding the antiderivative!
+                </p>
+            </div>
+        </div>
+
+        <!-- Exit Ticket -->
+        <div class="slide slide-statement" data-slide="18" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    1. What is the integration by parts formula?
+                </p>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
+                    2. Using LIATE, which function should be \(u\) in \( \int x^3 \ln x \, dx \)?
+                </p>
+                <p style="font-size: 1.5rem;">
+                    3. Evaluate: \( \displaystyle\int \arctan x \, dx \)
+                </p>
+            </div>
+        </div>
+
+        <!-- Closing -->
+        <div class="slide slide-title" data-slide="19" data-title="Closing">
+            <div class="slide-content">
+                <h2>Key Takeaways</h2>
+                <p style="font-size: 1.5rem; text-align: left; max-width: 800px; margin: 0 auto;">
+                    • IBP reverses the product rule: \( \int u \, dv = uv - \int v \, du \)<br><br>
+                    • LIATE helps choose \(u\): Logs, Inverse trig, Algebraic, Trig, Exponential<br><br>
+                    • Sometimes you need repeated applications<br><br>
+                    • Tabular method speeds up polynomial cases<br><br>
+                    • Cycling cases require algebraic solving
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-arrows">
+        <button class="nav-arrow" id="prevBtn">←</button>
+        <span class="slide-counter"><span id="currentSlide">1</span>/<span id="totalSlides">20</span></span>
+        <button class="nav-arrow" id="nextBtn">→</button>
+    </div>
+
+    <script src="../shared/presentation.js"></script>
+</body>
+</html>

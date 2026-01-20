@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Product Rule | Class 13 | NCSSM</title>
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --unit-color: #7c3aed;
+        }
+        .formula-box {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05));
+            border: 2px solid var(--unit-color);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin: 1rem auto;
+            max-width: 700px;
+            text-align: center;
+        }
+        .formula-box .formula {
+            font-size: 1.8rem;
+            color: var(--unit-color);
+            margin: 0.5rem 0;
+        }
+        .formula-box .note {
+            font-size: 1.25rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+        .step-box {
+            background: #f8fafc;
+            border-left: 4px solid var(--unit-color);
+            padding: 1rem 1.5rem;
+            margin: 0.5rem auto;
+            max-width: 700px;
+            font-size: 1.4rem;
+        }
+        .step-box.highlight {
+            background: rgba(124, 58, 237, 0.1);
+        }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 800px;
+            margin: 1rem auto;
+        }
+        .comparison-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .comparison-card.wrong {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid #ef4444;
+        }
+        .comparison-card.right {
+            background: rgba(34, 197, 94, 0.1);
+            border: 2px solid #22c55e;
+        }
+        .comparison-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .comparison-card.wrong h3 {
+            color: #ef4444;
+        }
+        .comparison-card.right h3 {
+            color: #22c55e;
+        }
+        .memory-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            margin: 1rem 0;
+        }
+        .memory-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .memory-row .func {
+            background: rgba(124, 58, 237, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+        }
+        .memory-row .op {
+            color: #64748b;
+            font-weight: bold;
+        }
+        .memory-row .deriv {
+            background: rgba(249, 115, 22, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            color: #f97316;
+        }
+        .viz-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .viz-container svg {
+            width: 100%;
+            height: auto;
+        }
+        .verification-box {
+            background: rgba(34, 197, 94, 0.1);
+            border: 2px solid #22c55e;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem auto;
+            max-width: 600px;
+            text-align: center;
+        }
+        .verification-box .checkmark {
+            color: #22c55e;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .question-mark {
+            font-size: 6rem;
+            color: var(--unit-color);
+            text-align: center;
+            margin: 1rem 0;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+        .strategy-column {
+            padding: 1rem;
+        }
+        .strategy-column h3 {
+            color: var(--unit-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        .strategy-column ul {
+            list-style: none;
+            padding: 0;
+        }
+        .strategy-column li {
+            padding: 0.5rem 0;
+            font-size: 1.25rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .strategy-column li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--unit-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 0: Title -->
+        <section class="slide slide-title">
+            <div class="slide-badge" style="background: var(--unit-color);">Unit 2: Differentiation Fundamentals</div>
+            <h1>The Product Rule</h1>
+            <p class="slide-subtitle">Differentiating Products of Functions</p>
+            <div class="slide-meta">Class 13 | CED 2.7 | NCSSM</div>
+        </section>
+
+        <!-- Slide 1: The Natural Guess -->
+        <section class="slide slide-visual">
+            <h2>What About Products?</h2>
+            <div style="text-align: center; font-size: 1.6rem; margin: 1.5rem 0;">
+                <p>We know:</p>
+                <p style="color: var(--unit-color); font-size: 2rem; margin: 1rem 0;">
+                    $$\frac{d}{dx}[f + g] = f' + g'$$
+                </p>
+                <p style="margin-top: 2rem;">So maybe:</p>
+                <p style="color: #64748b; font-size: 2rem; margin: 1rem 0;">
+                    $$\frac{d}{dx}[f \cdot g] = f' \cdot g' \text{ ???}$$
+                </p>
+            </div>
+            <div class="question-mark">?</div>
+        </section>
+
+        <!-- Slide 2: The Counterexample -->
+        <section class="slide slide-visual">
+            <h2>Let's Test It!</h2>
+            <div style="text-align: center; margin: 1rem 0;">
+                <p style="font-size: 1.5rem; color: #64748b;">Let f(x) = x and g(x) = x</p>
+            </div>
+            <div class="comparison-grid">
+                <div class="comparison-card right">
+                    <h3>Actual Derivative</h3>
+                    <p style="font-size: 1.4rem;">$$\frac{d}{dx}[x \cdot x] = \frac{d}{dx}[x^2] = 2x$$</p>
+                </div>
+                <div class="comparison-card wrong">
+                    <h3>Naive Guess</h3>
+                    <p style="font-size: 1.4rem;">$$f' \cdot g' = 1 \cdot 1 = 1$$</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <p style="font-size: 1.8rem; color: #ef4444; font-weight: bold;">
+                    2x ≠ 1
+                </p>
+                <p style="font-size: 1.4rem; color: #64748b;">Our guess is WRONG!</p>
+            </div>
+        </section>
+
+        <!-- Slide 3: Something's Missing -->
+        <section class="slide slide-statement">
+            <div class="statement-content">
+                <p class="statement-text">The derivative of a product is NOT the product of derivatives!</p>
+                <p class="statement-secondary">We need a new rule...</p>
+            </div>
+        </section>
+
+        <!-- Slide 4: The Product Rule -->
+        <section class="slide slide-visual">
+            <h2>The Product Rule</h2>
+            <div class="formula-box">
+                <div class="formula">
+                    $$\frac{d}{dx}[f(x) \cdot g(x)] = f'(x) \cdot g(x) + f(x) \cdot g'(x)$$
+                </div>
+                <div class="note">"f prime g plus f g prime"</div>
+            </div>
+            <p style="text-align: center; font-size: 1.5rem; color: var(--unit-color); margin-top: 2rem;">
+                <strong>Both</strong> functions contribute to the derivative!
+            </p>
+        </section>
+
+        <!-- Slide 5: Memory Trick -->
+        <section class="slide slide-visual">
+            <h2>How to Remember</h2>
+            <div class="memory-visual">
+                <div class="memory-row">
+                    <span class="func">First</span>
+                    <span class="op">×</span>
+                    <span class="deriv">(derivative of Second)</span>
+                </div>
+                <div class="memory-row">
+                    <span class="op" style="font-size: 2rem;">+</span>
+                </div>
+                <div class="memory-row">
+                    <span class="func">Second</span>
+                    <span class="op">×</span>
+                    <span class="deriv">(derivative of First)</span>
+                </div>
+            </div>
+            <p style="text-align: center; font-size: 1.4rem; color: #64748b; margin-top: 2rem;">
+                "Leave first, d-second, plus leave second, d-first"
+            </p>
+        </section>
+
+        <!-- Slide 6: Geometric Intuition -->
+        <section class="slide slide-visual">
+            <h2>Why Does It Work?</h2>
+            <div class="viz-container" id="rectangle-viz"></div>
+            <p style="text-align: center; color: #64748b; font-size: 1.3rem;">
+                Both dimensions contribute to the rate of area change
+            </p>
+        </section>
+
+        <!-- Slide 7: Verify Our Example -->
+        <section class="slide slide-visual">
+            <h2>Testing with f(x) = x, g(x) = x</h2>
+            <div class="step-box">
+                f = x, so f' = 1
+            </div>
+            <div class="step-box">
+                g = x, so g' = 1
+            </div>
+            <div class="step-box highlight">
+                $$\frac{d}{dx}[x \cdot x] = (1)(x) + (x)(1) = x + x = 2x$$
+            </div>
+            <div class="verification-box">
+                <span class="checkmark">✓</span>
+                <p style="font-size: 1.4rem; margin-top: 0.5rem;">It works!</p>
+            </div>
+        </section>
+
+        <!-- Slide 8: Example 1 -->
+        <section class="slide slide-visual">
+            <h2>Example 1: Two Polynomials</h2>
+            <div style="text-align: center; font-size: 1.6rem; margin: 1rem 0;">
+                $$h(x) = (3x^2)(x^3 + 1)$$
+            </div>
+            <div class="step-box">
+                f = 3x², so f' = 6x
+            </div>
+            <div class="step-box">
+                g = x³ + 1, so g' = 3x²
+            </div>
+            <div class="step-box">
+                h' = f'g + fg' = (6x)(x³ + 1) + (3x²)(3x²)
+            </div>
+            <div class="step-box highlight">
+                h' = 6x⁴ + 6x + 9x⁴ = <strong>15x⁴ + 6x</strong>
+            </div>
+        </section>
+
+        <!-- Slide 9: Verification by Expansion -->
+        <section class="slide slide-visual">
+            <h2>Check: Expand First</h2>
+            <div class="step-box">
+                h(x) = (3x²)(x³ + 1) = 3x⁵ + 3x²
+            </div>
+            <div class="step-box highlight">
+                h'(x) = 15x⁴ + 6x
+            </div>
+            <div class="verification-box">
+                <span class="checkmark">✓</span>
+                <p style="font-size: 1.4rem; margin-top: 0.5rem;">Same answer!</p>
+            </div>
+            <p style="text-align: center; color: #64748b; font-size: 1.3rem; margin-top: 1rem;">
+                (But expansion isn't always possible...)
+            </p>
+        </section>
+
+        <!-- Slide 10: Example 2 -->
+        <section class="slide slide-visual">
+            <h2>Example 2: With Radicals</h2>
+            <div style="text-align: center; font-size: 1.6rem; margin: 1rem 0;">
+                $$h(x) = (x^2 + 1)\sqrt{x}$$
+            </div>
+            <div class="step-box">
+                f = x² + 1, so f' = 2x
+            </div>
+            <div class="step-box">
+                g = x^(1/2), so g' = (1/2)x^(-1/2)
+            </div>
+            <div class="step-box highlight">
+                $$h' = (2x)(\sqrt{x}) + (x^2 + 1) \cdot \frac{1}{2\sqrt{x}}$$
+            </div>
+        </section>
+
+        <!-- Slide 11: Example 3 Preview -->
+        <section class="slide slide-visual">
+            <h2>Example 3: With e^x (Preview)</h2>
+            <div style="text-align: center; font-size: 1.6rem; margin: 1rem 0;">
+                $$h(x) = x^2 e^x$$
+            </div>
+            <div class="step-box" style="background: rgba(249, 115, 22, 0.1); border-color: #f97316;">
+                Note: \(\frac{d}{dx}[e^x] = e^x\) (we'll prove this soon!)
+            </div>
+            <div class="step-box">
+                f = x², f' = 2x &nbsp;&nbsp;|&nbsp;&nbsp; g = e^x, g' = e^x
+            </div>
+            <div class="step-box highlight">
+                $$h' = (2x)(e^x) + (x^2)(e^x) = e^x(2x + x^2)$$
+            </div>
+        </section>
+
+        <!-- Slide 12: When to Use -->
+        <section class="slide slide-comparison">
+            <h2>When to Use Product Rule?</h2>
+            <div class="comparison-grid">
+                <div class="strategy-column" style="background: rgba(124, 58, 237, 0.05); border-radius: 12px;">
+                    <h3>Use Product Rule</h3>
+                    <ul>
+                        <li>Transcendental functions (e^x, sin x, ln x)</li>
+                        <li>Complex factors</li>
+                        <li>Can't easily expand</li>
+                    </ul>
+                </div>
+                <div class="strategy-column" style="background: rgba(34, 197, 94, 0.05); border-radius: 12px;">
+                    <h3 style="color: #22c55e;">Just Expand</h3>
+                    <ul>
+                        <li>Simple polynomials</li>
+                        <li>Quick expansion</li>
+                        <li>Easier calculation</li>
+                    </ul>
+                </div>
+            </div>
+            <p style="text-align: center; color: #64748b; font-size: 1.3rem; margin-top: 1.5rem;">
+                Choose the method that makes your life easier!
+            </p>
+        </section>
+
+        <!-- Slide 13: Interactive Example -->
+        <section class="slide slide-visual">
+            <h2>Visualizing the Product Rule</h2>
+            <div class="viz-container" id="product-viz"></div>
+            <p style="text-align: center; color: #64748b; font-size: 1.3rem;">
+                The slope of fg equals f'g + fg'
+            </p>
+        </section>
+
+        <!-- Slide 14: Practice Problem 1 -->
+        <section class="slide slide-exercise">
+            <h2>Practice: Find the Derivative</h2>
+            <div style="text-align: center; font-size: 2rem; margin: 2rem 0;">
+                $$h(x) = (x^2 + 3)(x^3 - 2)$$
+            </div>
+            <div class="exercise-timer">2 minutes</div>
+        </section>
+
+        <!-- Slide 15: Practice Problem 2 -->
+        <section class="slide slide-exercise">
+            <h2>Practice: Two Methods</h2>
+            <div style="text-align: center; font-size: 2rem; margin: 2rem 0;">
+                $$h(x) = x\sqrt{x}$$
+            </div>
+            <p style="text-align: center; color: var(--unit-color); font-size: 1.3rem;">
+                Try both: product rule AND rewriting as x^(3/2)
+            </p>
+            <div class="exercise-timer">2 minutes</div>
+        </section>
+
+        <!-- Slide 16: Practice Problem 3 -->
+        <section class="slide slide-exercise">
+            <h2>Practice: Find the Derivative</h2>
+            <div style="text-align: center; font-size: 2rem; margin: 2rem 0;">
+                $$h(x) = (2x + 1)(3x^2 - x)$$
+            </div>
+            <div class="exercise-timer">2 minutes</div>
+        </section>
+
+        <!-- Slide 17: Solutions -->
+        <section class="slide slide-visual">
+            <h2>Solutions</h2>
+            <div class="step-box">
+                <strong>Problem 1:</strong> \(h(x) = (x^2 + 3)(x^3 - 2)\)
+                <br>
+                \(h' = (2x)(x^3 - 2) + (x^2 + 3)(3x^2) = 5x^4 + 9x^2 - 4x\)
+            </div>
+            <div class="step-box">
+                <strong>Problem 2:</strong> \(h(x) = x\sqrt{x}\)
+                <br>
+                Product rule: \((1)(\sqrt{x}) + (x)(\frac{1}{2\sqrt{x}}) = \frac{3}{2}\sqrt{x}\)
+                <br>
+                Or: \(x^{3/2}\) → \(\frac{3}{2}x^{1/2} = \frac{3}{2}\sqrt{x}\) ✓
+            </div>
+            <div class="step-box">
+                <strong>Problem 3:</strong> \(h(x) = (2x + 1)(3x^2 - x)\)
+                <br>
+                \(h' = (2)(3x^2 - x) + (2x + 1)(6x - 1) = 18x^2 + 2x - 1\)
+            </div>
+        </section>
+
+        <!-- Slide 18: Common Mistake -->
+        <section class="slide slide-visual">
+            <h2>COMMON MISTAKE</h2>
+            <div class="comparison-grid">
+                <div class="comparison-card wrong">
+                    <h3>WRONG</h3>
+                    <p style="font-size: 1.6rem; text-decoration: line-through; color: #ef4444;">
+                        $$\frac{d}{dx}[fg] = f' \cdot g'$$
+                    </p>
+                </div>
+                <div class="comparison-card right">
+                    <h3>RIGHT</h3>
+                    <p style="font-size: 1.6rem; color: #22c55e;">
+                        $$\frac{d}{dx}[fg] = f'g + fg'$$
+                    </p>
+                </div>
+            </div>
+            <p style="text-align: center; color: #ef4444; font-size: 1.5rem; font-weight: bold; margin-top: 2rem;">
+                Don't forget the "+" in the middle!
+            </p>
+        </section>
+
+        <!-- Slide 19: Key Takeaways -->
+        <section class="slide slide-list">
+            <h2>Key Takeaways</h2>
+            <ul class="styled-list">
+                <li>\(\frac{d}{dx}[fg] \neq f'g'\) (This is WRONG!)</li>
+                <li>Product rule: \((fg)' = f'g + fg'\)</li>
+                <li>Remember: "first d-second + second d-first"</li>
+                <li>Choose wisely: sometimes expansion is easier</li>
+            </ul>
+        </section>
+
+        <!-- Slide 20: Exit Ticket -->
+        <section class="slide slide-exercise">
+            <h2>Exit Ticket</h2>
+            <div style="text-align: center; font-size: 1.8rem; margin: 2rem 0;">
+                Find using the product rule:
+                <br><br>
+                $$\frac{d}{dx}[(x^3 - 1)(x^2 + 4)]$$
+            </div>
+        </section>
+
+        <!-- Slide 21: Coming Up -->
+        <section class="slide slide-statement">
+            <div class="statement-content">
+                <p class="statement-text">Next: The Quotient Rule</p>
+                <p class="statement-secondary">What about \(\frac{d}{dx}\left[\frac{f}{g}\right]\)?</p>
+            </div>
+        </section>
+    </div>
+
+    <div class="slide-nav">
+        <button class="nav-btn" id="prevBtn" aria-label="Previous slide">&#8592;</button>
+        <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">22</span></span>
+        <button class="nav-btn" id="nextBtn" aria-label="Next slide">&#8594;</button>
+    </div>
+
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // D3 Visualization Functions
+        const visualizationSlides = {
+            6: drawRectangleViz,
+            13: drawProductViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Rectangle Visualization for Geometric Intuition
+        function drawRectangleViz() {
+            const container = d3.select('#rectangle-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 350;
+            const margin = { top: 30, right: 30, bottom: 30, left: 30 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Animation parameters
+            let t = 0;
+            const baseF = 120;
+            const baseG = 80;
+            const deltaF = 30;
+            const deltaG = 20;
+
+            function draw() {
+                svg.selectAll('*').remove();
+
+                const f = baseF + deltaF * Math.sin(t);
+                const g = baseG + deltaG * Math.sin(t);
+                const df = deltaF * Math.cos(t) * 0.1;
+                const dg = deltaG * Math.cos(t) * 0.1;
+
+                const rectX = 150;
+                const rectY = 80;
+
+                // Main rectangle
+                svg.append('rect')
+                    .attr('x', rectX)
+                    .attr('y', rectY)
+                    .attr('width', f)
+                    .attr('height', g)
+                    .attr('fill', 'rgba(124, 58, 237, 0.2)')
+                    .attr('stroke', '#7c3aed')
+                    .attr('stroke-width', 2);
+
+                // Labels for f and g
+                svg.append('text')
+                    .attr('x', rectX + f/2)
+                    .attr('y', rectY - 10)
+                    .attr('text-anchor', 'middle')
+                    .attr('fill', '#7c3aed')
+                    .attr('font-size', '1.25rem')
+                    .attr('font-weight', 'bold')
+                    .text('f(x)');
+
+                svg.append('text')
+                    .attr('x', rectX - 15)
+                    .attr('y', rectY + g/2)
+                    .attr('text-anchor', 'middle')
+                    .attr('fill', '#7c3aed')
+                    .attr('font-size', '1.25rem')
+                    .attr('font-weight', 'bold')
+                    .text('g(x)');
+
+                // Change strips visualization (on the right side)
+                const stripX = rectX + f + 50;
+                const stripY = rectY;
+
+                // Vertical strip (f * dg)
+                svg.append('rect')
+                    .attr('x', stripX)
+                    .attr('y', stripY)
+                    .attr('width', f * 0.3)
+                    .attr('height', Math.abs(dg) * 10 + 30)
+                    .attr('fill', 'rgba(249, 115, 22, 0.3)')
+                    .attr('stroke', '#f97316')
+                    .attr('stroke-width', 2);
+
+                svg.append('text')
+                    .attr('x', stripX + f * 0.15)
+                    .attr('y', stripY + Math.abs(dg) * 5 + 25)
+                    .attr('text-anchor', 'middle')
+                    .attr('fill', '#f97316')
+                    .attr('font-size', '1.25rem')
+                    .text("f · g'");
+
+                // Horizontal strip (g * df)
+                svg.append('rect')
+                    .attr('x', stripX + f * 0.3 + 30)
+                    .attr('y', stripY)
+                    .attr('width', Math.abs(df) * 10 + 30)
+                    .attr('height', g * 0.3)
+                    .attr('fill', 'rgba(34, 197, 94, 0.3)')
+                    .attr('stroke', '#22c55e')
+                    .attr('stroke-width', 2);
+
+                svg.append('text')
+                    .attr('x', stripX + f * 0.3 + 30 + Math.abs(df) * 5 + 15)
+                    .attr('y', stripY + g * 0.15 + 5)
+                    .attr('text-anchor', 'middle')
+                    .attr('fill', '#22c55e')
+                    .attr('font-size', '1.25rem')
+                    .text("f' · g");
+
+                // Equation
+                svg.append('text')
+                    .attr('x', width / 2)
+                    .attr('y', height - 30)
+                    .attr('text-anchor', 'middle')
+                    .attr('fill', '#1e293b')
+                    .attr('font-size', '1.4rem')
+                    .text("Rate of area change = f'·g + f·g'");
+
+                // Area display
+                svg.append('text')
+                    .attr('x', rectX + f/2)
+                    .attr('y', rectY + g/2 + 5)
+                    .attr('text-anchor', 'middle')
+                    .attr('fill', '#7c3aed')
+                    .attr('font-size', '1.25rem')
+                    .text(`Area = ${(f * g / 100).toFixed(1)}`);
+
+                t += 0.03;
+                requestAnimationFrame(draw);
+            }
+
+            draw();
+        }
+
+        // Product Function Visualization
+        function drawProductViz() {
+            const container = d3.select('#product-viz');
+            container.selectAll('*').remove();
+
+            const width = 750;
+            const height = 320;
+            const margin = { top: 30, right: 30, bottom: 40, left: 50 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const xScale = d3.scaleLinear().domain([-1, 3]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-2, 10]).range([plotHeight, 0]);
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${yScale(0)})`)
+                .call(d3.axisBottom(xScale).ticks(4))
+                .attr('color', '#64748b');
+            g.append('g')
+                .attr('transform', `translate(${xScale(0)},0)`)
+                .call(d3.axisLeft(yScale).ticks(6))
+                .attr('color', '#64748b');
+
+            // Functions
+            const f = x => x;
+            const g_func = x => x + 1;
+            const product = x => f(x) * g_func(x);
+            const fPrime = x => 1;
+            const gPrime = x => 1;
+            const productPrime = x => fPrime(x) * g_func(x) + f(x) * gPrime(x);
+
+            // Create line generator
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y));
+
+            // Generate data
+            const xRange = d3.range(-1, 3.05, 0.05);
+            const dataF = xRange.filter(x => yScale(f(x)) >= 0 && yScale(f(x)) <= plotHeight).map(x => ({ x, y: f(x) }));
+            const dataG = xRange.filter(x => yScale(g_func(x)) >= 0 && yScale(g_func(x)) <= plotHeight).map(x => ({ x, y: g_func(x) }));
+            const dataProduct = xRange.filter(x => yScale(product(x)) >= 0 && yScale(product(x)) <= plotHeight).map(x => ({ x, y: product(x) }));
+
+            // Draw curves
+            g.append('path')
+                .datum(dataF)
+                .attr('d', line)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,3');
+
+            g.append('path')
+                .datum(dataG)
+                .attr('d', line)
+                .attr('fill', 'none')
+                .attr('stroke', '#34d399')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,3');
+
+            g.append('path')
+                .datum(dataProduct)
+                .attr('d', line)
+                .attr('fill', 'none')
+                .attr('stroke', '#7c3aed')
+                .attr('stroke-width', 3);
+
+            // Legend
+            const legend = g.append('g').attr('transform', `translate(${plotWidth - 150}, 10)`);
+
+            legend.append('line').attr('x1', 0).attr('y1', 0).attr('x2', 20).attr('y2', 0)
+                .attr('stroke', '#60a5fa').attr('stroke-width', 2).attr('stroke-dasharray', '5,3');
+            legend.append('text').attr('x', 25).attr('y', 5).text('f(x) = x')
+                .attr('fill', '#60a5fa').attr('font-size', '1.25rem');
+
+            legend.append('line').attr('x1', 0).attr('y1', 22).attr('x2', 20).attr('y2', 22)
+                .attr('stroke', '#34d399').attr('stroke-width', 2).attr('stroke-dasharray', '5,3');
+            legend.append('text').attr('x', 25).attr('y', 27).text('g(x) = x+1')
+                .attr('fill', '#34d399').attr('font-size', '1.25rem');
+
+            legend.append('line').attr('x1', 0).attr('y1', 44).attr('x2', 20).attr('y2', 44)
+                .attr('stroke', '#7c3aed').attr('stroke-width', 3);
+            legend.append('text').attr('x', 25).attr('y', 49).text('fg = x(x+1)')
+                .attr('fill', '#7c3aed').attr('font-size', '1.25rem');
+
+            // Interactive elements
+            const tangentLine = g.append('line')
+                .attr('stroke', '#fbbf24')
+                .attr('stroke-width', 2);
+
+            const point = g.append('circle')
+                .attr('r', 7)
+                .attr('fill', '#7c3aed')
+                .attr('stroke', 'white')
+                .attr('stroke-width', 2);
+
+            // Info box
+            const infoBox = g.append('g').attr('transform', `translate(10, ${plotHeight - 80})`);
+            infoBox.append('rect')
+                .attr('width', 200)
+                .attr('height', 70)
+                .attr('fill', 'rgba(124, 58, 237, 0.1)')
+                .attr('rx', 5);
+            const slopeText = infoBox.append('text').attr('x', 10).attr('y', 25).attr('fill', '#1e293b').attr('font-size', '1.25rem');
+            const formulaText = infoBox.append('text').attr('x', 10).attr('y', 50).attr('fill', '#7c3aed').attr('font-size', '1.25rem');
+
+            function updateViz(x) {
+                const y = product(x);
+                const slope = productPrime(x);
+
+                point.attr('cx', xScale(x)).attr('cy', yScale(y));
+
+                const dx = 0.6;
+                tangentLine
+                    .attr('x1', xScale(x - dx))
+                    .attr('y1', yScale(y - slope * dx))
+                    .attr('x2', xScale(x + dx))
+                    .attr('y2', yScale(y + slope * dx));
+
+                const fVal = f(x).toFixed(1);
+                const gVal = g_func(x).toFixed(1);
+                const fpVal = fPrime(x).toFixed(0);
+                const gpVal = gPrime(x).toFixed(0);
+
+                slopeText.text(`x = ${x.toFixed(1)}, slope = ${slope.toFixed(1)}`);
+                formulaText.text(`f'g + fg' = (${fpVal})(${gVal}) + (${fVal})(${gpVal})`);
+            }
+
+            // Animation
+            let animTime = 0;
+            function animate() {
+                animTime += 0.02;
+                const x = 1 + 1.2 * Math.sin(animTime);
+                updateViz(x);
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
+</body>
+</html>
