@@ -8,6 +8,107 @@ This repository contains HTML presentations and course materials for the **AP Ca
 
 ---
 
+## CRITICAL GUARDRAILS (READ FIRST)
+
+### NEVER Delete Unstaged Files Without Backup
+
+Before deleting any content files, ALWAYS:
+1. Check `git status` to see what's uncommitted
+2. If uncommitting content exists, create a commit first as a backup
+3. Large deletions (>3 files) should ALWAYS be preceded by a commit checkpoint
+
+### Template-Based Creation
+
+When creating or rebuilding a presentation:
+1. **ALWAYS use `class-0-introduction/presentation.html` as the structural template**
+2. Copy the template, then modify content - do NOT write from scratch
+3. Preserve ALL structural elements: fonts, TOC, keyboard hints, overlays, progress bar
+
+### Required Validation
+
+Before completing work on ANY presentation:
+1. Run the validation script: `.claude/skills/presentation-design/validate-presentation.sh <file>`
+2. ALL errors must be fixed before considering work complete
+3. The script must pass (exit code 0)
+
+### Slide Type Rules
+
+**NEVER use `slide-content` as a catch-all.** The shared CSS does not properly style generic `slide-content` slides.
+
+Use the correct semantic types:
+- Lists → `slide-list`
+- Two columns → `slide-comparison`
+- Definition + explanation → `slide-two-part`
+- Key message → `slide-statement`
+- Visualizations → `slide-visual`
+- Student practice → `slide-exercise`
+
+### Quality Standard: Class 0
+
+Class 0 (`class-0-introduction/presentation.html`) is the gold standard. Any new or rebuilt presentation should be visually indistinguishable in structure and polish from Class 0.
+
+---
+
+## Course Development Workflow (MANDATORY)
+
+When working on this course, you **MUST** follow the build-a-course skill workflow.
+
+**See:** `.claude/skills/build-a-course/SKILL.md`
+
+### The Artifact Hierarchy
+
+Each level **MUST** exist before the next can be created:
+
+```
+course-plan.md                  (Pedagogical philosophy)
+    ↓
+research-{topic}.md             (Expert teaching analysis)
+    ↓
+lesson-plan-{topic}.md          (Learning objectives, structure)
+    ↓
+presentation-spec-{topic}.md    (Technical specification)
+    ↓
+presentation.html               (Implementation)
+```
+
+### Blocking Rules
+
+| Before Creating... | You MUST Have... |
+|--------------------|------------------|
+| Lesson plan | `course-plan.md` + `research-{topic}.md` |
+| Presentation spec | `lesson-plan-{topic}.md` |
+| Presentation HTML | `presentation-spec-{topic}.md` |
+
+**DO NOT "YOLO" presentations.** Every presentation must be built from a spec.
+
+### V&V at Each Stage
+
+| Check | Type | Question | On Failure |
+|-------|------|----------|------------|
+| Lesson plan valid? | Validation | Does it achieve course goals? | Revise lesson plan |
+| Spec valid? | Validation | Does it achieve lesson objectives? | Revise spec |
+| Presentation matches spec? | Verification | Did we build it right? | Fix presentation |
+| Presentation achieves objectives? | Validation | Did we build the right thing? | Revise spec, then presentation |
+
+### Research Requirements
+
+Before creating a lesson plan, you need `research-{topic}.md` with:
+- Analysis of at least 2 expert teaching sources (3Blue1Brown, Professor Leonard, etc.)
+- At least 3 common misconceptions identified
+- At least 1 effective visualization pattern documented
+- Recommended pedagogical approach
+
+### Key Documents
+
+| Document | Purpose |
+|----------|---------|
+| `curriculum-design-research.md` | Evidence base from pedagogy research |
+| `course-plan.md` | Pedagogical philosophy for entire course |
+| `SYLLABUS.md` | Schedule + CED topic mapping |
+| `master-presentation-spec.md` | Technical design standards |
+
+---
+
 ## Critical Specification Files
 
 ### 1. `master-presentation-spec.md` (READ FIRST)
@@ -259,17 +360,27 @@ function drawVisualization() {
 
 ```
 ncssm-ap-calc-bc/
-├── CLAUDE.md                    # This file
-├── master-presentation-spec.md  # Master design spec (READ FIRST)
-├── SYLLABUS.md                  # Course schedule
-├── index.html                   # Course homepage/syllabus
+├── CLAUDE.md                        # This file
+├── curriculum-design-research.md    # Pedagogy research evidence
+├── course-plan.md                   # Pedagogical philosophy
+├── master-presentation-spec.md      # Master design spec (READ FIRST)
+├── SYLLABUS.md                      # Course schedule
+├── index.html                       # Course homepage/syllabus
 ├── shared/
-│   ├── styles.css              # Common CSS
-│   └── presentation.js         # Navigation logic
+│   ├── styles.css                  # Common CSS
+│   └── presentation.js             # Navigation logic
+├── .claude/
+│   └── skills/
+│       ├── build-a-course/         # Master workflow skill
+│       │   └── SKILL.md
+│       └── presentation-design/    # Presentation validation
+│           ├── SKILL.md
+│           └── validate-presentation.sh
 └── class-{n}-{topic}/
-    ├── presentation.html       # The actual presentation
-    ├── presentation-spec-*.md  # Class-specific spec
-    └── lesson-plan-*.md        # Teaching notes
+    ├── presentation.html           # The actual presentation
+    ├── presentation-spec-*.md      # Class-specific spec
+    ├── lesson-plan-*.md            # Teaching notes
+    └── research-*.md               # Topic research (if exists)
 ```
 
 ---
@@ -409,6 +520,49 @@ Every slide should reference the relevant CED topic number(s) for AP alignment:
   }
 }
 ```
+
+---
+
+## Skills and Tools
+
+### Build-a-Course Skill (MASTER WORKFLOW)
+
+**Location:** `.claude/skills/build-a-course/SKILL.md`
+
+This is the **mandatory** workflow for course development. It defines:
+- Required artifact hierarchy (research → lesson plan → spec → presentation)
+- Blocking rules (what must exist before proceeding)
+- Validation and verification gates
+- Research requirements for each topic
+
+**Always follow this workflow when creating or modifying course content.**
+
+### Presentation Design Skill
+
+**Location:** `.claude/skills/presentation-design/SKILL.md`
+
+Provides presentation-specific guidance:
+- Structural template requirements
+- Validation checklist
+- Slide type vocabulary
+
+The skill is automatically activated when working on presentation files.
+
+### Validation Script (Verification)
+
+Run before completing any presentation work:
+```bash
+.claude/skills/presentation-design/validate-presentation.sh class-N-topic/presentation.html
+```
+
+This script checks for:
+- Google Fonts loading
+- TOC overlay presence
+- Keyboard hints
+- Proper slide types (no generic `slide-content`)
+- Overlay backdrop
+
+**The script must pass before work is considered complete.**
 
 ---
 
