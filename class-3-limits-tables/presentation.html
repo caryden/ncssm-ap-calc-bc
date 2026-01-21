@@ -769,20 +769,20 @@
             svg.append('circle').attr('cx', xScale(2)).attr('cy', y).attr('r', 12).attr('fill', '#ef4444');
             svg.append('text').attr('x', xScale(2)).attr('y', y + 40).attr('text-anchor', 'middle').attr('font-size', '1.5rem').attr('fill', '#ef4444').text('2');
 
-            // Left approach points
+            // Left approach points - labels above the line, staggered heights
             const leftPoints = [1.9, 1.99, 1.999];
             leftPoints.forEach((val, i) => {
                 const size = 8 + i * 2;
                 svg.append('circle').attr('cx', xScale(val)).attr('cy', y).attr('r', size).attr('fill', '#60a5fa');
-                svg.append('text').attr('x', xScale(val)).attr('y', y - 25 - i * 5).attr('text-anchor', 'middle').attr('font-size', '1rem').attr('fill', '#60a5fa').text(val);
+                svg.append('text').attr('x', xScale(val)).attr('y', y - 30 - i * 18).attr('text-anchor', 'middle').attr('font-size', '1.1rem').attr('fill', '#60a5fa').text(val);
             });
 
-            // Right approach points
+            // Right approach points - labels below the line, staggered heights
             const rightPoints = [2.1, 2.01, 2.001];
             rightPoints.forEach((val, i) => {
                 const size = 8 + i * 2;
                 svg.append('circle').attr('cx', xScale(val)).attr('cy', y).attr('r', size).attr('fill', '#f97316');
-                svg.append('text').attr('x', xScale(val)).attr('y', y - 25 - i * 5).attr('text-anchor', 'middle').attr('font-size', '1rem').attr('fill', '#f97316').text(val);
+                svg.append('text').attr('x', xScale(val)).attr('y', y + 35 + i * 18).attr('text-anchor', 'middle').attr('font-size', '1.1rem').attr('fill', '#f97316').text(val);
             });
 
             // Arrows
