@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 38: Improper Integrals | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #d4a028;
+            --theme-color-light: #e8b84a;
+        }
+
+        /* BC Only Badge */
+        .bc-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: linear-gradient(135deg, #7c3aed, #a78bfa);
+            color: white;
+            border-radius: 100px;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-left: 1rem;
+            vertical-align: middle;
+        }
+
+        .title-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Math Display */
+        .math-display {
+            font-size: 1.75rem;
+            line-height: 2.2;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .math-large {
+            font-size: 2.5rem;
+        }
+
+        /* Result Box */
+        .result-box {
+            background: var(--bg-secondary);
+            border: 3px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .result-box .result {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--theme-color);
+            font-family: var(--font-display);
+        }
+
+        /* Definition Box Enhanced */
+        .definition-box-gold {
+            background: var(--bg-secondary);
+            border: 2px solid var(--theme-color);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            max-width: 900px;
+            text-align: center;
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid var(--danger);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .warning-box .warning-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--danger);
+            font-family: var(--font-display);
+            margin-bottom: 0.5rem;
+        }
+
+        .warning-box p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        /* Convergence Status */
+        .converges {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .diverges {
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        /* Solution Steps */
+        .solution-steps {
+            text-align: left;
+            max-width: 900px;
+            margin: 1rem auto;
+        }
+
+        .solution-steps .step {
+            font-size: 1.5rem;
+            margin: 0.75rem 0;
+            padding-left: 1rem;
+            border-left: 3px solid var(--theme-color);
+        }
+
+        /* Conclusion Box */
+        .conclusion {
+            background: var(--bg-tertiary);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        /* Visualization Controls */
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .slider-control label {
+            font-size: 1.25rem;
+            font-family: var(--font-display);
+        }
+
+        .slider-control input[type="range"] {
+            width: 300px;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--theme-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .value-display {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--theme-color);
+            min-width: 180px;
+        }
+
+        /* Status Display */
+        .status-display {
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .status-converges {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--success);
+        }
+
+        .status-diverges {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        /* Two Panel Visualization */
+        .two-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .panel {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .panel h3 {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--theme-color);
+        }
+
+        /* Hint Box */
+        .hint-box {
+            background: var(--bg-tertiary);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        .hint-box strong {
+            color: var(--theme-color);
+        }
+
+        /* Time indicator */
+        .time-indicator {
+            font-size: 1rem;
+            color: var(--text-tertiary);
+            margin-top: 1rem;
+        }
+
+        /* Note text */
+        .note-text {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin: 1rem 0;
+        }
+
+        /* Celebration text */
+        .celebration {
+            background: linear-gradient(135deg, var(--theme-color), var(--accent-secondary-bright));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Wrong/Right comparison */
+        .wrong-right {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 900px;
+            margin: 1.5rem auto;
+        }
+
+        .wrong-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid var(--danger);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .wrong-box h4 {
+            color: var(--danger);
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .right-box {
+            background: rgba(34, 197, 94, 0.1);
+            border: 2px solid var(--success);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .right-box h4 {
+            color: var(--success);
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Improper Integrals">
+            <div class="slide-content">
+                <div class="title-badges">
+                    <div class="unit-badge">Unit 6: Integration and Accumulation of Change</div>
+                    <div class="bc-badge">BC Only</div>
+                </div>
+                <h1>Improper Integrals</h1>
+                <p class="subtitle">Integrating to Infinity and Beyond</p>
+                <p class="meta">Class 38 | CED 6.13 | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: A Surprising Question -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="A Surprising Question">
+            <div class="slide-content">
+                <p class="statement">What is the area under \( y = \frac{1}{x^2} \) from \( x = 1 \) to <em>infinity</em>?</p>
+                <p class="secondary" style="font-size: 1.75rem; color: var(--text-secondary); margin-top: 2rem;">The region goes on forever... surely the area is infinite?</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Let's Check -->
+        <div class="slide slide-visual" data-slide="2" data-section="Opening" data-title="Computing the Area">
+            <div class="slide-content">
+                <h2>Computing the Area</h2>
+                <div class="math-display">
+                    \( \int_1^b \frac{1}{x^2}\,dx = \left[-\frac{1}{x}\right]_1^b = -\frac{1}{b} + 1 \)
+                </div>
+                <div class="math-display">
+                    As \( b \to \infty \): \( -\frac{1}{b} + 1 \to 0 + 1 = 1 \)
+                </div>
+                <div class="result-box">
+                    <div class="result">THE AREA IS EXACTLY 1!</div>
+                </div>
+                <div id="area-viz" class="visualization"></div>
+            </div>
+        </div>
+
+        <!-- Slide 3: The Key Insight -->
+        <div class="slide slide-statement" data-slide="3" data-section="Opening" data-title="The Key Insight">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 2.5rem;">"An improper integral isn't a different kind of integral - it's a <em>limit</em> of proper integrals."</p>
+                <p class="secondary" style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">We can't integrate TO infinity, but we can ask what happens<br>AS the bound APPROACHES infinity</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: What Makes an Integral "Improper"? -->
+        <div class="slide slide-comparison" data-slide="4" data-section="Definitions" data-title="Two Types">
+            <div class="slide-content">
+                <h2>Two Types of Improper Integrals</h2>
+                <div class="columns">
+                    <div class="column">
+                        <h3 style="color: var(--color-function);">Type 1: Infinite Bounds</h3>
+                        <p style="font-size: 1.5rem; margin-top: 1rem;">One or both limits of integration are infinite</p>
+                        <div class="math-display" style="font-size: 1.5rem;">
+                            \( \int_1^\infty \frac{1}{x^2}\,dx \)
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h3 style="color: var(--color-derivative);">Type 2: Discontinuous Integrand</h3>
+                        <p style="font-size: 1.5rem; margin-top: 1rem;">The function has a discontinuity in the interval</p>
+                        <div class="math-display" style="font-size: 1.5rem;">
+                            \( \int_0^1 \frac{1}{\sqrt{x}}\,dx \)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Type 1 - Infinite Upper Bound -->
+        <div class="slide slide-visual" data-slide="5" data-section="Type 1" data-title="Infinite Upper Bound">
+            <div class="slide-content">
+                <h2>Type 1: Infinite Upper Bound</h2>
+                <div class="definition-box-gold">
+                    <div class="math-display math-large">
+                        \( \int_a^\infty f(x)\,dx = \lim_{b \to \infty} \int_a^b f(x)\,dx \)
+                    </div>
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 1.5rem;">Replace the infinity with a variable, then take a limit</p>
+                <div style="display: flex; justify-content: center; gap: 3rem; margin-top: 2rem;">
+                    <div style="text-align: center;">
+                        <p style="font-size: 1.5rem;">If the limit exists and is finite:</p>
+                        <p class="converges" style="font-size: 2rem;">CONVERGES</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <p style="font-size: 1.5rem;">If the limit is infinite or DNE:</p>
+                        <p class="diverges" style="font-size: 2rem;">DIVERGES</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Type 1 - Infinite Lower Bound -->
+        <div class="slide slide-visual" data-slide="6" data-section="Type 1" data-title="Infinite Lower Bound">
+            <div class="slide-content">
+                <h2>Type 1: Infinite Lower Bound</h2>
+                <div class="definition-box-gold">
+                    <div class="math-display math-large">
+                        \( \int_{-\infty}^b f(x)\,dx = \lim_{a \to -\infty} \int_a^b f(x)\,dx \)
+                    </div>
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 2rem; color: var(--text-secondary);">The limit approaches from the left instead of the right</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: Type 1 - Both Bounds Infinite -->
+        <div class="slide slide-visual" data-slide="7" data-section="Type 1" data-title="Both Bounds Infinite">
+            <div class="slide-content">
+                <h2>Type 1: Both Bounds Infinite</h2>
+                <div class="definition-box-gold">
+                    <div class="math-display" style="font-size: 1.5rem;">
+                        \( \int_{-\infty}^\infty f(x)\,dx = \lim_{a \to -\infty} \int_a^c f(x)\,dx + \lim_{b \to \infty} \int_c^b f(x)\,dx \)
+                    </div>
+                </div>
+                <div class="warning-box">
+                    <div class="warning-title">Warning!</div>
+                    <p>BOTH limits must be taken <strong>INDEPENDENTLY</strong>!</p>
+                    <p style="margin-top: 0.5rem;">Do NOT use \( \lim_{b \to \infty} \int_{-b}^b \) (symmetric limits)</p>
+                </div>
+                <p class="note-text" style="margin-top: 1rem;">This is a common AP trap!</p>
+            </div>
+        </div>
+
+        <!-- Slide 8: Example 1 - Convergent -->
+        <div class="slide slide-example" data-slide="8" data-section="Type 1 Examples" data-title="Example 1: Convergent">
+            <div class="slide-content">
+                <h2>Example 1: Convergent</h2>
+                <div class="problem">
+                    Evaluate: \( \int_1^\infty \frac{1}{x^2}\,dx \)
+                </div>
+                <div class="solution-steps">
+                    <div class="step">\( = \lim_{b \to \infty} \int_1^b x^{-2}\,dx \)</div>
+                    <div class="step">\( = \lim_{b \to \infty} \left[-x^{-1}\right]_1^b \)</div>
+                    <div class="step">\( = \lim_{b \to \infty} \left(-\frac{1}{b} + 1\right) = 0 + 1 = 1 \)</div>
+                </div>
+                <div class="conclusion">
+                    <span class="converges">CONVERGES</span> to <strong>1</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Example 2 - Divergent -->
+        <div class="slide slide-example" data-slide="9" data-section="Type 1 Examples" data-title="Example 2: Divergent">
+            <div class="slide-content">
+                <h2>Example 2: Divergent</h2>
+                <div class="problem">
+                    Evaluate: \( \int_1^\infty \frac{1}{x}\,dx \)
+                </div>
+                <div class="solution-steps">
+                    <div class="step">\( = \lim_{b \to \infty} \int_1^b \frac{1}{x}\,dx \)</div>
+                    <div class="step">\( = \lim_{b \to \infty} [\ln x]_1^b \)</div>
+                    <div class="step">\( = \lim_{b \to \infty} (\ln b - 0) = \infty \)</div>
+                </div>
+                <div class="conclusion">
+                    <span class="diverges">DIVERGES</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Visual Comparison -->
+        <div class="slide slide-visual" data-slide="10" data-section="Type 1 Examples" data-title="Visual Comparison">
+            <div class="slide-content">
+                <h2>Why the Difference?</h2>
+                <div id="comparison-viz" class="visualization"></div>
+                <p class="caption">\( 1/x^2 \) decreases fast enough; \( 1/x \) doesn't</p>
+            </div>
+        </div>
+
+        <!-- Slide 11: The p-Integral Test -->
+        <div class="slide slide-visual" data-slide="11" data-section="p-Test" data-title="The p-Integral Test">
+            <div class="slide-content">
+                <h2>The p-Integral Test</h2>
+                <div class="theorem-box" style="border-color: var(--theme-color);">
+                    <div class="theorem-name" style="color: var(--theme-color);">Theorem: p-Integral Test</div>
+                    <div class="theorem-statement">
+                        <div class="math-display math-large">
+                            \( \int_1^\infty \frac{1}{x^p}\,dx \) converges if \( p > 1 \), diverges if \( p \leq 1 \)
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 1.5rem;">The boundary case: \( p = 1 \) diverges (just barely!)</p>
+                <p style="font-size: 1.5rem; color: var(--theme-color); margin-top: 1rem; font-weight: 600;">This is the most important convergence test for improper integrals</p>
+            </div>
+        </div>
+
+        <!-- Slide 12: p-Test Visualization -->
+        <div class="slide slide-visual" data-slide="12" data-section="p-Test" data-title="Visualizing the p-Test">
+            <div class="slide-content">
+                <h2>Visualizing the p-Test</h2>
+                <div id="ptest-viz" class="visualization"></div>
+                <div class="slider-control">
+                    <label>p =</label>
+                    <input type="range" id="p-slider" min="0.3" max="2.5" step="0.1" value="1">
+                    <span class="value-display" id="p-display">p = 1.0</span>
+                    <span class="status-display status-diverges" id="p-status">DIVERGES</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Type 2 - Discontinuity at Endpoint -->
+        <div class="slide slide-visual" data-slide="13" data-section="Type 2" data-title="Discontinuity at Endpoint">
+            <div class="slide-content">
+                <h2>Type 2: Discontinuity at Endpoint</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 1.5rem;">If \( f \) has discontinuity at \( a \):</p>
+                <div class="definition-box-gold">
+                    <div class="math-display" style="font-size: 1.75rem;">
+                        \( \int_a^b f(x)\,dx = \lim_{c \to a^+} \int_c^b f(x)\,dx \)
+                    </div>
+                </div>
+                <p style="font-size: 1.5rem; margin: 1.5rem 0;">If \( f \) has discontinuity at \( b \):</p>
+                <div class="definition-box-gold">
+                    <div class="math-display" style="font-size: 1.75rem;">
+                        \( \int_a^b f(x)\,dx = \lim_{c \to b^-} \int_a^c f(x)\,dx \)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Example 3 - Type 2 Convergent -->
+        <div class="slide slide-example" data-slide="14" data-section="Type 2 Examples" data-title="Example 3: Type 2 Convergent">
+            <div class="slide-content">
+                <h2>Example 3: Type 2 - Convergent</h2>
+                <div class="problem">
+                    Evaluate: \( \int_0^1 \frac{1}{\sqrt{x}}\,dx \)
+                    <p class="note-text" style="margin-top: 0.5rem; margin-bottom: 0;">Discontinuity at \( x = 0 \) (vertical asymptote)</p>
+                </div>
+                <div class="solution-steps">
+                    <div class="step">\( = \lim_{c \to 0^+} \int_c^1 x^{-1/2}\,dx \)</div>
+                    <div class="step">\( = \lim_{c \to 0^+} [2x^{1/2}]_c^1 \)</div>
+                    <div class="step">\( = \lim_{c \to 0^+} (2 - 2\sqrt{c}) = 2 - 0 = 2 \)</div>
+                </div>
+                <div class="conclusion">
+                    <span class="converges">CONVERGES</span> to <strong>2</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Example 4 - Type 2 Divergent -->
+        <div class="slide slide-example" data-slide="15" data-section="Type 2 Examples" data-title="Example 4: Type 2 Divergent">
+            <div class="slide-content">
+                <h2>Example 4: Type 2 - Divergent</h2>
+                <div class="problem">
+                    Evaluate: \( \int_0^1 \frac{1}{x}\,dx \)
+                </div>
+                <div class="solution-steps">
+                    <div class="step">\( = \lim_{c \to 0^+} \int_c^1 \frac{1}{x}\,dx \)</div>
+                    <div class="step">\( = \lim_{c \to 0^+} [\ln x]_c^1 \)</div>
+                    <div class="step">\( = \lim_{c \to 0^+} (0 - \ln c) = \infty \)</div>
+                </div>
+                <div class="conclusion">
+                    <span class="diverges">DIVERGES</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Interior Discontinuity -->
+        <div class="slide slide-visual" data-slide="16" data-section="Type 2" data-title="Interior Discontinuity">
+            <div class="slide-content">
+                <h2>Interior Discontinuity</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 1rem;">If \( f \) has discontinuity at \( c \) where \( a < c < b \):</p>
+                <div class="definition-box-gold">
+                    <div class="math-display" style="font-size: 1.75rem;">
+                        \( \int_a^b f(x)\,dx = \int_a^c f(x)\,dx + \int_c^b f(x)\,dx \)
+                    </div>
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 1.5rem;">Split at the discontinuity - evaluate each piece as improper</p>
+                <div class="warning-box" style="margin-top: 1.5rem;">
+                    <div class="warning-title">Important!</div>
+                    <p>If EITHER piece diverges, the whole integral diverges</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Hidden Discontinuity Warning -->
+        <div class="slide slide-visual" data-slide="17" data-section="Warnings" data-title="Hidden Discontinuity Warning">
+            <div class="slide-content">
+                <h2>Watch for Hidden Discontinuities!</h2>
+                <div class="problem" style="max-width: 700px; margin: 0 auto 1.5rem;">
+                    Evaluate: \( \int_{-1}^1 \frac{1}{x^2}\,dx \)
+                </div>
+                <div class="warning-box">
+                    <div class="warning-title">There's a discontinuity at \( x = 0 \)!</div>
+                </div>
+                <div class="wrong-right">
+                    <div class="wrong-box">
+                        <h4>WRONG</h4>
+                        <p style="font-size: 1.25rem;">\( [-1/x]_{-1}^1 = -1 - 1 = -2 \)</p>
+                    </div>
+                    <div class="right-box">
+                        <h4>RIGHT</h4>
+                        <p style="font-size: 1.25rem;">Must split at 0.<br>Both pieces diverge.<br>Integral <strong>DIVERGES</strong></p>
+                    </div>
+                </div>
+                <p class="note-text">This is a common AP trap!</p>
+            </div>
+        </div>
+
+        <!-- Slide 18: Example 5 - Exponential -->
+        <div class="slide slide-example" data-slide="18" data-section="More Examples" data-title="Example 5: Exponential">
+            <div class="slide-content">
+                <h2>Example 5: Exponential Decay</h2>
+                <div class="problem">
+                    Evaluate: \( \int_0^\infty e^{-x}\,dx \)
+                </div>
+                <div class="solution-steps">
+                    <div class="step">\( = \lim_{b \to \infty} \int_0^b e^{-x}\,dx \)</div>
+                    <div class="step">\( = \lim_{b \to \infty} [-e^{-x}]_0^b \)</div>
+                    <div class="step">\( = \lim_{b \to \infty} (-e^{-b} + 1) = 0 + 1 = 1 \)</div>
+                </div>
+                <div class="conclusion">
+                    <span class="converges">CONVERGES</span> to <strong>1</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Example 6 - Both Directions -->
+        <div class="slide slide-example" data-slide="19" data-section="More Examples" data-title="Example 6: Both Directions">
+            <div class="slide-content">
+                <h2>Example 6: \( \int_{-\infty}^\infty \frac{1}{1+x^2}\,dx \)</h2>
+                <p style="font-size: 1.25rem; margin-bottom: 1rem;">Split: \( \int_{-\infty}^0 + \int_0^\infty \)</p>
+                <div class="solution-steps" style="font-size: 1.25rem;">
+                    <div class="step">\( \lim_{a \to -\infty} [\arctan x]_a^0 = 0 - (-\frac{\pi}{2}) = \frac{\pi}{2} \)</div>
+                    <div class="step">\( \lim_{b \to \infty} [\arctan x]_0^b = \frac{\pi}{2} - 0 = \frac{\pi}{2} \)</div>
+                </div>
+                <div class="conclusion">
+                    Total: \( \frac{\pi}{2} + \frac{\pi}{2} = \) <span class="converges" style="font-size: 2rem;">\( \pi \)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Convergence vs. Divergence Summary -->
+        <div class="slide slide-list" data-slide="20" data-section="Summary" data-title="Convergence Rules">
+            <div class="slide-content">
+                <h2>Convergence Rules</h2>
+                <ul>
+                    <li>\( \int_1^\infty \frac{1}{x^p}\,dx \): converges if \( p > 1 \), diverges if \( p \leq 1 \)</li>
+                    <li>\( \int_0^1 \frac{1}{x^p}\,dx \): converges if \( p < 1 \), diverges if \( p \geq 1 \)</li>
+                    <li>\( \int_0^\infty e^{-x}\,dx \) converges (exponential decay beats polynomial)</li>
+                    <li>Always check for hidden discontinuities!</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 21: Area Accumulation Animation -->
+        <div class="slide slide-visual" data-slide="21" data-section="Visualization" data-title="Watching Area Accumulate">
+            <div class="slide-content">
+                <h2>Watching Area Accumulate</h2>
+                <div id="accumulate-viz" class="visualization"></div>
+                <div class="slider-control">
+                    <label>b =</label>
+                    <input type="range" id="b-slider" min="1" max="100" step="1" value="1">
+                    <span class="value-display" id="b-display">b = 1</span>
+                    <span class="value-display" id="area-display">Area = 0</span>
+                </div>
+                <p class="caption">Watch the area approach 1 as b approaches infinity</p>
+            </div>
+        </div>
+
+        <!-- Slide 22: Practice Problem 1 -->
+        <div class="slide slide-exercise" data-slide="22" data-section="Practice" data-title="Practice 1">
+            <div class="slide-content">
+                <h2>Practice 1</h2>
+                <div class="prompt">
+                    <p>Does \( \int_1^\infty \frac{1}{\sqrt{x}}\,dx \) converge or diverge?</p>
+                </div>
+                <div class="hint-box">
+                    <strong>Hint:</strong> Use the p-test
+                </div>
+                <p class="time-indicator">Time: 1 minute</p>
+            </div>
+        </div>
+
+        <!-- Slide 23: Practice 1 Solution -->
+        <div class="slide slide-example" data-slide="23" data-section="Practice" data-title="Practice 1 Solution">
+            <div class="slide-content">
+                <h2>Solution</h2>
+                <div class="solution-steps">
+                    <div class="step">\( \frac{1}{\sqrt{x}} = x^{-1/2} \), so \( p = \frac{1}{2} < 1 \)</div>
+                    <div class="step">By p-test: <span class="diverges">DIVERGES</span></div>
+                </div>
+                <p style="font-size: 1.25rem; margin-top: 1.5rem; color: var(--text-secondary);">Verification:</p>
+                <div class="solution-steps" style="margin-top: 0.5rem;">
+                    <div class="step">\( \lim_{b \to \infty} [2\sqrt{x}]_1^b = \lim_{b \to \infty}(2\sqrt{b} - 2) = \infty \)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 24: Practice Problem 2 -->
+        <div class="slide slide-exercise" data-slide="24" data-section="Practice" data-title="Practice 2">
+            <div class="slide-content">
+                <h2>Practice 2</h2>
+                <div class="prompt">
+                    <p>Evaluate \( \int_0^4 \frac{1}{\sqrt{4-x}}\,dx \)</p>
+                </div>
+                <div class="hint-box">
+                    <strong>Hint:</strong> What type is this? Where is the discontinuity?
+                </div>
+                <p class="time-indicator">Time: 3 minutes</p>
+            </div>
+        </div>
+
+        <!-- Slide 25: Practice 2 Solution -->
+        <div class="slide slide-example" data-slide="25" data-section="Practice" data-title="Practice 2 Solution">
+            <div class="slide-content">
+                <h2>Solution</h2>
+                <p style="font-size: 1.25rem; margin-bottom: 1rem;">Type 2: Discontinuity at \( x = 4 \) (upper bound)</p>
+                <div class="solution-steps">
+                    <div class="step">\( = \lim_{c \to 4^-} \int_0^c (4-x)^{-1/2}\,dx \)</div>
+                    <div class="step">\( = \lim_{c \to 4^-} [-2(4-x)^{1/2}]_0^c \)</div>
+                    <div class="step">\( = \lim_{c \to 4^-} [-2\sqrt{4-c} + 4] = 0 + 4 = 4 \)</div>
+                </div>
+                <div class="conclusion">
+                    <span class="converges">CONVERGES</span> to <strong>4</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 26: Unit 6 Completion -->
+        <div class="slide slide-statement" data-slide="26" data-section="Summary" data-title="Unit 6 Complete">
+            <div class="slide-content">
+                <p class="statement"><span class="celebration">Congratulations!</span></p>
+                <p class="statement" style="font-size: 2.5rem; margin-top: 1rem;">You've completed <em>Unit 6: Integration and Accumulation of Change</em></p>
+                <p class="secondary" style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">From Riemann sums to improper integrals - a complete journey through integration</p>
+            </div>
+        </div>
+
+        <!-- Slide 27: Unit 6 Summary -->
+        <div class="slide slide-list" data-slide="27" data-section="Summary" data-title="Unit 6 Journey">
+            <div class="slide-content">
+                <h2>Unit 6 Journey</h2>
+                <ul>
+                    <li>Riemann sums approximate area</li>
+                    <li>Definite integral = limit of Riemann sums</li>
+                    <li>FTC connects derivatives and integrals</li>
+                    <li>Antiderivatives: power rule, exp, trig</li>
+                    <li>Techniques: u-sub, IBP (BC), partial fractions (BC)</li>
+                    <li>Improper integrals: limits of proper integrals (BC)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 28: Key Takeaways -->
+        <div class="slide slide-list" data-slide="28" data-section="Summary" data-title="Key Takeaways">
+            <div class="slide-content">
+                <h2>Improper Integrals: Key Points</h2>
+                <ul>
+                    <li>Type 1: infinite bounds. Type 2: discontinuous integrand</li>
+                    <li>Always write as a LIMIT of proper integrals</li>
+                    <li>Converges = finite limit. Diverges = infinite or DNE</li>
+                    <li>p-test: \( \int_1^\infty x^{-p} \) converges iff \( p > 1 \)</li>
+                    <li>Check for hidden discontinuities in the interval</li>
+                    <li>For \( \int_{-\infty}^\infty \): take limits independently!</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 29: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="29" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p>Determine if \( \int_2^\infty \frac{1}{x^3}\,dx \) converges or diverges.</p>
+                    <p style="margin-top: 1rem; font-size: 1.25rem; color: var(--text-secondary);">If it converges, find its value.</p>
+                </div>
+                <div class="hint-box">
+                    <strong>Remember:</strong> Show proper limit notation in your solution
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 30: Looking Ahead -->
+        <div class="slide slide-statement" data-slide="30" data-section="Closing" data-title="Looking Ahead">
+            <div class="slide-content">
+                <p class="statement">Next Unit: <em>Differential Equations</em></p>
+                <p class="secondary" style="font-size: 1.5rem; color: var(--text-secondary); margin-top: 2rem;">Using integration to solve equations involving derivatives</p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 31</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>←</kbd> <kbd>→</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 38: Improper Integrals</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">← Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">← Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Area Accumulation Visualization (Slide 2) =====
+        function drawAreaViz() {
+            const container = document.getElementById('area-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 300;
+            const margin = { top: 20, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const xScale = d3.scaleLinear().domain([0, 10]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([0, 1.5]).range([plotHeight, 0]);
+
+            // Function
+            const f = x => 1 / (x * x);
+
+            // Grid
+            g.append('g')
+                .selectAll('line.h')
+                .data(d3.range(0, 1.6, 0.5))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#1c2640')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${plotHeight})`)
+                .call(d3.axisBottom(xScale).ticks(10))
+                .selectAll('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6');
+
+            g.append('g')
+                .call(d3.axisLeft(yScale).ticks(5))
+                .selectAll('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6');
+
+            // Shaded area from 1 to 10
+            const areaData = d3.range(1, 10.1, 0.1).map(x => ({ x, y: f(x) }));
+            const area = d3.area()
+                .x(d => xScale(d.x))
+                .y0(plotHeight)
+                .y1(d => yScale(d.y));
+
+            g.append('path')
+                .datum(areaData)
+                .attr('fill', 'rgba(212, 160, 40, 0.4)')
+                .attr('d', area);
+
+            // Curve
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y))
+                .curve(d3.curveCatmullRom);
+
+            const curveData = d3.range(0.5, 10.1, 0.1).map(x => ({ x, y: Math.min(f(x), 10) }));
+
+            g.append('path')
+                .datum(curveData)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Label
+            g.append('text')
+                .attr('x', xScale(2))
+                .attr('y', yScale(f(2)) - 20)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#60a5fa')
+                .text('y = 1/x²');
+
+            // Area label
+            g.append('text')
+                .attr('x', xScale(4))
+                .attr('y', yScale(0.3))
+                .attr('font-size', '1.5rem')
+                .attr('fill', '#d4a028')
+                .attr('font-weight', '600')
+                .text('Area → 1');
+        }
+
+        // ===== Comparison Visualization (Slide 10) =====
+        function drawComparisonViz() {
+            const container = document.getElementById('comparison-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 900;
+            const height = 350;
+            const margin = { top: 30, right: 30, bottom: 50, left: 50 };
+            const plotWidth = (width - margin.left - margin.right - 60) / 2;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Left panel: 1/x² (converges)
+            const gLeft = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Right panel: 1/x (diverges)
+            const gRight = svg.append('g')
+                .attr('transform', `translate(${margin.left + plotWidth + 60},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([0, 10]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([0, 2]).range([plotHeight, 0]);
+
+            // Functions
+            const f1 = x => 1 / (x * x);
+            const f2 = x => 1 / x;
+
+            // Draw both panels
+            [{ g: gLeft, f: f1, title: 'y = 1/x²', converges: true },
+             { g: gRight, f: f2, title: 'y = 1/x', converges: false }].forEach(panel => {
+                // Grid
+                panel.g.append('g')
+                    .selectAll('line')
+                    .data(d3.range(0, 2.1, 0.5))
+                    .enter()
+                    .append('line')
+                    .attr('x1', 0)
+                    .attr('x2', plotWidth)
+                    .attr('y1', d => yScale(d))
+                    .attr('y2', d => yScale(d))
+                    .attr('stroke', '#1c2640');
+
+                // Axes
+                panel.g.append('g')
+                    .attr('transform', `translate(0,${plotHeight})`)
+                    .call(d3.axisBottom(xScale).ticks(5))
+                    .selectAll('text')
+                    .attr('font-size', '1.25rem')
+                    .attr('fill', '#b8c4d6');
+
+                panel.g.append('g')
+                    .call(d3.axisLeft(yScale).ticks(4))
+                    .selectAll('text')
+                    .attr('font-size', '1.25rem')
+                    .attr('fill', '#b8c4d6');
+
+                // Shaded area
+                const areaData = d3.range(1, 10.1, 0.1).map(x => ({ x, y: Math.min(panel.f(x), 2) }));
+                const area = d3.area()
+                    .x(d => xScale(d.x))
+                    .y0(plotHeight)
+                    .y1(d => yScale(d.y));
+
+                panel.g.append('path')
+                    .datum(areaData)
+                    .attr('fill', panel.converges ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)')
+                    .attr('d', area);
+
+                // Curve
+                const curveData = d3.range(0.5, 10.1, 0.1).map(x => ({ x, y: Math.min(panel.f(x), 5) }));
+                const line = d3.line()
+                    .x(d => xScale(d.x))
+                    .y(d => yScale(Math.min(d.y, 2)));
+
+                panel.g.append('path')
+                    .datum(curveData)
+                    .attr('fill', 'none')
+                    .attr('stroke', '#60a5fa')
+                    .attr('stroke-width', 3)
+                    .attr('d', line);
+
+                // Title
+                panel.g.append('text')
+                    .attr('x', plotWidth / 2)
+                    .attr('y', -10)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1.5rem')
+                    .attr('fill', panel.converges ? '#22c55e' : '#ef4444')
+                    .attr('font-weight', '600')
+                    .text(panel.title);
+
+                // Status
+                panel.g.append('text')
+                    .attr('x', plotWidth / 2)
+                    .attr('y', plotHeight / 2)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1.5rem')
+                    .attr('fill', panel.converges ? '#22c55e' : '#ef4444')
+                    .attr('font-weight', '700')
+                    .text(panel.converges ? 'CONVERGES' : 'DIVERGES');
+            });
+        }
+
+        // ===== p-Test Visualization (Slide 12) =====
+        function drawPTestViz() {
+            const container = document.getElementById('ptest-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 350;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([0, 10]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([0, 2]).range([plotHeight, 0]);
+
+            // Grid
+            g.append('g')
+                .selectAll('line')
+                .data(d3.range(0, 2.1, 0.5))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#1c2640');
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${plotHeight})`)
+                .call(d3.axisBottom(xScale).ticks(10))
+                .selectAll('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6');
+
+            g.append('g')
+                .call(d3.axisLeft(yScale).ticks(4))
+                .selectAll('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6');
+
+            // Axis labels
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height - 5)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6')
+                .text('x');
+
+            // Area and curve groups
+            const areaPath = g.append('path');
+            const curvePath = g.append('path')
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3);
+
+            // Critical line at p=1 (y = 1/x)
+            g.append('path')
+                .datum(d3.range(1, 10.1, 0.1).map(x => ({ x, y: Math.min(1/x, 2) })))
+                .attr('fill', 'none')
+                .attr('stroke', '#ef4444')
+                .attr('stroke-width', 1)
+                .attr('stroke-dasharray', '5,5')
+                .attr('opacity', 0.5)
+                .attr('d', d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)));
+
+            // Label for critical line
+            g.append('text')
+                .attr('x', xScale(8))
+                .attr('y', yScale(1/8) - 10)
+                .attr('font-size', '1rem')
+                .attr('fill', '#ef4444')
+                .attr('opacity', 0.7)
+                .text('p = 1 (boundary)');
+
+            function update(p) {
+                const f = x => Math.pow(x, -p);
+
+                // Update curve
+                const curveData = d3.range(0.5, 10.1, 0.1).map(x => ({ x, y: Math.min(f(x), 5) }));
+                curvePath.datum(curveData)
+                    .attr('d', d3.line()
+                        .x(d => xScale(d.x))
+                        .y(d => yScale(Math.min(d.y, 2))));
+
+                // Update area
+                const areaData = d3.range(1, 10.1, 0.1).map(x => ({ x, y: Math.min(f(x), 2) }));
+                const converges = p > 1;
+                areaPath.datum(areaData)
+                    .attr('fill', converges ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)')
+                    .attr('d', d3.area()
+                        .x(d => xScale(d.x))
+                        .y0(plotHeight)
+                        .y1(d => yScale(d.y)));
+
+                // Update displays
+                document.getElementById('p-display').textContent = `p = ${p.toFixed(1)}`;
+                const statusEl = document.getElementById('p-status');
+                if (converges) {
+                    statusEl.textContent = 'CONVERGES';
+                    statusEl.className = 'status-display status-converges';
+                } else {
+                    statusEl.textContent = 'DIVERGES';
+                    statusEl.className = 'status-display status-diverges';
+                }
+            }
+
+            // Initialize
+            update(1);
+
+            // Slider event
+            document.getElementById('p-slider').addEventListener('input', function(e) {
+                update(parseFloat(e.target.value));
+            });
+        }
+
+        // ===== Area Accumulation Animation (Slide 21) =====
+        function drawAccumulateViz() {
+            const container = document.getElementById('accumulate-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 350;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            const xScale = d3.scaleLinear().domain([0, 20]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([0, 1.5]).range([plotHeight, 0]);
+
+            const f = x => 1 / (x * x);
+
+            // Grid
+            g.append('g')
+                .selectAll('line')
+                .data(d3.range(0, 1.6, 0.5))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#1c2640');
+
+            // Limit line at y = 1
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(1))
+                .attr('y2', yScale(1))
+                .attr('stroke', '#d4a028')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '8,4');
+
+            g.append('text')
+                .attr('x', plotWidth - 5)
+                .attr('y', yScale(1) - 10)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#d4a028')
+                .text('Limit = 1');
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${plotHeight})`)
+                .call(d3.axisBottom(xScale).ticks(10))
+                .selectAll('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6');
+
+            g.append('g')
+                .call(d3.axisLeft(yScale).ticks(5))
+                .selectAll('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6');
+
+            // Area path
+            const areaPath = g.append('path');
+
+            // Full curve
+            const curveData = d3.range(0.8, 20.1, 0.1).map(x => ({ x, y: Math.min(f(x), 5) }));
+            g.append('path')
+                .datum(curveData)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', d3.line()
+                    .x(d => xScale(d.x))
+                    .y(d => yScale(Math.min(d.y, 1.5))));
+
+            // Upper bound indicator
+            const boundLine = g.append('line')
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '4,4');
+
+            function update(b) {
+                // Calculate area = 1 - 1/b
+                const area = 1 - 1/b;
+
+                // Update area
+                const areaData = d3.range(1, Math.min(b, 20) + 0.1, 0.1).map(x => ({
+                    x,
+                    y: Math.min(f(x), 1.5)
+                }));
+
+                areaPath.datum(areaData)
+                    .attr('fill', 'rgba(212, 160, 40, 0.4)')
+                    .attr('d', d3.area()
+                        .x(d => xScale(d.x))
+                        .y0(plotHeight)
+                        .y1(d => yScale(d.y)));
+
+                // Update bound indicator
+                const displayB = Math.min(b, 20);
+                boundLine
+                    .attr('x1', xScale(displayB))
+                    .attr('x2', xScale(displayB))
+                    .attr('y1', 0)
+                    .attr('y2', plotHeight);
+
+                // Update displays
+                document.getElementById('b-display').textContent = b >= 100 ? 'b → ∞' : `b = ${b}`;
+                document.getElementById('area-display').textContent = `Area = ${area.toFixed(4)}`;
+            }
+
+            // Initialize
+            update(1);
+
+            // Slider event
+            document.getElementById('b-slider').addEventListener('input', function(e) {
+                update(parseFloat(e.target.value));
+            });
+        }
+
+        // ===== Trigger Visualizations on Slide Entry =====
+        const visualizationSlides = {
+            2: drawAreaViz,
+            10: drawComparisonViz,
+            12: drawPTestViz,
+            21: drawAccumulateViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        // Check periodically for slide changes
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Also check on hash changes
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        // Initial check after DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

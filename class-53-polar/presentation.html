@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 53: Polar Coordinates | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #0891b2;
+            --theme-color-light: #22d3ee;
+        }
+
+        /* Custom styles for this presentation */
+        .bc-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #d4a028, #f59e0b);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 0.75rem;
+            vertical-align: middle;
+        }
+
+        .formula-box {
+            background: var(--bg-secondary);
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--theme-color);
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid #ef4444;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            color: #ef4444;
+            font-weight: 500;
+        }
+
+        .visualization {
+            width: 100%;
+            max-width: 700px;
+            margin: 1rem auto;
+            min-height: 400px;
+        }
+
+        .visualization-wide {
+            max-width: 900px;
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .slider-control label {
+            font-size: 1.25rem;
+            font-family: var(--font-display);
+        }
+
+        .slider-control input[type="range"] {
+            width: 300px;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--theme-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .value-display {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            color: var(--theme-color);
+            min-width: 200px;
+        }
+
+        .step-list {
+            text-align: left;
+            max-width: 700px;
+            margin: 1rem auto;
+        }
+
+        .step-list li {
+            padding: 0.5rem 0;
+            font-size: 1.5rem;
+        }
+
+        .example-steps {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .example-steps .step {
+            margin: 0.75rem 0;
+            padding: 0.5rem 0;
+            font-size: 1.4rem;
+        }
+
+        .example-steps .step-label {
+            color: var(--theme-color);
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .example-steps .result {
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        .curve-gallery {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .curve-item {
+            text-align: center;
+        }
+
+        .curve-item svg {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .info-panel {
+            background: var(--bg-secondary);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+        }
+
+        .info-item .label {
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+
+        .info-item .value {
+            color: var(--theme-color);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Polar Coordinates" data-ced="9.7">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 9: Parametric, Polar, and Vector-Valued Functions <span class="bc-badge">BC Only</span></div>
+                <h1>Polar Coordinates</h1>
+                <p class="subtitle">Describing Curves with Distance and Angle</p>
+                <p class="meta">Class 53 | CED 9.7 | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: A Simplicity Challenge -->
+        <div class="slide slide-comparison" data-slide="1" data-section="Opening" data-title="A Simplicity Challenge">
+            <div class="slide-content">
+                <h2>Describe a Circle of Radius 2</h2>
+                <div class="columns">
+                    <div class="column">
+                        <h3 style="color: #64748b;">Cartesian</h3>
+                        <p style="font-size: 2rem; font-family: var(--font-mono);">x<sup>2</sup> + y<sup>2</sup> = 4</p>
+                        <p style="margin-top: 1rem; color: var(--text-secondary);">Implicit equation</p>
+                        <p style="color: var(--danger);">Not even a function!</p>
+                    </div>
+                    <div class="column">
+                        <h3 style="color: var(--theme-color);">Polar</h3>
+                        <p style="font-size: 2rem; font-family: var(--font-mono); color: var(--theme-color);">r = 2</p>
+                        <p style="margin-top: 1rem; color: var(--text-secondary);">That's it!</p>
+                        <p style="color: #22c55e;">Elegantly simple</p>
+                    </div>
+                </div>
+                <p class="caption" style="margin-top: 2rem;">Some curves are MUCH simpler in polar coordinates</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Polar Coordinate Definition -->
+        <div class="slide slide-visual" data-slide="2" data-section="The Polar System" data-title="The Polar Coordinate System">
+            <div class="slide-content">
+                <h2>The Polar Coordinate System</h2>
+                <div id="polar-grid-viz" class="visualization"></div>
+                <div class="formula-box" style="max-width: 700px; margin: 1rem auto;">
+                    <p style="font-size: 1.5rem;"><strong>r</strong> = distance from origin (can be negative!)</p>
+                    <p style="font-size: 1.5rem;"><strong>\(\theta\)</strong> = angle from positive x-axis (counterclockwise positive)</p>
+                </div>
+                <p class="caption">Distance and direction from the origin</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Plotting Polar Points -->
+        <div class="slide slide-two-part" data-slide="3" data-section="The Polar System" data-title="Plotting Polar Points">
+            <div class="slide-content">
+                <h2 style="margin-bottom: 2rem;">The Plotting Method</h2>
+                <p class="primary" style="font-size: 1.75rem;">
+                    1. Start at origin<br>
+                    2. Rotate to angle \(\theta\)<br>
+                    3. Move distance \(|r|\) along the ray (or opposite if \(r < 0\))
+                </p>
+                <p class="secondary" style="margin-top: 2rem;">
+                    <strong>Examples:</strong><br>
+                    \((3, \frac{\pi}{4})\): 3 units at 45 degrees<br>
+                    \((2, \pi)\): 2 units at 180 degrees<br>
+                    \((-2, \frac{\pi}{4})\): 2 units OPPOSITE to 45 degrees
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Negative r Explained -->
+        <div class="slide slide-visual" data-slide="4" data-section="The Polar System" data-title="Negative r Explained">
+            <div class="slide-content">
+                <h2>What Does Negative r Mean?</h2>
+                <div id="negative-r-viz" class="visualization"></div>
+                <div class="formula-box" style="max-width: 600px; margin: 1rem auto; text-align: center;">
+                    <p style="font-size: 1.75rem;">\((-2, \frac{\pi}{4}) = (2, \frac{5\pi}{4})\)</p>
+                </div>
+                <p class="caption">Negative r means go in the OPPOSITE direction of \(\theta\)</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Non-Uniqueness Warning -->
+        <div class="slide slide-statement" data-slide="5" data-section="The Polar System" data-title="Non-Uniqueness Warning">
+            <div class="slide-content">
+                <p class="statement">The same point has <em>infinitely many</em> polar representations!</p>
+                <p class="secondary" style="margin-top: 2rem; font-size: 1.5rem;">
+                    \((3, \frac{\pi}{6}) = (3, \frac{13\pi}{6}) = (-3, \frac{7\pi}{6}) = \ldots\)
+                </p>
+                <p class="secondary" style="margin-top: 1rem; color: var(--text-tertiary);">
+                    Add \(2\pi n\) to \(\theta\), or negate r and add \(\pi\)
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Conversion Formulas -->
+        <div class="slide slide-two-part" data-slide="6" data-section="The Polar System" data-title="Conversion Formulas">
+            <div class="slide-content">
+                <h2 style="margin-bottom: 2rem;">Converting Between Coordinate Systems</h2>
+                <div class="columns" style="gap: 3rem;">
+                    <div class="column">
+                        <h3 style="color: var(--theme-color);">Polar to Cartesian</h3>
+                        <div class="formula-box">
+                            <p style="font-size: 1.75rem;">\(x = r\cos\theta\)</p>
+                            <p style="font-size: 1.75rem;">\(y = r\sin\theta\)</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h3 style="color: #f97316;">Cartesian to Polar</h3>
+                        <div class="formula-box">
+                            <p style="font-size: 1.75rem;">\(r = \sqrt{x^2 + y^2}\)</p>
+                            <p style="font-size: 1.75rem;">\(\theta = \arctan\frac{y}{x}\)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="warning-box" style="max-width: 700px; margin: 1.5rem auto;">
+                    arctan only gives angles in \((-\frac{\pi}{2}, \frac{\pi}{2})\) - check the quadrant!
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Conversion Example -->
+        <div class="slide slide-example" data-slide="7" data-section="The Polar System" data-title="Conversion Example">
+            <div class="slide-content">
+                <h2>Converting Coordinates</h2>
+                <div class="example-steps">
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="color: var(--theme-color);">Example 1: Polar to Cartesian</h3>
+                        <p class="step">Convert \((4, \frac{\pi}{3})\) to Cartesian</p>
+                        <p class="step">\(x = 4\cos\frac{\pi}{3} = 4 \cdot \frac{1}{2} = 2\)</p>
+                        <p class="step">\(y = 4\sin\frac{\pi}{3} = 4 \cdot \frac{\sqrt{3}}{2} = 2\sqrt{3}\)</p>
+                        <p class="step"><span class="result">Answer: \((2, 2\sqrt{3})\)</span></p>
+                    </div>
+                    <div>
+                        <h3 style="color: #f97316;">Example 2: Cartesian to Polar</h3>
+                        <p class="step">Convert \((2, 2)\) to Polar</p>
+                        <p class="step">\(r = \sqrt{2^2 + 2^2} = \sqrt{8} = 2\sqrt{2}\)</p>
+                        <p class="step">\(\theta = \arctan\frac{2}{2} = \arctan(1) = \frac{\pi}{4}\)</p>
+                        <p class="step"><span class="result">Answer: \((2\sqrt{2}, \frac{\pi}{4})\)</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Polar Curves Introduction -->
+        <div class="slide slide-two-part" data-slide="8" data-section="Polar Curves" data-title="Polar Curves Introduction">
+            <div class="slide-content">
+                <h2 style="margin-bottom: 2rem;">Polar Curves: \(r = f(\theta)\)</h2>
+                <p class="primary" style="font-size: 1.6rem;">
+                    For each angle \(\theta\), the function tells us<br>how far from the origin to plot the point
+                </p>
+                <p class="secondary" style="margin-top: 2rem;">
+                    <strong>Plotting Method:</strong><br>
+                    1. Make a table: \(\theta\), \(r = f(\theta)\)<br>
+                    2. Plot points in polar coordinates<br>
+                    3. Connect smoothly, noting direction of increasing \(\theta\)
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 9: Circles in Polar -->
+        <div class="slide slide-visual" data-slide="9" data-section="Polar Curves" data-title="Circles in Polar">
+            <div class="slide-content">
+                <h2>Polar Circles</h2>
+                <div id="circles-viz" class="visualization visualization-wide"></div>
+                <div style="display: flex; justify-content: center; gap: 3rem; margin-top: 1rem; flex-wrap: wrap;">
+                    <div style="text-align: center;">
+                        <p style="font-size: 1.25rem; color: #60a5fa;">\(r = a\)</p>
+                        <p style="font-size: 1rem; color: var(--text-secondary);">Centered at origin</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <p style="font-size: 1.25rem; color: #22c55e;">\(r = a\cos\theta\)</p>
+                        <p style="font-size: 1rem; color: var(--text-secondary);">Center at \((a/2, 0)\)</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <p style="font-size: 1.25rem; color: #f97316;">\(r = a\sin\theta\)</p>
+                        <p style="font-size: 1rem; color: var(--text-secondary);">Center at \((0, a/2)\)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: The Cardioid -->
+        <div class="slide slide-visual" data-slide="10" data-section="Polar Curves" data-title="The Cardioid">
+            <div class="slide-content">
+                <h2>The Cardioid (Heart Shape)</h2>
+                <div id="cardioid-viz" class="visualization"></div>
+                <div class="formula-box" style="max-width: 500px; margin: 0.5rem auto; text-align: center;">
+                    <p style="font-size: 1.75rem;">\(r = a(1 + \cos\theta)\)</p>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 0.5rem;">
+                    <span style="font-size: 1.25rem;">Passes through origin once</span>
+                    <span style="font-size: 1.25rem;">Cusp at origin</span>
+                    <span style="font-size: 1.25rem;">Symmetric about x-axis</span>
+                </div>
+                <p class="caption">The name comes from the Greek word for "heart"</p>
+            </div>
+        </div>
+
+        <!-- Slide 11: Limacons -->
+        <div class="slide slide-visual" data-slide="11" data-section="Polar Curves" data-title="Limacons">
+            <div class="slide-content">
+                <h2>Limacons: \(r = a + b\cos\theta\)</h2>
+                <div id="limacon-viz" class="visualization visualization-wide"></div>
+                <div class="slider-control">
+                    <label>a/b ratio:</label>
+                    <input type="range" id="limacon-slider" min="0.3" max="2.5" step="0.1" value="1">
+                    <span class="value-display" id="limacon-display">a/b = 1.0 (Cardioid)</span>
+                </div>
+                <p class="caption">The cardioid is a special limacon with a = b</p>
+            </div>
+        </div>
+
+        <!-- Slide 12: Rose Curves -->
+        <div class="slide slide-visual" data-slide="12" data-section="Polar Curves" data-title="Rose Curves">
+            <div class="slide-content">
+                <h2>Rose Curves: \(r = a\cos(n\theta)\)</h2>
+                <div id="rose-viz" class="visualization visualization-wide"></div>
+                <div class="formula-box" style="max-width: 600px; margin: 0.5rem auto; text-align: center;">
+                    <p style="font-size: 1.5rem;">n odd: <strong>n petals</strong> | n even: <strong>2n petals</strong></p>
+                </div>
+                <p class="caption">The number of petals depends on n</p>
+            </div>
+        </div>
+
+        <!-- Slide 13: Spirals -->
+        <div class="slide slide-visual" data-slide="13" data-section="Polar Curves" data-title="Spirals">
+            <div class="slide-content">
+                <h2>Spiral Curves</h2>
+                <div id="spiral-viz" class="visualization visualization-wide"></div>
+                <div style="display: flex; justify-content: center; gap: 4rem; margin-top: 1rem;">
+                    <div style="text-align: center;">
+                        <p style="font-size: 1.5rem; color: #60a5fa;">Archimedean: \(r = a\theta\)</p>
+                        <p style="color: var(--text-secondary);">Evenly spaced</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <p style="font-size: 1.5rem; color: #22c55e;">Logarithmic: \(r = ae^{b\theta}\)</p>
+                        <p style="color: var(--text-secondary);">Self-similar (nautilus shell)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: The Key Connection -->
+        <div class="slide slide-statement" data-slide="14" data-section="Polar Derivatives" data-title="The Key Connection">
+            <div class="slide-content">
+                <p class="statement">Polar curves <em>are</em> parametric curves!</p>
+                <div class="formula-box" style="max-width: 500px; margin: 2rem auto; text-align: center;">
+                    <p style="font-size: 1.75rem;">\(x(\theta) = r(\theta)\cos\theta\)</p>
+                    <p style="font-size: 1.75rem;">\(y(\theta) = r(\theta)\sin\theta\)</p>
+                </div>
+                <p class="secondary" style="font-size: 1.75rem;">The parameter is \(\theta\)!</p>
+            </div>
+        </div>
+
+        <!-- Slide 15: Finding dy/dx -->
+        <div class="slide slide-two-part" data-slide="15" data-section="Polar Derivatives" data-title="Finding dy/dx">
+            <div class="slide-content">
+                <h2 style="margin-bottom: 2rem;">The Parametric Connection</h2>
+                <p class="primary" style="font-size: 1.6rem;">
+                    Use the parametric derivative formula:
+                </p>
+                <div class="formula-box" style="max-width: 400px; margin: 1.5rem auto; text-align: center;">
+                    <p style="font-size: 2rem;">$$\frac{dy}{dx} = \frac{dy/d\theta}{dx/d\theta}$$</p>
+                </div>
+                <p class="secondary" style="margin-top: 2rem;">
+                    Since \(x = r\cos\theta\) and \(y = r\sin\theta\),<br>
+                    we need the <strong>product rule</strong> for both!
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 16: The Derivative Formulas -->
+        <div class="slide slide-visual" data-slide="16" data-section="Polar Derivatives" data-title="Derivative Formulas">
+            <div class="slide-content">
+                <h2>Derivatives in Polar Form</h2>
+                <div style="max-width: 800px; margin: 1rem auto;">
+                    <div class="formula-box" style="margin-bottom: 1rem;">
+                        <p style="font-size: 1.5rem;">\(\frac{dx}{d\theta} = \frac{dr}{d\theta}\cos\theta - r\sin\theta\)</p>
+                        <p style="font-size: 1.5rem; margin-top: 0.5rem;">\(\frac{dy}{d\theta} = \frac{dr}{d\theta}\sin\theta + r\cos\theta\)</p>
+                    </div>
+                    <div class="formula-box" style="border-left-color: #22c55e;">
+                        <p style="font-size: 1.75rem; text-align: center;">$$\frac{dy}{dx} = \frac{\frac{dr}{d\theta}\sin\theta + r\cos\theta}{\frac{dr}{d\theta}\cos\theta - r\sin\theta}$$</p>
+                    </div>
+                </div>
+                <div class="warning-box" style="max-width: 500px; margin: 1.5rem auto; text-align: center;">
+                    \(\frac{dy}{dx}\) is NOT \(\frac{dr}{d\theta}\)!
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Slope Formula Example -->
+        <div class="slide slide-example" data-slide="17" data-section="Polar Derivatives" data-title="Slope Example">
+            <div class="slide-content">
+                <h2>Example: Cardioid Slope</h2>
+                <div class="example-steps">
+                    <p class="step"><strong>Given:</strong> \(r = 1 + \sin\theta\), find \(\frac{dy}{dx}\) at \(\theta = \frac{\pi}{6}\)</p>
+                    <p class="step"><span class="step-label">Step 1:</span> \(r(\frac{\pi}{6}) = 1 + \frac{1}{2} = \frac{3}{2}\)</p>
+                    <p class="step"><span class="step-label">Step 2:</span> \(\frac{dr}{d\theta} = \cos\theta\), so \(r'(\frac{\pi}{6}) = \frac{\sqrt{3}}{2}\)</p>
+                    <p class="step"><span class="step-label">Step 3:</span> \(\frac{dx}{d\theta} = r'\cos\theta - r\sin\theta = \frac{\sqrt{3}}{2} \cdot \frac{\sqrt{3}}{2} - \frac{3}{2} \cdot \frac{1}{2} = \frac{3}{4} - \frac{3}{4} = 0\)</p>
+                    <p class="step"><span class="step-label">Step 4:</span> \(\frac{dy}{d\theta} = r'\sin\theta + r\cos\theta = \frac{\sqrt{3}}{2} \cdot \frac{1}{2} + \frac{3}{2} \cdot \frac{\sqrt{3}}{2} = \sqrt{3}\)</p>
+                    <p class="step"><span class="step-label">Step 5:</span> \(\frac{dy}{dx} = \frac{\sqrt{3}}{0}\) = <span class="result">undefined - Vertical tangent!</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Critical Warning -->
+        <div class="slide slide-statement" data-slide="18" data-section="Polar Derivatives" data-title="Critical Warning">
+            <div class="slide-content">
+                <p class="statement" style="color: #ef4444;">\(\frac{dr}{d\theta}\) is NOT the slope!</p>
+                <p class="secondary" style="margin-top: 2rem; font-size: 1.5rem;">
+                    \(\frac{dr}{d\theta}\) tells how \(r\) changes with \(\theta\)<br><br>
+                    \(\frac{dy}{dx}\) requires the full parametric formula<br><br>
+                    Must use product rule for \(x\) and \(y\)
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 19: Horizontal and Vertical Tangents -->
+        <div class="slide slide-two-part" data-slide="19" data-section="Polar Derivatives" data-title="H/V Tangents">
+            <div class="slide-content">
+                <h2 style="margin-bottom: 2rem;">Finding Special Tangent Lines</h2>
+                <div class="columns" style="gap: 3rem;">
+                    <div class="column">
+                        <h3 style="color: #22c55e;">Horizontal Tangent</h3>
+                        <div class="formula-box">
+                            <p style="font-size: 1.4rem;">\(\frac{dy}{d\theta} = 0\)</p>
+                            <p style="font-size: 1.4rem; margin-top: 0.5rem;">AND \(\frac{dx}{d\theta} \neq 0\)</p>
+                        </div>
+                        <p style="color: var(--text-secondary); margin-top: 1rem;">Numerator zero, denominator nonzero</p>
+                    </div>
+                    <div class="column">
+                        <h3 style="color: #ef4444;">Vertical Tangent</h3>
+                        <div class="formula-box">
+                            <p style="font-size: 1.4rem;">\(\frac{dx}{d\theta} = 0\)</p>
+                            <p style="font-size: 1.4rem; margin-top: 0.5rem;">AND \(\frac{dy}{d\theta} \neq 0\)</p>
+                        </div>
+                        <p style="color: var(--text-secondary); margin-top: 1rem;">Denominator zero, numerator nonzero</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Interactive Tangent Explorer -->
+        <div class="slide slide-visual" data-slide="20" data-section="Polar Derivatives" data-title="Tangent Explorer">
+            <div class="slide-content">
+                <h2>Polar Tangent Line Explorer</h2>
+                <div id="tangent-explorer-viz" class="visualization"></div>
+                <div class="slider-control">
+                    <label>\(\theta\) =</label>
+                    <input type="range" id="theta-slider" min="0" max="6.28" step="0.05" value="0">
+                    <span class="value-display" id="theta-display">\(\theta\) = 0</span>
+                </div>
+                <div class="info-panel" id="tangent-info">
+                    <span class="info-item"><span class="label">r:</span><span class="value" id="r-val">2.00</span></span>
+                    <span class="info-item"><span class="label">dr/d\(\theta\):</span><span class="value" id="dr-val">0.00</span></span>
+                    <span class="info-item"><span class="label">dy/dx:</span><span class="value" id="slope-val">0.00</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Tangent at the Origin -->
+        <div class="slide slide-two-part" data-slide="21" data-section="Polar Derivatives" data-title="Tangent at Origin">
+            <div class="slide-content">
+                <h2 style="margin-bottom: 2rem;">Special Case: Tangent at the Origin</h2>
+                <p class="primary" style="font-size: 1.6rem;">
+                    When \(r(\theta_0) = 0\), the curve passes through the origin.<br><br>
+                    The tangent line at origin is the ray \(\theta = \theta_0\)
+                </p>
+                <p class="secondary" style="margin-top: 2rem;">
+                    <strong>Why?</strong><br>
+                    As \(\theta \to \theta_0\), the point approaches origin along the ray.<br>
+                    This ray IS the tangent direction!
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 22: Origin Tangent Example -->
+        <div class="slide slide-visual" data-slide="22" data-section="Polar Derivatives" data-title="Origin Tangent Example">
+            <div class="slide-content">
+                <h2>Example: Rose Curve at Origin</h2>
+                <div id="rose-tangent-viz" class="visualization"></div>
+                <div style="max-width: 700px; margin: 0.5rem auto;">
+                    <p style="font-size: 1.4rem; text-align: center;">
+                        \(r = \sin(2\theta) = 0\) when \(2\theta = n\pi\), so \(\theta = 0, \frac{\pi}{2}, \pi, \frac{3\pi}{2}\)
+                    </p>
+                    <p style="font-size: 1.4rem; text-align: center; margin-top: 0.5rem; color: var(--theme-color);">
+                        Tangent lines at origin: the x and y axes
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 23: Practice Problem -->
+        <div class="slide slide-exercise" data-slide="23" data-section="Practice" data-title="Practice Problem">
+            <div class="slide-content">
+                <h2>Your Turn</h2>
+                <div class="prompt">
+                    <p style="font-size: 1.75rem;">Given: \(r = \cos\theta\)</p>
+                </div>
+                <div class="instructions" style="text-align: left; max-width: 600px; margin: 1.5rem auto;">
+                    <ol style="font-size: 1.5rem;">
+                        <li style="padding: 0.75rem 0;">a) What curve is this?</li>
+                        <li style="padding: 0.75rem 0;">b) Find \(\frac{dy}{dx}\) at \(\theta = \frac{\pi}{4}\)</li>
+                        <li style="padding: 0.75rem 0;">c) Where does the curve pass through the origin?</li>
+                    </ol>
+                </div>
+                <p style="margin-top: 2rem; color: var(--theme-color); font-size: 1.5rem;">Time: 4 minutes</p>
+            </div>
+        </div>
+
+        <!-- Slide 24: Practice Solution -->
+        <div class="slide slide-example" data-slide="24" data-section="Practice" data-title="Practice Solution">
+            <div class="slide-content">
+                <h2>Solution</h2>
+                <div class="example-steps">
+                    <p class="step"><strong>a)</strong> Circle passing through origin, center at \((\frac{1}{2}, 0)\)</p>
+                    <p class="step" style="margin-top: 1.5rem;"><strong>b)</strong> At \(\theta = \frac{\pi}{4}\):</p>
+                    <p class="step" style="margin-left: 2rem;">\(r = \frac{\sqrt{2}}{2}\), \(r' = -\sin\theta = -\frac{\sqrt{2}}{2}\)</p>
+                    <p class="step" style="margin-left: 2rem;">\(\frac{dx}{d\theta} = r'\cos\theta - r\sin\theta = -\frac{1}{2} - \frac{1}{2} = -1\)</p>
+                    <p class="step" style="margin-left: 2rem;">\(\frac{dy}{d\theta} = r'\sin\theta + r\cos\theta = -\frac{1}{2} + \frac{1}{2} = 0\)</p>
+                    <p class="step" style="margin-left: 2rem;">\(\frac{dy}{dx} = \frac{0}{-1} = \)<span class="result">0 - Horizontal tangent!</span></p>
+                    <p class="step" style="margin-top: 1.5rem;"><strong>c)</strong> \(r = \cos\theta = 0\) at <span class="result">\(\theta = \frac{\pi}{2}\) (and \(-\frac{\pi}{2}\))</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 25: Key Takeaways -->
+        <div class="slide slide-list" data-slide="25" data-section="Summary" data-title="Key Takeaways">
+            <div class="slide-content">
+                <h2>Key Takeaways</h2>
+                <ul>
+                    <li>Polar coordinates: \((r, \theta)\) = distance and angle from origin</li>
+                    <li>Same point has multiple representations (non-unique)</li>
+                    <li>Conversion: \(x = r\cos\theta\), \(y = r\sin\theta\)</li>
+                    <li>Polar curves are parametric with \(\theta\) as parameter</li>
+                    <li>Slope requires product rule: \(\frac{dy}{dx} \neq \frac{dr}{d\theta}\)!</li>
+                    <li>Tangent at origin is the ray \(\theta = \theta_0\) where \(r = 0\)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 26: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="26" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p style="font-size: 1.75rem;">Given: \(r = 1 + \cos\theta\)</p>
+                    <p style="margin-top: 1.5rem; font-size: 1.5rem; color: var(--theme-color);">
+                        Find all \(\theta\) in \([0, 2\pi]\) where the tangent is horizontal.
+                    </p>
+                </div>
+                <p style="margin-top: 2rem; color: var(--text-secondary); font-size: 1.25rem;">
+                    Hint: Set \(\frac{dy}{d\theta} = 0\) and check that \(\frac{dx}{d\theta} \neq 0\)
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 27: Coming Up -->
+        <div class="slide slide-statement" data-slide="27" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement">Next: Area in Polar Coordinates</p>
+                <p class="secondary" style="margin-top: 2rem; font-size: 1.75rem;">
+                    Sectors (pie slices) instead of rectangles!
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 28</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&larr;</kbd> <kbd>&rarr;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 53: Polar Coordinates</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">&larr; Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">&larr; Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next &rarr;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Polar Grid Visualization (Slide 2) =====
+        function drawPolarGrid() {
+            const container = document.getElementById('polar-grid-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 450;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const maxR = 180;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Draw concentric circles
+            const circles = [1, 2, 3, 4];
+            circles.forEach(r => {
+                svg.append('circle')
+                    .attr('cx', centerX)
+                    .attr('cy', centerY)
+                    .attr('r', r * maxR / 4)
+                    .attr('fill', 'none')
+                    .attr('stroke', '#334155')
+                    .attr('stroke-width', 1);
+
+                svg.append('text')
+                    .attr('x', centerX + r * maxR / 4 + 5)
+                    .attr('y', centerY - 5)
+                    .attr('font-size', '1.25rem')
+                    .attr('fill', '#64748b')
+                    .text(r);
+            });
+
+            // Draw angle rays
+            const angles = [0, Math.PI/6, Math.PI/4, Math.PI/3, Math.PI/2, 2*Math.PI/3, 3*Math.PI/4, 5*Math.PI/6,
+                           Math.PI, 7*Math.PI/6, 5*Math.PI/4, 4*Math.PI/3, 3*Math.PI/2, 5*Math.PI/3, 7*Math.PI/4, 11*Math.PI/6];
+            const angleLabels = ['0', 'π/6', 'π/4', 'π/3', 'π/2', '2π/3', '3π/4', '5π/6',
+                                 'π', '7π/6', '5π/4', '4π/3', '3π/2', '5π/3', '7π/4', '11π/6'];
+
+            angles.forEach((angle, i) => {
+                svg.append('line')
+                    .attr('x1', centerX)
+                    .attr('y1', centerY)
+                    .attr('x2', centerX + maxR * Math.cos(angle))
+                    .attr('y2', centerY - maxR * Math.sin(angle))
+                    .attr('stroke', '#334155')
+                    .attr('stroke-width', 1);
+
+                // Only label every other angle to avoid crowding
+                if (i % 2 === 0) {
+                    svg.append('text')
+                        .attr('x', centerX + (maxR + 20) * Math.cos(angle))
+                        .attr('y', centerY - (maxR + 20) * Math.sin(angle))
+                        .attr('text-anchor', 'middle')
+                        .attr('dominant-baseline', 'middle')
+                        .attr('font-size', '1rem')
+                        .attr('fill', '#64748b')
+                        .text(angleLabels[i]);
+                }
+            });
+
+            // Sample point P(3, π/4)
+            const sampleR = 3;
+            const sampleTheta = Math.PI / 4;
+            const pointX = centerX + (sampleR * maxR / 4) * Math.cos(sampleTheta);
+            const pointY = centerY - (sampleR * maxR / 4) * Math.sin(sampleTheta);
+
+            // Draw r arrow
+            svg.append('line')
+                .attr('x1', centerX)
+                .attr('y1', centerY)
+                .attr('x2', pointX)
+                .attr('y2', pointY)
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 3);
+
+            // Draw theta arc
+            const arc = d3.arc()
+                .innerRadius(40)
+                .outerRadius(40)
+                .startAngle(Math.PI/2)
+                .endAngle(Math.PI/2 - sampleTheta);
+
+            svg.append('path')
+                .attr('d', arc)
+                .attr('transform', `translate(${centerX},${centerY})`)
+                .attr('fill', 'none')
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 3);
+
+            // Labels
+            svg.append('text')
+                .attr('x', centerX + 60)
+                .attr('y', centerY - 25)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#f97316')
+                .text('θ');
+
+            svg.append('text')
+                .attr('x', (centerX + pointX) / 2 - 20)
+                .attr('y', (centerY + pointY) / 2 - 10)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#22c55e')
+                .text('r = 3');
+
+            // Point
+            svg.append('circle')
+                .attr('cx', pointX)
+                .attr('cy', pointY)
+                .attr('r', 10)
+                .attr('fill', '#0891b2');
+
+            svg.append('text')
+                .attr('x', pointX + 15)
+                .attr('y', pointY - 15)
+                .attr('font-size', '1.25rem')
+                .attr('font-weight', '600')
+                .attr('fill', '#0891b2')
+                .text('P(3, π/4)');
+        }
+
+        // ===== Negative r Visualization (Slide 4) =====
+        function drawNegativeR() {
+            const container = document.getElementById('negative-r-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 400;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 60;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Draw axes
+            svg.append('line')
+                .attr('x1', 50).attr('y1', centerY)
+                .attr('x2', width - 50).attr('y2', centerY)
+                .attr('stroke', '#334155').attr('stroke-width', 2);
+
+            svg.append('line')
+                .attr('x1', centerX).attr('y1', 50)
+                .attr('x2', centerX).attr('y2', height - 50)
+                .attr('stroke', '#334155').attr('stroke-width', 2);
+
+            // The point: (2, π/4) = (-2, 5π/4)
+            const r = 2;
+            const theta1 = Math.PI / 4;
+            const theta2 = 5 * Math.PI / 4;
+
+            const pointX = centerX + r * scale * Math.cos(theta1);
+            const pointY = centerY - r * scale * Math.sin(theta1);
+
+            // First representation: (2, π/4)
+            svg.append('line')
+                .attr('x1', centerX).attr('y1', centerY)
+                .attr('x2', pointX).attr('y2', pointY)
+                .attr('stroke', '#0891b2').attr('stroke-width', 3)
+                .attr('stroke-dasharray', '5,5');
+
+            svg.append('text')
+                .attr('x', centerX + 80)
+                .attr('y', centerY - 100)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#0891b2')
+                .text('(2, π/4)');
+
+            // Second representation: (-2, 5π/4) - show ray in opposite direction
+            svg.append('line')
+                .attr('x1', centerX).attr('y1', centerY)
+                .attr('x2', centerX - r * scale * Math.cos(theta1))
+                .attr('y2', centerY + r * scale * Math.sin(theta1))
+                .attr('stroke', '#f97316').attr('stroke-width', 2)
+                .attr('stroke-dasharray', '8,4');
+
+            svg.append('text')
+                .attr('x', centerX - 120)
+                .attr('y', centerY + 100)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#f97316')
+                .text('θ = 5π/4');
+
+            svg.append('text')
+                .attr('x', centerX + 100)
+                .attr('y', centerY + 40)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#f97316')
+                .text('(-2, 5π/4)');
+
+            // The actual point
+            svg.append('circle')
+                .attr('cx', pointX)
+                .attr('cy', pointY)
+                .attr('r', 12)
+                .attr('fill', '#0891b2')
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 3);
+
+            svg.append('text')
+                .attr('x', pointX + 20)
+                .attr('y', pointY - 20)
+                .attr('font-size', '1.5rem')
+                .attr('font-weight', '600')
+                .attr('fill', 'white')
+                .text('Same Point!');
+
+            // Angle arcs
+            const arc1 = d3.arc().innerRadius(50).outerRadius(50)
+                .startAngle(Math.PI/2).endAngle(Math.PI/2 - theta1);
+            svg.append('path')
+                .attr('d', arc1)
+                .attr('transform', `translate(${centerX},${centerY})`)
+                .attr('fill', 'none')
+                .attr('stroke', '#0891b2')
+                .attr('stroke-width', 2);
+
+            svg.append('text')
+                .attr('x', centerX + 55)
+                .attr('y', centerY - 15)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#0891b2')
+                .text('π/4');
+        }
+
+        // ===== Circles in Polar (Slide 9) =====
+        function drawCircles() {
+            const container = document.getElementById('circles-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 800;
+            const height = 300;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const centers = [
+                { x: 130, y: height/2, type: 'centered', color: '#60a5fa' },
+                { x: 400, y: height/2, type: 'cosine', color: '#22c55e' },
+                { x: 670, y: height/2, type: 'sine', color: '#f97316' }
+            ];
+
+            centers.forEach(c => {
+                const g = svg.append('g').attr('transform', `translate(${c.x},${c.y})`);
+
+                // Draw axes
+                g.append('line').attr('x1', -100).attr('x2', 100).attr('y1', 0).attr('y2', 0)
+                    .attr('stroke', '#334155').attr('stroke-width', 1);
+                g.append('line').attr('x1', 0).attr('x2', 0).attr('y1', -100).attr('y2', 100)
+                    .attr('stroke', '#334155').attr('stroke-width', 1);
+
+                if (c.type === 'centered') {
+                    // r = a (centered circle)
+                    g.append('circle').attr('r', 60).attr('fill', 'none')
+                        .attr('stroke', c.color).attr('stroke-width', 3);
+                    g.append('text').attr('y', 120).attr('text-anchor', 'middle')
+                        .attr('font-size', '1.25rem').attr('fill', c.color).text('r = 2');
+                } else if (c.type === 'cosine') {
+                    // r = a*cos(theta) - circle through origin, center on x-axis
+                    g.append('circle').attr('cx', 40).attr('cy', 0).attr('r', 40)
+                        .attr('fill', 'none').attr('stroke', c.color).attr('stroke-width', 3);
+                    g.append('circle').attr('cx', 40).attr('r', 5).attr('fill', c.color);
+                    g.append('text').attr('y', 120).attr('text-anchor', 'middle')
+                        .attr('font-size', '1.25rem').attr('fill', c.color).text('r = 2cos θ');
+                } else {
+                    // r = a*sin(theta) - circle through origin, center on y-axis
+                    g.append('circle').attr('cx', 0).attr('cy', -40).attr('r', 40)
+                        .attr('fill', 'none').attr('stroke', c.color).attr('stroke-width', 3);
+                    g.append('circle').attr('cy', -40).attr('r', 5).attr('fill', c.color);
+                    g.append('text').attr('y', 120).attr('text-anchor', 'middle')
+                        .attr('font-size', '1.25rem').attr('fill', c.color).text('r = 2sin θ');
+                }
+
+                // Mark origin
+                g.append('circle').attr('r', 4).attr('fill', 'white');
+            });
+        }
+
+        // ===== Cardioid (Slide 10) =====
+        function drawCardioid() {
+            const container = document.getElementById('cardioid-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 350;
+            const centerX = width / 2 + 30;
+            const centerY = height / 2;
+            const scale = 70;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Draw axes
+            svg.append('line')
+                .attr('x1', 50).attr('y1', centerY)
+                .attr('x2', width - 50).attr('y2', centerY)
+                .attr('stroke', '#334155').attr('stroke-width', 1);
+            svg.append('line')
+                .attr('x1', centerX).attr('y1', 30)
+                .attr('x2', centerX).attr('y2', height - 30)
+                .attr('stroke', '#334155').attr('stroke-width', 1);
+
+            // Generate cardioid points: r = 1 + cos(theta)
+            const points = [];
+            for (let theta = 0; theta <= 2 * Math.PI; theta += 0.02) {
+                const r = 1 + Math.cos(theta);
+                points.push({
+                    x: centerX + r * scale * Math.cos(theta),
+                    y: centerY - r * scale * Math.sin(theta)
+                });
+            }
+
+            // Draw cardioid
+            const line = d3.line().x(d => d.x).y(d => d.y).curve(d3.curveCardinalClosed);
+            svg.append('path')
+                .attr('d', line(points))
+                .attr('fill', 'rgba(8, 145, 178, 0.1)')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3);
+
+            // Mark cusp at origin
+            svg.append('circle')
+                .attr('cx', centerX - scale)
+                .attr('cy', centerY)
+                .attr('r', 6)
+                .attr('fill', '#f97316');
+
+            svg.append('text')
+                .attr('x', centerX - scale - 10)
+                .attr('y', centerY + 25)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#f97316')
+                .text('cusp');
+
+            // Mark max point
+            svg.append('circle')
+                .attr('cx', centerX + 2 * scale)
+                .attr('cy', centerY)
+                .attr('r', 6)
+                .attr('fill', '#22c55e');
+
+            svg.append('text')
+                .attr('x', centerX + 2 * scale + 10)
+                .attr('y', centerY - 10)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#22c55e')
+                .text('r = 2');
+        }
+
+        // ===== Limacon (Slide 11) =====
+        function drawLimacon() {
+            const container = document.getElementById('limacon-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 350;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 50;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Draw axes
+            svg.append('line')
+                .attr('x1', 50).attr('y1', centerY)
+                .attr('x2', width - 50).attr('y2', centerY)
+                .attr('stroke', '#334155').attr('stroke-width', 1);
+            svg.append('line')
+                .attr('x1', centerX).attr('y1', 30)
+                .attr('x2', centerX).attr('y2', height - 30)
+                .attr('stroke', '#334155').attr('stroke-width', 1);
+
+            const limaconPath = svg.append('path')
+                .attr('fill', 'rgba(8, 145, 178, 0.1)')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3);
+
+            function updateLimacon(ratio) {
+                const a = 2;
+                const b = 2 / ratio;
+                const points = [];
+
+                for (let theta = 0; theta <= 2 * Math.PI; theta += 0.02) {
+                    const r = a + b * Math.cos(theta);
+                    points.push({
+                        x: centerX + r * scale * Math.cos(theta),
+                        y: centerY - r * scale * Math.sin(theta)
+                    });
+                }
+
+                const line = d3.line().x(d => d.x).y(d => d.y).curve(d3.curveCardinalClosed);
+                limaconPath.attr('d', line(points));
+
+                // Update label
+                let type = 'Inner loop';
+                if (ratio >= 2) type = 'Convex';
+                else if (ratio > 1) type = 'Dimpled';
+                else if (ratio === 1) type = 'Cardioid';
+
+                document.getElementById('limacon-display').textContent = `a/b = ${ratio.toFixed(1)} (${type})`;
+            }
+
+            // Initialize
+            updateLimacon(1);
+
+            // Slider event
+            document.getElementById('limacon-slider').addEventListener('input', function(e) {
+                updateLimacon(parseFloat(e.target.value));
+            });
+        }
+
+        // ===== Rose Curves (Slide 12) =====
+        function drawRose() {
+            const container = document.getElementById('rose-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 800;
+            const height = 300;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const roses = [
+                { n: 2, x: 100, petals: 4 },
+                { n: 3, x: 300, petals: 3 },
+                { n: 4, x: 500, petals: 8 },
+                { n: 5, x: 700, petals: 5 }
+            ];
+
+            roses.forEach(rose => {
+                const g = svg.append('g').attr('transform', `translate(${rose.x},${height/2})`);
+                const scale = 70;
+
+                // Draw axes
+                g.append('line').attr('x1', -80).attr('x2', 80).attr('y1', 0).attr('y2', 0)
+                    .attr('stroke', '#334155').attr('stroke-width', 1);
+                g.append('line').attr('x1', 0).attr('x2', 0).attr('y1', -80).attr('y2', 80)
+                    .attr('stroke', '#334155').attr('stroke-width', 1);
+
+                // Generate rose: r = cos(n*theta)
+                const points = [];
+                const maxTheta = rose.n % 2 === 0 ? 2 * Math.PI : Math.PI;
+                for (let theta = 0; theta <= maxTheta; theta += 0.01) {
+                    const r = Math.cos(rose.n * theta);
+                    points.push({
+                        x: r * scale * Math.cos(theta),
+                        y: -r * scale * Math.sin(theta)
+                    });
+                }
+
+                const line = d3.line().x(d => d.x).y(d => d.y);
+                g.append('path')
+                    .attr('d', line(points))
+                    .attr('fill', 'rgba(96, 165, 250, 0.2)')
+                    .attr('stroke', '#60a5fa')
+                    .attr('stroke-width', 2);
+
+                // Labels
+                g.append('text')
+                    .attr('y', 110)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1.25rem')
+                    .attr('fill', '#0891b2')
+                    .text(`n = ${rose.n}`);
+
+                g.append('text')
+                    .attr('y', 130)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1rem')
+                    .attr('fill', '#64748b')
+                    .text(`${rose.petals} petals`);
+            });
+        }
+
+        // ===== Spirals (Slide 13) =====
+        function drawSpirals() {
+            const container = document.getElementById('spiral-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 800;
+            const height = 320;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Archimedean spiral: r = a*theta
+            const g1 = svg.append('g').attr('transform', `translate(200,${height/2})`);
+            const points1 = [];
+            for (let theta = 0; theta <= 4 * Math.PI; theta += 0.05) {
+                const r = 8 * theta;
+                points1.push({
+                    x: r * Math.cos(theta),
+                    y: -r * Math.sin(theta)
+                });
+            }
+            const line = d3.line().x(d => d.x).y(d => d.y);
+            g1.append('path')
+                .attr('d', line(points1))
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3);
+
+            g1.append('circle').attr('r', 4).attr('fill', 'white');
+
+            // Logarithmic spiral: r = a*e^(b*theta)
+            const g2 = svg.append('g').attr('transform', `translate(600,${height/2})`);
+            const points2 = [];
+            for (let theta = 0; theta <= 3 * Math.PI; theta += 0.05) {
+                const r = 5 * Math.exp(0.15 * theta);
+                if (r < 150) {
+                    points2.push({
+                        x: r * Math.cos(theta),
+                        y: -r * Math.sin(theta)
+                    });
+                }
+            }
+            g2.append('path')
+                .attr('d', line(points2))
+                .attr('fill', 'none')
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 3);
+
+            g2.append('circle').attr('r', 4).attr('fill', 'white');
+        }
+
+        // ===== Tangent Explorer (Slide 20) =====
+        function drawTangentExplorer() {
+            const container = document.getElementById('tangent-explorer-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 380;
+            const centerX = width / 2 + 20;
+            const centerY = height / 2;
+            const scale = 80;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Draw axes
+            svg.append('line')
+                .attr('x1', 30).attr('y1', centerY)
+                .attr('x2', width - 30).attr('y2', centerY)
+                .attr('stroke', '#334155').attr('stroke-width', 1);
+            svg.append('line')
+                .attr('x1', centerX).attr('y1', 20)
+                .attr('x2', centerX).attr('y2', height - 20)
+                .attr('stroke', '#334155').attr('stroke-width', 1);
+
+            // Draw cardioid: r = 1 + cos(theta)
+            const cardioidPoints = [];
+            for (let theta = 0; theta <= 2 * Math.PI; theta += 0.02) {
+                const r = 1 + Math.cos(theta);
+                cardioidPoints.push({
+                    x: centerX + r * scale * Math.cos(theta),
+                    y: centerY - r * scale * Math.sin(theta)
+                });
+            }
+
+            const line = d3.line().x(d => d.x).y(d => d.y).curve(d3.curveCardinalClosed);
+            svg.append('path')
+                .attr('d', line(cardioidPoints))
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3);
+
+            // Moving point
+            const point = svg.append('circle')
+                .attr('r', 10)
+                .attr('fill', '#0891b2');
+
+            // Tangent line
+            const tangent = svg.append('line')
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 3);
+
+            function update(theta) {
+                const r = 1 + Math.cos(theta);
+                const drdt = -Math.sin(theta);
+
+                const x = centerX + r * scale * Math.cos(theta);
+                const y = centerY - r * scale * Math.sin(theta);
+
+                point.attr('cx', x).attr('cy', y);
+
+                // Calculate dx/dtheta and dy/dtheta
+                const dxdt = drdt * Math.cos(theta) - r * Math.sin(theta);
+                const dydt = drdt * Math.sin(theta) + r * Math.cos(theta);
+
+                // Slope in Cartesian
+                let slope = dydt / dxdt;
+                let slopeText = slope.toFixed(2);
+
+                if (Math.abs(dxdt) < 0.01) {
+                    slopeText = 'undefined (vertical)';
+                    // Draw vertical tangent
+                    tangent.attr('x1', x).attr('y1', 30).attr('x2', x).attr('y2', height - 30)
+                        .attr('stroke', '#ef4444');
+                } else if (Math.abs(dydt) < 0.01) {
+                    slopeText = '0 (horizontal)';
+                    // Draw horizontal tangent
+                    tangent.attr('x1', 30).attr('y1', y).attr('x2', width - 30).attr('y2', y)
+                        .attr('stroke', '#22c55e');
+                } else {
+                    // Draw regular tangent
+                    const len = 200;
+                    tangent.attr('x1', x - len / Math.sqrt(1 + slope*slope))
+                           .attr('y1', y + slope * len / Math.sqrt(1 + slope*slope))
+                           .attr('x2', x + len / Math.sqrt(1 + slope*slope))
+                           .attr('y2', y - slope * len / Math.sqrt(1 + slope*slope))
+                           .attr('stroke', '#f97316');
+                }
+
+                // Update displays
+                document.getElementById('theta-display').innerHTML = `θ = ${theta.toFixed(2)}`;
+                document.getElementById('r-val').textContent = r.toFixed(2);
+                document.getElementById('dr-val').textContent = drdt.toFixed(2);
+                document.getElementById('slope-val').textContent = slopeText;
+            }
+
+            // Initialize
+            update(0);
+
+            // Slider event
+            document.getElementById('theta-slider').addEventListener('input', function(e) {
+                update(parseFloat(e.target.value));
+            });
+        }
+
+        // ===== Rose Tangent at Origin (Slide 22) =====
+        function drawRoseTangent() {
+            const container = document.getElementById('rose-tangent-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 350;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 100;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Draw tangent lines (axes)
+            svg.append('line')
+                .attr('x1', 50).attr('y1', centerY)
+                .attr('x2', width - 50).attr('y2', centerY)
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '8,4');
+
+            svg.append('line')
+                .attr('x1', centerX).attr('y1', 30)
+                .attr('x2', centerX).attr('y2', height - 30)
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '8,4');
+
+            // Labels for tangent lines
+            svg.append('text')
+                .attr('x', width - 80)
+                .attr('y', centerY - 10)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#f97316')
+                .text('θ = 0, π');
+
+            svg.append('text')
+                .attr('x', centerX + 10)
+                .attr('y', 50)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#f97316')
+                .text('θ = π/2, 3π/2');
+
+            // Draw 4-petal rose: r = sin(2*theta)
+            const points = [];
+            for (let theta = 0; theta <= 2 * Math.PI; theta += 0.02) {
+                const r = Math.sin(2 * theta);
+                points.push({
+                    x: centerX + r * scale * Math.cos(theta),
+                    y: centerY - r * scale * Math.sin(theta)
+                });
+            }
+
+            const line = d3.line().x(d => d.x).y(d => d.y);
+            svg.append('path')
+                .attr('d', line(points))
+                .attr('fill', 'rgba(96, 165, 250, 0.2)')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3);
+
+            // Mark origin
+            svg.append('circle')
+                .attr('cx', centerX)
+                .attr('cy', centerY)
+                .attr('r', 8)
+                .attr('fill', '#0891b2');
+
+            svg.append('text')
+                .attr('x', centerX + 15)
+                .attr('y', centerY + 25)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#0891b2')
+                .text('origin');
+        }
+
+        // ===== Visualization Trigger System =====
+        const visualizationSlides = {
+            2: drawPolarGrid,
+            4: drawNegativeR,
+            9: drawCircles,
+            10: drawCardioid,
+            11: drawLimacon,
+            12: drawRose,
+            13: drawSpirals,
+            20: drawTangentExplorer,
+            22: drawRoseTangent
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        // Check periodically for slide changes (polling pattern)
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Also check on hash changes
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        // Initial check after DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

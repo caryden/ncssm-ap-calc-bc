@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 62: Taylor and Maclaurin Series | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #4f46e5;
+            --theme-color-light: #6366f1;
+        }
+
+        /* BC-Only Badge */
+        .bc-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--theme-color), var(--theme-color-light));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 1rem;
+            vertical-align: middle;
+        }
+
+        /* Formula box with gold border for essential series */
+        .formula-box {
+            background: var(--bg-secondary);
+            border: 3px solid #d4a028;
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem auto;
+            max-width: 800px;
+        }
+
+        .formula-box .formula {
+            font-size: 1.75rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .formula-box .expanded {
+            font-size: 1.5rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .formula-box .convergence {
+            margin-top: 1rem;
+            font-size: 1.25rem;
+            color: var(--theme-color);
+            text-align: center;
+        }
+
+        .formula-box .key-note {
+            margin-top: 1rem;
+            font-size: 1.25rem;
+            color: var(--text-tertiary);
+            text-align: center;
+            font-style: italic;
+        }
+
+        /* Summary table */
+        .summary-table {
+            width: 100%;
+            max-width: 900px;
+            margin: 1.5rem auto;
+            border-collapse: collapse;
+            font-size: 1.25rem;
+        }
+
+        .summary-table th,
+        .summary-table td {
+            padding: 1rem 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+
+        .summary-table th {
+            background: var(--bg-secondary);
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--theme-color);
+        }
+
+        .summary-table td:first-child {
+            text-align: left;
+        }
+
+        /* Example/solution boxes */
+        .example-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            margin: 1rem auto;
+            max-width: 800px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .example-box h3 {
+            color: var(--theme-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .example-box .step {
+            font-size: 1.35rem;
+            margin: 0.75rem 0;
+            padding-left: 1rem;
+        }
+
+        .example-box .step-label {
+            color: var(--theme-color);
+            font-weight: 600;
+        }
+
+        .example-box .result {
+            font-size: 1.5rem;
+            color: #22c55e;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        /* Strategy card */
+        .strategy-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin: 1rem auto;
+            max-width: 800px;
+        }
+
+        .strategy-card .method {
+            font-size: 1.5rem;
+            color: var(--theme-color);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .strategy-card .example-title {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Visualization container */
+        .viz-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 1rem auto;
+        }
+
+        .viz-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .viz-controls label {
+            font-size: 1.25rem;
+            font-family: var(--font-display);
+        }
+
+        .viz-controls select {
+            font-size: 1.25rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--theme-color);
+        }
+
+        .viz-controls button {
+            font-size: 1.25rem;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            background: var(--theme-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .viz-controls button:hover {
+            background: var(--theme-color-light);
+        }
+
+        /* Practice problems styling */
+        .practice-list {
+            list-style: none;
+            padding: 0;
+            max-width: 800px;
+            margin: 1rem auto;
+        }
+
+        .practice-list li {
+            background: var(--bg-secondary);
+            padding: 1rem 1.5rem;
+            margin: 0.75rem 0;
+            border-radius: 8px;
+            font-size: 1.35rem;
+            border-left: 4px solid var(--theme-color);
+        }
+
+        .practice-list li strong {
+            color: var(--theme-color);
+        }
+
+        /* Transition visual */
+        .transition-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 2rem;
+        }
+
+        .formula-row {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .formula-row .label {
+            color: var(--text-secondary);
+            min-width: 150px;
+            text-align: right;
+        }
+
+        .formula-row .math {
+            font-size: 1.75rem;
+        }
+
+        .arrow-down {
+            font-size: 2.5rem;
+            color: var(--theme-color);
+        }
+
+        /* Questions list styling */
+        .questions-list {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 700px;
+            margin: 1rem auto;
+        }
+
+        .questions-list ol {
+            list-style-position: inside;
+            font-size: 1.5rem;
+        }
+
+        .questions-list li {
+            padding: 0.75rem 0;
+        }
+
+        .questions-list .note {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--bg-tertiary);
+            font-size: 1.25rem;
+            color: var(--accent-secondary);
+        }
+
+        .questions-list .good-news {
+            margin-top: 1rem;
+            font-size: 1.25rem;
+            color: #22c55e;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Taylor and Maclaurin Series">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 10: Infinite Sequences and Series</div>
+                <h1>Taylor and Maclaurin Series <span class="bc-badge">BC Only</span></h1>
+                <p class="subtitle">From Polynomials to Infinite Series</p>
+                <p class="meta">Class 62 | CED 10.14 | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: Opening Question -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="Opening Question">
+            <div class="slide-content">
+                <p class="statement">Taylor polynomial \(P_n(x)\) approximates \(f(x)\)</p>
+                <p class="secondary" style="font-size: 2rem; margin-top: 2rem; color: var(--theme-color);">What happens if we let \(n \to \infty\)?</p>
+                <p class="secondary" style="font-size: 1.5rem; margin-top: 1.5rem; color: var(--text-tertiary);">The Taylor series—an infinite polynomial that might <strong>equal</strong> \(f(x)\)</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: From Polynomial to Series -->
+        <div class="slide slide-visual" data-slide="2" data-section="Transition" data-title="From Polynomial to Series">
+            <div class="slide-content">
+                <h2>The Transition to Infinity</h2>
+                <div class="transition-visual">
+                    <div class="formula-row">
+                        <span class="label">Taylor Polynomial:</span>
+                        <span class="math">\(\displaystyle P_n(x) = \sum_{k=0}^{n} \frac{f^{(k)}(a)}{k!}(x-a)^k\)</span>
+                    </div>
+                    <div class="arrow-down">↓</div>
+                    <div class="formula-row">
+                        <span class="label">Taylor Series:</span>
+                        <span class="math">\(\displaystyle \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x-a)^n\)</span>
+                    </div>
+                </div>
+                <p class="caption" style="font-size: 1.5rem; margin-top: 1.5rem;">Same formula, but the sum goes to infinity</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: The Convergence Questions -->
+        <div class="slide slide-list" data-slide="3" data-section="Transition" data-title="Convergence Questions">
+            <div class="slide-content">
+                <h2>Two Important Questions</h2>
+                <div class="questions-list">
+                    <ol>
+                        <li>Does the series <strong>converge</strong> for a given \(x\)?</li>
+                        <li>If it converges, does it converge <strong>to \(f(x)\)</strong>?</li>
+                    </ol>
+                    <p class="note">These are <strong>separate</strong> questions!</p>
+                    <p class="good-news">Good news: For "nice" functions (\(e^x\), \(\sin\), \(\cos\), polynomials), the answer is YES within the interval of convergence</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Taylor's Theorem Intuition -->
+        <div class="slide slide-statement" data-slide="4" data-section="Transition" data-title="Taylor's Theorem">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 1.75rem;">If \(f\) is infinitely differentiable and the remainder \(R_n(x) \to 0\) as \(n \to \infty\), then:</p>
+                <p style="font-size: 2.25rem; margin: 2rem 0; color: var(--theme-color);">$$f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x-a)^n$$</p>
+                <p class="secondary" style="font-size: 1.75rem; color: #22c55e;">The function <strong>equals</strong> its Taylor series!</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: The Essential Series -->
+        <div class="slide slide-statement" data-slide="5" data-section="Essential Series" data-title="Essential Series Intro">
+            <div class="slide-content">
+                <p class="statement">Students must <strong style="color: var(--theme-color);">memorize</strong> these series</p>
+                <p class="secondary" style="font-size: 1.5rem; margin-top: 2rem;">They appear on the AP formula sheet, but you need to <strong>use</strong> them fluently</p>
+                <p class="secondary" style="font-size: 1.35rem; margin-top: 1.5rem; color: var(--text-tertiary);">These are the building blocks for all series manipulations</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Series 1 - e^x -->
+        <div class="slide slide-visual" data-slide="6" data-section="Essential Series" data-title="Series: e^x">
+            <div class="slide-content">
+                <h2>\(e^x\) (Maclaurin)</h2>
+                <div class="formula-box">
+                    <div class="formula">$$e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!}$$</div>
+                    <div class="expanded">$$= 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \cdots$$</div>
+                    <div class="convergence">Converges for: all \(x \in (-\infty, \infty)\)</div>
+                    <div class="key-note">All derivatives of \(e^x\) equal \(e^x\), and \(e^0 = 1\)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Series 2 - sin(x) -->
+        <div class="slide slide-visual" data-slide="7" data-section="Essential Series" data-title="Series: sin(x)">
+            <div class="slide-content">
+                <h2>\(\sin(x)\) (Maclaurin)</h2>
+                <div class="formula-box">
+                    <div class="formula">$$\sin(x) = \sum_{n=0}^{\infty} \frac{(-1)^n x^{2n+1}}{(2n+1)!}$$</div>
+                    <div class="expanded">$$= x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots$$</div>
+                    <div class="convergence">Converges for: all \(x \in (-\infty, \infty)\)</div>
+                    <div class="key-note">Only <strong>odd powers</strong> (sine is an odd function)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Series 3 - cos(x) -->
+        <div class="slide slide-visual" data-slide="8" data-section="Essential Series" data-title="Series: cos(x)">
+            <div class="slide-content">
+                <h2>\(\cos(x)\) (Maclaurin)</h2>
+                <div class="formula-box">
+                    <div class="formula">$$\cos(x) = \sum_{n=0}^{\infty} \frac{(-1)^n x^{2n}}{(2n)!}$$</div>
+                    <div class="expanded">$$= 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots$$</div>
+                    <div class="convergence">Converges for: all \(x \in (-\infty, \infty)\)</div>
+                    <div class="key-note">Only <strong>even powers</strong> (cosine is an even function)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Series 4 - 1/(1-x) -->
+        <div class="slide slide-visual" data-slide="9" data-section="Essential Series" data-title="Series: 1/(1-x)">
+            <div class="slide-content">
+                <h2>\(\frac{1}{1-x}\) (Geometric Series)</h2>
+                <div class="formula-box">
+                    <div class="formula">$$\frac{1}{1-x} = \sum_{n=0}^{\infty} x^n$$</div>
+                    <div class="expanded">$$= 1 + x + x^2 + x^3 + x^4 + \cdots$$</div>
+                    <div class="convergence" style="color: #ea580c;">Converges for: \(|x| < 1\) only</div>
+                    <div class="key-note">This IS the geometric series!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Series 5 - ln(1+x) -->
+        <div class="slide slide-visual" data-slide="10" data-section="Essential Series" data-title="Series: ln(1+x)">
+            <div class="slide-content">
+                <h2>\(\ln(1+x)\) (Maclaurin)</h2>
+                <div class="formula-box">
+                    <div class="formula">$$\ln(1+x) = \sum_{n=1}^{\infty} \frac{(-1)^{n+1} x^n}{n}$$</div>
+                    <div class="expanded">$$= x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \cdots$$</div>
+                    <div class="convergence" style="color: #ea580c;">Converges for: \(-1 < x \leq 1\)</div>
+                    <div class="key-note">Obtained by integrating \(\frac{1}{1+x}\)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Series 6 - arctan(x) -->
+        <div class="slide slide-visual" data-slide="11" data-section="Essential Series" data-title="Series: arctan(x)">
+            <div class="slide-content">
+                <h2>\(\arctan(x)\) (Maclaurin)</h2>
+                <div class="formula-box">
+                    <div class="formula">$$\arctan(x) = \sum_{n=0}^{\infty} \frac{(-1)^n x^{2n+1}}{2n+1}$$</div>
+                    <div class="expanded">$$= x - \frac{x^3}{3} + \frac{x^5}{5} - \frac{x^7}{7} + \cdots$$</div>
+                    <div class="convergence" style="color: #ea580c;">Converges for: \(-1 \leq x \leq 1\)</div>
+                    <div class="key-note">Obtained by integrating \(\frac{1}{1+x^2}\)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Series Summary Table -->
+        <div class="slide slide-visual" data-slide="12" data-section="Essential Series" data-title="Essential Series Summary">
+            <div class="slide-content">
+                <h2>Essential Series Summary</h2>
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Function</th>
+                            <th>Series</th>
+                            <th>Interval</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>\(e^x\)</td>
+                            <td>\(\sum \frac{x^n}{n!}\)</td>
+                            <td>\((-\infty, \infty)\)</td>
+                        </tr>
+                        <tr>
+                            <td>\(\sin(x)\)</td>
+                            <td>\(\sum \frac{(-1)^n x^{2n+1}}{(2n+1)!}\)</td>
+                            <td>\((-\infty, \infty)\)</td>
+                        </tr>
+                        <tr>
+                            <td>\(\cos(x)\)</td>
+                            <td>\(\sum \frac{(-1)^n x^{2n}}{(2n)!}\)</td>
+                            <td>\((-\infty, \infty)\)</td>
+                        </tr>
+                        <tr>
+                            <td>\(\frac{1}{1-x}\)</td>
+                            <td>\(\sum x^n\)</td>
+                            <td>\((-1, 1)\)</td>
+                        </tr>
+                        <tr>
+                            <td>\(\ln(1+x)\)</td>
+                            <td>\(\sum \frac{(-1)^{n+1} x^n}{n}\)</td>
+                            <td>\((-1, 1]\)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 13: Why Manipulate? -->
+        <div class="slide slide-statement" data-slide="13" data-section="Manipulation" data-title="Why Manipulate?">
+            <div class="slide-content">
+                <p class="statement">Computing all derivatives can be tedious</p>
+                <p class="secondary" style="font-size: 1.75rem; margin-top: 2rem;">It's often <strong style="color: #22c55e;">much faster</strong> to start with a known series and modify it</p>
+                <p class="secondary" style="font-size: 1.5rem; margin-top: 1.5rem; color: var(--theme-color);">Strategies: Substitution, Differentiation, Integration, Multiplication</p>
+            </div>
+        </div>
+
+        <!-- Slide 14: Strategy 1 - Substitution -->
+        <div class="slide slide-visual" data-slide="14" data-section="Manipulation" data-title="Strategy: Substitution">
+            <div class="slide-content">
+                <h2>Strategy 1: Substitution</h2>
+                <div class="strategy-card">
+                    <p class="method">Replace \(x\) with an expression</p>
+                    <p class="example-title">Example: Find series for \(e^{-x^2}\)</p>
+                </div>
+                <div class="example-box">
+                    <div class="step"><span class="step-label">Start:</span> \(e^x = \sum \frac{x^n}{n!}\)</div>
+                    <div class="step"><span class="step-label">Replace \(x\) with \(-x^2\):</span></div>
+                    <div class="step" style="padding-left: 2rem;">\(e^{-x^2} = \sum \frac{(-x^2)^n}{n!} = \sum \frac{(-1)^n x^{2n}}{n!}\)</div>
+                    <div class="result">\(= 1 - x^2 + \frac{x^4}{2!} - \frac{x^6}{3!} + \cdots\)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Strategy 2 - Differentiation -->
+        <div class="slide slide-visual" data-slide="15" data-section="Manipulation" data-title="Strategy: Differentiation">
+            <div class="slide-content">
+                <h2>Strategy 2: Differentiation</h2>
+                <div class="strategy-card">
+                    <p class="method">Differentiate term by term</p>
+                    <p class="example-title">Example: Find series for \(\frac{1}{(1-x)^2}\)</p>
+                </div>
+                <div class="example-box">
+                    <div class="step"><span class="step-label">Start:</span> \(\frac{1}{1-x} = \sum x^n\)</div>
+                    <div class="step"><span class="step-label">Differentiate:</span> \(\frac{d}{dx}\left[\frac{1}{1-x}\right] = \frac{1}{(1-x)^2}\)</div>
+                    <div class="step" style="padding-left: 2rem;">\(\frac{d}{dx}\left[\sum x^n\right] = \sum nx^{n-1}\)</div>
+                    <div class="result">\(\frac{1}{(1-x)^2} = 1 + 2x + 3x^2 + 4x^3 + \cdots\)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Strategy 3 - Integration -->
+        <div class="slide slide-visual" data-slide="16" data-section="Manipulation" data-title="Strategy: Integration">
+            <div class="slide-content">
+                <h2>Strategy 3: Integration</h2>
+                <div class="strategy-card">
+                    <p class="method">Integrate term by term</p>
+                    <p class="example-title">Example: Derive \(\ln(1+x)\) from \(\frac{1}{1+x}\)</p>
+                </div>
+                <div class="example-box">
+                    <div class="step"><span class="step-label">Start:</span> \(\frac{1}{1+x} = \frac{1}{1-(-x)} = \sum (-x)^n = \sum (-1)^n x^n\)</div>
+                    <div class="step"><span class="step-label">Integrate:</span> \(\int \sum (-1)^n x^n\,dx = \sum \frac{(-1)^n x^{n+1}}{n+1} + C\)</div>
+                    <div class="step"><span class="step-label">At \(x = 0\):</span> \(\ln(1) = 0\), so \(C = 0\)</div>
+                    <div class="result">\(\ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \cdots\)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Strategy 4 - Multiplication -->
+        <div class="slide slide-visual" data-slide="17" data-section="Manipulation" data-title="Strategy: Multiplication">
+            <div class="slide-content">
+                <h2>Strategy 4: Multiplication</h2>
+                <div class="strategy-card">
+                    <p class="method">Multiply series by powers of \(x\)</p>
+                    <p class="example-title">Example: Find series for \(x \cdot e^x\)</p>
+                </div>
+                <div class="example-box">
+                    <div class="step"><span class="step-label">Start:</span> \(e^x = \sum \frac{x^n}{n!}\)</div>
+                    <div class="step"><span class="step-label">Multiply by \(x\):</span></div>
+                    <div class="step" style="padding-left: 2rem;">\(x \cdot e^x = x \cdot \sum \frac{x^n}{n!} = \sum \frac{x^{n+1}}{n!}\)</div>
+                    <div class="result">\(= x + x^2 + \frac{x^3}{2!} + \frac{x^4}{3!} + \cdots\)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Worked Example 1 -->
+        <div class="slide slide-visual" data-slide="18" data-section="Worked Examples" data-title="Example: x^2 cos(x)">
+            <div class="slide-content">
+                <h2>Example 1: \(x^2 \cos(x)\)</h2>
+                <div class="example-box">
+                    <h3>Solution</h3>
+                    <div class="step"><span class="step-label">Start with:</span> \(\cos(x) = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots\)</div>
+                    <div class="step"><span class="step-label">Multiply by \(x^2\):</span></div>
+                    <div class="step" style="padding-left: 2rem;">\(x^2 \cos(x) = x^2 - \frac{x^4}{2!} + \frac{x^6}{4!} - \frac{x^8}{6!} + \cdots\)</div>
+                    <div class="result">General term: \(\displaystyle\sum_{n=0}^{\infty} (-1)^n \frac{x^{2n+2}}{(2n)!}\)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Worked Example 2 -->
+        <div class="slide slide-visual" data-slide="19" data-section="Worked Examples" data-title="Example: 1/(1+x^2)">
+            <div class="slide-content">
+                <h2>Example 2: \(\frac{1}{1+x^2}\)</h2>
+                <div class="example-box">
+                    <h3>Solution</h3>
+                    <div class="step"><span class="step-label">Start with:</span> \(\frac{1}{1-x} = \sum x^n\) for \(|x| < 1\)</div>
+                    <div class="step"><span class="step-label">Replace \(x\) with \(-x^2\):</span></div>
+                    <div class="step" style="padding-left: 2rem;">\(\frac{1}{1+x^2} = \sum (-x^2)^n = \sum (-1)^n x^{2n}\)</div>
+                    <div class="step" style="padding-left: 2rem;">\(= 1 - x^2 + x^4 - x^6 + \cdots\)</div>
+                    <div class="result">Converges for \(|-x^2| < 1\), i.e., \(|x| < 1\)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Worked Example 3 -->
+        <div class="slide slide-visual" data-slide="20" data-section="Worked Examples" data-title="Example: e^(2x)">
+            <div class="slide-content">
+                <h2>Example 3: \(e^{2x}\)</h2>
+                <div class="example-box">
+                    <h3>Solution</h3>
+                    <div class="step"><span class="step-label">Start with:</span> \(e^x = \sum \frac{x^n}{n!}\)</div>
+                    <div class="step"><span class="step-label">Replace \(x\) with \(2x\):</span></div>
+                    <div class="step" style="padding-left: 2rem;">\(e^{2x} = \sum \frac{(2x)^n}{n!} = \sum \frac{2^n x^n}{n!}\)</div>
+                    <div class="step" style="padding-left: 2rem;">\(= 1 + 2x + \frac{4x^2}{2!} + \frac{8x^3}{3!} + \cdots\)</div>
+                    <div class="result">\(= 1 + 2x + 2x^2 + \frac{4x^3}{3} + \cdots\)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Worked Example 4 -->
+        <div class="slide slide-visual" data-slide="21" data-section="Worked Examples" data-title="Example: (e^x - 1)/x">
+            <div class="slide-content">
+                <h2>Example 4: \(\frac{e^x - 1}{x}\)</h2>
+                <div class="example-box">
+                    <h3>Solution</h3>
+                    <div class="step"><span class="step-label">Start with:</span> \(e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots\)</div>
+                    <div class="step"><span class="step-label">Subtract 1:</span> \(e^x - 1 = x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots\)</div>
+                    <div class="step"><span class="step-label">Divide by \(x\):</span></div>
+                    <div class="result">\(\frac{e^x - 1}{x} = 1 + \frac{x}{2!} + \frac{x^2}{3!} + \cdots = \sum \frac{x^n}{(n+1)!}\)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22: Taylor Series Convergence Visual -->
+        <div class="slide slide-visual" data-slide="22" data-section="Visualization" data-title="Convergence Visualization">
+            <div class="slide-content">
+                <h2>Convergence to the Function</h2>
+                <div id="convergence-viz" class="viz-container"></div>
+                <div class="viz-controls">
+                    <label for="func-select">Function:</label>
+                    <select id="func-select">
+                        <option value="exp">e^x</option>
+                        <option value="sin">sin(x)</option>
+                        <option value="cos">cos(x)</option>
+                    </select>
+                    <label for="terms-select">Terms:</label>
+                    <select id="terms-select">
+                        <option value="1">1</option>
+                        <option value="3">3</option>
+                        <option value="5" selected>5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+                    <button id="animate-btn">Animate</button>
+                </div>
+                <p class="caption" style="margin-top: 1rem;">As we add more terms, the series "hugs" the function more closely</p>
+            </div>
+        </div>
+
+        <!-- Slide 23: Interval of Convergence Note -->
+        <div class="slide slide-statement" data-slide="23" data-section="Caution" data-title="Interval of Convergence">
+            <div class="slide-content">
+                <p class="statement">Different series have different intervals of convergence</p>
+                <div style="margin-top: 2rem; font-size: 1.5rem;">
+                    <p style="color: #22c55e; margin: 1rem 0;">\(e^x\), \(\sin(x)\), \(\cos(x)\): Converge for <strong>ALL</strong> \(x\)</p>
+                    <p style="color: #ea580c; margin: 1rem 0;">\(\frac{1}{1-x}\): Only for \(|x| < 1\)</p>
+                </div>
+                <p class="secondary" style="font-size: 1.35rem; margin-top: 2rem; color: var(--text-tertiary);">Track the interval when doing substitutions!</p>
+            </div>
+        </div>
+
+        <!-- Slide 24: Practice Problem -->
+        <div class="slide slide-exercise" data-slide="24" data-section="Practice" data-title="Practice Problems">
+            <div class="slide-content">
+                <h2>Practice</h2>
+                <div class="prompt">
+                    <ol class="practice-list">
+                        <li><strong>1.</strong> Write the first four nonzero terms of the Maclaurin series for \(e^{2x}\)</li>
+                        <li><strong>2.</strong> Find the Maclaurin series for \(x \sin(x)\)</li>
+                        <li><strong>3.</strong> Use the series for \(\frac{1}{1-x}\) to find a series for \(\frac{1}{1+x^2}\)</li>
+                    </ol>
+                </div>
+                <p class="caption" style="margin-top: 1.5rem; color: var(--theme-color); font-size: 1.5rem;">Time: 4 minutes</p>
+            </div>
+        </div>
+
+        <!-- Slide 25: Practice Solutions -->
+        <div class="slide slide-list" data-slide="25" data-section="Practice" data-title="Practice Solutions">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <ul class="practice-list">
+                    <li><strong>1.</strong> \(1 + 2x + 2x^2 + \frac{4x^3}{3} + \cdots\)</li>
+                    <li><strong>2.</strong> \(x \cdot \left(x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots\right) = x^2 - \frac{x^4}{3!} + \frac{x^6}{5!} - \cdots\)</li>
+                    <li><strong>3.</strong> Replace \(x\) with \(-x^2\): \(1 - x^2 + x^4 - x^6 + \cdots\)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 26: Key Takeaways -->
+        <div class="slide slide-list" data-slide="26" data-section="Summary" data-title="Key Takeaways">
+            <div class="slide-content">
+                <h2>Key Takeaways</h2>
+                <ul>
+                    <li>Taylor series: \(n \to \infty\) in Taylor polynomial formula</li>
+                    <li>Memorize: \(e^x\), \(\sin(x)\), \(\cos(x)\), \(\frac{1}{1-x}\), \(\ln(1+x)\)</li>
+                    <li>Manipulation is faster than computing derivatives</li>
+                    <li>Strategies: substitution, differentiation, integration, multiplication</li>
+                    <li>Track interval of convergence</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 27: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="27" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <ol class="practice-list">
+                        <li><strong>1.</strong> Write the first four nonzero terms of the Maclaurin series for \(\sin(2x)\).</li>
+                        <li><strong>2.</strong> Use differentiation to find the series for \(\frac{1}{(1+x)^2}\).</li>
+                        <li><strong>3.</strong> For what values of \(x\) does the series for \(\frac{1}{1-x}\) converge?</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 28: Coming Up -->
+        <div class="slide slide-statement" data-slide="28" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement">Next: Power Series and Error Bounds</p>
+                <p class="secondary" style="font-size: 1.5rem; margin-top: 2rem;">Finding where series converge and how accurate approximations are</p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 29</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>←</kbd> <kbd>→</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 62: Taylor and Maclaurin Series</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">← Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">← Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Taylor Series Convergence Visualization =====
+        function drawConvergenceViz() {
+            const container = document.getElementById('convergence-viz');
+            if (!container) return;
+
+            // Clear previous visualization
+            container.innerHTML = '';
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Function definitions
+            const functions = {
+                exp: {
+                    f: x => Math.exp(x),
+                    taylor: (x, n) => {
+                        let sum = 0;
+                        let term = 1;
+                        for (let i = 0; i <= n; i++) {
+                            if (i > 0) term *= x / i;
+                            sum += term;
+                        }
+                        return sum;
+                    },
+                    domain: [-3, 3],
+                    range: [-1, 10],
+                    name: 'e^x'
+                },
+                sin: {
+                    f: x => Math.sin(x),
+                    taylor: (x, n) => {
+                        let sum = 0;
+                        for (let i = 0; i < n; i++) {
+                            const k = 2 * i + 1;
+                            const sign = Math.pow(-1, i);
+                            let factorial = 1;
+                            for (let j = 2; j <= k; j++) factorial *= j;
+                            sum += sign * Math.pow(x, k) / factorial;
+                        }
+                        return sum;
+                    },
+                    domain: [-2 * Math.PI, 2 * Math.PI],
+                    range: [-2, 2],
+                    name: 'sin(x)'
+                },
+                cos: {
+                    f: x => Math.cos(x),
+                    taylor: (x, n) => {
+                        let sum = 0;
+                        for (let i = 0; i < n; i++) {
+                            const k = 2 * i;
+                            const sign = Math.pow(-1, i);
+                            let factorial = 1;
+                            for (let j = 2; j <= k; j++) factorial *= j;
+                            sum += sign * Math.pow(x, k) / factorial;
+                        }
+                        return sum;
+                    },
+                    domain: [-2 * Math.PI, 2 * Math.PI],
+                    range: [-2, 2],
+                    name: 'cos(x)'
+                }
+            };
+
+            const funcSelect = document.getElementById('func-select');
+            const termsSelect = document.getElementById('terms-select');
+            const animateBtn = document.getElementById('animate-btn');
+
+            let currentFunc = funcSelect ? funcSelect.value : 'exp';
+            let numTerms = termsSelect ? parseInt(termsSelect.value) : 5;
+
+            function updatePlot(animating = false, termCount = null) {
+                const funcData = functions[currentFunc];
+                const terms = termCount !== null ? termCount : numTerms;
+
+                // Clear previous paths
+                g.selectAll('*').remove();
+
+                // Scales
+                const xScale = d3.scaleLinear()
+                    .domain(funcData.domain)
+                    .range([0, plotWidth]);
+
+                const yScale = d3.scaleLinear()
+                    .domain(funcData.range)
+                    .range([plotHeight, 0]);
+
+                // Grid
+                g.append('g')
+                    .selectAll('line.h')
+                    .data(d3.range(funcData.range[0], funcData.range[1] + 1, 1))
+                    .enter()
+                    .append('line')
+                    .attr('x1', 0)
+                    .attr('x2', plotWidth)
+                    .attr('y1', d => yScale(d))
+                    .attr('y2', d => yScale(d))
+                    .attr('stroke', '#1c2640')
+                    .attr('stroke-width', 1);
+
+                g.append('g')
+                    .selectAll('line.v')
+                    .data(d3.range(Math.ceil(funcData.domain[0]), Math.floor(funcData.domain[1]) + 1, 1))
+                    .enter()
+                    .append('line')
+                    .attr('x1', d => xScale(d))
+                    .attr('x2', d => xScale(d))
+                    .attr('y1', 0)
+                    .attr('y2', plotHeight)
+                    .attr('stroke', '#1c2640')
+                    .attr('stroke-width', 1);
+
+                // Axes
+                g.append('g')
+                    .attr('transform', `translate(0,${yScale(0)})`)
+                    .call(d3.axisBottom(xScale).ticks(7))
+                    .selectAll('text')
+                    .attr('font-size', '1.25rem')
+                    .attr('fill', '#b8c4d6');
+
+                g.append('g')
+                    .attr('transform', `translate(${xScale(0)},0)`)
+                    .call(d3.axisLeft(yScale).ticks(5))
+                    .selectAll('text')
+                    .attr('font-size', '1.25rem')
+                    .attr('fill', '#b8c4d6');
+
+                // Generate data points
+                const xValues = d3.range(funcData.domain[0], funcData.domain[1], 0.05);
+
+                // Draw actual function
+                const functionLine = d3.line()
+                    .x(d => xScale(d))
+                    .y(d => {
+                        const y = funcData.f(d);
+                        return yScale(Math.max(funcData.range[0], Math.min(funcData.range[1], y)));
+                    })
+                    .curve(d3.curveCatmullRom);
+
+                g.append('path')
+                    .datum(xValues)
+                    .attr('fill', 'none')
+                    .attr('stroke', '#60a5fa')
+                    .attr('stroke-width', 3)
+                    .attr('d', functionLine);
+
+                // Function label
+                g.append('text')
+                    .attr('x', plotWidth - 10)
+                    .attr('y', 20)
+                    .attr('text-anchor', 'end')
+                    .attr('font-size', '1.25rem')
+                    .attr('fill', '#60a5fa')
+                    .text(`f(x) = ${funcData.name}`);
+
+                // Draw Taylor approximation
+                const taylorLine = d3.line()
+                    .x(d => xScale(d))
+                    .y(d => {
+                        const y = funcData.taylor(d, terms);
+                        return yScale(Math.max(funcData.range[0], Math.min(funcData.range[1], y)));
+                    })
+                    .curve(d3.curveCatmullRom);
+
+                g.append('path')
+                    .datum(xValues)
+                    .attr('fill', 'none')
+                    .attr('stroke', '#4f46e5')
+                    .attr('stroke-width', 2)
+                    .attr('stroke-dasharray', '8,4')
+                    .attr('d', taylorLine);
+
+                // Taylor label
+                g.append('text')
+                    .attr('x', plotWidth - 10)
+                    .attr('y', 45)
+                    .attr('text-anchor', 'end')
+                    .attr('font-size', '1.25rem')
+                    .attr('fill', '#4f46e5')
+                    .text(`Taylor (${terms} terms)`);
+            }
+
+            // Initial plot
+            updatePlot();
+
+            // Event listeners
+            if (funcSelect) {
+                funcSelect.addEventListener('change', (e) => {
+                    currentFunc = e.target.value;
+                    updatePlot();
+                });
+            }
+
+            if (termsSelect) {
+                termsSelect.addEventListener('change', (e) => {
+                    numTerms = parseInt(e.target.value);
+                    updatePlot();
+                });
+            }
+
+            if (animateBtn) {
+                animateBtn.addEventListener('click', () => {
+                    let term = 1;
+                    const maxTerms = 20;
+                    const interval = setInterval(() => {
+                        updatePlot(true, term);
+                        term++;
+                        if (term > maxTerms) {
+                            clearInterval(interval);
+                            if (termsSelect) termsSelect.value = '20';
+                            numTerms = 20;
+                        }
+                    }, 300);
+                });
+            }
+        }
+
+        // ===== Trigger Visualizations on Slide Entry =====
+        const visualizationSlides = {
+            22: drawConvergenceViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        // Check periodically for slide changes (polling pattern)
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Also check on hash changes
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        // Initial check after DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>

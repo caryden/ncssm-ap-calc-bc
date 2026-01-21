@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 47: Disc & Washer Methods | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/styles.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --theme-color: #e11d48;
+            --theme-color-light: #fb7185;
+        }
+
+        /* Custom styles for this presentation */
+        .formula-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--theme-color);
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid #ef4444;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .warning-box h4 {
+            color: #ef4444;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-box {
+            background: rgba(34, 197, 94, 0.15);
+            border: 2px solid #22c55e;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .result-box span {
+            color: #22c55e;
+            font-size: 1.75rem;
+            font-weight: 600;
+            font-family: var(--font-mono);
+        }
+
+        .disc-washer-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .disc-washer-comparison .card {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .disc-washer-comparison .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .disc-washer-comparison .disc-card {
+            border-top: 4px solid #60a5fa;
+        }
+
+        .disc-washer-comparison .disc-card h3 {
+            color: #60a5fa;
+        }
+
+        .disc-washer-comparison .washer-card {
+            border-top: 4px solid var(--theme-color);
+        }
+
+        .disc-washer-comparison .washer-card h3 {
+            color: var(--theme-color);
+        }
+
+        .shape-diagram {
+            width: 100px;
+            height: 100px;
+            margin: 1rem auto;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .solid-disc {
+            background: #60a5fa;
+        }
+
+        .washer-ring {
+            background: var(--theme-color);
+            position: relative;
+        }
+
+        .washer-ring::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: var(--bg-primary);
+            border-radius: 50%;
+        }
+
+        .solution-steps {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .solution-steps p {
+            font-size: 1.5rem;
+            margin: 0.75rem 0;
+            padding-left: 1rem;
+        }
+
+        .solution-steps .math-line {
+            font-family: var(--font-mono);
+            color: var(--accent-secondary);
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .slider-control label {
+            font-size: 1.25rem;
+            font-family: var(--font-display);
+        }
+
+        .slider-control input[type="range"] {
+            width: 300px;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--theme-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .radius-display {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--accent-secondary);
+            min-width: 200px;
+        }
+
+        .comparison-numbers {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 1.5rem;
+        }
+
+        .comparison-item {
+            text-align: center;
+        }
+
+        .comparison-item .value {
+            font-size: 3rem;
+            font-family: var(--font-mono);
+            font-weight: 700;
+        }
+
+        .comparison-item.correct .value {
+            color: #22c55e;
+        }
+
+        .comparison-item.wrong .value {
+            color: #ef4444;
+        }
+
+        .comparison-item .label {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .decision-list {
+            text-align: left;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .decision-list li {
+            font-size: 1.4rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+
+        .decision-list li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Disc & Washer Methods">
+            <div class="slide-content">
+                <div class="unit-badge">Unit 8: Applications of Integration</div>
+                <h1>Disc & Washer Methods</h1>
+                <p class="subtitle">Volumes of Revolution</p>
+                <p class="meta">Class 47 | CED 8.9-8.12 | NCSSM</p>
+            </div>
+        </div>
+
+        <!-- Slide 1: Rotation Animation -->
+        <div class="slide slide-visual" data-slide="1" data-section="Opening" data-title="What Happens When We Rotate?">
+            <div class="slide-content">
+                <h2>What Happens When We Rotate?</h2>
+                <div id="rotation-viz" class="visualization"></div>
+                <p class="caption">When a region spins around an axis, it sweeps out a solid</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Connection to Cross Sections -->
+        <div class="slide slide-statement" data-slide="2" data-section="Opening" data-title="Connection to Cross Sections">
+            <div class="slide-content">
+                <p class="statement">Volumes of revolution are cross-sectional volumes where every cross section is a <em>circle</em> (or a ring).</p>
+                <p style="font-size: 1.75rem; margin-top: 2rem; font-family: var(--font-mono); color: var(--accent-secondary);">Disc: V = &pi;&int;r&sup2; &nbsp;|&nbsp; Washer: V = &pi;&int;(R&sup2; - r&sup2;)</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Disc vs Washer Comparison -->
+        <div class="slide slide-comparison" data-slide="3" data-section="Disc vs. Washer" data-title="When to Use Which">
+            <div class="slide-content">
+                <h2>When to Use Which</h2>
+                <div class="columns">
+                    <div class="column">
+                        <h3 style="color: #60a5fa;">Disc Method</h3>
+                        <p style="font-size: 1.5rem; font-weight: 600;">Solid Core</p>
+                        <div class="shape-diagram solid-disc"></div>
+                        <p>Region touches the axis of rotation</p>
+                        <p>Cross section is a solid disc</p>
+                        <p style="font-family: var(--font-mono); color: #60a5fa; margin-top: 1rem;">V = &pi;&int;[r(x)]&sup2; dx</p>
+                    </div>
+                    <div class="column">
+                        <h3 style="color: var(--theme-color);">Washer Method</h3>
+                        <p style="font-size: 1.5rem; font-weight: 600;">Hollow Core</p>
+                        <div class="shape-diagram washer-ring"></div>
+                        <p>Gap between region and axis</p>
+                        <p>Cross section is a ring (washer)</p>
+                        <p style="font-family: var(--font-mono); color: var(--theme-color); margin-top: 1rem;">V = &pi;&int;(R&sup2; - r&sup2;) dx</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Disc Method - Around x-axis -->
+        <div class="slide slide-two-part" data-slide="4" data-section="Disc Method" data-title="Disc Method: x-axis">
+            <div class="slide-content">
+                <h2>Disc Method: Rotation Around x-axis</h2>
+                <div class="formula-box">
+                    <p style="font-size: 1.5rem; margin-bottom: 0.5rem;">Rotate y = f(x) from x = a to x = b around the x-axis:</p>
+                    <p style="font-size: 2rem;">$$V = \pi \int_a^b [f(x)]^2\,dx$$</p>
+                </div>
+                <div class="secondary" style="margin-top: 1.5rem;">
+                    <p style="font-size: 1.4rem;">Each vertical slice becomes a circular disc</p>
+                    <p style="font-size: 1.4rem; margin-top: 0.5rem;"><strong>Radius of disc:</strong> r = f(x) (distance from x-axis to curve)</p>
+                    <p style="font-size: 1.4rem; margin-top: 0.5rem;"><strong>Area of disc:</strong> A = &pi;r&sup2; = &pi;[f(x)]&sup2;</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Disc Method Visualization -->
+        <div class="slide slide-visual" data-slide="5" data-section="Disc Method" data-title="Visualizing the Disc">
+            <div class="slide-content">
+                <h2>Visualizing the Disc</h2>
+                <div id="disc-viz" class="visualization"></div>
+                <p class="caption">The radius is the distance from the axis to the curve</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Example 1 - Disc Around x-axis -->
+        <div class="slide slide-example" data-slide="6" data-section="Disc Method" data-title="Example: Disc Around x-axis">
+            <div class="slide-content">
+                <h2>Example: Disc Around x-axis</h2>
+                <div class="prompt" style="margin-bottom: 1.5rem;">
+                    <p style="font-size: 1.5rem;">Find the volume when y = &radic;x is rotated around the x-axis from x = 0 to x = 4</p>
+                </div>
+                <div class="solution-steps">
+                    <p><strong>Radius:</strong> r = &radic;x</p>
+                    <p><strong>Area:</strong> A(x) = &pi;(&radic;x)&sup2; = &pi;x</p>
+                    <p class="math-line" style="font-size: 1.75rem; margin-top: 1rem;">$$V = \pi \int_0^4 x\,dx = \pi\left[\frac{x^2}{2}\right]_0^4 = \pi \cdot 8 = 8\pi$$</p>
+                </div>
+                <div class="result-box">
+                    <span>V = 8&pi; cubic units</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Disc Method - Around y-axis -->
+        <div class="slide slide-two-part" data-slide="7" data-section="Disc Method" data-title="Disc Method: y-axis">
+            <div class="slide-content">
+                <h2>Disc Method: Rotation Around y-axis</h2>
+                <div class="formula-box">
+                    <p style="font-size: 1.5rem; margin-bottom: 0.5rem;">Rotate x = f(y) from y = c to y = d around the y-axis:</p>
+                    <p style="font-size: 2rem;">$$V = \pi \int_c^d [f(y)]^2\,dy$$</p>
+                </div>
+                <div class="secondary" style="margin-top: 1.5rem;">
+                    <p style="font-size: 1.4rem;">Horizontal slices become discs</p>
+                    <p style="font-size: 1.4rem; margin-top: 0.5rem;"><strong>Radius:</strong> r = f(y) (distance from y-axis to curve)</p>
+                    <p style="font-size: 1.4rem; margin-top: 0.5rem;">Integrate with respect to y</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Example 2 - Disc Around y-axis -->
+        <div class="slide slide-example" data-slide="8" data-section="Disc Method" data-title="Example: Disc Around y-axis">
+            <div class="slide-content">
+                <h2>Example: Disc Around y-axis</h2>
+                <div class="prompt" style="margin-bottom: 1.5rem;">
+                    <p style="font-size: 1.5rem;">Find the volume when y = x&sup2; (i.e., x = &radic;y) is rotated around the y-axis from y = 0 to y = 4</p>
+                </div>
+                <div class="solution-steps">
+                    <p><strong>Rewrite:</strong> x = &radic;y</p>
+                    <p><strong>Radius:</strong> r = &radic;y</p>
+                    <p class="math-line" style="font-size: 1.75rem; margin-top: 1rem;">$$V = \pi \int_0^4 (\sqrt{y})^2\,dy = \pi \int_0^4 y\,dy = \pi \cdot 8 = 8\pi$$</p>
+                </div>
+                <div class="result-box">
+                    <span>V = 8&pi; cubic units</span>
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-secondary); font-size: 1.25rem;">Same answer as Example 1 - coincidence for this region!</p>
+            </div>
+        </div>
+
+        <!-- Slide 9: Washer Method Introduction -->
+        <div class="slide slide-visual" data-slide="9" data-section="Washer Method" data-title="When There's a Hole">
+            <div class="slide-content">
+                <h2>When There's a Hole: The Washer</h2>
+                <div id="washer-viz" class="visualization"></div>
+                <p class="caption">Washer = Big disc - Small disc</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Washer Formula -->
+        <div class="slide slide-two-part" data-slide="10" data-section="Washer Method" data-title="Washer Method Formula">
+            <div class="slide-content">
+                <h2>Washer Method Formula</h2>
+                <div class="formula-box">
+                    <p style="font-size: 2rem;">$$V = \pi \int_a^b \left([R(x)]^2 - [r(x)]^2\right)\,dx$$</p>
+                    <p style="font-size: 1.4rem; margin-top: 1rem;"><strong>R</strong> = outer radius (farther from axis)</p>
+                    <p style="font-size: 1.4rem;"><strong>r</strong> = inner radius (closer to axis)</p>
+                </div>
+                <div class="warning-box" style="margin-top: 1.5rem;">
+                    <h4>CRITICAL: It's R&sup2; - r&sup2;, NOT (R - r)&sup2;!</h4>
+                    <p style="font-size: 1.3rem; margin-top: 0.5rem; font-family: var(--font-mono);">R&sup2; - r&sup2; = (R+r)(R-r)</p>
+                    <p style="font-size: 1.3rem; font-family: var(--font-mono);">(R-r)&sup2; = R&sup2; - 2Rr + r&sup2;</p>
+                    <p style="font-size: 1.3rem; margin-top: 0.5rem; color: #ef4444;">These are NOT the same!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Example 3 - Washer Around x-axis Setup -->
+        <div class="slide slide-example" data-slide="11" data-section="Washer Method" data-title="Example: Washer Setup">
+            <div class="slide-content">
+                <h2>Example: Washer Around x-axis</h2>
+                <div class="prompt" style="margin-bottom: 1.5rem;">
+                    <p style="font-size: 1.5rem;">Find the volume when the region between y = &radic;x and y = x&sup2; is rotated around the x-axis</p>
+                </div>
+                <div class="solution-steps">
+                    <p><strong>Intersection:</strong> x&sup2; = &radic;x &rarr; x&sup4; = x &rarr; x = 0 or x = 1</p>
+                    <p style="margin-top: 0.75rem;"><strong>On [0,1]:</strong> &radic;x > x&sup2; (test x = 0.5: 0.71 > 0.25)</p>
+                    <p style="margin-top: 1rem; color: var(--theme-color);"><strong>Outer radius:</strong> R = &radic;x (farther from x-axis)</p>
+                    <p style="color: #60a5fa;"><strong>Inner radius:</strong> r = x&sup2; (closer to x-axis)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Example 3 - Washer Evaluation -->
+        <div class="slide slide-example" data-slide="12" data-section="Washer Method" data-title="Example: Washer Evaluation">
+            <div class="slide-content">
+                <h2>Example: Washer Around x-axis (completed)</h2>
+                <div class="solution-steps">
+                    <p style="font-size: 1.6rem;">$$V = \pi \int_0^1 \left[(\sqrt{x})^2 - (x^2)^2\right]\,dx$$</p>
+                    <p style="font-size: 1.6rem; margin-top: 0.75rem;">$$= \pi \int_0^1 (x - x^4)\,dx$$</p>
+                    <p style="font-size: 1.6rem; margin-top: 0.75rem;">$$= \pi \left[\frac{x^2}{2} - \frac{x^5}{5}\right]_0^1$$</p>
+                    <p style="font-size: 1.6rem; margin-top: 0.75rem;">$$= \pi \left(\frac{1}{2} - \frac{1}{5}\right) = \frac{3\pi}{10}$$</p>
+                </div>
+                <div class="result-box">
+                    <span>V = 3&pi;/10 cubic units</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Rotation Around Other Lines -->
+        <div class="slide slide-statement" data-slide="13" data-section="Non-Standard Axes" data-title="Key Insight">
+            <div class="slide-content">
+                <p class="statement">The key insight: Radius = Distance from <em>AXIS OF ROTATION</em> to the curve</p>
+                <div style="margin-top: 2rem; font-size: 1.5rem;">
+                    <p style="margin: 0.5rem 0;">For axis <strong>y = k</strong>: radius = |f(x) - k|</p>
+                    <p style="margin: 0.5rem 0;">For axis <strong>x = k</strong>: radius = |f(y) - k|</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Radius Adjustment Diagram -->
+        <div class="slide slide-visual" data-slide="14" data-section="Non-Standard Axes" data-title="Measuring Radius from Axis">
+            <div class="slide-content">
+                <h2>Measuring Radius from the Axis</h2>
+                <div id="axis-viz" class="visualization"></div>
+                <div class="slider-control">
+                    <label>Axis y =</label>
+                    <input type="range" id="axis-slider" min="-2" max="3" step="0.1" value="0">
+                    <span class="radius-display" id="radius-display">r = f(x) - 0</span>
+                </div>
+                <p class="caption">The radius depends on where the axis is relative to the curve</p>
+            </div>
+        </div>
+
+        <!-- Slide 15: Example 4 - Rotation Around y = -1 Setup -->
+        <div class="slide slide-example" data-slide="15" data-section="Non-Standard Axes" data-title="Example: y = -1 Setup">
+            <div class="slide-content">
+                <h2>Example: Rotation Around y = -1</h2>
+                <div class="prompt" style="margin-bottom: 1.5rem;">
+                    <p style="font-size: 1.4rem;">Region between y = &radic;x and y = x&sup2; on [0,1], rotated around y = -1</p>
+                </div>
+                <div class="solution-steps">
+                    <p><strong>Axis y = -1 is BELOW the region</strong></p>
+                    <p style="margin-top: 1rem; color: var(--theme-color);"><strong>Outer radius:</strong> R = &radic;x - (-1) = &radic;x + 1</p>
+                    <p style="color: #60a5fa;"><strong>Inner radius:</strong> r = x&sup2; - (-1) = x&sup2; + 1</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Example 4 - Rotation Around y = -1 Evaluation -->
+        <div class="slide slide-example" data-slide="16" data-section="Non-Standard Axes" data-title="Example: y = -1 Evaluation">
+            <div class="slide-content">
+                <h2>Example: Rotation Around y = -1 (completed)</h2>
+                <div class="solution-steps">
+                    <p style="font-size: 1.5rem;">$$V = \pi \int_0^1 \left[(\sqrt{x}+1)^2 - (x^2+1)^2\right]\,dx$$</p>
+                    <p style="font-size: 1.3rem; margin-top: 0.75rem;">Expand: (&radic;x + 1)&sup2; = x + 2&radic;x + 1</p>
+                    <p style="font-size: 1.3rem;">(x&sup2; + 1)&sup2; = x&sup4; + 2x&sup2; + 1</p>
+                    <p style="font-size: 1.5rem; margin-top: 0.75rem;">$$V = \pi \int_0^1 (x + 2\sqrt{x} - x^4 - 2x^2)\,dx = \frac{29\pi}{30}$$</p>
+                </div>
+                <div class="result-box">
+                    <span>V = 29&pi;/30 cubic units</span>
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-secondary); font-size: 1.25rem;">Larger than 3&pi;/10 from x-axis rotation - farther axis = more volume</p>
+            </div>
+        </div>
+
+        <!-- Slide 17: Example 5 - Rotation Around x = 2 Setup -->
+        <div class="slide slide-example" data-slide="17" data-section="Non-Standard Axes" data-title="Example: x = 2 Setup">
+            <div class="slide-content">
+                <h2>Example: Rotation Around x = 2</h2>
+                <div class="prompt" style="margin-bottom: 1.5rem;">
+                    <p style="font-size: 1.4rem;">Region between y = x and y = x&sup2; on [0,1], rotated around x = 2</p>
+                </div>
+                <div class="solution-steps">
+                    <p style="color: var(--accent-secondary);"><strong>Key insight:</strong> Vertical axis &rarr; use dy (horizontal slices)</p>
+                    <p style="margin-top: 1rem;"><strong>Rewrite:</strong> x = y (line) and x = &radic;y (parabola)</p>
+                    <p style="margin-top: 0.5rem;"><strong>Axis x = 2 is to the RIGHT of region</strong></p>
+                    <p style="margin-top: 1rem; color: var(--theme-color);"><strong>Outer:</strong> R = 2 - y (farther from x = 2)</p>
+                    <p style="color: #60a5fa;"><strong>Inner:</strong> r = 2 - &radic;y (closer to x = 2)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Example 5 - Rotation Around x = 2 Evaluation -->
+        <div class="slide slide-example" data-slide="18" data-section="Non-Standard Axes" data-title="Example: x = 2 Evaluation">
+            <div class="slide-content">
+                <h2>Example: Rotation Around x = 2 (completed)</h2>
+                <div class="solution-steps">
+                    <p style="font-size: 1.5rem;">$$V = \pi \int_0^1 \left[(2-y)^2 - (2-\sqrt{y})^2\right]\,dy$$</p>
+                    <p style="font-size: 1.3rem; margin-top: 0.75rem;">Expand and simplify:</p>
+                    <p style="font-size: 1.5rem;">$$= \pi \int_0^1 (y^2 - 5y + 4\sqrt{y})\,dy$$</p>
+                    <p style="font-size: 1.5rem; margin-top: 0.5rem;">$$= \pi \left[\frac{y^3}{3} - \frac{5y^2}{2} + \frac{8y^{3/2}}{3}\right]_0^1$$</p>
+                    <p style="font-size: 1.5rem; margin-top: 0.5rem;">$$= \pi \left(\frac{1}{3} - \frac{5}{2} + \frac{8}{3}\right) = \frac{\pi}{2}$$</p>
+                </div>
+                <div class="result-box">
+                    <span>V = &pi;/2 cubic units</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Decision Flowchart -->
+        <div class="slide slide-list" data-slide="19" data-section="Summary" data-title="Decision Guide">
+            <div class="slide-content">
+                <h2>Disc or Washer? A Decision Guide</h2>
+                <ol class="decision-list">
+                    <li><strong>1.</strong> Draw the region and identify the axis of rotation</li>
+                    <li><strong>2.</strong> Is the region adjacent to the axis? &rarr; <span style="color: #60a5fa;">Disc method</span></li>
+                    <li><strong>3.</strong> Is there a gap between region and axis? &rarr; <span style="color: var(--theme-color);">Washer method</span></li>
+                    <li><strong>4.</strong> Which curve is FARTHER from the axis? &rarr; Outer radius <strong>R</strong></li>
+                    <li><strong>5.</strong> Which curve is CLOSER to the axis? &rarr; Inner radius <strong>r</strong></li>
+                    <li><strong>6.</strong> Vertical axis? Use <strong>dy</strong>. Horizontal axis? Use <strong>dx</strong>.</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Slide 20: Critical Reminder -->
+        <div class="slide slide-statement" data-slide="20" data-section="Summary" data-title="Critical Reminder">
+            <div class="slide-content">
+                <p class="statement" style="color: #ef4444;">R&sup2; - r&sup2;, NOT (R - r)&sup2;</p>
+                <div class="comparison-numbers">
+                    <div class="comparison-item correct">
+                        <p class="value">16</p>
+                        <p class="label">R&sup2; - r&sup2; = 25 - 9</p>
+                    </div>
+                    <div class="comparison-item wrong">
+                        <p class="value">4</p>
+                        <p class="label">(R - r)&sup2; = (5 - 3)&sup2;</p>
+                    </div>
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 1.5rem; color: var(--text-secondary);">If R = 5, r = 3</p>
+                <p style="font-size: 1.75rem; margin-top: 1.5rem; color: #ef4444; font-weight: 600;">This is the most common error on the AP exam!</p>
+            </div>
+        </div>
+
+        <!-- Slide 21: Practice Problem -->
+        <div class="slide slide-exercise" data-slide="21" data-section="Practice" data-title="Your Turn">
+            <div class="slide-content">
+                <h2>Your Turn</h2>
+                <div class="prompt">
+                    <p style="font-size: 1.4rem; margin-bottom: 1rem;"><strong>Problem 1 (Disc):</strong> y = x&sup3; rotated around x-axis from x = 0 to x = 2</p>
+                    <p style="font-size: 1.4rem;"><strong>Problem 2 (Washer):</strong> Region between y = 4 and y = x&sup2; rotated around y = 5</p>
+                </div>
+                <div class="instructions" style="margin-top: 1.5rem;">
+                    <p style="font-size: 1.5rem; color: var(--accent-secondary);">Set up the integrals. Identify R and r for Problem 2.</p>
+                    <p style="font-size: 1.5rem; margin-top: 1rem;">Time: 4 minutes</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22: Practice Solutions -->
+        <div class="slide slide-example" data-slide="22" data-section="Practice" data-title="Solutions">
+            <div class="slide-content">
+                <h2>Solutions</h2>
+                <div class="solution-steps" style="margin-bottom: 2rem;">
+                    <p style="font-size: 1.3rem; color: var(--accent-secondary); font-weight: 600;">Problem 1:</p>
+                    <p style="font-size: 1.3rem;">r = x&sup3;</p>
+                    <p style="font-size: 1.4rem;">$$V = \pi\int_0^2 (x^3)^2\,dx = \pi\int_0^2 x^6\,dx = \pi\left[\frac{x^7}{7}\right]_0^2 = \frac{128\pi}{7}$$</p>
+                </div>
+                <div class="solution-steps">
+                    <p style="font-size: 1.3rem; color: var(--accent-secondary); font-weight: 600;">Problem 2:</p>
+                    <p style="font-size: 1.3rem;">Axis y = 5 is ABOVE the region</p>
+                    <p style="font-size: 1.3rem;"><strong>R</strong> = 5 - x&sup2; (from axis to parabola, farther)</p>
+                    <p style="font-size: 1.3rem;"><strong>r</strong> = 5 - 4 = 1 (from axis to line, closer)</p>
+                    <p style="font-size: 1.4rem; margin-top: 0.5rem;">$$V = \pi\int_{-2}^{2} \left[(5-x^2)^2 - 1\right]\,dx$$</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 23: Key Takeaways -->
+        <div class="slide slide-list" data-slide="23" data-section="Summary" data-title="Key Takeaways">
+            <div class="slide-content">
+                <h2>Key Takeaways</h2>
+                <ul>
+                    <li><strong>Disc method:</strong> V = &pi;&int;r&sup2; (region touches axis)</li>
+                    <li><strong>Washer method:</strong> V = &pi;&int;(R&sup2; - r&sup2;) (gap between region and axis)</li>
+                    <li><strong>Radius</strong> = distance from AXIS to curve (not from x-axis!)</li>
+                    <li>For non-standard axes: adjust radius formula</li>
+                    <li style="color: #ef4444;"><strong>R&sup2; - r&sup2;, NEVER (R - r)&sup2;</strong></li>
+                    <li>Match integration variable to axis orientation</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 24: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="24" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p style="font-size: 1.5rem;">Which is larger: the volume when y = x (from x = 0 to x = 1) is rotated around the x-axis, or around y = -1?</p>
+                    <p style="font-size: 1.5rem; margin-top: 1.5rem; color: var(--accent-secondary);">Explain your reasoning without calculating.</p>
+                </div>
+                <p style="font-size: 1.25rem; margin-top: 2rem; color: var(--text-secondary);"><em>Expected insight: y = -1 gives larger volume because the radius is larger at every point</em></p>
+            </div>
+        </div>
+
+        <!-- Slide 25: Coming Up -->
+        <div class="slide slide-statement" data-slide="25" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement">Next: Arc Length (BC Topic)</p>
+                <p style="font-size: 1.5rem; margin-top: 1.5rem; color: var(--text-secondary);">Finding the actual length of curves using the Pythagorean theorem at the infinitesimal level.</p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 26</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&larr;</kbd> <kbd>&rarr;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 47: Disc & Washer Methods</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">&larr; Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">&larr; Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next &rarr;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../shared/presentation.js"></script>
+    <script>
+        // ===== Rotation Animation Visualization (Slide 1) =====
+        function drawRotationViz() {
+            const container = document.getElementById('rotation-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const xScale = d3.scaleLinear().domain([0, 5]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-2.5, 2.5]).range([plotHeight, 0]);
+
+            // Grid
+            g.append('g')
+                .attr('class', 'grid')
+                .selectAll('line.h')
+                .data(d3.range(-2, 3, 1))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#1c2640')
+                .attr('stroke-width', 1);
+
+            g.append('g')
+                .attr('class', 'grid')
+                .selectAll('line.v')
+                .data(d3.range(0, 6, 1))
+                .enter()
+                .append('line')
+                .attr('x1', d => xScale(d))
+                .attr('x2', d => xScale(d))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', '#1c2640')
+                .attr('stroke-width', 1);
+
+            // X-axis
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#b8c4d6')
+                .attr('stroke-width', 2);
+
+            // Function y = sqrt(x)
+            const f = x => Math.sqrt(x);
+            const xValues = d3.range(0, 4.1, 0.05);
+
+            const line = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(f(d)))
+                .curve(d3.curveCatmullRom);
+
+            // Draw the curve
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Draw the reflected curve (y = -sqrt(x))
+            const lineReflected = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(-f(d)))
+                .curve(d3.curveCatmullRom);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('stroke-dasharray', '5,5')
+                .attr('opacity', 0.5)
+                .attr('d', lineReflected);
+
+            // Fill the region
+            const areaGen = d3.area()
+                .x(d => xScale(d))
+                .y0(d => yScale(-f(d)))
+                .y1(d => yScale(f(d)))
+                .curve(d3.curveCatmullRom);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'rgba(225, 29, 72, 0.3)')
+                .attr('stroke', 'none')
+                .attr('d', areaGen);
+
+            // Draw ellipses to show rotation effect
+            const ellipsePositions = [1, 2, 3, 4];
+            ellipsePositions.forEach(x => {
+                const r = f(x);
+                g.append('ellipse')
+                    .attr('cx', xScale(x))
+                    .attr('cy', yScale(0))
+                    .attr('rx', 10)
+                    .attr('ry', Math.abs(yScale(0) - yScale(r)))
+                    .attr('fill', 'none')
+                    .attr('stroke', 'rgba(225, 29, 72, 0.6)')
+                    .attr('stroke-width', 2);
+            });
+
+            // Labels
+            g.append('text')
+                .attr('x', xScale(4.2))
+                .attr('y', yScale(f(4)) - 10)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#60a5fa')
+                .text('y = sqrt(x)');
+
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height - 10)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6')
+                .text('x');
+        }
+
+        // ===== Disc Cross-Section Visualization (Slide 5) =====
+        function drawDiscViz() {
+            const container = document.getElementById('disc-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 800;
+            const height = 350;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Left side: curve with slice
+            const leftG = svg.append('g')
+                .attr('transform', 'translate(50, 30)');
+
+            const leftWidth = 350;
+            const leftHeight = 280;
+            const xScale = d3.scaleLinear().domain([0, 4.5]).range([0, leftWidth]);
+            const yScale = d3.scaleLinear().domain([0, 2.5]).range([leftHeight, 0]);
+
+            // X-axis
+            leftG.append('line')
+                .attr('x1', 0)
+                .attr('x2', leftWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#b8c4d6')
+                .attr('stroke-width', 2);
+
+            // Function y = sqrt(x)
+            const f = x => Math.sqrt(x);
+            const xValues = d3.range(0, 4.1, 0.05);
+
+            const line = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(f(d)))
+                .curve(d3.curveCatmullRom);
+
+            leftG.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Highlighted slice at x = 2
+            const sliceX = 2;
+            const sliceR = f(sliceX);
+
+            leftG.append('line')
+                .attr('x1', xScale(sliceX))
+                .attr('x2', xScale(sliceX))
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(sliceR))
+                .attr('stroke', '#e11d48')
+                .attr('stroke-width', 4);
+
+            // Point on curve
+            leftG.append('circle')
+                .attr('cx', xScale(sliceX))
+                .attr('cy', yScale(sliceR))
+                .attr('r', 6)
+                .attr('fill', '#e11d48');
+
+            // Radius label
+            leftG.append('text')
+                .attr('x', xScale(sliceX) + 15)
+                .attr('y', yScale(sliceR / 2))
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#e11d48')
+                .text('r = f(x)');
+
+            leftG.append('text')
+                .attr('x', xScale(sliceX))
+                .attr('y', yScale(0) + 25)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6')
+                .text('x = 2');
+
+            leftG.append('text')
+                .attr('x', leftWidth / 2)
+                .attr('y', -10)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6')
+                .text('Side View');
+
+            // Right side: disc (front view)
+            const rightG = svg.append('g')
+                .attr('transform', `translate(${width - 280}, ${height / 2})`);
+
+            const discRadius = 100;
+            const scaledRadius = discRadius * (sliceR / 2);
+
+            // Disc
+            rightG.append('circle')
+                .attr('cx', 0)
+                .attr('cy', 0)
+                .attr('r', scaledRadius)
+                .attr('fill', 'rgba(251, 191, 36, 0.4)')
+                .attr('stroke', '#fbbf24')
+                .attr('stroke-width', 3);
+
+            // Radius line
+            rightG.append('line')
+                .attr('x1', 0)
+                .attr('x2', scaledRadius)
+                .attr('y1', 0)
+                .attr('y2', 0)
+                .attr('stroke', '#e11d48')
+                .attr('stroke-width', 3);
+
+            rightG.append('circle')
+                .attr('cx', 0)
+                .attr('cy', 0)
+                .attr('r', 5)
+                .attr('fill', '#b8c4d6');
+
+            rightG.append('text')
+                .attr('x', scaledRadius / 2)
+                .attr('y', -15)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#e11d48')
+                .text('r');
+
+            rightG.append('text')
+                .attr('x', 0)
+                .attr('y', -scaledRadius - 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6')
+                .text('Front View (Disc)');
+
+            // Arrow connecting
+            svg.append('path')
+                .attr('d', `M ${420} ${height / 2} L ${470} ${height / 2}`)
+                .attr('stroke', '#6b7a94')
+                .attr('stroke-width', 2)
+                .attr('marker-end', 'url(#arrow)');
+
+            // Arrow marker
+            svg.append('defs').append('marker')
+                .attr('id', 'arrow')
+                .attr('viewBox', '0 -5 10 10')
+                .attr('refX', 8)
+                .attr('refY', 0)
+                .attr('markerWidth', 8)
+                .attr('markerHeight', 8)
+                .attr('orient', 'auto')
+                .append('path')
+                .attr('d', 'M0,-5L10,0L0,5')
+                .attr('fill', '#6b7a94');
+        }
+
+        // ===== Washer Visualization (Slide 9) =====
+        function drawWasherViz() {
+            const container = document.getElementById('washer-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 800;
+            const height = 400;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const centerY = height / 2;
+
+            // Big disc (Outer)
+            const bigDiscG = svg.append('g')
+                .attr('transform', `translate(130, ${centerY})`);
+
+            const outerRadius = 90;
+            const innerRadius = 45;
+
+            bigDiscG.append('circle')
+                .attr('r', outerRadius)
+                .attr('fill', 'rgba(96, 165, 250, 0.4)')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3);
+
+            // Radius R label
+            bigDiscG.append('line')
+                .attr('x1', 0)
+                .attr('x2', outerRadius)
+                .attr('y1', 0)
+                .attr('y2', 0)
+                .attr('stroke', '#e11d48')
+                .attr('stroke-width', 2);
+
+            bigDiscG.append('text')
+                .attr('x', outerRadius / 2)
+                .attr('y', -10)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.5rem')
+                .attr('fill', '#e11d48')
+                .attr('font-weight', 'bold')
+                .text('R');
+
+            bigDiscG.append('text')
+                .attr('x', 0)
+                .attr('y', outerRadius + 35)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#60a5fa')
+                .text('Outer Disc');
+
+            bigDiscG.append('text')
+                .attr('x', 0)
+                .attr('y', outerRadius + 55)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6')
+                .text('Area = piR^2');
+
+            // Minus sign
+            svg.append('text')
+                .attr('x', 270)
+                .attr('y', centerY + 10)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '3rem')
+                .attr('fill', '#b8c4d6')
+                .text('-');
+
+            // Small disc (Inner)
+            const smallDiscG = svg.append('g')
+                .attr('transform', `translate(400, ${centerY})`);
+
+            smallDiscG.append('circle')
+                .attr('r', innerRadius)
+                .attr('fill', 'rgba(168, 85, 247, 0.4)')
+                .attr('stroke', '#a855f7')
+                .attr('stroke-width', 3);
+
+            // Radius r label
+            smallDiscG.append('line')
+                .attr('x1', 0)
+                .attr('x2', innerRadius)
+                .attr('y1', 0)
+                .attr('y2', 0)
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 2);
+
+            smallDiscG.append('text')
+                .attr('x', innerRadius / 2)
+                .attr('y', -10)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.5rem')
+                .attr('fill', '#60a5fa')
+                .attr('font-weight', 'bold')
+                .text('r');
+
+            smallDiscG.append('text')
+                .attr('x', 0)
+                .attr('y', outerRadius + 35)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#a855f7')
+                .text('Inner Disc');
+
+            smallDiscG.append('text')
+                .attr('x', 0)
+                .attr('y', outerRadius + 55)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6')
+                .text('Area = pir^2');
+
+            // Equals sign
+            svg.append('text')
+                .attr('x', 530)
+                .attr('y', centerY + 10)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '3rem')
+                .attr('fill', '#b8c4d6')
+                .text('=');
+
+            // Washer (result)
+            const washerG = svg.append('g')
+                .attr('transform', `translate(670, ${centerY})`);
+
+            // Outer circle
+            washerG.append('circle')
+                .attr('r', outerRadius)
+                .attr('fill', 'rgba(225, 29, 72, 0.4)')
+                .attr('stroke', '#e11d48')
+                .attr('stroke-width', 3);
+
+            // Inner circle (hole)
+            washerG.append('circle')
+                .attr('r', innerRadius)
+                .attr('fill', 'var(--bg-primary)')
+                .attr('stroke', '#e11d48')
+                .attr('stroke-width', 2);
+
+            // R label
+            washerG.append('line')
+                .attr('x1', 0)
+                .attr('x2', 0)
+                .attr('y1', -innerRadius - 5)
+                .attr('y2', -outerRadius + 5)
+                .attr('stroke', '#e11d48')
+                .attr('stroke-width', 2);
+
+            washerG.append('text')
+                .attr('x', 15)
+                .attr('y', -(innerRadius + outerRadius) / 2 + 5)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#e11d48')
+                .text('R');
+
+            // r label
+            washerG.append('line')
+                .attr('x1', 0)
+                .attr('x2', innerRadius - 5)
+                .attr('y1', 0)
+                .attr('y2', 0)
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 2);
+
+            washerG.append('text')
+                .attr('x', innerRadius / 2)
+                .attr('y', -10)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#60a5fa')
+                .text('r');
+
+            washerG.append('text')
+                .attr('x', 0)
+                .attr('y', outerRadius + 35)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#e11d48')
+                .text('Washer');
+
+            washerG.append('text')
+                .attr('x', 0)
+                .attr('y', outerRadius + 55)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#fbbf24')
+                .text('Area = pi(R^2 - r^2)');
+        }
+
+        // ===== Interactive Axis Visualization (Slide 14) =====
+        function drawAxisViz() {
+            const container = document.getElementById('axis-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 350;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const xScale = d3.scaleLinear().domain([0, 5]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-2.5, 3]).range([plotHeight, 0]);
+
+            // Grid
+            g.append('g')
+                .attr('class', 'grid')
+                .selectAll('line.h')
+                .data(d3.range(-2, 4, 1))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#1c2640')
+                .attr('stroke-width', 1);
+
+            // Axes
+            g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', yScale(0))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#b8c4d6')
+                .attr('stroke-width', 2);
+
+            // Function y = sqrt(x)
+            const f = x => Math.sqrt(x);
+            const xValues = d3.range(0, 4.1, 0.05);
+
+            const line = d3.line()
+                .x(d => xScale(d))
+                .y(d => yScale(f(d)))
+                .curve(d3.curveCatmullRom);
+
+            g.append('path')
+                .datum(xValues)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            g.append('text')
+                .attr('x', xScale(4.2))
+                .attr('y', yScale(f(4)) - 10)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#60a5fa')
+                .text('y = sqrt(x)');
+
+            // Moveable axis line
+            const axisLine = g.append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('stroke', '#a78bfa')
+                .attr('stroke-width', 3)
+                .attr('stroke-dasharray', '10,5');
+
+            const axisLabel = g.append('text')
+                .attr('x', plotWidth + 10)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#a78bfa');
+
+            // Point on curve and radius
+            const sampleX = 2.5;
+            const pointOnCurve = g.append('circle')
+                .attr('cx', xScale(sampleX))
+                .attr('cy', yScale(f(sampleX)))
+                .attr('r', 6)
+                .attr('fill', '#60a5fa');
+
+            const radiusLine = g.append('line')
+                .attr('x1', xScale(sampleX))
+                .attr('stroke', '#e11d48')
+                .attr('stroke-width', 3);
+
+            const radiusLabel = g.append('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#e11d48');
+
+            function update(axisY) {
+                const curveY = f(sampleX);
+
+                axisLine
+                    .attr('y1', yScale(axisY))
+                    .attr('y2', yScale(axisY));
+
+                axisLabel
+                    .attr('y', yScale(axisY) + 5)
+                    .text(`y = ${axisY.toFixed(1)}`);
+
+                radiusLine
+                    .attr('x2', xScale(sampleX))
+                    .attr('y1', yScale(axisY))
+                    .attr('y2', yScale(curveY));
+
+                const midY = (axisY + curveY) / 2;
+                radiusLabel
+                    .attr('x', xScale(sampleX) + 15)
+                    .attr('y', yScale(midY));
+
+                const radiusValue = Math.abs(curveY - axisY);
+                let formula;
+                if (axisY < curveY) {
+                    formula = `r = f(x) - (${axisY.toFixed(1)}) = ${radiusValue.toFixed(2)}`;
+                } else {
+                    formula = `r = (${axisY.toFixed(1)}) - f(x) = ${radiusValue.toFixed(2)}`;
+                }
+
+                document.getElementById('radius-display').textContent = formula;
+            }
+
+            update(0);
+
+            document.getElementById('axis-slider').addEventListener('input', function(e) {
+                update(parseFloat(e.target.value));
+            });
+        }
+
+        // ===== Trigger Visualizations on Slide Entry =====
+        const visualizationSlides = {
+            1: drawRotationViz,
+            5: drawDiscViz,
+            9: drawWasherViz,
+            14: drawAxisViz
+        };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        // Check periodically for slide changes
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Also check on hash changes
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        // Initial check after DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+    </script>
+</body>
+</html>
