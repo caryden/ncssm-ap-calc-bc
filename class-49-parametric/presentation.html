@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parametric Equations and Derivatives | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../shared/styles.css">
     <style>
         :root {
@@ -208,432 +211,594 @@
         .comparison-table tr:nth-child(even) {
             background: var(--bg-tertiary);
         }
+
+        .error-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid #ef4444;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 1rem 0;
+        }
+
+        .error-box h4 {
+            color: #ef4444;
+            font-size: 1.25rem;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .correct-box {
+            background: rgba(34, 197, 94, 0.1);
+            border: 2px solid #22c55e;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 1rem 0;
+        }
+
+        .correct-box h4 {
+            color: #22c55e;
+            font-size: 1.25rem;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .table-method-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.25rem;
+        }
+
+        .param-table th,
+        .param-table td {
+            padding: 0.5rem 1rem;
+            text-align: center;
+            border: 1px solid var(--bg-tertiary);
+        }
+
+        .param-table th {
+            background: var(--theme-color);
+            color: white;
+        }
+
+        .param-table tr.highlight td {
+            background: rgba(6, 182, 212, 0.2);
+            font-weight: bold;
+        }
+
+        .velocity-viz-container {
+            position: relative;
+        }
+
+        .velocity-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .velocity-info span {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            background: var(--bg-tertiary);
+        }
+
+        .key-takeaway-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            border-left: 4px solid var(--theme-color);
+        }
+
+        .key-takeaway-item .number {
+            background: var(--theme-color);
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .key-takeaway-item .content {
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
-    <div class="presentation-container">
+    <div class="presentation">
 
         <!-- Slide 0: Title -->
-        <section class="slide slide-title">
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Parametric Equations">
             <div class="slide-content">
-                <span class="unit-badge">Unit 9: Parametric, Polar, and Vectors</span>
+                <div class="unit-badge">Unit 9: Parametric, Polar, and Vectors</div>
                 <span class="bc-badge">BC Only</span>
                 <h1>Parametric Equations</h1>
-                <p class="subtitle">and Derivatives</p>
-                <p class="meta">Class 49 | CED Topics 9.1, 9.2</p>
+                <p class="subtitle">Describing Motion Through Space</p>
+                <p class="meta">Class 49 | CED Topics 9.1, 9.2 | NCSSM</p>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 1: Warm-Up -->
-        <section class="slide slide-exercise">
+        <!-- Slide 1: The Big Question -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="The Big Question">
             <div class="slide-content">
-                <h2>Warm-Up</h2>
-                <div class="exercise-box">
-                    <p>A particle moves so that at time \(t\):</p>
-                    <p class="math-display">\[x = t^2 - 1 \quad \text{and} \quad y = 2t\]</p>
-                    <hr style="margin: 1.5rem 0; border-color: #e5e7eb;">
-                    <ol style="font-size: 1.2rem;">
-                        <li>Plot points for \(t = -2, -1, 0, 1, 2\)</li>
-                        <li>Can you eliminate \(t\) to find a Cartesian equation?</li>
-                    </ol>
-                </div>
+                <p class="statement">How do we describe the path of a ball thrown in the air?</p>
+                <p class="secondary" style="margin-top: 2rem; font-size: 1.5rem;">Position depends on time: x(t) = horizontal, y(t) = vertical</p>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 2: What are Parametric Equations? -->
-        <section class="slide slide-statement">
+        <!-- Slide 2: What is a Parametric Curve? -->
+        <div class="slide slide-two-part" data-slide="2" data-section="Understanding Parametric Equations" data-title="What is a Parametric Curve?">
             <div class="slide-content">
-                <h2>What are Parametric Equations?</h2>
-                <div class="definition-box">
-                    <h3>Definition</h3>
-                    <p>A <strong>parametric curve</strong> is defined by:</p>
-                    <p class="math-display">\[x = f(t), \quad y = g(t)\]</p>
-                    <p>where \(t\) is the <strong>parameter</strong> (often represents time).</p>
-                </div>
-                <div style="margin-top: 1.5rem;">
-                    <p style="font-size: 1.25rem;">Both \(x\) and \(y\) are functions of \(t\), giving us:</p>
-                    <ul style="font-size: 1.2rem; line-height: 2;">
-                        <li><strong>Position</strong> at any time</li>
-                        <li><strong>Direction</strong> of motion</li>
-                        <li><strong>Speed</strong> of travel along the curve</li>
+                <p class="primary">A curve described by \(x = f(t)\) and \(y = g(t)\)</p>
+                <p class="secondary" style="margin-top: 1.5rem;">As \(t\) varies, the point \((x, y)\) traces a curve</p>
+                <div style="margin-top: 2rem; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    <ul style="font-size: 1.3rem; line-height: 2;">
+                        <li>The curve has <strong>direction</strong> (orientation)</li>
+                        <li>\(t\) is called the <strong>parameter</strong> (often represents time)</li>
+                        <li>Same curve can have different parametrizations</li>
                     </ul>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 3: Parametric vs Cartesian Visualization -->
-        <section class="slide slide-visual">
+        <!-- Slide 3: Parametric Curve Animation -->
+        <div class="slide slide-visual" data-slide="3" data-section="Understanding Parametric Equations" data-title="Parametric Curve Animation">
             <div class="slide-content">
-                <h2>Parametric Curve: \(x = t^2 - 1, y = 2t\)</h2>
+                <h2>Tracing a Parametric Curve</h2>
                 <div id="param-intro-viz" class="viz-container"></div>
                 <div class="slider-container">
-                    <span>t = </span>
+                    <span style="font-size: 1.25rem;">t = </span>
                     <input type="range" id="param-t-slider" min="-2" max="2" step="0.1" value="-2">
-                    <span id="param-t-value">-2</span>
+                    <span id="param-t-value" style="font-size: 1.25rem; min-width: 3rem;">-2</span>
                 </div>
+                <p class="caption" style="margin-top: 1rem;">Watch the point move as t increases from -2 to 2</p>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 4: Why Use Parametric? -->
-        <section class="slide slide-list">
-            <div class="slide-content">
-                <h2>Why Use Parametric Equations?</h2>
-                <div class="example-grid">
-                    <div class="example-card">
-                        <h4>Circles</h4>
-                        <p>\(x = \cos t, \quad y = \sin t\)</p>
-                        <p style="font-size: 0.95rem; color: #666;">Traces a circle as \(t\) varies</p>
-                    </div>
-                    <div class="example-card">
-                        <h4>Projectile Motion</h4>
-                        <p>\(x = v_0 t \cos\theta\)</p>
-                        <p>\(y = v_0 t \sin\theta - \frac{1}{2}gt^2\)</p>
-                    </div>
-                    <div class="example-card">
-                        <h4>Cycloid</h4>
-                        <p>\(x = r(t - \sin t)\)</p>
-                        <p>\(y = r(1 - \cos t)\)</p>
-                    </div>
-                    <div class="example-card">
-                        <h4>Animation & Graphics</h4>
-                        <p>Path of moving objects</p>
-                        <p style="font-size: 0.95rem; color: #666;">Time-based animation paths</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 5: Common Parametric Curves -->
-        <section class="slide slide-visual">
+        <!-- Slide 4: Example Gallery -->
+        <div class="slide slide-comparison" data-slide="4" data-section="Understanding Parametric Equations" data-title="Common Parametric Curves">
             <div class="slide-content">
                 <h2>Common Parametric Curves</h2>
-                <div id="common-curves-viz" class="viz-container"></div>
+                <div class="columns">
+                    <div class="column">
+                        <h3 style="color: var(--theme-color);">Simple Examples</h3>
+                        <div class="example-card" style="margin: 1rem 0;">
+                            <h4>Line</h4>
+                            <p>\(x = 1 + 2t, \quad y = 3 - t\)</p>
+                        </div>
+                        <div class="example-card" style="margin: 1rem 0;">
+                            <h4>Parabola</h4>
+                            <p>\(x = t, \quad y = t^2\)</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h3 style="color: var(--theme-color);">Trigonometric Examples</h3>
+                        <div class="example-card" style="margin: 1rem 0;">
+                            <h4>Circle</h4>
+                            <p>\(x = \cos t, \quad y = \sin t\)</p>
+                        </div>
+                        <div class="example-card" style="margin: 1rem 0;">
+                            <h4>Ellipse</h4>
+                            <p>\(x = 3\cos t, \quad y = 2\sin t\)</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="caption" style="margin-top: 1rem;">Parametric form can represent curves that fail the vertical line test</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Plotting Parametric Curves - Table Method -->
+        <div class="slide slide-visual" data-slide="5" data-section="Understanding Parametric Equations" data-title="Plotting Parametric Curves">
+            <div class="slide-content">
+                <h2>The Table Method</h2>
+                <div id="table-method-viz" class="viz-container" style="height: 400px;"></div>
                 <div class="controls-container">
-                    <button class="control-btn active" data-curve="circle">Circle</button>
-                    <button class="control-btn" data-curve="ellipse">Ellipse</button>
-                    <button class="control-btn" data-curve="cycloid">Cycloid</button>
-                    <button class="control-btn" data-curve="lissajous">Lissajous</button>
+                    <button class="control-btn" id="table-step-btn">Step Through</button>
+                    <button class="control-btn" id="table-reset-btn">Reset</button>
+                </div>
+                <p class="caption">Plot points in order, then connect with arrows to show direction</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Eliminating the Parameter -->
+        <div class="slide slide-example" data-slide="6" data-section="Understanding Parametric Equations" data-title="Eliminating the Parameter">
+            <div class="slide-content">
+                <h2>Converting to Cartesian Form</h2>
+                <div class="definition-box">
+                    <p><strong>Example:</strong> \(x = t, \quad y = t^2\)</p>
+                </div>
+                <ul class="step-list" style="margin-top: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    <li style="font-size: 1.3rem;">From \(x = t\), we get \(t = x\)</li>
+                    <li style="font-size: 1.3rem;">Substitute into \(y\): \(y = x^2\)</li>
+                    <li style="font-size: 1.3rem;">Result: Familiar parabola \(y = x^2\)</li>
+                </ul>
+                <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; border-radius: 0 8px 8px 0;">
+                    <p style="font-size: 1.2rem; color: #ef4444;"><strong>Warning:</strong> Not always possible! Circles, spirals, etc. cannot be eliminated easily.</p>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 6: The Derivative dy/dx -->
-        <section class="slide slide-statement">
+        <!-- Slide 7: Why Parametrics Matter -->
+        <div class="slide slide-list" data-slide="7" data-section="Understanding Parametric Equations" data-title="Why Parametrics Matter">
             <div class="slide-content">
-                <h2>Finding \(\frac{dy}{dx}\) for Parametric Curves</h2>
-                <div class="formula-box">
-                    <p style="font-size: 1.5rem;"><strong>Chain Rule Approach</strong></p>
-                    <p class="math-display">\[\frac{dy}{dx} = \frac{dy/dt}{dx/dt} = \frac{y'(t)}{x'(t)}\]</p>
-                    <p style="font-size: 1.1rem; color: #666;">provided \(\frac{dx}{dt} \neq 0\)</p>
-                </div>
-                <div class="definition-box" style="margin-top: 1.5rem;">
-                    <h3>Why does this work?</h3>
-                    <p>\(\displaystyle \frac{dy}{dx} = \frac{dy}{dt} \cdot \frac{dt}{dx} = \frac{dy}{dt} \cdot \frac{1}{dx/dt} = \frac{dy/dt}{dx/dt}\)</p>
-                </div>
+                <h2>The Power of Parametric Form</h2>
+                <ul>
+                    <li><strong>Motion description:</strong> Natural for physics (position vs. time)</li>
+                    <li><strong>Complex curves:</strong> Represent curves that fail vertical line test</li>
+                    <li><strong>Direction information:</strong> Know which way the curve is traced</li>
+                    <li><strong>Multiple traversals:</strong> Curve can be traced more than once</li>
+                </ul>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 7: First Example -->
-        <section class="slide slide-visual">
+        <!-- Slide 8: The Key Question -->
+        <div class="slide slide-statement" data-slide="8" data-section="Derivatives of Parametric Equations" data-title="The Key Question">
             <div class="slide-content">
-                <h2>Example: Find \(\frac{dy}{dx}\)</h2>
+                <p class="statement">What's the slope of the tangent line at a point on a parametric curve?</p>
+                <p class="secondary" style="margin-top: 2rem; font-size: 1.5rem;">We want \(\frac{dy}{dx}\), but \(y\) isn't given as a function of \(x\)!</p>
+            </div>
+        </div>
+
+        <!-- Slide 9: The Chain Rule Approach -->
+        <div class="slide slide-visual" data-slide="9" data-section="Derivatives of Parametric Equations" data-title="Deriving the Slope Formula">
+            <div class="slide-content">
+                <h2>Deriving the Slope Formula</h2>
+                <div style="text-align: center; margin: 1rem 0;">
+                    <p style="font-size: 1.3rem;">Both \(x\) and \(y\) are functions of \(t\)</p>
+                    <p style="font-size: 1.3rem; margin-top: 0.5rem;">By the chain rule: \(\frac{dy}{dt} = \frac{dy}{dx} \cdot \frac{dx}{dt}\)</p>
+                    <p style="font-size: 1.3rem; margin-top: 0.5rem;">Solving for slope:</p>
+                </div>
+                <div class="formula-box" style="max-width: 500px; margin: 1.5rem auto;">
+                    <p class="math-display" style="font-size: 2rem;">\[\frac{dy}{dx} = \frac{dy/dt}{dx/dt} = \frac{y'(t)}{x'(t)}\]</p>
+                </div>
+                <p class="caption" style="color: var(--theme-color);">It's NOT just fraction cancellation - it's the chain rule!</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Velocity Interpretation -->
+        <div class="slide slide-visual" data-slide="10" data-section="Derivatives of Parametric Equations" data-title="Velocity Interpretation">
+            <div class="slide-content">
+                <h2>Understanding the Formula</h2>
+                <div id="velocity-decomp-viz" class="viz-container" style="height: 380px;"></div>
+                <div class="slider-container">
+                    <span style="font-size: 1.25rem;">t = </span>
+                    <input type="range" id="velocity-t-slider" min="0" max="6.28" step="0.05" value="0.785">
+                    <span id="velocity-t-value" style="font-size: 1.25rem;">0.79</span>
+                </div>
+                <p class="caption">Slope = (vertical velocity) / (horizontal velocity) = \(\frac{dy/dt}{dx/dt}\)</p>
+            </div>
+        </div>
+
+        <!-- Slide 11: Example 1 - Parabola -->
+        <div class="slide slide-example" data-slide="11" data-section="Derivatives of Parametric Equations" data-title="Example: Parabola">
+            <div class="slide-content">
+                <h2>Example: Parabola</h2>
                 <div class="two-column">
                     <div>
-                        <p><strong>Given:</strong> \(x = t^2 - 1, \quad y = 2t\)</p>
+                        <p style="font-size: 1.3rem;"><strong>Given:</strong> \(x = t, \quad y = t^2\)</p>
                         <ul class="step-list" style="margin-top: 1.5rem;">
-                            <li>\(\dfrac{dx}{dt} = 2t\)</li>
-                            <li>\(\dfrac{dy}{dt} = 2\)</li>
-                            <li>\(\dfrac{dy}{dx} = \dfrac{2}{2t} = \dfrac{1}{t}\)</li>
+                            <li style="font-size: 1.2rem;">\(\dfrac{dx}{dt} = 1\)</li>
+                            <li style="font-size: 1.2rem;">\(\dfrac{dy}{dt} = 2t\)</li>
+                            <li style="font-size: 1.2rem;">\(\dfrac{dy}{dx} = \dfrac{2t}{1} = 2t = 2x\)</li>
                         </ul>
-                        <p style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 4px;">
-                            At \(t = 1\): slope \(= 1\)<br>
-                            At \(t = 2\): slope \(= \frac{1}{2}\)
-                        </p>
+                        <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(34, 197, 94, 0.1); border: 2px solid #22c55e; border-radius: 8px;">
+                            <p style="font-size: 1.2rem; color: #22c55e;"><strong>Verification:</strong> Matches derivative of \(y = x^2\)!</p>
+                        </div>
                     </div>
                     <div id="example1-viz" class="viz-container" style="height: 300px;"></div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 8: Circle Example -->
-        <section class="slide slide-visual">
+        <!-- Slide 12: Example 2 - Circle -->
+        <div class="slide slide-example" data-slide="12" data-section="Derivatives of Parametric Equations" data-title="Example: Circle">
             <div class="slide-content">
-                <h2>Example: Circle Derivative</h2>
+                <h2>Example: Unit Circle</h2>
                 <div class="two-column">
                     <div>
-                        <p><strong>Given:</strong> \(x = \cos t, \quad y = \sin t\)</p>
+                        <p style="font-size: 1.3rem;"><strong>Given:</strong> \(x = \cos t, \quad y = \sin t\)</p>
                         <ul class="step-list" style="margin-top: 1.5rem;">
-                            <li>\(\dfrac{dx}{dt} = -\sin t\)</li>
-                            <li>\(\dfrac{dy}{dt} = \cos t\)</li>
-                            <li>\(\dfrac{dy}{dx} = \dfrac{\cos t}{-\sin t} = -\cot t\)</li>
+                            <li style="font-size: 1.2rem;">\(\dfrac{dx}{dt} = -\sin t\)</li>
+                            <li style="font-size: 1.2rem;">\(\dfrac{dy}{dt} = \cos t\)</li>
+                            <li style="font-size: 1.2rem;">\(\dfrac{dy}{dx} = \dfrac{\cos t}{-\sin t} = -\cot t\)</li>
                         </ul>
-                        <p style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 4px;">
-                            At \(t = \frac{\pi}{4}\): slope \(= -1\)<br>
-                            At \(t = \frac{\pi}{2}\): slope \(= 0\)
+                        <p style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 4px; font-size: 1.2rem;">
+                            At \(t = \frac{\pi}{4}\): \(\frac{dy}{dx} = -\cot(\frac{\pi}{4}) = -1\)
                         </p>
                     </div>
                     <div id="circle-deriv-viz" class="viz-container" style="height: 300px;"></div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 9: Tangent Line Interactive -->
-        <section class="slide slide-visual">
+        <!-- Slide 13: Interactive Tangent Explorer -->
+        <div class="slide slide-visual" data-slide="13" data-section="Derivatives of Parametric Equations" data-title="Interactive Tangent Explorer">
             <div class="slide-content">
-                <h2>Interactive: Tangent Lines</h2>
+                <h2>Tangent Lines on Parametric Curves</h2>
                 <div id="tangent-viz" class="viz-container"></div>
                 <div class="slider-container">
-                    <span>t = </span>
+                    <span style="font-size: 1.25rem;">t = </span>
                     <input type="range" id="tangent-t-slider" min="0" max="6.28" step="0.05" value="0.785">
-                    <span id="tangent-t-value">0.79</span>
-                    <span style="margin-left: 1rem;">Slope: </span>
-                    <span id="tangent-slope-value">-1.00</span>
+                    <span id="tangent-t-value" style="font-size: 1.25rem;">0.79</span>
+                    <span style="margin-left: 2rem; font-size: 1.25rem;">Slope: </span>
+                    <span id="tangent-slope-value" style="font-size: 1.25rem; color: var(--theme-color); font-weight: bold;">-1.00</span>
+                </div>
+                <p class="caption">Drag to see how the slope changes around the curve</p>
+            </div>
+        </div>
+
+        <!-- Slide 14: Tangent Line Equation -->
+        <div class="slide slide-two-part" data-slide="14" data-section="Derivatives of Parametric Equations" data-title="Tangent Line Equation">
+            <div class="slide-content">
+                <p class="primary">Tangent Line Equation</p>
+                <div class="columns" style="margin-top: 2rem;">
+                    <div class="column">
+                        <h3 style="color: var(--theme-color);">Formula</h3>
+                        <p style="font-size: 1.2rem; margin-top: 1rem;">Point: \((x(t_0), y(t_0))\)</p>
+                        <p style="font-size: 1.2rem;">Slope: \(m = \frac{dy}{dx}\) at \(t = t_0\)</p>
+                        <p style="font-size: 1.2rem;">Line: \(y - y(t_0) = m(x - x(t_0))\)</p>
+                    </div>
+                    <div class="column">
+                        <h3 style="color: var(--theme-color);">Example</h3>
+                        <p style="font-size: 1.1rem; margin-top: 1rem;">For \(x = t^2, y = t^3\) at \(t = 1\):</p>
+                        <p style="font-size: 1.1rem;">Point: \((1, 1)\)</p>
+                        <p style="font-size: 1.1rem;">\(m = \frac{3t^2}{2t}\big|_{t=1} = \frac{3}{2}\)</p>
+                        <p style="font-size: 1.1rem;">Line: \(y - 1 = \frac{3}{2}(x - 1)\)</p>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 10: Horizontal and Vertical Tangents -->
-        <section class="slide slide-statement">
+        <!-- Slide 15: The Second Derivative -->
+        <div class="slide slide-statement" data-slide="15" data-section="Second Derivatives" data-title="The Second Derivative">
             <div class="slide-content">
-                <h2>Horizontal and Vertical Tangent Lines</h2>
-                <div class="example-grid">
-                    <div class="formula-box">
-                        <h3 style="color: var(--theme-color);">Horizontal Tangent</h3>
-                        <p class="math-display">\[\frac{dy}{dt} = 0 \quad \text{and} \quad \frac{dx}{dt} \neq 0\]</p>
-                        <p style="font-size: 1.1rem;">Slope = 0</p>
+                <p class="statement">Finding \(\frac{d^2y}{dx^2}\) requires extra care!</p>
+                <p class="secondary" style="margin-top: 2rem; font-size: 1.5rem;">The most common error on parametric problems...</p>
+            </div>
+        </div>
+
+        <!-- Slide 16: Second Derivative Formula with Error Boxes -->
+        <div class="slide slide-visual" data-slide="16" data-section="Second Derivatives" data-title="Second Derivative Formula">
+            <div class="slide-content">
+                <h2>The Second Derivative</h2>
+                <div class="example-grid" style="max-width: 900px; margin: 1.5rem auto;">
+                    <div class="error-box">
+                        <h4>WRONG</h4>
+                        <p style="font-size: 1.4rem;">\[\frac{d^2y}{dx^2} = \frac{d^2y/dt^2}{d^2x/dt^2}\]</p>
                     </div>
-                    <div class="formula-box">
-                        <h3 style="color: var(--theme-color);">Vertical Tangent</h3>
-                        <p class="math-display">\[\frac{dx}{dt} = 0 \quad \text{and} \quad \frac{dy}{dt} \neq 0\]</p>
-                        <p style="font-size: 1.1rem;">Slope undefined</p>
+                    <div class="correct-box">
+                        <h4>RIGHT</h4>
+                        <p style="font-size: 1.4rem;">\[\frac{d^2y}{dx^2} = \frac{\frac{d}{dt}\left(\frac{dy}{dx}\right)}{\frac{dx}{dt}}\]</p>
                     </div>
                 </div>
-                <p style="text-align: center; margin-top: 1.5rem; font-size: 1.2rem;">
-                    <strong>Note:</strong> If both \(\frac{dx}{dt} = 0\) and \(\frac{dy}{dt} = 0\), use L'Hopital's Rule or other analysis.
-                </p>
+                <div class="definition-box" style="margin-top: 1.5rem; max-width: 700px; margin-left: auto; margin-right: auto;">
+                    <p style="font-size: 1.2rem;">Take derivative of \(\frac{dy}{dx}\) with respect to \(t\), then divide by \(\frac{dx}{dt}\)</p>
+                </div>
+                <p class="caption" style="margin-top: 1rem; color: var(--theme-color); font-weight: bold;">Memorize the correct formula - this appears frequently on the AP exam!</p>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 11: Finding Special Points -->
-        <section class="slide slide-visual">
+        <!-- Slide 17: Second Derivative Example -->
+        <div class="slide slide-example" data-slide="17" data-section="Second Derivatives" data-title="Second Derivative Example">
             <div class="slide-content">
-                <h2>Example: Finding Tangent Types</h2>
+                <h2>Example: \(x = t^2, y = t^3\)</h2>
                 <div class="two-column">
                     <div>
-                        <p><strong>Given:</strong> \(x = t^3 - 3t, \quad y = t^2 - 4\)</p>
-                        <p style="margin-top: 1rem;">\(\dfrac{dx}{dt} = 3t^2 - 3 = 3(t-1)(t+1)\)</p>
-                        <p>\(\dfrac{dy}{dt} = 2t\)</p>
-                        <div style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 4px;">
-                            <strong>Vertical:</strong> \(t = \pm 1\) (where \(\frac{dx}{dt} = 0\))
+                        <ul class="step-list" style="margin-top: 1rem;">
+                            <li style="font-size: 1.2rem;">\(\dfrac{dy}{dx} = \dfrac{3t^2}{2t} = \dfrac{3t}{2}\)</li>
+                            <li style="font-size: 1.2rem;">\(\dfrac{d}{dt}\left(\dfrac{dy}{dx}\right) = \dfrac{d}{dt}\left(\dfrac{3t}{2}\right) = \dfrac{3}{2}\)</li>
+                            <li style="font-size: 1.2rem;">\(\dfrac{d^2y}{dx^2} = \dfrac{3/2}{2t} = \dfrac{3}{4t}\)</li>
+                        </ul>
+                        <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-tertiary); border-radius: 8px;">
+                            <p style="font-size: 1.15rem;"><strong>Verification:</strong></p>
+                            <p style="font-size: 1.15rem;">At \(t = 1\): \(\frac{d^2y}{dx^2} = \frac{3}{4} > 0\) (concave up)</p>
                         </div>
-                        <div style="margin-top: 0.5rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 4px;">
-                            <strong>Horizontal:</strong> \(t = 0\) (where \(\frac{dy}{dt} = 0\))
+                    </div>
+                    <div id="second-deriv-viz" class="viz-container" style="height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Horizontal Tangents -->
+        <div class="slide slide-two-part" data-slide="18" data-section="Horizontal and Vertical Tangents" data-title="Horizontal Tangents">
+            <div class="slide-content">
+                <p class="primary">Horizontal Tangent</p>
+                <div class="columns" style="margin-top: 2rem;">
+                    <div class="column">
+                        <h3 style="color: var(--theme-color);">Condition</h3>
+                        <p style="font-size: 1.3rem; margin-top: 1rem;">\(\frac{dy}{dx} = 0\)</p>
+                        <p style="font-size: 1.2rem; margin-top: 0.5rem;">This means \(\frac{dy}{dt} = 0\) AND \(\frac{dx}{dt} \neq 0\)</p>
+                    </div>
+                    <div class="column">
+                        <h3 style="color: var(--theme-color);">Meaning</h3>
+                        <p style="font-size: 1.2rem; margin-top: 1rem;">The curve has a horizontal tangent line</p>
+                        <p style="font-size: 1.2rem; margin-top: 0.5rem;">The vertical velocity is zero</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Vertical Tangents -->
+        <div class="slide slide-two-part" data-slide="19" data-section="Horizontal and Vertical Tangents" data-title="Vertical Tangents">
+            <div class="slide-content">
+                <p class="primary">Vertical Tangent</p>
+                <div class="columns" style="margin-top: 2rem;">
+                    <div class="column">
+                        <h3 style="color: var(--theme-color);">Condition</h3>
+                        <p style="font-size: 1.3rem; margin-top: 1rem;">\(\frac{dy}{dx}\) is undefined</p>
+                        <p style="font-size: 1.2rem; margin-top: 0.5rem;">This means \(\frac{dx}{dt} = 0\) AND \(\frac{dy}{dt} \neq 0\)</p>
+                    </div>
+                    <div class="column">
+                        <h3 style="color: var(--theme-color);">Special Case</h3>
+                        <p style="font-size: 1.2rem; margin-top: 1rem;">If both \(\frac{dy}{dt} = 0\) AND \(\frac{dx}{dt} = 0\):</p>
+                        <p style="font-size: 1.2rem; margin-top: 0.5rem;">Need further analysis - could be a cusp, corner, or self-intersection</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Tangent Analysis Example -->
+        <div class="slide slide-visual" data-slide="20" data-section="Horizontal and Vertical Tangents" data-title="Tangent Analysis Example">
+            <div class="slide-content">
+                <h2>Finding All Tangents</h2>
+                <div class="two-column">
+                    <div>
+                        <p style="font-size: 1.2rem;"><strong>Given:</strong> \(x = t^2 - 4, \quad y = t^3 - 3t\)</p>
+                        <p style="margin-top: 1rem; font-size: 1.1rem;">\(\dfrac{dx}{dt} = 2t = 0\) at \(t = 0\)</p>
+                        <p style="font-size: 1.1rem;">\(\dfrac{dy}{dt} = 3t^2 - 3 = 0\) at \(t = \pm 1\)</p>
+                        <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; border-radius: 0 4px 4px 0;">
+                            <strong style="color: #ef4444;">Vertical tangent:</strong> \(t = 0\): point \((-4, 0)\)
+                        </div>
+                        <div style="margin-top: 0.5rem; padding: 0.75rem; background: rgba(34, 197, 94, 0.1); border-left: 4px solid #22c55e; border-radius: 0 4px 4px 0;">
+                            <strong style="color: #22c55e;">Horizontal tangents:</strong> \(t = \pm 1\): points \((-3, -2)\) and \((-3, 2)\)
                         </div>
                     </div>
                     <div id="special-points-viz" class="viz-container" style="height: 300px;"></div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 12: Second Derivative -->
-        <section class="slide slide-statement">
+        <!-- Slide 21: Practice Problem -->
+        <div class="slide slide-exercise" data-slide="21" data-section="Practice" data-title="Practice Problem">
             <div class="slide-content">
-                <h2>Second Derivative: \(\frac{d^2y}{dx^2}\)</h2>
-                <div class="formula-box">
-                    <p class="math-display">\[\frac{d^2y}{dx^2} = \frac{d}{dx}\left(\frac{dy}{dx}\right) = \frac{\frac{d}{dt}\left(\frac{dy}{dx}\right)}{\frac{dx}{dt}}\]</p>
+                <h2>Your Turn</h2>
+                <div class="prompt">
+                    <p style="font-size: 1.3rem;">For \(x = \cos t, \quad y = \sin 2t\), find:</p>
                 </div>
-                <div class="definition-box" style="margin-top: 1.5rem;">
-                    <h3>Process</h3>
-                    <ol style="font-size: 1.15rem; line-height: 2;">
-                        <li>Find \(\frac{dy}{dx}\) as a function of \(t\)</li>
-                        <li>Differentiate \(\frac{dy}{dx}\) with respect to \(t\)</li>
-                        <li>Divide by \(\frac{dx}{dt}\)</li>
+                <div class="instructions" style="text-align: left; max-width: 600px; margin: 1.5rem auto 0;">
+                    <ol style="font-size: 1.25rem; line-height: 2.2;">
+                        <li>\(\frac{dy}{dx}\)</li>
+                        <li>The slope at \(t = \frac{\pi}{3}\)</li>
+                        <li>All values of \(t\) where tangent is horizontal</li>
                     </ol>
                 </div>
+                <p class="caption" style="margin-top: 2rem; font-size: 1.2rem;">Time: 4 minutes</p>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 13: Second Derivative Example -->
-        <section class="slide slide-visual">
+        <!-- Slide 22: Practice Solution -->
+        <div class="slide slide-example" data-slide="22" data-section="Practice" data-title="Practice Solution">
             <div class="slide-content">
-                <h2>Example: Second Derivative</h2>
-                <div class="two-column">
-                    <div>
-                        <p><strong>Given:</strong> \(x = t^2, \quad y = t^3\)</p>
-                        <ul class="step-list" style="margin-top: 1rem;">
-                            <li>\(\dfrac{dy}{dx} = \dfrac{3t^2}{2t} = \dfrac{3t}{2}\)</li>
-                            <li>\(\dfrac{d}{dt}\left(\dfrac{3t}{2}\right) = \dfrac{3}{2}\)</li>
-                            <li>\(\dfrac{d^2y}{dx^2} = \dfrac{3/2}{2t} = \dfrac{3}{4t}\)</li>
-                        </ul>
-                        <p style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 4px;">
-                            <strong>Concavity:</strong><br>
-                            \(t > 0\): concave up<br>
-                            \(t < 0\): concave down
-                        </p>
-                    </div>
-                    <div id="second-deriv-viz" class="viz-container" style="height: 300px;"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 14: Concavity Visualization -->
-        <section class="slide slide-visual">
-            <div class="slide-content">
-                <h2>Concavity of Parametric Curves</h2>
-                <div id="concavity-viz" class="viz-container"></div>
-                <div class="legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #10b981;"></div>
-                        <span>Concave Up (\(\frac{d^2y}{dx^2} > 0\))</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #ef4444;"></div>
-                        <span>Concave Down (\(\frac{d^2y}{dx^2} < 0\))</span>
+                <h2>Solution</h2>
+                <div style="max-width: 800px; margin: 0 auto; text-align: left;">
+                    <p style="font-size: 1.2rem; margin: 1rem 0;"><strong>a)</strong> \(\frac{dy}{dx} = \frac{2\cos 2t}{-\sin t}\)</p>
+                    <p style="font-size: 1.2rem; margin: 1rem 0;"><strong>b)</strong> At \(t = \frac{\pi}{3}\): \(\frac{dy}{dx} = \frac{2\cos(\frac{2\pi}{3})}{-\sin(\frac{\pi}{3})} = \frac{2(-\frac{1}{2})}{-\frac{\sqrt{3}}{2}} = \frac{2}{\sqrt{3}} = \frac{2\sqrt{3}}{3}\)</p>
+                    <p style="font-size: 1.2rem; margin: 1rem 0;"><strong>c)</strong> Horizontal: \(2\cos 2t = 0\), so \(2t = \frac{\pi}{2}, \frac{3\pi}{2}, ...\)</p>
+                    <p style="font-size: 1.2rem; margin-left: 2rem;">giving \(t = \frac{\pi}{4}, \frac{3\pi}{4}, ...\)</p>
+                    <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(34, 197, 94, 0.1); border: 2px solid #22c55e; border-radius: 8px;">
+                        <p style="font-size: 1.1rem; color: #22c55e;"><strong>Check:</strong> \(\sin t \neq 0\) at these values (confirmed!)</p>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 15: Eliminating the Parameter -->
-        <section class="slide slide-statement">
+        <!-- Slide 23: Key Takeaways -->
+        <div class="slide slide-list" data-slide="23" data-section="Summary" data-title="Key Takeaways">
             <div class="slide-content">
-                <h2>Eliminating the Parameter</h2>
-                <div class="definition-box">
-                    <h3>Process</h3>
-                    <p>Solve one equation for \(t\), substitute into the other.</p>
-                </div>
-                <div class="example-grid" style="margin-top: 1.5rem;">
-                    <div class="example-card">
-                        <h4>Example 1</h4>
-                        <p>\(x = t^2 - 1, \quad y = 2t\)</p>
-                        <p style="margin-top: 0.5rem;">\(t = \frac{y}{2}\)</p>
-                        <p>\(x = \left(\frac{y}{2}\right)^2 - 1 = \frac{y^2}{4} - 1\)</p>
-                        <p style="color: var(--theme-color); font-weight: bold;">Parabola!</p>
-                    </div>
-                    <div class="example-card">
-                        <h4>Example 2</h4>
-                        <p>\(x = \cos t, \quad y = \sin t\)</p>
-                        <p style="margin-top: 0.5rem;">Use identity:</p>
-                        <p>\(\cos^2 t + \sin^2 t = 1\)</p>
-                        <p style="color: var(--theme-color); font-weight: bold;">\(x^2 + y^2 = 1\) (Circle)</p>
-                    </div>
-                </div>
+                <h2>Key Takeaways</h2>
+                <ul>
+                    <li>Parametric equations describe curves with \(x(t)\) and \(y(t)\)</li>
+                    <li>Slope formula: \(\frac{dy}{dx} = \frac{dy/dt}{dx/dt}\) - the chain rule!</li>
+                    <li>Second derivative: \(\frac{d^2y}{dx^2} = \frac{d/dt(dy/dx)}{dx/dt}\)</li>
+                    <li>Horizontal tangent: \(\frac{dy}{dt} = 0\) (with \(\frac{dx}{dt} \neq 0\))</li>
+                    <li>Vertical tangent: \(\frac{dx}{dt} = 0\) (with \(\frac{dy}{dt} \neq 0\))</li>
+                </ul>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 16: Practice Problems -->
-        <section class="slide slide-exercise">
-            <div class="slide-content">
-                <h2>Practice Problems</h2>
-                <div class="exercise-box">
-                    <ol style="font-size: 1.15rem; line-height: 2.2;">
-                        <li>Find \(\frac{dy}{dx}\) for \(x = e^t, y = e^{2t}\)</li>
-                        <li>Find the slope at \(t = \frac{\pi}{3}\) for \(x = 2\cos t, y = 3\sin t\)</li>
-                        <li>Find all horizontal tangent lines for \(x = t^2, y = t^3 - 3t\)</li>
-                        <li>Find \(\frac{d^2y}{dx^2}\) for \(x = t^2 + 1, y = t^3 - t\)</li>
-                        <li>Eliminate \(t\): \(x = t + 1, y = t^2 - 2t\)</li>
-                    </ol>
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 17: Solutions -->
-        <section class="slide slide-list">
-            <div class="slide-content">
-                <h2>Solutions</h2>
-                <ol style="font-size: 1.1rem; line-height: 2.2;">
-                    <li>\(\frac{dy}{dx} = \frac{2e^{2t}}{e^t} = 2e^t\)</li>
-                    <li>\(\frac{dy}{dx} = \frac{3\cos t}{-2\sin t}\); at \(t = \frac{\pi}{3}\): \(\frac{3(1/2)}{-2(\sqrt{3}/2)} = -\frac{\sqrt{3}}{2}\)</li>
-                    <li>\(\frac{dy}{dt} = 3t^2 - 3 = 0 \Rightarrow t = \pm 1\); Points: \((1, -2)\) and \((1, 2)\)</li>
-                    <li>\(\frac{dy}{dx} = \frac{3t^2-1}{2t}\); \(\frac{d^2y}{dx^2} = \frac{3t^2+1}{4t^3}\)</li>
-                    <li>\(t = x - 1\); \(y = (x-1)^2 - 2(x-1) = x^2 - 4x + 3\)</li>
-                </ol>
-            </div>
-        </section>
-
-        <!-- Slide 18: AP Exam Tips -->
-        <section class="slide slide-list">
-            <div class="slide-content">
-                <h2>AP Exam Tips</h2>
-                <div class="definition-box">
-                    <h3>Common Question Types</h3>
-                    <ul style="font-size: 1.15rem; line-height: 2;">
-                        <li>Find slope at a specific \(t\) value</li>
-                        <li>Find equation of tangent line at given \(t\)</li>
-                        <li>Determine where tangent is horizontal/vertical</li>
-                        <li>Analyze concavity using second derivative</li>
-                    </ul>
-                </div>
-                <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-tertiary); border-radius: 8px;">
-                    <p style="font-size: 1.2rem;"><strong>Remember:</strong> Always divide by \(\frac{dx}{dt}\), not \(\frac{dt}{dx}\)!</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 19: Exit Ticket -->
-        <section class="slide slide-exercise">
+        <!-- Slide 24: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="24" data-section="Closing" data-title="Exit Ticket">
             <div class="slide-content">
                 <h2>Exit Ticket</h2>
-                <div class="exercise-box">
-                    <p>A curve is defined by \(x = t^2 + 2t, \quad y = t^3 - t\)</p>
-                    <ol style="font-size: 1.2rem; margin-top: 1rem;">
-                        <li>Find \(\frac{dy}{dx}\) in terms of \(t\).</li>
-                        <li>Find the slope of the tangent line at \(t = 1\).</li>
-                        <li>Find all values of \(t\) where the tangent line is horizontal.</li>
-                    </ol>
+                <div class="prompt">
+                    <p style="font-size: 1.3rem;">For \(x = e^t, \quad y = e^{2t}\), find \(\frac{dy}{dx}\) and simplify.</p>
                 </div>
+                <p class="caption" style="margin-top: 2rem; color: var(--theme-color);">Hint: This should simplify to a familiar form...</p>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 20: Looking Ahead -->
-        <section class="slide slide-title">
+        <!-- Slide 25: Coming Up -->
+        <div class="slide slide-statement" data-slide="25" data-section="Closing" data-title="Coming Up">
             <div class="slide-content">
-                <h2>Looking Ahead</h2>
-                <div style="margin-top: 2rem;">
-                    <h3 style="color: var(--theme-color);">Next Class: Parametric Arc Length</h3>
-                    <ul style="font-size: 1.25rem; line-height: 2; list-style: none; padding: 0; margin-top: 1.5rem;">
-                        <li>Arc length formula for parametric curves</li>
-                        <li>Speed along a parametric path</li>
-                        <li>Applications to motion</li>
-                    </ul>
-                </div>
+                <p class="statement">Next: Arc Length of Parametric Curves</p>
+                <p class="secondary" style="margin-top: 2rem; font-size: 1.5rem;">How far does a particle travel along its path?</p>
             </div>
-        </section>
+        </div>
 
-    </div>
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
 
-    <!-- Navigation -->
-    <nav class="slide-nav">
-        <button id="prevBtn" aria-label="Previous slide">&#8592;</button>
-        <span id="slideCounter">1 / 21</span>
-        <button id="nextBtn" aria-label="Next slide">&#8594;</button>
-        <button id="tocBtn" aria-label="Table of contents">&#9776;</button>
-    </nav>
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 26</div>
 
-    <!-- Table of Contents -->
-    <div id="toc" class="toc-overlay">
-        <div class="toc-content">
-            <h3>Contents</h3>
-            <ul id="tocList"></ul>
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 49: Parametric Equations and Derivatives</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">&#8592; Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">&#8592; Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next &#8594;</button>
+            </div>
         </div>
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
     <script src="../shared/presentation.js"></script>
 
     <script>
-        // Visualization functions
+        // Visualization functions mapping
         const visualizationSlides = {
             3: drawParamIntroViz,
-            5: drawCommonCurvesViz,
-            7: drawExample1Viz,
-            8: drawCircleDerivViz,
-            9: drawTangentViz,
-            11: drawSpecialPointsViz,
-            13: drawSecondDerivViz,
-            14: drawConcavityViz
+            5: drawTableMethodViz,
+            10: drawVelocityDecompViz,
+            11: drawExample1Viz,
+            12: drawCircleDerivViz,
+            13: drawTangentViz,
+            17: drawSecondDerivViz,
+            20: drawSpecialPointsViz
         };
 
         let lastSlide = -1;
@@ -650,6 +815,431 @@
         }
 
         setInterval(checkAndDrawVisualization, 200);
+
+        // Also check on hash changes
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        // Initial check after DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
+
+        // Visualization: Table Method (Slide 5)
+        function drawTableMethodViz() {
+            const container = d3.select('#table-method-viz');
+            container.selectAll('*').remove();
+
+            const width = 800;
+            const height = 380;
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Example curve: x = t^2 - 1, y = 2t
+            const tValues = [-2, -1, 0, 1, 2];
+            const tableData = tValues.map(t => ({
+                t: t,
+                x: t * t - 1,
+                y: 2 * t,
+                shown: false
+            }));
+
+            let currentStep = 0;
+
+            // Left side: Table
+            const tableX = 50;
+            const tableY = 40;
+            const cellWidth = 80;
+            const cellHeight = 40;
+
+            // Table headers
+            ['t', 'x(t)', 'y(t)'].forEach((header, i) => {
+                svg.append('rect')
+                    .attr('x', tableX + i * cellWidth)
+                    .attr('y', tableY)
+                    .attr('width', cellWidth)
+                    .attr('height', cellHeight)
+                    .attr('fill', '#0891b2')
+                    .attr('stroke', '#065f73');
+                svg.append('text')
+                    .attr('x', tableX + i * cellWidth + cellWidth / 2)
+                    .attr('y', tableY + cellHeight / 2 + 6)
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '1.25rem')
+                    .attr('font-weight', 'bold')
+                    .attr('fill', 'white')
+                    .text(header);
+            });
+
+            // Table rows (initially empty)
+            const tableRows = tableData.map((d, i) => {
+                const row = svg.append('g').attr('class', 'table-row').attr('opacity', 0.3);
+                [d.t, d.x, d.y].forEach((val, j) => {
+                    row.append('rect')
+                        .attr('x', tableX + j * cellWidth)
+                        .attr('y', tableY + (i + 1) * cellHeight)
+                        .attr('width', cellWidth)
+                        .attr('height', cellHeight)
+                        .attr('fill', i % 2 === 0 ? '#1e293b' : '#0f172a')
+                        .attr('stroke', '#334155');
+                    row.append('text')
+                        .attr('x', tableX + j * cellWidth + cellWidth / 2)
+                        .attr('y', tableY + (i + 1) * cellHeight + cellHeight / 2 + 6)
+                        .attr('text-anchor', 'middle')
+                        .attr('font-size', '1.25rem')
+                        .attr('fill', '#e2e8f0')
+                        .text(val);
+                });
+                return row;
+            });
+
+            // Right side: Graph
+            const graphX = 350;
+            const graphWidth = 400;
+            const graphHeight = 340;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const xScale = d3.scaleLinear()
+                .domain([-2, 4])
+                .range([graphX + margin.left, graphX + graphWidth - margin.right]);
+            const yScale = d3.scaleLinear()
+                .domain([-5, 5])
+                .range([graphHeight - margin.bottom, margin.top]);
+
+            // Grid lines
+            svg.append('g').selectAll('line.h').data(d3.range(-5, 6)).enter().append('line')
+                .attr('x1', graphX + margin.left).attr('x2', graphX + graphWidth - margin.right)
+                .attr('y1', d => yScale(d)).attr('y2', d => yScale(d))
+                .attr('stroke', '#334155').attr('stroke-width', 1);
+
+            svg.append('g').selectAll('line.v').data(d3.range(-2, 5)).enter().append('line')
+                .attr('x1', d => xScale(d)).attr('x2', d => xScale(d))
+                .attr('y1', margin.top).attr('y2', graphHeight - margin.bottom)
+                .attr('stroke', '#334155').attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', graphX + margin.left).attr('x2', graphX + graphWidth - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#64748b').attr('stroke-width', 2);
+            svg.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', graphHeight - margin.bottom)
+                .attr('stroke', '#64748b').attr('stroke-width', 2);
+
+            // Axis labels
+            svg.append('text')
+                .attr('x', graphX + graphWidth - margin.right + 10)
+                .attr('y', yScale(0) + 5)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#94a3b8')
+                .text('x');
+            svg.append('text')
+                .attr('x', xScale(0) - 5)
+                .attr('y', margin.top - 5)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#94a3b8')
+                .text('y');
+
+            // Points group
+            const pointsGroup = svg.append('g');
+            const arrowsGroup = svg.append('g');
+
+            function updateVisualization() {
+                // Update table rows
+                tableRows.forEach((row, i) => {
+                    row.attr('opacity', i < currentStep ? 1 : 0.3);
+                });
+
+                // Update points
+                pointsGroup.selectAll('circle').remove();
+                for (let i = 0; i < currentStep && i < tableData.length; i++) {
+                    const d = tableData[i];
+                    pointsGroup.append('circle')
+                        .attr('cx', xScale(d.x))
+                        .attr('cy', yScale(d.y))
+                        .attr('r', 8)
+                        .attr('fill', '#0891b2')
+                        .attr('stroke', 'white')
+                        .attr('stroke-width', 2);
+
+                    // Label
+                    pointsGroup.append('text')
+                        .attr('x', xScale(d.x) + 12)
+                        .attr('y', yScale(d.y) - 8)
+                        .attr('font-size', '1.25rem')
+                        .attr('fill', '#94a3b8')
+                        .text(`t=${d.t}`);
+                }
+
+                // Draw arrows between consecutive points
+                arrowsGroup.selectAll('*').remove();
+                for (let i = 0; i < currentStep - 1 && i < tableData.length - 1; i++) {
+                    const d1 = tableData[i];
+                    const d2 = tableData[i + 1];
+                    const x1 = xScale(d1.x);
+                    const y1 = yScale(d1.y);
+                    const x2 = xScale(d2.x);
+                    const y2 = yScale(d2.y);
+
+                    // Draw arrow
+                    const dx = x2 - x1;
+                    const dy = y2 - y1;
+                    const len = Math.sqrt(dx * dx + dy * dy);
+                    const nx = dx / len;
+                    const ny = dy / len;
+
+                    arrowsGroup.append('line')
+                        .attr('x1', x1 + nx * 12)
+                        .attr('y1', y1 + ny * 12)
+                        .attr('x2', x2 - nx * 12)
+                        .attr('y2', y2 - ny * 12)
+                        .attr('stroke', '#f59e0b')
+                        .attr('stroke-width', 2)
+                        .attr('marker-end', 'url(#table-arrow)');
+                }
+            }
+
+            // Arrow marker
+            svg.append('defs').append('marker')
+                .attr('id', 'table-arrow')
+                .attr('viewBox', '0 0 10 10')
+                .attr('refX', 9)
+                .attr('refY', 5)
+                .attr('markerWidth', 6)
+                .attr('markerHeight', 6)
+                .attr('orient', 'auto')
+                .append('path')
+                .attr('d', 'M 0 0 L 10 5 L 0 10 z')
+                .attr('fill', '#f59e0b');
+
+            // Button handlers
+            const stepBtn = document.getElementById('table-step-btn');
+            const resetBtn = document.getElementById('table-reset-btn');
+
+            if (stepBtn) {
+                stepBtn.onclick = function() {
+                    if (currentStep < tableData.length) {
+                        currentStep++;
+                        updateVisualization();
+                    }
+                };
+            }
+
+            if (resetBtn) {
+                resetBtn.onclick = function() {
+                    currentStep = 0;
+                    updateVisualization();
+                };
+            }
+
+            updateVisualization();
+        }
+
+        // Visualization: Velocity Decomposition (Slide 10)
+        function drawVelocityDecompViz() {
+            const container = d3.select('#velocity-decomp-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 360;
+            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Ellipse: x = 2cos(t), y = sin(t)
+            const a = 2; // x semi-axis
+            const b = 1; // y semi-axis
+
+            const xScale = d3.scaleLinear().domain([-3, 3]).range([margin.left, width - margin.right]);
+            const yScale = d3.scaleLinear().domain([-2, 2]).range([height - margin.bottom, margin.top]);
+
+            // Grid
+            svg.append('g').selectAll('line.h').data([-1, 0, 1]).enter().append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', d => yScale(d)).attr('y2', d => yScale(d))
+                .attr('stroke', '#334155').attr('stroke-width', 1);
+
+            svg.append('g').selectAll('line.v').data([-2, -1, 0, 1, 2]).enter().append('line')
+                .attr('x1', d => xScale(d)).attr('x2', d => xScale(d))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#334155').attr('stroke-width', 1);
+
+            // Axes
+            svg.append('line')
+                .attr('x1', margin.left).attr('x2', width - margin.right)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#64748b').attr('stroke-width', 2);
+            svg.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', margin.top).attr('y2', height - margin.bottom)
+                .attr('stroke', '#64748b').attr('stroke-width', 2);
+
+            // Draw ellipse
+            const tValues = d3.range(0, 2 * Math.PI + 0.01, 0.05);
+            const ellipseData = tValues.map(t => ({ x: a * Math.cos(t), y: b * Math.sin(t) }));
+            const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveLinearClosed);
+
+            svg.append('path')
+                .datum(ellipseData)
+                .attr('fill', 'none')
+                .attr('stroke', '#8b5cf6')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Arrow markers
+            const defs = svg.append('defs');
+
+            defs.append('marker')
+                .attr('id', 'vel-arrow-h')
+                .attr('viewBox', '0 0 10 10')
+                .attr('refX', 9)
+                .attr('refY', 5)
+                .attr('markerWidth', 6)
+                .attr('markerHeight', 6)
+                .attr('orient', 'auto')
+                .append('path')
+                .attr('d', 'M 0 0 L 10 5 L 0 10 z')
+                .attr('fill', '#10b981');
+
+            defs.append('marker')
+                .attr('id', 'vel-arrow-v')
+                .attr('viewBox', '0 0 10 10')
+                .attr('refX', 9)
+                .attr('refY', 5)
+                .attr('markerWidth', 6)
+                .attr('markerHeight', 6)
+                .attr('orient', 'auto')
+                .append('path')
+                .attr('d', 'M 0 0 L 10 5 L 0 10 z')
+                .attr('fill', '#f59e0b');
+
+            defs.append('marker')
+                .attr('id', 'vel-arrow-total')
+                .attr('viewBox', '0 0 10 10')
+                .attr('refX', 9)
+                .attr('refY', 5)
+                .attr('markerWidth', 6)
+                .attr('markerHeight', 6)
+                .attr('orient', 'auto')
+                .append('path')
+                .attr('d', 'M 0 0 L 10 5 L 0 10 z')
+                .attr('fill', '#f97316');
+
+            // Velocity components
+            const hComponent = svg.append('line')
+                .attr('stroke', '#10b981')
+                .attr('stroke-width', 3)
+                .attr('marker-end', 'url(#vel-arrow-h)');
+
+            const vComponent = svg.append('line')
+                .attr('stroke', '#f59e0b')
+                .attr('stroke-width', 3)
+                .attr('marker-end', 'url(#vel-arrow-v)');
+
+            const totalVel = svg.append('line')
+                .attr('stroke', '#f97316')
+                .attr('stroke-width', 4)
+                .attr('marker-end', 'url(#vel-arrow-total)');
+
+            const point = svg.append('circle')
+                .attr('r', 10)
+                .attr('fill', '#0891b2')
+                .attr('stroke', 'white')
+                .attr('stroke-width', 2);
+
+            // Info display
+            const infoGroup = svg.append('g');
+            const dxdtText = infoGroup.append('text')
+                .attr('x', width - 180)
+                .attr('y', 50)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#10b981');
+
+            const dydtText = infoGroup.append('text')
+                .attr('x', width - 180)
+                .attr('y', 80)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#f59e0b');
+
+            const slopeText = infoGroup.append('text')
+                .attr('x', width - 180)
+                .attr('y', 110)
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#f97316')
+                .attr('font-weight', 'bold');
+
+            // Legend
+            svg.append('rect').attr('x', margin.left + 10).attr('y', 10).attr('width', 20).attr('height', 4).attr('fill', '#10b981');
+            svg.append('text').attr('x', margin.left + 35).attr('y', 18).attr('font-size', '1.25rem').attr('fill', '#10b981').text('dx/dt (horizontal)');
+
+            svg.append('rect').attr('x', margin.left + 10).attr('y', 35).attr('width', 20).attr('height', 4).attr('fill', '#f59e0b');
+            svg.append('text').attr('x', margin.left + 35).attr('y', 43).attr('font-size', '1.25rem').attr('fill', '#f59e0b').text('dy/dt (vertical)');
+
+            svg.append('rect').attr('x', margin.left + 10).attr('y', 60).attr('width', 20).attr('height', 4).attr('fill', '#f97316');
+            svg.append('text').attr('x', margin.left + 35).attr('y', 68).attr('font-size', '1.25rem').attr('fill', '#f97316').text('velocity vector');
+
+            const slider = document.getElementById('velocity-t-slider');
+            const tDisplay = document.getElementById('velocity-t-value');
+
+            function updateVelocity() {
+                const t = parseFloat(slider.value);
+                const x = a * Math.cos(t);
+                const y = b * Math.sin(t);
+                const dxdt = -a * Math.sin(t);
+                const dydt = b * Math.cos(t);
+
+                // Scale velocity vectors for visibility
+                const scale = 0.5;
+                const vx = dxdt * scale;
+                const vy = dydt * scale;
+
+                point.attr('cx', xScale(x)).attr('cy', yScale(y));
+
+                // Horizontal component
+                hComponent
+                    .attr('x1', xScale(x))
+                    .attr('y1', yScale(y))
+                    .attr('x2', xScale(x + vx))
+                    .attr('y2', yScale(y));
+
+                // Vertical component
+                vComponent
+                    .attr('x1', xScale(x + vx))
+                    .attr('y1', yScale(y))
+                    .attr('x2', xScale(x + vx))
+                    .attr('y2', yScale(y + vy));
+
+                // Total velocity
+                totalVel
+                    .attr('x1', xScale(x))
+                    .attr('y1', yScale(y))
+                    .attr('x2', xScale(x + vx))
+                    .attr('y2', yScale(y + vy));
+
+                // Update info
+                tDisplay.textContent = t.toFixed(2);
+                dxdtText.text(`dx/dt = ${dxdt.toFixed(2)}`);
+                dydtText.text(`dy/dt = ${dydt.toFixed(2)}`);
+
+                const slope = Math.abs(dxdt) > 0.01 ? dydt / dxdt : (dydt > 0 ? Infinity : -Infinity);
+                slopeText.text(`dy/dx = ${isFinite(slope) ? slope.toFixed(2) : 'undef'}`);
+            }
+
+            if (slider) {
+                slider.oninput = updateVelocity;
+                updateVelocity();
+            }
+        }
 
         // Visualization 1: Parametric Introduction
         function drawParamIntroViz() {
@@ -774,7 +1364,7 @@
                 .attr('stroke', '#06b6d4').attr('stroke-width', 3).attr('d', line);
 
             svg.append('text').attr('x', width / 2).attr('y', height - 5)
-                .attr('text-anchor', 'middle').attr('font-size', '1.1rem').text(curve.label);
+                .attr('text-anchor', 'middle').attr('font-size', '1.25rem').text(curve.label);
 
             document.querySelectorAll('.control-btn[data-curve]').forEach(btn => {
                 btn.onclick = function() {
@@ -1097,13 +1687,13 @@
             // Inflection point
             svg.append('circle').attr('cx', xScale(0)).attr('cy', yScale(0)).attr('r', 8).attr('fill', '#06b6d4');
             svg.append('text').attr('x', xScale(0) + 15).attr('y', yScale(0) + 5)
-                .attr('font-size', '1rem').text('Inflection');
+                .attr('font-size', '1.25rem').text('Inflection');
 
             // Labels
             svg.append('text').attr('x', xScale(2)).attr('y', yScale(-3))
-                .attr('font-size', '1.1rem').attr('fill', '#ef4444').text('t < 0: Concave Down');
+                .attr('font-size', '1.25rem').attr('fill', '#ef4444').text('t < 0: Concave Down');
             svg.append('text').attr('x', xScale(2)).attr('y', yScale(3))
-                .attr('font-size', '1.1rem').attr('fill', '#10b981').text('t > 0: Concave Up');
+                .attr('font-size', '1.25rem').attr('fill', '#10b981').text('t > 0: Concave Up');
         }
     </script>
 </body>

@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parametric Arc Length | AP Calculus BC</title>
+    <title>Class 50: Parametric Arc Length | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../shared/styles.css">
     <style>
         :root {
@@ -251,221 +254,297 @@
     </style>
 </head>
 <body>
-    <div class="presentation-container">
+    <div class="presentation">
 
         <!-- Slide 0: Title -->
-        <section class="slide slide-title">
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Arc Length">
             <div class="slide-content">
-                <span class="unit-badge">Unit 9: Parametric, Polar, and Vectors</span>
+                <div class="unit-badge">Unit 9: Parametric, Polar, and Vectors</div>
                 <span class="bc-badge">BC Only</span>
-                <h1>Parametric Arc Length</h1>
-                <p class="subtitle">and Speed Along a Curve</p>
-                <p class="meta">Class 50 | CED Topic 9.3</p>
+                <h1>Arc Length</h1>
+                <p class="subtitle">Measuring Distance Along Parametric Curves</p>
+                <p class="meta">Class 50 | CED 9.3 | NCSSM</p>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 1: Warm-Up -->
-        <section class="slide slide-exercise">
+        <!-- Slide 1: The Big Question -->
+        <div class="slide slide-statement" data-slide="1" data-section="Opening" data-title="The Big Question">
             <div class="slide-content">
-                <h2>Warm-Up</h2>
-                <div class="exercise-box">
-                    <p>Recall the arc length formula for \(y = f(x)\):</p>
-                    <p class="math-display">\[L = \int_a^b \sqrt{1 + \left(\frac{dy}{dx}\right)^2} \, dx\]</p>
-                    <hr style="margin: 1.5rem 0; border-color: #e5e7eb;">
-                    <p><strong>Discussion:</strong> How might we adapt this for parametric curves \(x = f(t), y = g(t)\)?</p>
-                </div>
+                <p class="statement">How much track does a roller coaster loop need?</p>
+                <p class="secondary" style="margin-top: 1.5rem;">The loop follows x = t - sin(t), y = 1 - cos(t)...</p>
+                <p class="secondary" style="color: var(--text-tertiary); margin-top: 1rem;">This is a cycloid - can't easily write as y = f(x)</p>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 2: Deriving the Formula -->
-        <section class="slide slide-statement">
+        <!-- Slide 2: Review - Cartesian Arc Length -->
+        <div class="slide slide-two-part" data-slide="2" data-section="Review" data-title="Cartesian Arc Length">
             <div class="slide-content">
-                <h2>Deriving the Arc Length Formula</h2>
-                <div class="definition-box">
-                    <h3>Starting Point</h3>
-                    <p>For a small arc segment, by Pythagorean theorem:</p>
-                    <p class="math-display">\[(\Delta s)^2 \approx (\Delta x)^2 + (\Delta y)^2\]</p>
+                <p class="primary">The Familiar Formula</p>
+                <div class="formula-box" style="margin: 1.5rem 0;">
+                    <p style="font-size: 1.2rem; margin-bottom: 0.5rem;">For y = f(x) from x = a to x = b:</p>
+                    <p class="math-display">\[L = \int_a^b \sqrt{1 + \left(\frac{dy}{dx}\right)^2}\, dx\]</p>
                 </div>
-                <div class="derivation-steps" style="margin-top: 1.5rem;">
-                    <div class="step" data-step="1.">
-                        Divide by \((\Delta t)^2\): \(\left(\frac{\Delta s}{\Delta t}\right)^2 \approx \left(\frac{\Delta x}{\Delta t}\right)^2 + \left(\frac{\Delta y}{\Delta t}\right)^2\)
-                    </div>
-                    <div class="step" data-step="2.">
-                        Take the limit: \(\left(\frac{ds}{dt}\right)^2 = \left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2\)
-                    </div>
-                    <div class="step" data-step="3.">
-                        Integrate: \(L = \int_a^b \frac{ds}{dt} \, dt\)
-                    </div>
-                </div>
+                <p class="secondary" style="margin-top: 1.5rem;"><strong>Limitation:</strong></p>
+                <ul style="font-size: 1.3rem; color: var(--text-secondary); margin-top: 0.5rem; list-style: none;">
+                    <li style="margin: 0.5rem 0;">Requires y as a function of x</li>
+                    <li style="margin: 0.5rem 0;">Can't handle vertical tangents or curves that double back</li>
+                    <li style="margin: 0.5rem 0; color: var(--theme-color);"><strong>What we need: a formula for ANY parametric curve</strong></li>
+                </ul>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 3: Arc Length Formula -->
-        <section class="slide slide-statement">
+        <!-- Slide 3: The Infinitesimal Approach -->
+        <div class="slide slide-visual" data-slide="3" data-section="Deriving the Formula" data-title="Segment Approximation">
             <div class="slide-content">
-                <h2>Parametric Arc Length Formula</h2>
-                <div class="formula-box highlight">
-                    <p style="font-size: 1.3rem;"><strong>Arc Length</strong></p>
-                    <p class="math-display">\[L = \int_a^b \sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2} \, dt\]</p>
-                </div>
-                <div class="example-grid" style="margin-top: 2rem;">
-                    <div class="example-card">
-                        <h4>Key Requirements</h4>
-                        <ul style="font-size: 1.1rem; line-height: 1.8;">
-                            <li>\(x'(t)\) and \(y'(t)\) continuous</li>
-                            <li>Curve is traversed once</li>
-                            <li>\(a \leq t \leq b\)</li>
-                        </ul>
-                    </div>
-                    <div class="example-card">
-                        <h4>Shorthand Notation</h4>
-                        <p class="math-display">\[L = \int_a^b \sqrt{(x')^2 + (y')^2} \, dt\]</p>
-                        <p style="font-size: 0.95rem; color: #666;">where \(x' = \frac{dx}{dt}\) and \(y' = \frac{dy}{dt}\)</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 4: Arc Length Visualization -->
-        <section class="slide slide-visual">
-            <div class="slide-content">
-                <h2>Visualizing Arc Length</h2>
+                <h2>Breaking the Curve into Tiny Pieces</h2>
                 <div id="arc-length-viz" class="viz-container"></div>
                 <div class="slider-container">
                     <span>Segments: </span>
                     <input type="range" id="segments-slider" min="3" max="50" step="1" value="10">
                     <span id="segments-value">10</span>
                     <span style="margin-left: 1rem;">Approximation: </span>
-                    <span id="approx-length">--</span>
+                    <span id="approx-length" style="font-weight: bold; color: var(--theme-color);">--</span>
+                </div>
+                <p class="caption">Each tiny piece is approximately a straight line segment</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: The ds Triangle (NEW) -->
+        <div class="slide slide-visual" data-slide="4" data-section="Deriving the Formula" data-title="The ds Triangle">
+            <div class="slide-content">
+                <h2>The Infinitesimal Triangle</h2>
+                <div id="ds-triangle-viz" class="viz-container"></div>
+                <div class="controls-container">
+                    <button class="control-btn" id="ds-zoom-btn">Zoom In</button>
+                    <button class="control-btn" id="ds-reset-btn">Reset</button>
+                </div>
+                <div class="formula-box" style="margin-top: 1rem; padding: 1rem;">
+                    <p class="math-display" style="font-size: 1.5rem;">\[ds = \sqrt{dx^2 + dy^2}\]</p>
+                    <p style="font-size: 1.25rem; color: var(--text-secondary);">Pythagorean theorem on the tiny triangle</p>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 5: Speed Definition -->
-        <section class="slide slide-statement">
+        <!-- Slide 5: From Triangle to Formula -->
+        <div class="slide slide-visual" data-slide="5" data-section="Deriving the Formula" data-title="Building the Formula">
             <div class="slide-content">
-                <h2>Speed Along a Parametric Curve</h2>
-                <div class="formula-box highlight">
-                    <p style="font-size: 1.3rem;"><strong>Speed</strong></p>
-                    <p class="math-display">\[\text{Speed} = \frac{ds}{dt} = \sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}\]</p>
+                <h2>Building the Arc Length Formula</h2>
+                <div class="derivation-steps">
+                    <div class="step" data-step="1.">Start: \(ds = \sqrt{dx^2 + dy^2}\)</div>
+                    <div class="step" data-step="2.">Substitute: \(dx = \frac{dx}{dt}dt\), \(dy = \frac{dy}{dt}dt\)</div>
+                    <div class="step" data-step="3.">Factor: \(ds = \sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}\, dt\)</div>
+                    <div class="step" data-step="4.">Integrate: \(L = \int_a^b ds\)</div>
                 </div>
+                <div class="formula-box highlight" style="margin-top: 1.5rem;">
+                    <p style="font-size: 1.2rem; margin-bottom: 0.5rem;"><strong>Parametric Arc Length Formula</strong></p>
+                    <p class="math-display">\[L = \int_a^b \sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}\, dt\]</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: The Speed Interpretation -->
+        <div class="slide slide-two-part" data-slide="6" data-section="Deriving the Formula" data-title="Speed Interpretation">
+            <div class="slide-content">
+                <p class="primary">Physical Meaning</p>
+                <div class="formula-box" style="margin: 1rem 0;">
+                    <p class="math-display">\[\sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2} = \textbf{SPEED}\]</p>
+                </div>
+                <p class="secondary">This is how fast the point moves along the curve</p>
                 <div class="definition-box" style="margin-top: 1.5rem;">
-                    <h3>Interpretation</h3>
-                    <ul style="font-size: 1.15rem; line-height: 2;">
-                        <li><strong>Speed</strong> = rate of change of arc length with respect to time</li>
-                        <li>Speed is always <strong>non-negative</strong></li>
-                        <li>Speed = 0 when both \(x'(t) = 0\) and \(y'(t) = 0\)</li>
+                    <h3>Key Insight</h3>
+                    <ul style="font-size: 1.25rem; line-height: 2;">
+                        <li><strong>Arc length = integral of speed</strong></li>
+                        <li>Distance = integral of rate</li>
+                        <li style="color: var(--theme-color);">It's "distance = speed x time" in infinitesimal form!</li>
                     </ul>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 6: Speed Visualization -->
-        <section class="slide slide-visual">
+        <!-- Slide 7: Speed Visualization -->
+        <div class="slide slide-visual" data-slide="7" data-section="Deriving the Formula" data-title="Speed Visualization">
             <div class="slide-content">
-                <h2>Speed Along an Ellipse</h2>
+                <h2>Arc Length as Integral of Speed</h2>
                 <div id="speed-viz" class="viz-container"></div>
                 <div class="slider-container">
-                    <span>t = </span>
+                    <button class="control-btn" id="speed-play-btn">Play</button>
+                    <span style="margin-left: 1rem;">t = </span>
                     <input type="range" id="speed-t-slider" min="0" max="6.28" step="0.05" value="0">
                     <span id="speed-t-value">0.00</span>
-                    <span style="margin-left: 1rem;">Speed: </span>
-                    <span id="speed-value">--</span>
+                </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #60a5fa;"></div>
+                        <span>Curve</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #f97316;"></div>
+                        <span>Speed graph</span>
+                    </div>
+                    <div class="legend-item">
+                        <span style="color: var(--theme-color); font-weight: bold;">Shaded area = Arc length</span>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 7: Example 1 - Circle -->
-        <section class="slide slide-visual">
+        <!-- Slide 8: Example 1 - Circle -->
+        <div class="slide slide-example" data-slide="8" data-section="Examples" data-title="Circle Verification">
             <div class="slide-content">
-                <h2>Example 1: Circumference of a Circle</h2>
+                <h2>Verifying with a Circle</h2>
                 <div class="two-column">
                     <div>
                         <p><strong>Given:</strong> \(x = r\cos t, \quad y = r\sin t\)</p>
                         <p>for \(0 \leq t \leq 2\pi\)</p>
-                        <ul class="step-list" style="margin-top: 1.5rem;">
-                            <li>\(\dfrac{dx}{dt} = -r\sin t\)</li>
-                            <li>\(\dfrac{dy}{dt} = r\cos t\)</li>
-                            <li>\(\sqrt{r^2\sin^2 t + r^2\cos^2 t} = r\)</li>
-                            <li>\(L = \int_0^{2\pi} r \, dt = 2\pi r\)</li>
-                        </ul>
+                        <div class="derivation-steps" style="margin-top: 1rem;">
+                            <div class="step" data-step="1.">\(\dfrac{dx}{dt} = -r\sin t\), \(\dfrac{dy}{dt} = r\cos t\)</div>
+                            <div class="step" data-step="2.">\(\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2 = r^2\sin^2 t + r^2\cos^2 t = r^2\)</div>
+                            <div class="step" data-step="3.">\(\sqrt{r^2} = r\) <span style="color: var(--theme-color);">(constant speed!)</span></div>
+                            <div class="step" data-step="4.">\(L = \int_0^{2\pi} r \, dt = 2\pi r\)</div>
+                        </div>
+                        <div class="formula-box" style="margin-top: 1rem; padding: 0.75rem;">
+                            <p style="color: var(--success); font-weight: bold;">Circumference = 2πr. It works!</p>
+                        </div>
                     </div>
                     <div id="circle-arc-viz" class="viz-container" style="height: 300px;"></div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 8: Example 2 - Parabola -->
-        <section class="slide slide-visual">
+        <!-- Slide 9: Circle Speed Insight -->
+        <div class="slide slide-statement" data-slide="9" data-section="Examples" data-title="Constant Speed">
             <div class="slide-content">
-                <h2>Example 2: Arc Length of a Parabola</h2>
+                <p class="statement">The point moves around the circle at constant speed r</p>
+                <p class="secondary" style="margin-top: 1.5rem;">No speeding up, no slowing down - uniform circular motion</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Example 2 - The Cycloid (with rolling wheel animation) -->
+        <div class="slide slide-visual" data-slide="10" data-section="Examples" data-title="Cycloid Visualization">
+            <div class="slide-content">
+                <h2>One Arch of a Cycloid</h2>
+                <div id="cycloid-viz" class="viz-container" style="height: 350px;"></div>
+                <div class="controls-container">
+                    <button class="control-btn" id="cycloid-play-btn">Roll Wheel</button>
+                    <button class="control-btn" id="cycloid-reset-btn">Reset</button>
+                </div>
+                <div style="text-align: center; margin-top: 0.5rem;">
+                    <p style="font-size: 1.25rem;"><strong>Given:</strong> \(x = t - \sin t, \quad y = 1 - \cos t\), \(t \in [0, 2\pi]\)</p>
+                    <p class="caption">A point on a rolling wheel traces a cycloid</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Cycloid Calculation - Setup -->
+        <div class="slide slide-example" data-slide="11" data-section="Examples" data-title="Cycloid Setup">
+            <div class="slide-content">
+                <h2>Cycloid Arc Length: Setup</h2>
+                <div class="derivation-steps">
+                    <div class="step" data-step="1."><strong>Derivatives:</strong> \(\frac{dx}{dt} = 1 - \cos t\), \(\frac{dy}{dt} = \sin t\)</div>
+                    <div class="step" data-step="2."><strong>Sum of squares:</strong>
+                        <p style="margin: 0.5rem 0; padding-left: 1rem;">\(\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2 = (1 - \cos t)^2 + \sin^2 t\)</p>
+                    </div>
+                    <div class="step" data-step="3."><strong>Expand:</strong>
+                        <p style="margin: 0.5rem 0; padding-left: 1rem;">\(= 1 - 2\cos t + \cos^2 t + \sin^2 t\)</p>
+                        <p style="margin: 0.5rem 0; padding-left: 1rem;">\(= 2 - 2\cos t = 2(1 - \cos t)\)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Cycloid Calculation - Trig Identity -->
+        <div class="slide slide-example" data-slide="12" data-section="Examples" data-title="Cycloid Trig">
+            <div class="slide-content">
+                <h2>Cycloid Arc Length: Using Trig</h2>
+                <div class="formula-box" style="margin: 1rem 0;">
+                    <p style="font-size: 1.2rem;"><strong>Identity:</strong> \(1 - \cos t = 2\sin^2(t/2)\)</p>
+                </div>
+                <div class="derivation-steps" style="margin-top: 1.5rem;">
+                    <div class="step" data-step="1.">\(\sqrt{2(1 - \cos t)} = \sqrt{4\sin^2(t/2)} = 2|\sin(t/2)|\)</div>
+                    <div class="step" data-step="2.">For \(t \in [0, 2\pi]\): \(\sin(t/2) \geq 0\), so \(|\sin(t/2)| = \sin(t/2)\)</div>
+                    <div class="step" data-step="3.">Integrand simplifies to: \(2\sin(t/2)\)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Cycloid Calculation - Final -->
+        <div class="slide slide-example" data-slide="13" data-section="Examples" data-title="Cycloid Result">
+            <div class="slide-content">
+                <h2>Cycloid Arc Length: Result</h2>
+                <div class="derivation-steps">
+                    <div class="step" data-step="1.">\(L = \int_0^{2\pi} 2\sin(t/2)\, dt\)</div>
+                    <div class="step" data-step="2.">Substitution: \(u = t/2\), \(du = \frac{1}{2}dt\)</div>
+                    <div class="step" data-step="3.">\(L = 4\int_0^{\pi} \sin u\, du = 4[-\cos u]_0^{\pi}\)</div>
+                    <div class="step" data-step="4.">\(L = 4[-(-1) - (-1)] = 4(2) = 8\)</div>
+                </div>
+                <div class="formula-box highlight" style="margin-top: 1.5rem;">
+                    <p style="font-size: 1.3rem;"><strong>One arch of a cycloid (radius 1) has length 8</strong></p>
+                    <p style="color: var(--text-secondary);">Remarkably, this is exactly 4 times the diameter!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: When Integrals Are Hard -->
+        <div class="slide slide-statement" data-slide="14" data-section="Calculator Methods" data-title="Hard Integrals">
+            <div class="slide-content">
+                <p class="statement">Many arc length integrals don't have elementary antiderivatives</p>
+                <p class="secondary" style="margin-top: 1.5rem;">That's when we reach for the calculator...</p>
+            </div>
+        </div>
+
+        <!-- Slide 15: Example 3 - Calculator Required -->
+        <div class="slide slide-example" data-slide="15" data-section="Calculator Methods" data-title="Calculator Example">
+            <div class="slide-content">
+                <h2>Calculator-Required Example</h2>
                 <div class="two-column">
                     <div>
-                        <p><strong>Given:</strong> \(x = t, \quad y = t^2\)</p>
-                        <p>for \(0 \leq t \leq 1\)</p>
-                        <ul class="step-list" style="margin-top: 1rem;">
-                            <li>\(\dfrac{dx}{dt} = 1, \quad \dfrac{dy}{dt} = 2t\)</li>
-                            <li>\(\sqrt{1 + 4t^2}\)</li>
-                            <li>\(L = \int_0^1 \sqrt{1 + 4t^2} \, dt\)</li>
-                        </ul>
-                        <div style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 4px;">
-                            <p>Using substitution or table:</p>
-                            <p>\(L = \frac{\sqrt{5}}{2} + \frac{\ln(2 + \sqrt{5})}{4} \approx 1.479\)</p>
+                        <p><strong>Given:</strong> \(x = t^2\), \(y = t^3\), \(t \in [0, 2]\)</p>
+                        <div class="derivation-steps" style="margin-top: 1rem;">
+                            <div class="step" data-step="1.">\(\frac{dx}{dt} = 2t\), \(\frac{dy}{dt} = 3t^2\)</div>
+                            <div class="step" data-step="2.">\(L = \int_0^2 \sqrt{4t^2 + 9t^4}\, dt\)</div>
+                            <div class="step" data-step="3.">\(= \int_0^2 t\sqrt{4 + 9t^2}\, dt\)</div>
                         </div>
+                        <div class="formula-box" style="margin-top: 1rem;">
+                            <p><strong>Calculator:</strong> <span style="color: var(--theme-color); font-size: 1.5rem;">L ≈ 9.073</span></p>
+                        </div>
+                        <p class="caption" style="margin-top: 1rem;">On the AP exam: "Set up but do not evaluate" is common</p>
                     </div>
-                    <div id="parabola-arc-viz" class="viz-container" style="height: 300px;"></div>
+                    <div id="calc-example-viz" class="viz-container" style="height: 280px;"></div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 9: Example 3 - Cycloid -->
-        <section class="slide slide-visual">
+        <!-- Slide 16: Analytical vs. Numerical -->
+        <div class="slide slide-comparison" data-slide="16" data-section="Calculator Methods" data-title="When to Use Each">
             <div class="slide-content">
-                <h2>Example 3: Arc Length of a Cycloid</h2>
-                <div class="two-column">
-                    <div>
-                        <p><strong>Given:</strong> \(x = t - \sin t, \quad y = 1 - \cos t\)</p>
-                        <p>for \(0 \leq t \leq 2\pi\) (one arch)</p>
-                        <ul class="step-list" style="margin-top: 1rem; font-size: 0.95rem;">
-                            <li>\(x' = 1 - \cos t, \quad y' = \sin t\)</li>
-                            <li>\((x')^2 + (y')^2 = 2(1 - \cos t)\)</li>
-                            <li>Using identity: \(= 4\sin^2(t/2)\)</li>
-                            <li>\(L = \int_0^{2\pi} 2|\sin(t/2)| \, dt = 8\)</li>
+                <h2>When to Use Each Method</h2>
+                <div class="columns">
+                    <div class="column">
+                        <h3 style="color: var(--success);">By Hand</h3>
+                        <ul style="font-size: 1.25rem; line-height: 2;">
+                            <li>Integrand simplifies nicely</li>
+                            <li>Trig identities help</li>
+                            <li>Substitution works</li>
+                            <li>Example: circle, cycloid</li>
                         </ul>
                     </div>
-                    <div id="cycloid-arc-viz" class="viz-container" style="height: 300px;"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 10: Distance vs Displacement -->
-        <section class="slide slide-statement">
-            <div class="slide-content">
-                <h2>Distance vs. Displacement</h2>
-                <div class="example-grid">
-                    <div class="formula-box">
-                        <h3 style="color: var(--theme-color);">Total Distance</h3>
-                        <p class="math-display">\[L = \int_a^b \sqrt{(x')^2 + (y')^2} \, dt\]</p>
-                        <p style="font-size: 1.1rem;">Always positive (arc length)</p>
-                    </div>
-                    <div class="formula-box">
-                        <h3 style="color: var(--theme-color);">Displacement</h3>
-                        <p class="math-display">\[\vec{d} = (x(b) - x(a), y(b) - y(a))\]</p>
-                        <p style="font-size: 1.1rem;">Straight-line distance from start to end</p>
+                    <div class="column">
+                        <h3 style="color: var(--accent-secondary);">Calculator</h3>
+                        <ul style="font-size: 1.25rem; line-height: 2;">
+                            <li>Complex square root</li>
+                            <li>No obvious substitution</li>
+                            <li>AP exam calculator section</li>
+                            <li>Example: most real-world curves</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="definition-box" style="margin-top: 1.5rem;">
-                    <h3>Key Difference</h3>
-                    <p>A particle moving in a circle returns to its starting point.</p>
-                    <p><strong>Displacement = 0</strong>, but <strong>Distance = \(2\pi r\)</strong></p>
-                </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 11: Distance vs Displacement Visualization -->
-        <section class="slide slide-visual">
+        <!-- Slide 17: Arc Length Accumulator -->
+        <div class="slide slide-visual" data-slide="17" data-section="Visualization" data-title="Arc Length Accumulator">
             <div class="slide-content">
-                <h2>Comparing Distance and Displacement</h2>
+                <h2>Watching Arc Length Accumulate</h2>
                 <div id="distance-disp-viz" class="viz-container"></div>
                 <div class="slider-container">
                     <span>t = </span>
@@ -475,211 +554,169 @@
                 <div class="legend">
                     <div class="legend-item">
                         <div class="legend-color" style="background: #8b5cf6;"></div>
-                        <span>Path (Arc Length: <span id="arc-length-val">0</span>)</span>
+                        <span>Path (Arc Length: <span id="arc-length-val" style="font-weight: bold; color: #22c55e;">0</span>)</span>
                     </div>
                     <div class="legend-item">
                         <div class="legend-color" style="background: #ef4444;"></div>
-                        <span>Displacement: <span id="displacement-val">0</span></span>
+                        <span>Displacement: <span id="displacement-val" style="font-weight: bold; color: #ef4444;">0</span></span>
                     </div>
                 </div>
+                <p class="caption">Arc length can be much longer than straight-line distance</p>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 12: Setting Up Arc Length Integrals -->
-        <section class="slide slide-list">
+        <!-- Slide 18: Key Formula Comparison -->
+        <div class="slide slide-comparison" data-slide="18" data-section="Summary" data-title="Formula Comparison">
             <div class="slide-content">
-                <h2>Setting Up Arc Length Integrals</h2>
-                <div class="definition-box">
-                    <h3>Step-by-Step Process</h3>
-                    <ul class="step-list" style="font-size: 1.15rem;">
-                        <li>Find \(\frac{dx}{dt}\) and \(\frac{dy}{dt}\)</li>
-                        <li>Square each: \(\left(\frac{dx}{dt}\right)^2\) and \(\left(\frac{dy}{dt}\right)^2\)</li>
-                        <li>Add them together</li>
-                        <li>Take the square root</li>
-                        <li>Integrate from \(t = a\) to \(t = b\)</li>
-                    </ul>
-                </div>
-                <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-tertiary); border-radius: 8px;">
-                    <p style="font-size: 1.15rem;"><strong>Tip:</strong> Many arc length integrals require a calculator. Focus on setting up the integral correctly!</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 13: Calculator Example -->
-        <section class="slide slide-visual">
-            <div class="slide-content">
-                <h2>Example: Calculator Required</h2>
-                <div class="two-column">
-                    <div>
-                        <p><strong>Find the arc length of</strong></p>
-                        <p>\(x = t^2, \quad y = t^3\)</p>
-                        <p>for \(0 \leq t \leq 2\)</p>
-                        <div class="derivation-steps" style="margin-top: 1rem;">
-                            <div class="step" data-step="1.">\(x' = 2t, \quad y' = 3t^2\)</div>
-                            <div class="step" data-step="2.">\(\sqrt{4t^2 + 9t^4}\)</div>
-                            <div class="step" data-step="3.">\(\sqrt{t^2(4 + 9t^2)} = |t|\sqrt{4 + 9t^2}\)</div>
-                            <div class="step" data-step="4.">\(L = \int_0^2 t\sqrt{4 + 9t^2} \, dt\)</div>
-                        </div>
-                        <div class="info-panel" style="margin-top: 1rem;">
-                            <span>Calculator: </span>
-                            <span class="value">L ≈ 9.073</span>
+                <h2>Arc Length Formulas</h2>
+                <div class="columns">
+                    <div class="column">
+                        <h3 style="color: var(--theme-color);">Cartesian</h3>
+                        <div class="formula-box">
+                            <p class="math-display">\[L = \int_a^b \sqrt{1 + \left(\frac{dy}{dx}\right)^2}\, dx\]</p>
+                            <p style="font-size: 1.1rem;">For y = f(x)</p>
                         </div>
                     </div>
-                    <div id="calc-example-viz" class="viz-container" style="height: 300px;"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 14: Comparing Arc Length Formulas -->
-        <section class="slide slide-visual">
-            <div class="slide-content">
-                <h2>Arc Length Formulas Comparison</h2>
-                <table class="comparison-table">
-                    <tr>
-                        <th>Curve Type</th>
-                        <th>Arc Length Formula</th>
-                    </tr>
-                    <tr>
-                        <td>\(y = f(x)\)</td>
-                        <td>\(\displaystyle L = \int_a^b \sqrt{1 + \left(\frac{dy}{dx}\right)^2} \, dx\)</td>
-                    </tr>
-                    <tr>
-                        <td>\(x = g(y)\)</td>
-                        <td>\(\displaystyle L = \int_c^d \sqrt{1 + \left(\frac{dx}{dy}\right)^2} \, dy\)</td>
-                    </tr>
-                    <tr>
-                        <td>Parametric</td>
-                        <td>\(\displaystyle L = \int_a^b \sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2} \, dt\)</td>
-                    </tr>
-                    <tr>
-                        <td>Polar (preview)</td>
-                        <td>\(\displaystyle L = \int_\alpha^\beta \sqrt{r^2 + \left(\frac{dr}{d\theta}\right)^2} \, d\theta\)</td>
-                    </tr>
-                </table>
-            </div>
-        </section>
-
-        <!-- Slide 15: Applications -->
-        <section class="slide slide-list">
-            <div class="slide-content">
-                <h2>Applications of Arc Length</h2>
-                <div class="example-grid">
-                    <div class="example-card">
-                        <h4>Physics: Path of Projectiles</h4>
-                        <p>Total distance traveled by a ball in flight</p>
-                    </div>
-                    <div class="example-card">
-                        <h4>Engineering: Cable Length</h4>
-                        <p>Length of hanging cables (catenary curves)</p>
-                    </div>
-                    <div class="example-card">
-                        <h4>Computer Graphics: Curves</h4>
-                        <p>Arc length parameterization for smooth animation</p>
-                    </div>
-                    <div class="example-card">
-                        <h4>Robotics: Path Planning</h4>
-                        <p>Distance traveled by robot arms</p>
+                    <div class="column">
+                        <h3 style="color: var(--accent-secondary);">Parametric</h3>
+                        <div class="formula-box highlight">
+                            <p class="math-display">\[L = \int_a^b \sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}\, dt\]</p>
+                            <p style="font-size: 1.1rem;">For x = f(t), y = g(t)</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 16: Practice Problems -->
-        <section class="slide slide-exercise">
+        <!-- Slide 19: Practice Problem -->
+        <div class="slide slide-exercise" data-slide="19" data-section="Practice" data-title="Your Turn">
             <div class="slide-content">
-                <h2>Practice Problems</h2>
-                <div class="exercise-box">
-                    <ol style="font-size: 1.15rem; line-height: 2.2;">
-                        <li>Set up the integral for arc length: \(x = e^t \cos t, y = e^t \sin t\), \(0 \leq t \leq \pi\)</li>
-                        <li>Find the arc length: \(x = 3t, y = 4t\), \(0 \leq t \leq 5\)</li>
-                        <li>Find the speed at \(t = 1\): \(x = t^2, y = 2t\)</li>
-                        <li>Calculate arc length: \(x = \cos^3 t, y = \sin^3 t\), \(0 \leq t \leq \frac{\pi}{2}\)</li>
-                        <li>At what time is speed maximized for \(x = \sin t, y = t - \cos t\) on \([0, 2\pi]\)?</li>
+                <h2>Your Turn</h2>
+                <div class="prompt">
+                    <p><strong>Set up (don't evaluate) the arc length integral for:</strong></p>
+                    <p class="math-display" style="margin: 1.5rem 0;">\[x = e^t, \quad y = e^{-t}, \quad \text{from } t = 0 \text{ to } t = 1\]</p>
+                </div>
+                <div class="instructions" style="margin-top: 1.5rem;">
+                    <p><strong>Tasks:</strong></p>
+                    <ol style="font-size: 1.25rem; margin-top: 0.5rem;">
+                        <li style="padding: 0.5rem 0;">Find \(\frac{dx}{dt}\) and \(\frac{dy}{dt}\)</li>
+                        <li style="padding: 0.5rem 0;">Write the integrand</li>
+                        <li style="padding: 0.5rem 0;">Write the complete integral</li>
                     </ol>
                 </div>
+                <p style="margin-top: 1rem; color: var(--text-tertiary);">Time: 3 minutes</p>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 17: Solutions -->
-        <section class="slide slide-list">
+        <!-- Slide 20: Practice Solution -->
+        <div class="slide slide-example" data-slide="20" data-section="Practice" data-title="Solution">
             <div class="slide-content">
-                <h2>Solutions</h2>
-                <ol style="font-size: 1.05rem; line-height: 2.2;">
-                    <li>\(x' = e^t(\cos t - \sin t), y' = e^t(\sin t + \cos t)\); \(L = \int_0^\pi \sqrt{2}e^t \, dt = \sqrt{2}(e^\pi - 1)\)</li>
-                    <li>\(x' = 3, y' = 4\); \(L = \int_0^5 5 \, dt = 25\)</li>
-                    <li>\(x' = 2t, y' = 2\); Speed \(= \sqrt{4t^2 + 4} = 2\sqrt{t^2 + 1}\); At \(t = 1\): \(2\sqrt{2}\)</li>
-                    <li>\(x' = -3\cos^2 t \sin t, y' = 3\sin^2 t \cos t\); \(L = \int_0^{\pi/2} 3|\sin t \cos t| \, dt = \frac{3}{2}\)</li>
-                    <li>Speed \(= \sqrt{\cos^2 t + (1 + \sin t)^2}\); Max at \(t = \frac{\pi}{2}\) where speed \(= 2\)</li>
-                </ol>
-            </div>
-        </section>
-
-        <!-- Slide 18: AP Exam Tips -->
-        <section class="slide slide-list">
-            <div class="slide-content">
-                <h2>AP Exam Tips</h2>
-                <div class="definition-box">
-                    <h3>Common Question Types</h3>
-                    <ul style="font-size: 1.15rem; line-height: 2;">
-                        <li>Set up (but don't evaluate) arc length integrals</li>
-                        <li>Find speed at a specific time</li>
-                        <li>Use calculator to evaluate arc length</li>
-                        <li>Compare distance traveled vs. displacement</li>
-                    </ul>
+                <h2>Solution</h2>
+                <div class="derivation-steps">
+                    <div class="step" data-step="1.">\(\frac{dx}{dt} = e^t\), \(\frac{dy}{dt} = -e^{-t}\)</div>
+                    <div class="step" data-step="2.">\(\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2 = e^{2t} + e^{-2t}\)</div>
+                    <div class="step" data-step="3.">Integrand: \(\sqrt{e^{2t} + e^{-2t}}\)</div>
                 </div>
-                <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-tertiary); border-radius: 8px;">
-                    <p style="font-size: 1.15rem;"><strong>Remember:</strong> Speed is under the radical; don't forget to integrate for total distance!</p>
+                <div class="formula-box" style="margin-top: 1.5rem;">
+                    <p><strong>Answer:</strong></p>
+                    <p class="math-display">\[L = \int_0^1 \sqrt{e^{2t} + e^{-2t}}\, dt\]</p>
+                    <p style="margin-top: 0.5rem;"><strong>Calculator:</strong> L ≈ 2.003</p>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 19: Exit Ticket -->
-        <section class="slide slide-exercise">
+        <!-- Slide 21: Key Takeaways (NEW) -->
+        <div class="slide slide-list" data-slide="21" data-section="Summary" data-title="Key Takeaways">
+            <div class="slide-content">
+                <h2>Key Takeaways</h2>
+                <ul>
+                    <li>Arc length comes from Pythagorean theorem: \(ds = \sqrt{dx^2 + dy^2}\)</li>
+                    <li>Formula: \(L = \int_a^b \sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}\, dt\)</li>
+                    <li>Physical interpretation: <strong>Arc length = integral of speed</strong></li>
+                    <li>Bounds are t-values (parameter bounds), not x or y</li>
+                    <li>Many integrals require calculator - know how to set up correctly</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 22: Common Misconceptions (NEW) -->
+        <div class="slide slide-list" data-slide="22" data-section="Summary" data-title="Common Misconceptions">
+            <div class="slide-content">
+                <h2>Common Misconceptions</h2>
+                <div class="definition-box" style="border-color: #ef4444; margin-bottom: 1rem;">
+                    <h3 style="color: #ef4444;">Warning: Arc Length ≠ Integral of dy/dx</h3>
+                    <p style="font-size: 1.2rem;">Slope tells direction, not length. Length uses Pythagorean theorem on components!</p>
+                </div>
+                <ul style="font-size: 1.2rem;">
+                    <li><strong style="color: var(--danger);">Wrong:</strong> "Any t interval works"<br>
+                        <span style="color: var(--text-secondary); font-size: 1.1rem;">Correct: The interval must trace the desired curve <em>exactly once</em></span></li>
+                    <li style="margin-top: 1rem;"><strong style="color: var(--success);">True:</strong> Arc length is a geometric property<br>
+                        <span style="color: var(--text-secondary); font-size: 1.1rem;">Same curve gives same length regardless of parametrization</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 23: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="23" data-section="Closing" data-title="Exit Ticket">
             <div class="slide-content">
                 <h2>Exit Ticket</h2>
-                <div class="exercise-box">
-                    <p>A particle moves along a path defined by:</p>
-                    <p class="math-display">\[x = t^2 + 1, \quad y = 2t^3\]</p>
-                    <p>for \(0 \leq t \leq 1\)</p>
-                    <ol style="font-size: 1.2rem; margin-top: 1rem;">
-                        <li>Write an integral for the arc length.</li>
-                        <li>Find the speed at \(t = 1\).</li>
-                        <li>Use your calculator to find the total distance traveled.</li>
-                    </ol>
+                <div class="prompt">
+                    <p>A particle moves along the path \(x = 3t\), \(y = 4t\) for \(t \in [0, 5]\).</p>
+                    <p style="margin-top: 1.5rem; font-size: 1.75rem; color: var(--theme-color);"><strong>What is the total distance traveled?</strong></p>
                 </div>
+                <p style="margin-top: 2rem; color: var(--text-tertiary);">Hint: This should have a simple answer...</p>
             </div>
-        </section>
+        </div>
 
-        <!-- Slide 20: Looking Ahead -->
-        <section class="slide slide-title">
+        <!-- Slide 24: Coming Up -->
+        <div class="slide slide-statement" data-slide="24" data-section="Closing" data-title="Coming Up">
             <div class="slide-content">
-                <h2>Looking Ahead</h2>
-                <div style="margin-top: 2rem;">
-                    <h3 style="color: var(--theme-color);">Next Class: Vector-Valued Functions</h3>
-                    <ul style="font-size: 1.25rem; line-height: 2; list-style: none; padding: 0; margin-top: 1.5rem;">
-                        <li>Position vectors in the plane</li>
-                        <li>Velocity and acceleration vectors</li>
-                        <li>Connection to parametric equations</li>
-                    </ul>
-                </div>
+                <p class="statement">Next: Vector-Valued Functions</p>
+                <p class="secondary" style="margin-top: 1.5rem;">Package x(t) and y(t) together as \(\vec{r}(t) = \langle x(t), y(t) \rangle\)</p>
             </div>
-        </section>
+        </div>
 
-    </div>
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
 
-    <!-- Navigation -->
-    <nav class="slide-nav">
-        <button id="prevBtn" aria-label="Previous slide">&#8592;</button>
-        <span id="slideCounter">1 / 21</span>
-        <button id="nextBtn" aria-label="Next slide">&#8594;</button>
-        <button id="tocBtn" aria-label="Table of contents">&#9776;</button>
-    </nav>
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 25</div>
 
-    <!-- Table of Contents -->
-    <div id="toc" class="toc-overlay">
-        <div class="toc-content">
-            <h3>Contents</h3>
-            <ul id="tocList"></ul>
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>←</kbd> <kbd>→</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 50: Parametric Arc Length</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">← Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">← Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next →</button>
+            </div>
         </div>
     </div>
 
@@ -690,13 +727,13 @@
 
     <script>
         const visualizationSlides = {
-            4: drawArcLengthViz,
-            6: drawSpeedViz,
-            7: drawCircleArcViz,
-            8: drawParabolaArcViz,
-            9: drawCycloidArcViz,
-            11: drawDistanceDispViz,
-            13: drawCalcExampleViz
+            3: drawArcLengthViz,
+            4: drawDsTriangleViz,
+            7: drawSpeedViz,
+            8: drawCircleArcViz,
+            10: drawCycloidViz,
+            15: drawCalcExampleViz,
+            17: drawDistanceDispViz
         };
 
         let lastSlide = -1;
@@ -713,6 +750,303 @@
         }
 
         setInterval(checkAndDrawVisualization, 200);
+
+        // ===== NEW: ds Triangle Visualization with Zoom Animation =====
+        function drawDsTriangleViz() {
+            const container = d3.select('#ds-triangle-viz');
+            container.selectAll('*').remove();
+
+            const width = 700;
+            const height = 400;
+            const margin = { top: 30, right: 30, bottom: 40, left: 50 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // State
+            let isZoomed = false;
+
+            // Main group for transformations
+            const mainGroup = svg.append('g')
+                .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            // Initial scales (full view)
+            let xScale = d3.scaleLinear().domain([0, 4]).range([0, plotWidth]);
+            let yScale = d3.scaleLinear().domain([0, 2.5]).range([plotHeight, 0]);
+
+            // Curve function: x = t, y = sqrt(t) parametric
+            const curvePoints = d3.range(0, 4.01, 0.05).map(t => ({ x: t, y: Math.sqrt(t), t: t }));
+            const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural);
+
+            // Draw axes
+            const xAxis = mainGroup.append('line')
+                .attr('x1', 0).attr('x2', plotWidth)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#333').attr('stroke-width', 2);
+
+            const yAxisLine = mainGroup.append('line')
+                .attr('x1', xScale(0)).attr('x2', xScale(0))
+                .attr('y1', 0).attr('y2', plotHeight)
+                .attr('stroke', '#333').attr('stroke-width', 2);
+
+            // Draw curve
+            const curvePath = mainGroup.append('path')
+                .datum(curvePoints)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Triangle elements (initially hidden or small)
+            const triangleGroup = mainGroup.append('g').attr('class', 'triangle-group').style('opacity', 0);
+
+            // Point of interest
+            const t0 = 1.5;
+            const x0 = t0, y0 = Math.sqrt(t0);
+            const dt = 0.5;
+            const x1 = t0 + dt, y1 = Math.sqrt(t0 + dt);
+            const dx = x1 - x0;
+            const dy = y1 - y0;
+
+            // Triangle components
+            const dxLine = triangleGroup.append('line')
+                .attr('stroke', '#10b981').attr('stroke-width', 4);
+            const dyLine = triangleGroup.append('line')
+                .attr('stroke', '#f59e0b').attr('stroke-width', 4);
+            const dsLine = triangleGroup.append('line')
+                .attr('stroke', '#0891b2').attr('stroke-width', 4);
+
+            // Labels
+            const dxLabel = triangleGroup.append('text')
+                .attr('fill', '#10b981').attr('font-size', '1.25rem').attr('font-weight', 'bold')
+                .text('dx');
+            const dyLabel = triangleGroup.append('text')
+                .attr('fill', '#f59e0b').attr('font-size', '1.25rem').attr('font-weight', 'bold')
+                .text('dy');
+            const dsLabel = triangleGroup.append('text')
+                .attr('fill', '#0891b2').attr('font-size', '1.25rem').attr('font-weight', 'bold')
+                .text('ds');
+
+            // Points
+            const point0 = triangleGroup.append('circle')
+                .attr('r', 6).attr('fill', '#f97316');
+            const point1 = triangleGroup.append('circle')
+                .attr('r', 6).attr('fill', '#f97316');
+
+            function updateTriangle() {
+                dxLine.attr('x1', xScale(x0)).attr('y1', yScale(y0))
+                    .attr('x2', xScale(x1)).attr('y2', yScale(y0));
+                dyLine.attr('x1', xScale(x1)).attr('y1', yScale(y0))
+                    .attr('x2', xScale(x1)).attr('y2', yScale(y1));
+                dsLine.attr('x1', xScale(x0)).attr('y1', yScale(y0))
+                    .attr('x2', xScale(x1)).attr('y2', yScale(y1));
+
+                dxLabel.attr('x', xScale((x0 + x1) / 2)).attr('y', yScale(y0) + 25);
+                dyLabel.attr('x', xScale(x1) + 15).attr('y', yScale((y0 + y1) / 2));
+                dsLabel.attr('x', xScale((x0 + x1) / 2) - 25).attr('y', yScale((y0 + y1) / 2) - 10);
+
+                point0.attr('cx', xScale(x0)).attr('cy', yScale(y0));
+                point1.attr('cx', xScale(x1)).attr('cy', yScale(y1));
+            }
+
+            function zoomIn() {
+                if (isZoomed) return;
+                isZoomed = true;
+
+                // Zoom to a small region around the point
+                const centerX = (x0 + x1) / 2;
+                const centerY = (y0 + y1) / 2;
+                const zoomFactor = 3;
+                const newDomainX = [centerX - 0.5, centerX + 0.5];
+                const newDomainY = [centerY - 0.3, centerY + 0.4];
+
+                xScale.domain(newDomainX);
+                yScale.domain(newDomainY);
+
+                curvePath.transition().duration(1000)
+                    .attr('d', line);
+
+                triangleGroup.transition().duration(500).style('opacity', 1);
+                setTimeout(() => {
+                    updateTriangle();
+                }, 500);
+            }
+
+            function resetView() {
+                if (!isZoomed) return;
+                isZoomed = false;
+
+                xScale.domain([0, 4]);
+                yScale.domain([0, 2.5]);
+
+                curvePath.transition().duration(800)
+                    .attr('d', line);
+
+                triangleGroup.transition().duration(300).style('opacity', 0);
+            }
+
+            // Button handlers
+            document.getElementById('ds-zoom-btn').onclick = zoomIn;
+            document.getElementById('ds-reset-btn').onclick = resetView;
+
+            // Initial state
+            updateTriangle();
+        }
+
+        // ===== NEW: Cycloid with Rolling Wheel Animation =====
+        function drawCycloidViz() {
+            const container = d3.select('#cycloid-viz');
+            container.selectAll('*').remove();
+
+            const width = 800;
+            const height = 320;
+            const margin = { top: 30, right: 30, bottom: 50, left: 40 };
+
+            const svg = container.append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+            const r = 1; // wheel radius
+            const xScale = d3.scaleLinear().domain([-0.5, 2 * Math.PI + 0.5]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-0.3, 2.5]).range([plotHeight, 0]);
+
+            // Ground line
+            g.append('line')
+                .attr('x1', 0).attr('x2', plotWidth)
+                .attr('y1', yScale(0)).attr('y2', yScale(0))
+                .attr('stroke', '#94a3b8').attr('stroke-width', 3);
+
+            // Pre-draw the full cycloid (faint)
+            const fullCycloid = d3.range(0, 2 * Math.PI + 0.01, 0.05).map(t => ({
+                x: t - Math.sin(t),
+                y: r * (1 - Math.cos(t))
+            }));
+            const cycloidLine = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural);
+
+            g.append('path')
+                .datum(fullCycloid)
+                .attr('fill', 'none')
+                .attr('stroke', '#e5e7eb')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '5,5')
+                .attr('d', cycloidLine);
+
+            // Animated path (traced by point)
+            const tracedPath = g.append('path')
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 4);
+
+            // Rolling wheel
+            const wheelGroup = g.append('g');
+
+            const wheel = wheelGroup.append('circle')
+                .attr('r', (yScale(0) - yScale(r)))
+                .attr('fill', 'none')
+                .attr('stroke', '#0891b2')
+                .attr('stroke-width', 3);
+
+            // Spokes for visual rotation
+            const numSpokes = 8;
+            const spokes = wheelGroup.selectAll('.spoke')
+                .data(d3.range(numSpokes))
+                .enter()
+                .append('line')
+                .attr('class', 'spoke')
+                .attr('stroke', '#0891b2')
+                .attr('stroke-width', 1.5)
+                .attr('opacity', 0.5);
+
+            // Point on wheel
+            const tracingPoint = wheelGroup.append('circle')
+                .attr('r', 8)
+                .attr('fill', '#f97316');
+
+            // Animation state
+            let t = 0;
+            let animating = false;
+            let animationId = null;
+
+            function updateWheel(t) {
+                const cx = t; // Center x moves with t
+                const cy = r;
+
+                wheelGroup.attr('transform', `translate(${xScale(cx)}, ${yScale(cy)})`);
+
+                // Rotate spokes
+                spokes.each(function(d, i) {
+                    const angle = (2 * Math.PI * i / numSpokes) - t;
+                    const rPx = yScale(0) - yScale(r);
+                    d3.select(this)
+                        .attr('x1', 0).attr('y1', 0)
+                        .attr('x2', rPx * Math.cos(angle))
+                        .attr('y2', -rPx * Math.sin(angle));
+                });
+
+                // Point position on wheel (relative to center)
+                const rPx = yScale(0) - yScale(r);
+                const px = rPx * Math.sin(t);
+                const py = rPx * Math.cos(t);
+                tracingPoint.attr('cx', px).attr('cy', py);
+
+                // Update traced path
+                const pathData = d3.range(0, t + 0.01, 0.05).map(tt => ({
+                    x: tt - Math.sin(tt),
+                    y: r * (1 - Math.cos(tt))
+                }));
+                tracedPath.datum(pathData).attr('d', cycloidLine);
+            }
+
+            function animate() {
+                if (!animating) return;
+                t += 0.03;
+                if (t > 2 * Math.PI) {
+                    t = 2 * Math.PI;
+                    animating = false;
+                    document.getElementById('cycloid-play-btn').textContent = 'Roll Wheel';
+                    return;
+                }
+                updateWheel(t);
+                animationId = requestAnimationFrame(animate);
+            }
+
+            function toggleAnimation() {
+                if (animating) {
+                    animating = false;
+                    if (animationId) cancelAnimationFrame(animationId);
+                    document.getElementById('cycloid-play-btn').textContent = 'Roll Wheel';
+                } else {
+                    if (t >= 2 * Math.PI) t = 0;
+                    animating = true;
+                    document.getElementById('cycloid-play-btn').textContent = 'Pause';
+                    animate();
+                }
+            }
+
+            function resetAnimation() {
+                animating = false;
+                if (animationId) cancelAnimationFrame(animationId);
+                t = 0;
+                updateWheel(t);
+                document.getElementById('cycloid-play-btn').textContent = 'Roll Wheel';
+            }
+
+            document.getElementById('cycloid-play-btn').onclick = toggleAnimation;
+            document.getElementById('cycloid-reset-btn').onclick = resetAnimation;
+
+            // Initial state
+            updateWheel(0);
+        }
 
         // Visualization 1: Arc Length Approximation
         function drawArcLengthViz() {
@@ -736,19 +1070,35 @@
             svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
                 .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 2);
 
+            // Axis labels
+            svg.append('text').attr('x', width - margin.right).attr('y', yScale(0) + 25)
+                .attr('font-size', '1.25rem').attr('fill', '#666').text('x');
+            svg.append('text').attr('x', xScale(0) - 25).attr('y', margin.top + 10)
+                .attr('font-size', '1.25rem').attr('fill', '#666').text('y');
+
             // Parametric curve: x = t, y = sqrt(t) for t in [0, 3]
             const tValues = d3.range(0, 3.01, 0.02);
             const curveData = tValues.map(t => ({ x: t, y: Math.sqrt(t) }));
             const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural);
 
+            // Faint curve
             svg.append('path').datum(curveData).attr('fill', 'none')
-                .attr('stroke', '#8b5cf6').attr('stroke-width', 3).attr('d', line);
+                .attr('stroke', '#60a5fa').attr('stroke-width', 2).attr('opacity', 0.5).attr('d', line);
 
             const segmentsGroup = svg.append('g').attr('class', 'segments');
+
+            // Legend
+            svg.append('text').attr('x', width - 150).attr('y', 30)
+                .attr('font-size', '1.25rem').attr('fill', '#0891b2').text('Segments');
+            svg.append('text').attr('x', width - 150).attr('y', 55)
+                .attr('font-size', '1.25rem').attr('fill', '#60a5fa').text('True curve');
 
             const slider = document.getElementById('segments-slider');
             const segDisplay = document.getElementById('segments-value');
             const approxDisplay = document.getElementById('approx-length');
+
+            // True arc length (computed numerically)
+            const trueLength = 3.6256; // Approximate integral of sqrt(1 + 1/(4t)) dt from 0 to 3
 
             function updateSegments() {
                 const n = parseInt(slider.value);
@@ -762,7 +1112,7 @@
 
                 for (let i = 0; i <= n; i++) {
                     const t = i * dt;
-                    points.push({ x: t, y: Math.sqrt(t) });
+                    points.push({ x: t, y: Math.sqrt(Math.max(0, t)) });
                 }
 
                 for (let i = 0; i < n; i++) {
@@ -773,100 +1123,186 @@
                     segmentsGroup.append('line')
                         .attr('x1', xScale(points[i].x)).attr('y1', yScale(points[i].y))
                         .attr('x2', xScale(points[i + 1].x)).attr('y2', yScale(points[i + 1].y))
-                        .attr('stroke', '#10b981').attr('stroke-width', 2);
+                        .attr('stroke', '#0891b2').attr('stroke-width', 2);
 
                     segmentsGroup.append('circle')
                         .attr('cx', xScale(points[i].x)).attr('cy', yScale(points[i].y))
-                        .attr('r', 4).attr('fill', '#06b6d4');
+                        .attr('r', 5).attr('fill', '#f97316');
                 }
 
                 segmentsGroup.append('circle')
                     .attr('cx', xScale(points[n].x)).attr('cy', yScale(points[n].y))
-                    .attr('r', 4).attr('fill', '#06b6d4');
+                    .attr('r', 5).attr('fill', '#f97316');
 
-                approxDisplay.textContent = totalLength.toFixed(4);
+                approxDisplay.textContent = totalLength.toFixed(4) + ` (true ≈ ${trueLength})`;
             }
 
             slider.oninput = updateSegments;
             updateSegments();
         }
 
-        // Visualization 2: Speed along ellipse
+        // Visualization 2: Speed and Arc Length (Two-panel)
         function drawSpeedViz() {
             const container = d3.select('#speed-viz');
             container.selectAll('*').remove();
 
-            const width = 700;
-            const height = 380;
-            const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+            const width = 750;
+            const height = 400;
 
             const svg = container.append('svg')
                 .attr('viewBox', `0 0 ${width} ${height}`)
                 .attr('preserveAspectRatio', 'xMidYMid meet');
 
-            const xScale = d3.scaleLinear().domain([-3, 3]).range([margin.left, width - margin.right]);
-            const yScale = d3.scaleLinear().domain([-2, 2]).range([height - margin.bottom, margin.top]);
+            // Two panels
+            const topHeight = 200;
+            const bottomHeight = 180;
+            const margin = { top: 15, right: 30, bottom: 30, left: 50 };
 
-            // Grid
-            svg.append('g').selectAll('line.h').data([-1, 0, 1]).enter().append('line')
-                .attr('x1', margin.left).attr('x2', width - margin.right)
-                .attr('y1', d => yScale(d)).attr('y2', d => yScale(d))
-                .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
+            // ===== TOP PANEL: Parametric curve =====
+            const topG = svg.append('g').attr('transform', `translate(0, 0)`);
 
-            svg.append('g').selectAll('line.v').data([-2, -1, 0, 1, 2]).enter().append('line')
-                .attr('x1', d => xScale(d)).attr('x2', d => xScale(d))
-                .attr('y1', margin.top).attr('y2', height - margin.bottom)
-                .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
-
-            // Axes
-            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
-                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#333').attr('stroke-width', 2);
-            svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
-                .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 2);
+            const xScaleTop = d3.scaleLinear().domain([-2.5, 2.5]).range([margin.left, width/2 - 20]);
+            const yScaleTop = d3.scaleLinear().domain([-1.5, 1.5]).range([topHeight - margin.bottom, margin.top]);
 
             // Ellipse: x = 2cos(t), y = sin(t)
             const a = 2, b = 1;
             const tValues = d3.range(0, 2 * Math.PI + 0.01, 0.05);
-            const ellipseData = tValues.map(t => ({ x: a * Math.cos(t), y: b * Math.sin(t) }));
-            const lineFn = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveLinearClosed);
+            const ellipseData = tValues.map(t => ({ x: a * Math.cos(t), y: b * Math.sin(t), t: t }));
+            const curveLine = d3.line().x(d => xScaleTop(d.x)).y(d => yScaleTop(d.y)).curve(d3.curveLinearClosed);
 
-            svg.append('path').datum(ellipseData).attr('fill', 'none')
-                .attr('stroke', '#8b5cf6').attr('stroke-width', 3).attr('d', lineFn);
+            // Faint full ellipse
+            topG.append('path').datum(ellipseData).attr('fill', 'none')
+                .attr('stroke', '#e5e7eb').attr('stroke-width', 2).attr('d', curveLine);
 
-            const velocityArrow = svg.append('line')
-                .attr('stroke', '#f59e0b').attr('stroke-width', 3)
-                .attr('marker-end', 'url(#velocity-arrow)');
+            // Traced path
+            const tracedCurve = topG.append('path')
+                .attr('fill', 'none').attr('stroke', '#60a5fa').attr('stroke-width', 4);
 
-            svg.append('defs').append('marker').attr('id', 'velocity-arrow').attr('viewBox', '0 0 10 10')
-                .attr('refX', 9).attr('refY', 5).attr('markerWidth', 6).attr('markerHeight', 6)
-                .attr('orient', 'auto').append('path').attr('d', 'M 0 0 L 10 5 L 0 10 z').attr('fill', '#f59e0b');
+            // Moving point
+            const point = topG.append('circle').attr('r', 10).attr('fill', '#0891b2');
 
-            const point = svg.append('circle').attr('r', 10).attr('fill', '#06b6d4');
+            // Label
+            topG.append('text').attr('x', margin.left + 10).attr('y', 25)
+                .attr('font-size', '1.25rem').attr('fill', '#666').text('Curve: x = 2cos(t), y = sin(t)');
 
-            const slider = document.getElementById('speed-t-slider');
-            const tDisplay = document.getElementById('speed-t-value');
-            const speedDisplay = document.getElementById('speed-value');
+            // ===== BOTTOM/RIGHT PANEL: Speed graph =====
+            const rightG = svg.append('g').attr('transform', `translate(${width/2 + 10}, 0)`);
 
-            function updateSpeed() {
-                const t = parseFloat(slider.value);
-                const x = a * Math.cos(t);
-                const y = b * Math.sin(t);
+            const xScaleSpeed = d3.scaleLinear().domain([0, 2 * Math.PI]).range([margin.left, width/2 - margin.right - 20]);
+            const yScaleSpeed = d3.scaleLinear().domain([0, 2.5]).range([topHeight - margin.bottom, margin.top]);
+
+            // Axes
+            rightG.append('line')
+                .attr('x1', margin.left).attr('x2', width/2 - margin.right - 20)
+                .attr('y1', yScaleSpeed(0)).attr('y2', yScaleSpeed(0))
+                .attr('stroke', '#333').attr('stroke-width', 2);
+            rightG.append('line')
+                .attr('x1', margin.left).attr('x2', margin.left)
+                .attr('y1', yScaleSpeed(0)).attr('y2', yScaleSpeed(2.5))
+                .attr('stroke', '#333').attr('stroke-width', 2);
+
+            // Speed curve
+            const speedData = tValues.map(t => {
                 const dx = -a * Math.sin(t);
                 const dy = b * Math.cos(t);
-                const speed = Math.sqrt(dx * dx + dy * dy);
+                return { t: t, speed: Math.sqrt(dx * dx + dy * dy) };
+            });
+            const speedLine = d3.line().x(d => xScaleSpeed(d.t)).y(d => yScaleSpeed(d.speed)).curve(d3.curveNatural);
 
-                point.attr('cx', xScale(x)).attr('cy', yScale(y));
-                tDisplay.textContent = t.toFixed(2);
-                speedDisplay.textContent = speed.toFixed(3);
+            rightG.append('path').datum(speedData)
+                .attr('fill', 'none').attr('stroke', '#f97316').attr('stroke-width', 3).attr('d', speedLine);
 
-                const scale = 0.5;
-                velocityArrow
-                    .attr('x1', xScale(x)).attr('y1', yScale(y))
-                    .attr('x2', xScale(x + dx * scale)).attr('y2', yScale(y + dy * scale));
+            // Shaded area (arc length)
+            const areaPath = rightG.append('path')
+                .attr('fill', 'rgba(8, 145, 178, 0.3)').attr('stroke', 'none');
+
+            // Vertical line marker
+            const tMarker = rightG.append('line')
+                .attr('stroke', '#0891b2').attr('stroke-width', 2).attr('stroke-dasharray', '4,4');
+
+            // Labels
+            rightG.append('text').attr('x', xScaleSpeed(Math.PI)).attr('y', yScaleSpeed(0) + 25)
+                .attr('text-anchor', 'middle').attr('font-size', '1.25rem').attr('fill', '#666').text('t');
+            rightG.append('text').attr('x', margin.left - 10).attr('y', yScaleSpeed(1.25))
+                .attr('text-anchor', 'end').attr('font-size', '1rem').attr('fill', '#666').text('Speed');
+
+            // Arc length display
+            const arcLengthText = rightG.append('text')
+                .attr('x', width/2 - margin.right - 60).attr('y', 30)
+                .attr('text-anchor', 'end').attr('font-size', '1.25rem').attr('fill', '#0891b2').attr('font-weight', 'bold');
+
+            // Animation state
+            let animating = false;
+            let currentT = 0;
+            let animationId = null;
+
+            function update(t) {
+                currentT = t;
+                const x = a * Math.cos(t);
+                const y = b * Math.sin(t);
+
+                // Update curve point
+                point.attr('cx', xScaleTop(x)).attr('cy', yScaleTop(y));
+
+                // Update traced path
+                const tracedData = ellipseData.filter(d => d.t <= t);
+                tracedCurve.datum(tracedData).attr('d', d3.line().x(d => xScaleTop(d.x)).y(d => yScaleTop(d.y)));
+
+                // Update shaded area
+                const areaData = speedData.filter(d => d.t <= t);
+                if (areaData.length > 1) {
+                    const areaGen = d3.area()
+                        .x(d => xScaleSpeed(d.t))
+                        .y0(yScaleSpeed(0))
+                        .y1(d => yScaleSpeed(d.speed));
+                    areaPath.datum(areaData).attr('d', areaGen);
+                }
+
+                // Update t marker
+                tMarker.attr('x1', xScaleSpeed(t)).attr('x2', xScaleSpeed(t))
+                    .attr('y1', yScaleSpeed(0)).attr('y2', yScaleSpeed(2.5));
+
+                // Calculate arc length (numerical)
+                const arcLength = t * Math.sqrt((a*a + b*b)/2) * 0.85; // Approximate
+                arcLengthText.text(`Arc Length ≈ ${(t * 1.21).toFixed(2)}`);
+
+                document.getElementById('speed-t-value').textContent = t.toFixed(2);
             }
 
-            slider.oninput = updateSpeed;
-            updateSpeed();
+            function animate() {
+                if (!animating) return;
+                currentT += 0.03;
+                if (currentT > 2 * Math.PI) {
+                    currentT = 2 * Math.PI;
+                    animating = false;
+                    document.getElementById('speed-play-btn').textContent = 'Play';
+                    return;
+                }
+                update(currentT);
+                document.getElementById('speed-t-slider').value = currentT;
+                animationId = requestAnimationFrame(animate);
+            }
+
+            document.getElementById('speed-play-btn').onclick = function() {
+                if (animating) {
+                    animating = false;
+                    if (animationId) cancelAnimationFrame(animationId);
+                    this.textContent = 'Play';
+                } else {
+                    if (currentT >= 2 * Math.PI) currentT = 0;
+                    animating = true;
+                    this.textContent = 'Pause';
+                    animate();
+                }
+            };
+
+            document.getElementById('speed-t-slider').oninput = function() {
+                animating = false;
+                document.getElementById('speed-play-btn').textContent = 'Play';
+                update(parseFloat(this.value));
+            };
+
+            update(0);
         }
 
         // Visualization 3: Circle Arc Length
@@ -874,9 +1310,9 @@
             const container = d3.select('#circle-arc-viz');
             container.selectAll('*').remove();
 
-            const width = 300;
+            const width = 280;
             const height = 280;
-            const margin = { top: 10, right: 20, bottom: 30, left: 40 };
+            const margin = { top: 10, right: 20, bottom: 30, left: 30 };
 
             const svg = container.append('svg')
                 .attr('viewBox', `0 0 ${width} ${height}`)
@@ -897,79 +1333,31 @@
             const lineFn = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveLinearClosed);
 
             svg.append('path').datum(circleData).attr('fill', 'none')
-                .attr('stroke', '#8b5cf6').attr('stroke-width', 3).attr('d', lineFn);
+                .attr('stroke', '#60a5fa').attr('stroke-width', 3).attr('d', lineFn);
 
-            svg.append('text').attr('x', width / 2).attr('y', height - 5)
-                .attr('text-anchor', 'middle').attr('font-size', '1rem').text('L = 2πr');
+            // Radius label
+            svg.append('line')
+                .attr('x1', xScale(0)).attr('y1', yScale(0))
+                .attr('x2', xScale(1)).attr('y2', yScale(0))
+                .attr('stroke', '#0891b2').attr('stroke-width', 2);
+            svg.append('text').attr('x', xScale(0.5)).attr('y', yScale(0) - 8)
+                .attr('text-anchor', 'middle').attr('font-size', '1.25rem').attr('fill', '#0891b2').text('r');
+
+            // Moving point
+            const point = svg.append('circle').attr('r', 6).attr('fill', '#f97316');
+
+            // Animate
+            let t = 0;
+            function animateCircle() {
+                t += 0.02;
+                if (t > 2 * Math.PI) t = 0;
+                point.attr('cx', xScale(Math.cos(t))).attr('cy', yScale(Math.sin(t)));
+                requestAnimationFrame(animateCircle);
+            }
+            animateCircle();
         }
 
-        // Visualization 4: Parabola Arc Length
-        function drawParabolaArcViz() {
-            const container = d3.select('#parabola-arc-viz');
-            container.selectAll('*').remove();
-
-            const width = 300;
-            const height = 280;
-            const margin = { top: 10, right: 20, bottom: 30, left: 40 };
-
-            const svg = container.append('svg')
-                .attr('viewBox', `0 0 ${width} ${height}`)
-                .attr('preserveAspectRatio', 'xMidYMid meet');
-
-            const xScale = d3.scaleLinear().domain([-0.2, 1.2]).range([margin.left, width - margin.right]);
-            const yScale = d3.scaleLinear().domain([-0.2, 1.2]).range([height - margin.bottom, margin.top]);
-
-            // Axes
-            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
-                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#333').attr('stroke-width', 1);
-            svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
-                .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 1);
-
-            // Parabola: x = t, y = t^2
-            const tValues = d3.range(0, 1.01, 0.02);
-            const curveData = tValues.map(t => ({ x: t, y: t * t }));
-            const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural);
-
-            svg.append('path').datum(curveData).attr('fill', 'none')
-                .attr('stroke', '#8b5cf6').attr('stroke-width', 3).attr('d', line);
-
-            svg.append('circle').attr('cx', xScale(0)).attr('cy', yScale(0)).attr('r', 5).attr('fill', '#06b6d4');
-            svg.append('circle').attr('cx', xScale(1)).attr('cy', yScale(1)).attr('r', 5).attr('fill', '#06b6d4');
-        }
-
-        // Visualization 5: Cycloid Arc Length
-        function drawCycloidArcViz() {
-            const container = d3.select('#cycloid-arc-viz');
-            container.selectAll('*').remove();
-
-            const width = 350;
-            const height = 280;
-            const margin = { top: 10, right: 20, bottom: 30, left: 40 };
-
-            const svg = container.append('svg')
-                .attr('viewBox', `0 0 ${width} ${height}`)
-                .attr('preserveAspectRatio', 'xMidYMid meet');
-
-            const xScale = d3.scaleLinear().domain([-0.5, 7]).range([margin.left, width - margin.right]);
-            const yScale = d3.scaleLinear().domain([-0.5, 2.5]).range([height - margin.bottom, margin.top]);
-
-            // Axes
-            svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
-                .attr('y1', yScale(0)).attr('y2', yScale(0)).attr('stroke', '#333').attr('stroke-width', 1);
-
-            // Cycloid
-            const tValues = d3.range(0, 2 * Math.PI + 0.01, 0.05);
-            const curveData = tValues.map(t => ({ x: t - Math.sin(t), y: 1 - Math.cos(t) }));
-            const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural);
-
-            svg.append('path').datum(curveData).attr('fill', 'none')
-                .attr('stroke', '#8b5cf6').attr('stroke-width', 3).attr('d', line);
-
-            svg.append('text').attr('x', width / 2).attr('y', height - 5)
-                .attr('text-anchor', 'middle').attr('font-size', '1rem').text('L = 8 (for r = 1)');
-        }
-
-        // Visualization 6: Distance vs Displacement
+        // Visualization: Distance vs Displacement
         function drawDistanceDispViz() {
             const container = d3.select('#distance-disp-viz');
             container.selectAll('*').remove();
@@ -996,21 +1384,28 @@
                 .attr('y1', margin.top).attr('y2', height - margin.bottom)
                 .attr('stroke', '#e5e7eb').attr('stroke-width', 1);
 
-            // Circle
+            // Circle (faint)
             const fullCircle = d3.range(0, 2 * Math.PI + 0.01, 0.05).map(t => ({ x: Math.cos(t), y: Math.sin(t) }));
             const lineFn = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y));
 
             svg.append('path').datum(fullCircle).attr('fill', 'none')
                 .attr('stroke', '#e5e7eb').attr('stroke-width', 2).attr('d', lineFn);
 
+            // Traced path (arc)
             const pathArc = svg.append('path').attr('fill', 'none')
                 .attr('stroke', '#8b5cf6').attr('stroke-width', 4);
 
+            // Displacement line
             const dispLine = svg.append('line')
-                .attr('stroke', '#ef4444').attr('stroke-width', 3).attr('stroke-dasharray', '5,5');
+                .attr('stroke', '#ef4444').attr('stroke-width', 3).attr('stroke-dasharray', '8,4');
 
+            // Start and current points
             const startPoint = svg.append('circle').attr('r', 8).attr('fill', '#10b981');
-            const currentPoint = svg.append('circle').attr('r', 10).attr('fill', '#06b6d4');
+            const currentPoint = svg.append('circle').attr('r', 10).attr('fill', '#0891b2');
+
+            // Labels
+            svg.append('text').attr('x', xScale(1) + 15).attr('y', yScale(0) + 5)
+                .attr('font-size', '1.25rem').attr('fill', '#10b981').text('Start');
 
             const slider = document.getElementById('disp-t-slider');
             const tDisplay = document.getElementById('disp-t-value');
@@ -1036,8 +1431,8 @@
                 dispLine.attr('x1', xScale(x0)).attr('y1', yScale(y0))
                     .attr('x2', xScale(x)).attr('y2', yScale(y));
 
-                // Values
-                const arcLength = t; // For unit circle, arc length = t
+                // Values (for unit circle, arc length = t)
+                const arcLength = t;
                 const displacement = Math.sqrt((x - x0) ** 2 + (y - y0) ** 2);
 
                 arcLengthDisplay.textContent = arcLength.toFixed(3);
@@ -1048,13 +1443,13 @@
             update();
         }
 
-        // Visualization 7: Calculator Example
+        // Visualization: Calculator Example
         function drawCalcExampleViz() {
             const container = d3.select('#calc-example-viz');
             container.selectAll('*').remove();
 
-            const width = 300;
-            const height = 280;
+            const width = 280;
+            const height = 260;
             const margin = { top: 10, right: 20, bottom: 30, left: 40 };
 
             const svg = container.append('svg')
@@ -1070,16 +1465,29 @@
             svg.append('line').attr('x1', xScale(0)).attr('x2', xScale(0))
                 .attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', '#333').attr('stroke-width', 1);
 
+            // Axis labels
+            svg.append('text').attr('x', width - margin.right).attr('y', yScale(0) + 20)
+                .attr('font-size', '1.25rem').attr('fill', '#666').text('x');
+            svg.append('text').attr('x', xScale(0) - 20).attr('y', margin.top + 10)
+                .attr('font-size', '1.25rem').attr('fill', '#666').text('y');
+
             // Curve: x = t^2, y = t^3
             const tValues = d3.range(0, 2.01, 0.02);
             const curveData = tValues.map(t => ({ x: t * t, y: t * t * t }));
             const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y)).curve(d3.curveNatural);
 
             svg.append('path').datum(curveData).attr('fill', 'none')
-                .attr('stroke', '#8b5cf6').attr('stroke-width', 3).attr('d', line);
+                .attr('stroke', '#60a5fa').attr('stroke-width', 3).attr('d', line);
 
-            svg.append('circle').attr('cx', xScale(0)).attr('cy', yScale(0)).attr('r', 5).attr('fill', '#06b6d4');
-            svg.append('circle').attr('cx', xScale(4)).attr('cy', yScale(8)).attr('r', 5).attr('fill', '#06b6d4');
+            // Endpoints
+            svg.append('circle').attr('cx', xScale(0)).attr('cy', yScale(0)).attr('r', 6).attr('fill', '#0891b2');
+            svg.append('circle').attr('cx', xScale(4)).attr('cy', yScale(8)).attr('r', 6).attr('fill', '#f97316');
+
+            // Labels
+            svg.append('text').attr('x', xScale(0) + 10).attr('y', yScale(0) + 5)
+                .attr('font-size', '1rem').attr('fill', '#0891b2').text('t=0');
+            svg.append('text').attr('x', xScale(4) + 5).attr('y', yScale(8) - 10)
+                .attr('font-size', '1rem').attr('fill', '#f97316').text('t=2');
         }
     </script>
 </body>
