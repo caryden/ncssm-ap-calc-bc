@@ -256,8 +256,8 @@ show_status() {
 
     echo "=== Class Artifact Status ==="
     echo ""
-    printf "%-35s %-8s %-12s %-8s %-8s\n" "CLASS" "RESEARCH" "LESSON_PLAN" "SPEC" "HTML"
-    printf "%-35s %-8s %-12s %-8s %-8s\n" "-----" "--------" "-----------" "----" "----"
+    printf "%-35s %-8s %-12s %-8s %-8s %-8s\n" "CLASS" "RESEARCH" "LESSON_PLAN" "SPEC" "HTML" "REVIEW"
+    printf "%-35s %-8s %-12s %-8s %-8s %-8s\n" "-----" "--------" "-----------" "----" "----" "------"
 
     for dir in "$REPO_ROOT"/class-*/; do
         if [ -d "$dir" ]; then
@@ -268,13 +268,15 @@ show_status() {
             lesson_plan="○"
             spec="○"
             html="○"
+            review="○"
 
             [ -n "$(find "$dir" -maxdepth 1 -name 'research-*.md' 2>/dev/null | head -1)" ] && research="✓"
             [ -n "$(find "$dir" -maxdepth 1 -name 'lesson-plan-*.md' 2>/dev/null | head -1)" ] && lesson_plan="✓"
             [ -n "$(find "$dir" -maxdepth 1 -name 'presentation-spec-*.md' 2>/dev/null | head -1)" ] && spec="✓"
             [ -f "$dir/presentation.html" ] && html="✓"
+            [ -f "$dir/reviewlog.md" ] && review="✓"
 
-            printf "%-35s %-8s %-12s %-8s %-8s\n" "$class_name" "$research" "$lesson_plan" "$spec" "$html"
+            printf "%-35s %-8s %-12s %-8s %-8s %-8s\n" "$class_name" "$research" "$lesson_plan" "$spec" "$html" "$review"
         fi
     done
 

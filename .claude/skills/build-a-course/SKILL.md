@@ -111,6 +111,41 @@ For each class:
 
 **Must use** `class-0-introduction/presentation.html` as structural template.
 
+### Level 5: Review Log (Control Document)
+
+| Artifact | Location | Contents |
+|----------|----------|----------|
+| `reviewlog.md` | `class-N-topic/` | Audit trail of all reviews and validations |
+
+**Purpose:** Prevents re-reviewing presentations and provides accountability trail.
+
+**Required columns:**
+- Date
+- Review Type (Technical Audit, Content Validation, Spec Verification, Full V&V)
+- Commit Hash (of presentation.html being reviewed)
+- Reviewer
+- Result (PASS, FAIL, NEEDS-UPDATE)
+- Notes
+
+**Template:**
+```markdown
+# Review Log: [Topic Name]
+
+## Class N | Unit U: [Unit Name]
+
+| Date | Review Type | Commit | Reviewer | Result | Notes |
+|------|-------------|--------|----------|--------|-------|
+| YYYY-MM-DD | Technical Audit | abc1234 | Claude | PASS | TOC ✓, Fonts ✓, D3 ✓ |
+| YYYY-MM-DD | Content vs Lesson Plan | abc1234 | Claude | PASS | All objectives covered |
+| YYYY-MM-DD | Spec Verification | abc1234 | Claude | PASS | 22/22 slides match |
+```
+
+**Review Types:**
+1. **Technical Audit** - Structural checks: TOC, fonts, slide types, D3 presence
+2. **Content vs Lesson Plan** - Learning objectives achieved, misconceptions addressed
+3. **Spec Verification** - Slide-by-slide match against presentation-spec
+4. **Full V&V** - Complete validation and verification (all of the above)
+
 ---
 
 ## Blocking Rules
@@ -199,6 +234,20 @@ For each class:
 - [ ] Quality matches class-0 standard
 
 **On Failure:** This is a spec problem. Return to Gate 2, revise spec, then update presentation.
+
+### Gate 5: Review Log Update (MANDATORY)
+
+**After ANY review or validation:**
+1. Get current commit hash: `git log -1 --format=%h class-N-topic/presentation.html`
+2. Add row to `reviewlog.md` with:
+   - Today's date
+   - Review type performed
+   - Commit hash
+   - Result (PASS/FAIL/NEEDS-UPDATE)
+   - Specific notes about what was checked and any issues found
+3. Commit the reviewlog.md update
+
+**Purpose:** Creates audit trail so presentations don't need re-reviewing unless presentation.html changes.
 
 ---
 

@@ -4,369 +4,907 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Class 48: Arc Length | AP Calculus BC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../shared/styles.css">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         :root {
             --theme-color: #e11d48;
-            --theme-light: var(--bg-tertiary);
-            --theme-dark: #be123c;
+            --theme-color-light: #f43f5e;
         }
-        .unit-badge {
-            background: var(--theme-color);
-            color: white;
+
+        /* BC Badge Styling */
+        .bc-badge {
+            display: inline-block;
             padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.875rem;
-            font-weight: 600;
+            background: var(--accent-secondary);
+            color: var(--bg-primary);
+            border-radius: 4px;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            margin-left: 1rem;
+            vertical-align: middle;
         }
+
+        /* Formula Box */
         .formula-box {
-            background: var(--theme-light);
-            border-left: 4px solid var(--theme-color);
-            padding: 1.5rem 2rem;
-            margin: 1.5rem 0;
-            border-radius: 0 0.5rem 0.5rem 0;
+            background: var(--bg-secondary);
+            border: 3px solid var(--theme-color);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 1.5rem auto;
+            max-width: 800px;
+        }
+
+        .formula-box .formula-label {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .formula-box .formula-main {
+            font-size: 2rem;
+        }
+
+        /* Result Box */
+        .result-box {
+            background: linear-gradient(135deg, var(--theme-color) 0%, var(--theme-color-light) 100%);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .result-box .result-text {
             font-size: 1.75rem;
+            font-weight: 700;
+            color: white;
         }
-        .example-box {
-            background: var(--bg-tertiary);
-            border: 2px solid var(--theme-color);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            margin: 1rem 0;
-        }
-        .two-column {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            width: 100%;
-        }
-        .column {
+
+        /* Slider Control */
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
             padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
         }
-        .viz-container {
+
+        .slider-control label {
+            font-size: 1.25rem;
+            font-family: var(--font-display);
+        }
+
+        .slider-control input[type="range"] {
+            width: 300px;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--theme-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .slider-control input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--theme-color);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+
+        .length-display {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--accent-secondary);
+            min-width: 280px;
+        }
+
+        /* Insight Box */
+        .insight-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent-secondary);
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            text-align: left;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .insight-box p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        /* Road Illustration */
+        .winding-road {
             width: 100%;
             max-width: 700px;
-            height: 400px;
-            margin: 0 auto;
+            height: 200px;
+            margin: 1.5rem auto;
+            position: relative;
+        }
+
+        /* Step List for Examples */
+        .step-list {
+            text-align: left;
+            max-width: 900px;
+            margin: 1rem auto;
+        }
+
+        .step-list .step {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            align-items: flex-start;
+        }
+
+        .step-list .step-number {
+            background: var(--theme-color);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+            font-family: var(--font-display);
+        }
+
+        .step-list .step-content {
+            flex: 1;
+        }
+
+        /* Timer Badge */
+        .timer-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 20px;
+            font-size: 1.25rem;
+            color: var(--accent-secondary);
+            margin-top: 1rem;
+        }
+
+        /* Comparison Visual */
+        .comparison-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        .comparison-item {
+            text-align: center;
+        }
+
+        .comparison-item .value {
+            font-size: 3rem;
+            font-weight: 700;
+            font-family: var(--font-mono);
+        }
+
+        .comparison-item .label {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        .comparison-arrow {
+            font-size: 2rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Note styling */
+        .note {
+            font-size: 1.25rem;
+            color: var(--text-tertiary);
+            font-style: italic;
+            margin-top: 1rem;
+        }
+
+        /* Math Steps */
+        .math-steps {
+            text-align: left;
+            max-width: 900px;
+            margin: 1.5rem auto;
+        }
+
+        .math-steps .math-line {
+            font-size: 1.5rem;
+            margin: 0.75rem 0;
+            padding-left: 1rem;
+        }
+
+        /* Hint Box */
+        .hint-box {
+            background: var(--bg-secondary);
+            border: 1px dashed var(--theme-color);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hint-box p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
         }
     </style>
 </head>
 <body>
     <div class="presentation">
-        <!-- Title Slide -->
-        <div class="slide slide-title active" data-slide="0" data-title="Arc Length">
+        <!-- Slide 0: Title -->
+        <div class="slide slide-title" data-slide="0" data-section="Opening" data-title="Arc Length">
             <div class="slide-content">
-                <span class="unit-badge">Unit 8: Applications of Integration</span>
-                <h1>Arc Length</h1>
-                <h2>Class 48 | CED Topic 8.13</h2>
-                <p style="font-size: 1.25rem; color: #64748b; margin-top: 2rem;">
-                    Measuring the Length of Curves
-                </p>
+                <div class="unit-badge">Unit 8: Applications of Integration</div>
+                <h1>Arc Length<span class="bc-badge">BC Only</span></h1>
+                <p class="subtitle">Measuring the Length of Curves</p>
+                <p class="meta">Class 48 | CED 8.13 | NCSSM</p>
             </div>
         </div>
 
-        <!-- Warm-Up -->
-        <div class="slide slide-statement" data-slide="1" data-title="Warm-Up">
+        <!-- Slide 1: The Winding Road -->
+        <div class="slide slide-visual" data-slide="1" data-section="Opening" data-title="The Winding Road">
             <div class="slide-content">
-                <h2>Warm-Up</h2>
-                <p style="font-size: 1.5rem; margin-bottom: 1.5rem;">
-                    What is the distance between points \( (x_1, y_1) \) and \( (x_2, y_2) \)?
-                </p>
-                <div class="formula-box">
-                    \( d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2} \)
-                </div>
-                <p style="font-size: 1.5rem; margin-top: 2rem; color: #64748b;">
-                    The Pythagorean theorem in disguise!
-                </p>
+                <h2>How Far Do You Actually Travel?</h2>
+                <div id="winding-road-viz" class="visualization"></div>
+                <p style="font-size: 1.5rem; margin-top: 1rem;">If you drive along this curvy road, how far do you actually go?</p>
+                <p class="caption" style="color: var(--accent-secondary);">The curved distance is longer than "as the crow flies"</p>
             </div>
         </div>
 
-        <!-- The Problem -->
-        <div class="slide slide-statement" data-slide="2" data-title="The Problem">
+        <!-- Slide 2: The Challenge -->
+        <div class="slide slide-statement" data-slide="2" data-section="Opening" data-title="The Challenge">
             <div class="slide-content">
-                <h2>The Challenge</h2>
-                <p style="font-size: 1.75rem; margin-bottom: 2rem;">
-                    How do we find the length of a curve?
-                </p>
-                <p style="font-size: 1.5rem; color: #64748b;">
-                    Straight line: easy (distance formula)<br><br>
-                    Curve: we need calculus!
-                </p>
+                <p class="statement">To measure a curve's length, we break it into infinitely many tiny pieces, each approximately a <em>straight line</em>.</p>
+                <p style="font-size: 1.75rem; color: var(--text-secondary); margin-top: 2rem;">The Pythagorean theorem will do the heavy lifting.</p>
             </div>
         </div>
 
-        <!-- Approximation Idea -->
-        <div class="slide slide-content" data-slide="3" data-title="Approximation">
-            <div class="slide-content">
-                <h2>Approximating Arc Length</h2>
-                <p style="font-size: 1.5rem; margin-bottom: 1.5rem;">
-                    Break the curve into small line segments.
-                </p>
-                <p style="font-size: 1.5rem;">
-                    Each segment has length:
-                </p>
-                <div class="formula-box">
-                    \( \Delta s \approx \sqrt{(\Delta x)^2 + (\Delta y)^2} \)
-                </div>
-                <p style="font-size: 1.5rem; margin-top: 1.5rem; color: #64748b;">
-                    As segments get smaller, approximation improves!
-                </p>
-            </div>
-        </div>
-
-        <!-- Visualization -->
-        <div class="slide slide-visual" data-slide="4" data-title="Visualization">
+        <!-- Slide 3: Polygonal Approximation -->
+        <div class="slide slide-visual" data-slide="3" data-section="Derivation" data-title="Polygonal Approximation">
             <div class="slide-content">
                 <h2>Approximating with Line Segments</h2>
-                <div class="viz-container" id="arc-viz"></div>
+                <div id="polygonal-viz" class="visualization"></div>
+                <div class="slider-control">
+                    <label>Segments: n =</label>
+                    <input type="range" id="segment-slider" min="4" max="64" step="1" value="4">
+                    <span class="length-display" id="length-display">n = 4, L ≈ 2.000</span>
+                </div>
+                <p class="caption">More segments = better approximation = exact length in the limit</p>
             </div>
         </div>
 
-        <!-- Derivation -->
-        <div class="slide slide-content" data-slide="5" data-title="Derivation">
+        <!-- Slide 4: One Tiny Segment -->
+        <div class="slide slide-visual" data-slide="4" data-section="Derivation" data-title="One Tiny Segment">
             <div class="slide-content">
-                <h2>Deriving the Formula</h2>
-                <p style="font-size: 1.5rem;">Factor out \( \Delta x \):</p>
-                <div class="formula-box" style="font-size: 1.5rem;">
-                    \( \Delta s = \sqrt{(\Delta x)^2 + (\Delta y)^2} = \sqrt{1 + \left(\frac{\Delta y}{\Delta x}\right)^2} \cdot \Delta x \)
-                </div>
-                <p style="font-size: 1.5rem; margin-top: 1.5rem;">As \( \Delta x \to 0 \):</p>
-                <div class="formula-box" style="font-size: 1.5rem;">
-                    \( ds = \sqrt{1 + \left(\frac{dy}{dx}\right)^2} \, dx \)
-                </div>
+                <h2>The Length of One Tiny Piece</h2>
+                <div id="pythagorean-viz" class="visualization"></div>
+                <p class="caption">Pythagorean theorem: segment length = \(\sqrt{(\Delta x)^2 + (\Delta y)^2}\)</p>
             </div>
         </div>
 
-        <!-- Arc Length Formula -->
-        <div class="slide slide-statement" data-slide="6" data-title="Arc Length Formula">
+        <!-- Slide 5: The Key Algebraic Step -->
+        <div class="slide slide-two-part" data-slide="5" data-section="Derivation" data-title="Factor Out Delta-x">
             <div class="slide-content">
-                <h2>Arc Length Formula</h2>
-                <div class="formula-box" style="font-size: 2rem; text-align: center;">
-                    \( L = \int_a^b \sqrt{1 + \left(\frac{dy}{dx}\right)^2} \, dx \)
-                </div>
-                <p style="font-size: 1.5rem; margin-top: 2rem; color: #64748b;">
-                    Or equivalently: \( L = \int_a^b \sqrt{1 + [f'(x)]^2} \, dx \)
+                <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">Factor Out \(\Delta x\)</h2>
+                <p class="primary" style="font-size: 1.75rem;">
+                    \[\sqrt{(\Delta x)^2 + (\Delta y)^2} = \sqrt{1 + \left(\frac{\Delta y}{\Delta x}\right)^2} \cdot \Delta x\]
                 </p>
-            </div>
-        </div>
-
-        <!-- Alternative Form -->
-        <div class="slide slide-statement" data-slide="7" data-title="Alternative Form">
-            <div class="slide-content">
-                <h2>Alternative: Integrate with respect to y</h2>
-                <p style="font-size: 1.5rem; margin-bottom: 1.5rem;">
-                    If \( x = g(y) \) for \( y \in [c, d] \):
-                </p>
-                <div class="formula-box" style="font-size: 2rem; text-align: center;">
-                    \( L = \int_c^d \sqrt{1 + \left(\frac{dx}{dy}\right)^2} \, dy \)
+                <div class="secondary" style="margin-top: 2rem;">
+                    <p style="font-size: 1.5rem;">By the Mean Value Theorem, there exists \(c_i\) such that:</p>
+                    <p style="font-size: 1.75rem; margin-top: 1rem;">\[\frac{\Delta y}{\Delta x} = f'(c_i)\]</p>
+                    <p style="font-size: 1.5rem; margin-top: 1rem; color: var(--accent-secondary);">So segment length = \(\sqrt{1 + [f'(c_i)]^2} \cdot \Delta x\)</p>
                 </div>
             </div>
         </div>
 
-        <!-- Example 1 -->
-        <div class="slide slide-content" data-slide="8" data-title="Example 1">
+        <!-- Slide 6: From Sum to Integral -->
+        <div class="slide slide-two-part" data-slide="6" data-section="Derivation" data-title="Sum to Integral">
             <div class="slide-content">
-                <h2>Example 1: Line Segment</h2>
-                <p style="font-size: 1.5rem;">
-                    Find the length of \( y = 2x + 1 \) from \( x = 0 \) to \( x = 3 \).
-                </p>
-                <p style="font-size: 1.35rem; margin-top: 1rem;">
-                    \( \frac{dy}{dx} = 2 \), so \( 1 + (dy/dx)^2 = 1 + 4 = 5 \)
-                </p>
+                <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">Taking the Limit</h2>
+                <div class="primary">
+                    <p style="font-size: 1.5rem;">Total length \(\approx \sum \sqrt{1 + [f'(c_i)]^2} \cdot \Delta x\)</p>
+                    <p style="font-size: 1.5rem; margin-top: 1rem; color: var(--accent-secondary);">This is a Riemann sum!</p>
+                    <p style="font-size: 1.5rem; margin-top: 1rem;">As \(n \to \infty\):</p>
+                    <p style="font-size: 2rem; margin-top: 1rem;">\[L = \int_a^b \sqrt{1 + [f'(x)]^2}\,dx\]</p>
+                </div>
+                <div class="insight-box" style="margin-top: 2rem;">
+                    <p>The integrand \(\sqrt{1 + [f'(x)]^2}\) accounts for the "steepness" of the curve.</p>
+                    <p style="margin-top: 0.5rem;">Steeper curves have larger arc length.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: The Arc Length Formula -->
+        <div class="slide slide-two-part" data-slide="7" data-section="The Formula" data-title="Arc Length Formula">
+            <div class="slide-content">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Arc Length Formula</h2>
                 <div class="formula-box">
-                    \( L = \int_0^3 \sqrt{5} \, dx = \sqrt{5} \cdot 3 = 3\sqrt{5} \)
+                    <p class="formula-label">For \(y = f(x)\) from \(x = a\) to \(x = b\):</p>
+                    <p class="formula-main">\[L = \int_a^b \sqrt{1 + \left(\frac{dy}{dx}\right)^2}\,dx\]</p>
                 </div>
-                <p style="font-size: 1.5rem; margin-top: 1rem; color: var(--theme-dark);">
-                    ✓ Check: Distance from (0,1) to (3,7) = \( \sqrt{9+36} = \sqrt{45} = 3\sqrt{5} \) ✓
-                </p>
-            </div>
-        </div>
-
-        <!-- Example 2 -->
-        <div class="slide slide-content" data-slide="9" data-title="Example 2">
-            <div class="slide-content">
-                <h2>Example 2: Parabola</h2>
-                <p style="font-size: 1.5rem;">
-                    Find the length of \( y = x^2 \) from \( x = 0 \) to \( x = 1 \).
-                </p>
-                <p style="font-size: 1.35rem; margin-top: 1rem;">
-                    \( \frac{dy}{dx} = 2x \), so \( 1 + (dy/dx)^2 = 1 + 4x^2 \)
-                </p>
-                <div class="formula-box">
-                    \( L = \int_0^1 \sqrt{1 + 4x^2} \, dx \)
-                </div>
-                <p style="font-size: 1.5rem; margin-top: 1rem; color: #64748b;">
-                    This requires trig substitution or a calculator!<br>
-                    \( L \approx 1.479 \)
-                </p>
-            </div>
-        </div>
-
-        <!-- Example 3 -->
-        <div class="slide slide-content" data-slide="10" data-title="Example 3">
-            <div class="slide-content">
-                <h2>Example 3: A Nice One</h2>
-                <p style="font-size: 1.5rem;">
-                    Find the arc length of \( y = \frac{x^3}{6} + \frac{1}{2x} \) from \( x = 1 \) to \( x = 2 \).
-                </p>
-                <p style="font-size: 1.35rem; margin-top: 1rem;">
-                    \( \frac{dy}{dx} = \frac{x^2}{2} - \frac{1}{2x^2} \)
-                </p>
-                <div class="formula-box" style="font-size: 1.35rem;">
-                    \( 1 + \left(\frac{dy}{dx}\right)^2 = 1 + \frac{x^4}{4} - \frac{1}{2} + \frac{1}{4x^4} = \left(\frac{x^2}{2} + \frac{1}{2x^2}\right)^2 \)
-                </div>
-                <p style="font-size: 1.35rem; margin-top: 1rem;">
-                    It's a perfect square! ✓
-                </p>
-            </div>
-        </div>
-
-        <!-- Example 3 Continued -->
-        <div class="slide slide-content" data-slide="11" data-title="Example 3 Continued">
-            <div class="slide-content">
-                <h2>Example 3: Solution</h2>
-                <div class="formula-box" style="font-size: 1.5rem;">
-                    \( L = \int_1^2 \left(\frac{x^2}{2} + \frac{1}{2x^2}\right) dx \)
-                </div>
-                <div class="formula-box" style="font-size: 1.5rem;">
-                    \( = \left[\frac{x^3}{6} - \frac{1}{2x}\right]_1^2 \)
-                </div>
-                <div class="formula-box" style="font-size: 1.5rem;">
-                    \( = \left(\frac{8}{6} - \frac{1}{4}\right) - \left(\frac{1}{6} - \frac{1}{2}\right) = \frac{4}{3} - \frac{1}{4} + \frac{1}{3} = \frac{17}{12} \)
+                <div class="secondary" style="margin-top: 2rem;">
+                    <p style="font-size: 1.5rem;">Alternate form when \(x = g(y)\):</p>
+                    <p style="font-size: 1.75rem; margin-top: 1rem;">\[L = \int_c^d \sqrt{1 + \left(\frac{dx}{dy}\right)^2}\,dy\]</p>
                 </div>
             </div>
         </div>
 
-        <!-- Differential Form -->
-        <div class="slide slide-statement" data-slide="12" data-title="Differential Form">
+        <!-- Slide 8: The ds Notation -->
+        <div class="slide slide-two-part" data-slide="8" data-section="The Formula" data-title="ds Notation">
             <div class="slide-content">
-                <h2>The Arc Length Differential</h2>
-                <div class="formula-box" style="font-size: 2rem; text-align: center;">
-                    \( ds = \sqrt{dx^2 + dy^2} \)
+                <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">The Infinitesimal Arc Element</h2>
+                <div class="primary">
+                    <p style="font-size: 1.5rem;">Some textbooks write:</p>
+                    <p style="font-size: 2rem; margin-top: 1rem;">\[ds = \sqrt{dx^2 + dy^2}\]</p>
+                    <p style="font-size: 1.75rem; margin-top: 1rem; color: var(--accent-secondary);">So: \(L = \int ds\)</p>
                 </div>
-                <p style="font-size: 1.5rem; margin-top: 2rem;">
-                    This is the infinitesimal version of the Pythagorean theorem!
-                </p>
-                <p style="font-size: 1.5rem; margin-top: 1rem; color: #64748b;">
-                    Total length: \( L = \int ds \)
-                </p>
-            </div>
-        </div>
-
-        <!-- AP Exam Notes -->
-        <div class="slide slide-content" data-slide="13" data-title="AP Exam Notes">
-            <div class="slide-content">
-                <h2>AP Exam Considerations</h2>
-                <div class="example-box">
-                    <p style="font-size: 1.5rem;"><strong>On the AP Exam:</strong></p>
-                    <ul style="font-size: 1.35rem; margin-top: 1rem;">
-                        <li>You must know how to set up the integral</li>
-                        <li>Calculator-active: evaluate numerically</li>
-                        <li>No calculator: leave in integral form or simplify if possible</li>
-                        <li>Recognize "nice" integrands that are perfect squares</li>
-                    </ul>
+                <div class="insight-box" style="margin-top: 2rem;">
+                    <p>This emphasizes the geometric interpretation:</p>
+                    <p style="margin-top: 0.5rem;">We're summing infinitely many tiny arc lengths.</p>
+                    <p style="margin-top: 0.5rem;">Each tiny piece has length \(ds\).</p>
                 </div>
             </div>
         </div>
 
-        <!-- Practice 1 -->
-        <div class="slide slide-exercise" data-slide="14" data-title="Practice 1">
+        <!-- Slide 9: Why Arc Length >= Horizontal Distance -->
+        <div class="slide slide-visual" data-slide="9" data-section="The Formula" data-title="Arc vs Straight">
             <div class="slide-content">
-                <h2>Practice Problem 1</h2>
-                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
-                    Set up (and evaluate if possible) the integral for the arc length of
-                    \( y = x^{3/2} \) from \( x = 0 \) to \( x = 4 \).
-                </p>
-                <div class="example-box">
-                    <p style="font-size: 1.5rem;"><strong>Hint:</strong> This one simplifies nicely!</p>
+                <h2>Arc Length vs. Straight-Line Distance</h2>
+                <div id="comparison-viz" class="visualization"></div>
+                <p style="font-size: 1.5rem; margin-top: 1rem;">Since \(\sqrt{1 + [f']^2} \geq \sqrt{1} = 1\), we have \(L \geq |b - a|\)</p>
+                <p class="caption">A curve is always at least as long as the horizontal distance it spans</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Example 1 - A Nice Integral -->
+        <div class="slide slide-example" data-slide="10" data-section="Worked Examples" data-title="Example 1">
+            <div class="slide-content">
+                <h2>Example: A Nice Arc Length</h2>
+                <div class="problem">
+                    <p>Find the arc length of \(y = \frac{1}{3}(x^2 + 2)^{3/2}\) from \(x = 0\) to \(x = 3\)</p>
+                </div>
+                <div class="step-list">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <div class="step-content">
+                            <p>Find the derivative:</p>
+                            <p style="margin-top: 0.5rem;">\[f'(x) = \frac{1}{3} \cdot \frac{3}{2}(x^2+2)^{1/2} \cdot 2x = x\sqrt{x^2+2}\]</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Practice 2 -->
-        <div class="slide slide-exercise" data-slide="15" data-title="Practice 2">
+        <!-- Slide 11: Example 1 - Simplification -->
+        <div class="slide slide-example" data-slide="11" data-section="Worked Examples" data-title="Example 1 (continued)">
             <div class="slide-content">
-                <h2>Practice Problem 2</h2>
-                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
-                    Find the arc length of \( y = \ln(\cos x) \) from \( x = 0 \) to \( x = \frac{\pi}{4} \).
-                </p>
-                <p style="font-size: 1.35rem; color: #64748b;">
-                    Hint: \( \frac{d}{dx}[\ln(\cos x)] = -\tan x \)
-                </p>
+                <h2>Example 1 (continued)</h2>
+                <div class="step-list">
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <div class="step-content">
+                            <p>Compute \(1 + [f'(x)]^2\):</p>
+                            <p style="margin-top: 0.5rem;">\[[f'(x)]^2 = x^2(x^2 + 2) = x^4 + 2x^2\]</p>
+                            <p style="margin-top: 0.5rem;">\[1 + [f'(x)]^2 = 1 + x^4 + 2x^2 = x^4 + 2x^2 + 1 = (x^2 + 1)^2\]</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <div class="step-content">
+                            <p>Take the square root:</p>
+                            <p style="margin-top: 0.5rem;">\[\sqrt{1 + [f'(x)]^2} = \sqrt{(x^2 + 1)^2} = x^2 + 1\]</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="insight-box">
+                    <p style="color: var(--accent-secondary); font-weight: 600;">It's a perfect square! The integral simplifies nicely.</p>
+                </div>
             </div>
         </div>
 
-        <!-- Practice 3 -->
-        <div class="slide slide-exercise" data-slide="16" data-title="Practice 3">
+        <!-- Slide 12: Example 1 - Evaluation -->
+        <div class="slide slide-example" data-slide="12" data-section="Worked Examples" data-title="Example 1 (completed)">
             <div class="slide-content">
-                <h2>Practice Problem 3</h2>
-                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
-                    Set up the integral for the arc length of \( y = e^x \) from \( x = 0 \) to \( x = 2 \).
-                </p>
-                <p style="font-size: 1.35rem; color: #64748b;">
-                    This integral cannot be evaluated with elementary functions.
-                    Use a calculator to find \( L \approx \)?
-                </p>
+                <h2>Example 1 (completed)</h2>
+                <div class="step-list">
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <div class="step-content">
+                            <p>Integrate:</p>
+                            <p style="margin-top: 0.5rem;">\[L = \int_0^3 (x^2 + 1)\,dx = \left[\frac{x^3}{3} + x\right]_0^3\]</p>
+                            <p style="margin-top: 0.5rem;">\[= (9 + 3) - 0 = 12\]</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="result-box">
+                    <span class="result-text">L = 12 units</span>
+                </div>
+                <p class="note">This function was constructed so \(1 + (f')^2\) is a perfect square!</p>
             </div>
         </div>
 
-        <!-- Exit Ticket -->
-        <div class="slide slide-statement" data-slide="17" data-title="Exit Ticket">
+        <!-- Slide 13: Example 2 - The dy Form -->
+        <div class="slide slide-example" data-slide="13" data-section="Worked Examples" data-title="Example 2">
             <div class="slide-content">
-                <h2>Exit Ticket</h2>
-                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
-                    1. What is the arc length formula for \( y = f(x) \)?
-                </p>
-                <p style="font-size: 1.5rem; margin-bottom: 2rem;">
-                    2. Why does the formula involve \( \sqrt{1 + (f')^2} \)?
-                </p>
-                <p style="font-size: 1.5rem;">
-                    3. Set up the arc length integral for \( y = \sin x \) from \( x = 0 \) to \( x = \pi \).
-                </p>
+                <h2>Example: Using the dy Form</h2>
+                <div class="problem">
+                    <p>Find the arc length of \(x = \frac{1}{3}y^3\) from \(y = 0\) to \(y = 2\)</p>
+                </div>
+                <div class="step-list">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <div class="step-content">
+                            <p>Here \(x\) is given as a function of \(y\), so use the dy form</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <div class="step-content">
+                            <p>\(\frac{dx}{dy} = y^2\)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <div class="step-content">
+                            <p>\(\sqrt{1 + (dx/dy)^2} = \sqrt{1 + y^4}\)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <div class="step-content">
+                            <p>\[L = \int_0^2 \sqrt{1 + y^4}\,dy\]</p>
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size: 1.5rem; color: var(--danger); margin-top: 1rem;">Issue: This integral has NO elementary antiderivative!</p>
             </div>
         </div>
 
-        <!-- Closing -->
-        <div class="slide slide-title" data-slide="18" data-title="Closing">
+        <!-- Slide 14: Example 2 - Numerical Evaluation -->
+        <div class="slide slide-visual" data-slide="14" data-section="Worked Examples" data-title="Numerical Evaluation">
+            <div class="slide-content">
+                <h2>When Exact Evaluation Isn't Possible</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 1rem;">Problem continued: \(L = \int_0^2 \sqrt{1 + y^4}\,dy\)</p>
+                <div id="numerical-viz" class="visualization"></div>
+                <div class="result-box" style="margin-top: 1.5rem;">
+                    <span class="result-text">Calculator: L ≈ 3.260</span>
+                </div>
+                <div class="insight-box" style="margin-top: 1.5rem;">
+                    <p><strong>Takeaway:</strong> Many (most!) arc length integrals require numerical methods.</p>
+                    <p style="margin-top: 0.5rem;">The formula is exact; evaluation may not be.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Example 3 - Calculator Required -->
+        <div class="slide slide-example" data-slide="15" data-section="Worked Examples" data-title="Example 3">
+            <div class="slide-content">
+                <h2>Example: Arc Length of Sine</h2>
+                <div class="problem">
+                    <p>Find the arc length of \(y = \sin(x)\) from \(x = 0\) to \(x = \pi\)</p>
+                </div>
+                <div class="step-list">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <div class="step-content">
+                            <p>\(f'(x) = \cos(x)\)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <div class="step-content">
+                            <p>\(\sqrt{1 + \cos^2(x)}\)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <div class="step-content">
+                            <p>\[L = \int_0^\pi \sqrt{1 + \cos^2(x)}\,dx\]</p>
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size: 1.25rem; color: var(--text-secondary); margin-top: 1rem;">This is an elliptic integral - no elementary form!</p>
+                <div class="comparison-visual">
+                    <div class="comparison-item">
+                        <span class="value" style="color: var(--theme-color);">3.820</span>
+                        <span class="label">Arc Length</span>
+                    </div>
+                    <span class="comparison-arrow">vs</span>
+                    <div class="comparison-item">
+                        <span class="value" style="color: var(--color-function);">3.142</span>
+                        <span class="label">Horizontal (\(\pi\))</span>
+                    </div>
+                </div>
+                <p class="caption">The sine wave is about 22% longer than the horizontal distance!</p>
+            </div>
+        </div>
+
+        <!-- Slide 16: What Makes an Integral Nice? -->
+        <div class="slide slide-two-part" data-slide="16" data-section="Pattern Recognition" data-title="Nice Integrals">
+            <div class="slide-content">
+                <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">When Does the Integral Simplify?</h2>
+                <div class="primary">
+                    <p style="font-size: 1.5rem;">The integral is "nice" when \(1 + [f'(x)]^2\) is a <span style="color: var(--accent-secondary);">perfect square</span></p>
+                    <p style="font-size: 1.5rem; margin-top: 1rem;">Then \(\sqrt{\text{perfect square}}\) = polynomial or simple function</p>
+                    <p style="font-size: 1.5rem; margin-top: 1rem; color: var(--theme-color);">Example: \(1 + x^4 + 2x^2 = (x^2 + 1)^2\) &#10003;</p>
+                </div>
+                <div class="insight-box" style="margin-top: 2rem;">
+                    <p>Functions are often "designed" to have nice arc length integrals.</p>
+                    <p style="margin-top: 0.5rem;"><strong>On AP exam:</strong> If they want exact evaluation, they'll give you a nice function.</p>
+                    <p style="margin-top: 0.5rem;">Otherwise: set up correctly and use calculator.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Another Nice Example -->
+        <div class="slide slide-example" data-slide="17" data-section="Pattern Recognition" data-title="Example 4">
+            <div class="slide-content">
+                <h2>Example: Recognizing Perfect Squares</h2>
+                <div class="problem">
+                    <p>Find arc length of \(y = \frac{x^2}{2} - \frac{1}{4}\ln(x)\) from \(x = 1\) to \(x = e\)</p>
+                </div>
+                <div class="step-list">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <div class="step-content">
+                            <p>\(f'(x) = x - \frac{1}{4x}\)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <div class="step-content">
+                            <p>\([f'(x)]^2 = x^2 - \frac{1}{2} + \frac{1}{16x^2}\)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <div class="step-content">
+                            <p>\(1 + [f'(x)]^2 = x^2 + \frac{1}{2} + \frac{1}{16x^2} = \left(x + \frac{1}{4x}\right)^2\)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <div class="step-content">
+                            <p>\(\sqrt{...} = x + \frac{1}{4x}\)</p>
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size: 1.5rem; margin-top: 1rem;">Setup: \(L = \int_1^e \left(x + \frac{1}{4x}\right) dx\)</p>
+            </div>
+        </div>
+
+        <!-- Slide 18: Nice Example - Evaluation -->
+        <div class="slide slide-example" data-slide="18" data-section="Pattern Recognition" data-title="Example 4 (completed)">
+            <div class="slide-content">
+                <h2>Example (completed)</h2>
+                <div class="math-steps">
+                    <p class="math-line">\[L = \int_1^e \left(x + \frac{1}{4x}\right)\,dx\]</p>
+                    <p class="math-line">\[= \left[\frac{x^2}{2} + \frac{1}{4}\ln(x)\right]_1^e\]</p>
+                    <p class="math-line">\[= \left(\frac{e^2}{2} + \frac{1}{4}\right) - \left(\frac{1}{2} + 0\right)\]</p>
+                    <p class="math-line">\[= \frac{e^2}{2} - \frac{1}{4}\]</p>
+                </div>
+                <div class="result-box">
+                    <span class="result-text">L = \(\frac{e^2}{2} - \frac{1}{4}\) ≈ 3.44 units</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Practice - Setup Only -->
+        <div class="slide slide-exercise" data-slide="19" data-section="Practice" data-title="Practice: Setup">
+            <div class="slide-content">
+                <h2>Your Turn: Setup</h2>
+                <div class="prompt">
+                    <p>Set up (but do not evaluate) the integral for the arc length of \(y = e^x\) from \(x = 0\) to \(x = 1\)</p>
+                </div>
+                <div class="hint-box">
+                    <p>Hints:</p>
+                    <p style="margin-top: 0.5rem;">1. Find \(f'(x)\)</p>
+                    <p>2. Write \(1 + [f'(x)]^2\)</p>
+                    <p>3. Set up the integral</p>
+                </div>
+                <div class="timer-badge">2 minutes</div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Practice Solution -->
+        <div class="slide slide-example" data-slide="20" data-section="Practice" data-title="Practice Solution">
+            <div class="slide-content">
+                <h2>Solution</h2>
+                <div class="step-list">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <div class="step-content">
+                            <p>\(f'(x) = e^x\)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <div class="step-content">
+                            <p>\(1 + [f'(x)]^2 = 1 + e^{2x}\)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <div class="step-content">
+                            <p>Setup: \[L = \int_0^1 \sqrt{1 + e^{2x}}\,dx\]</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="note">This requires numerical evaluation: L ≈ 2.00</p>
+                <div class="insight-box">
+                    <p><strong>Observation:</strong> Horizontal distance = 1. Exponential curve is twice as long!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Practice - Evaluate -->
+        <div class="slide slide-exercise" data-slide="21" data-section="Practice" data-title="Practice: Evaluate">
+            <div class="slide-content">
+                <h2>Your Turn: Full Evaluation</h2>
+                <div class="prompt">
+                    <p>Find the arc length of \(y = \frac{2}{3}x^{3/2}\) from \(x = 0\) to \(x = 3\)</p>
+                </div>
+                <div class="hint-box">
+                    <p>Hint: Check if \(1 + [f'(x)]^2\) is a perfect square</p>
+                </div>
+                <div class="timer-badge">3 minutes</div>
+            </div>
+        </div>
+
+        <!-- Slide 22: Practice Solution - Evaluate -->
+        <div class="slide slide-example" data-slide="22" data-section="Practice" data-title="Practice Solution">
+            <div class="slide-content">
+                <h2>Solution</h2>
+                <div class="step-list">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <div class="step-content">
+                            <p>\(f'(x) = x^{1/2} = \sqrt{x}\)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <div class="step-content">
+                            <p>\([f'(x)]^2 = x\), so \(1 + [f'(x)]^2 = 1 + x\)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <div class="step-content">
+                            <p>\(\sqrt{1 + x}\) - this is already simple!</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <div class="step-content">
+                            <p>\[L = \int_0^3 \sqrt{1+x}\,dx = \left[\frac{2}{3}(1+x)^{3/2}\right]_0^3\]</p>
+                            <p style="margin-top: 0.5rem;">\[= \frac{2}{3}(8) - \frac{2}{3}(1) = \frac{14}{3}\]</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="result-box">
+                    <span class="result-text">L = \(\frac{14}{3}\) ≈ 4.67 units</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 23: Key Takeaways -->
+        <div class="slide slide-list" data-slide="23" data-section="Summary" data-title="Key Takeaways">
             <div class="slide-content">
                 <h2>Key Takeaways</h2>
-                <p style="font-size: 1.5rem; text-align: left; max-width: 800px; margin: 0 auto;">
-                    • Arc length: \( L = \int_a^b \sqrt{1 + [f'(x)]^2} \, dx \)<br><br>
-                    • Based on Pythagorean theorem: \( ds = \sqrt{dx^2 + dy^2} \)<br><br>
-                    • Most arc length integrals require a calculator<br><br>
-                    • Look for "nice" cases where the integrand simplifies<br><br>
-                    • Can also integrate with respect to \( y \) if easier
-                </p>
+                <ul>
+                    <li>Arc length formula: \(L = \int\sqrt{1 + (dy/dx)^2}\,dx\)</li>
+                    <li>Derived from Pythagorean theorem on infinitesimal segments</li>
+                    <li>Most arc length integrals require numerical evaluation</li>
+                    <li>The key AP skill is correct <strong>SETUP</strong></li>
+                    <li>Arc length \(\geq\) horizontal distance (equality only for horizontal curves)</li>
+                    <li>BC preview: Parametric arc length \(L = \int\sqrt{(dx/dt)^2 + (dy/dt)^2}\,dt\)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 24: Exit Ticket -->
+        <div class="slide slide-exercise" data-slide="24" data-section="Closing" data-title="Exit Ticket">
+            <div class="slide-content">
+                <h2>Exit Ticket</h2>
+                <div class="prompt">
+                    <p>Set up the arc length integral for \(y = x^3\) from \(x = 0\) to \(x = 2\).</p>
+                    <p style="font-size: 1.25rem; color: var(--text-secondary); margin-top: 0.5rem;">(Do not evaluate.)</p>
+                </div>
+                <div class="insight-box" style="margin-top: 2rem;">
+                    <p><strong>Expected answer:</strong></p>
+                    <p style="margin-top: 0.5rem;">\(f'(x) = 3x^2\), so \(L = \int_0^2 \sqrt{1 + 9x^4}\,dx\)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 25: Coming Up -->
+        <div class="slide slide-statement" data-slide="25" data-section="Closing" data-title="Coming Up">
+            <div class="slide-content">
+                <p class="statement" style="font-size: 3rem;">Unit 8 Complete!</p>
+                <p style="font-size: 1.75rem; color: var(--text-secondary); margin-top: 2rem;">Next: Unit 9 - Parametric Equations, Polar Coordinates, and Vector-Valued Functions</p>
+                <p style="font-size: 1.5rem; color: var(--accent-secondary); margin-top: 1.5rem;">Arc length will return with parametric and polar curves</p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">1 / 26</div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> Navigate | <kbd>T</kbd> TOC | <kbd>S</kbd> Syllabus | <kbd>F</kbd> Fullscreen
+        </div>
+
+        <!-- Overlay Backdrop -->
+        <div id="overlay-backdrop" class="overlay-backdrop"></div>
+
+        <!-- TOC Overlay -->
+        <div id="toc-overlay" class="toc-overlay">
+            <button id="toc-close" class="toc-close">&times;</button>
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <div class="class-info">Class 48: Arc Length</div>
+            </div>
+            <div id="toc-content" class="toc-content"></div>
+            <div class="toc-footer">
+                <a href="../index.html">&larr; Back to Course Syllabus</a>
+            </div>
+        </div>
+
+        <!-- Appendix Overlay -->
+        <div id="appendix-overlay" class="appendix-overlay">
+            <div class="appendix-header">
+                <h3>Appendix</h3>
+                <button id="appendix-close" class="appendix-close">&times;</button>
+            </div>
+            <div id="appendix-content" class="appendix-content"></div>
+            <div class="appendix-nav">
+                <button id="appendix-prev" class="appendix-nav-btn">&larr; Prev</button>
+                <span id="appendix-counter" class="appendix-counter">1 / 1</span>
+                <button id="appendix-next" class="appendix-nav-btn">Next &rarr;</button>
             </div>
         </div>
     </div>
 
-    <!-- Progress Bar -->
-    <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
-    </div>
-
-    <!-- Navigation -->
-    <div class="nav-arrows">
-        <button class="nav-arrow" id="prevBtn">←</button>
-        <span class="slide-counter"><span id="currentSlide">1</span>/<span id="totalSlides">19</span></span>
-        <button class="nav-arrow" id="nextBtn">→</button>
-    </div>
-
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="../shared/presentation.js"></script>
     <script>
-        function drawArcViz() {
-            const container = document.getElementById('arc-viz');
+        // ===== Winding Road Visualization (Slide 1) =====
+        function drawWindingRoad() {
+            const container = document.getElementById('winding-road-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 200;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Draw winding road path
+            const roadPath = d3.path();
+            roadPath.moveTo(50, 100);
+            roadPath.bezierCurveTo(150, 50, 200, 150, 300, 100);
+            roadPath.bezierCurveTo(400, 50, 450, 150, 550, 100);
+            roadPath.bezierCurveTo(600, 80, 630, 120, 650, 100);
+
+            // Road outline
+            svg.append('path')
+                .attr('d', roadPath.toString())
+                .attr('fill', 'none')
+                .attr('stroke', '#4a5568')
+                .attr('stroke-width', 40)
+                .attr('stroke-linecap', 'round');
+
+            // Road surface
+            svg.append('path')
+                .attr('d', roadPath.toString())
+                .attr('fill', 'none')
+                .attr('stroke', '#1c2640')
+                .attr('stroke-width', 36)
+                .attr('stroke-linecap', 'round');
+
+            // Center line (dashed)
+            svg.append('path')
+                .attr('d', roadPath.toString())
+                .attr('fill', 'none')
+                .attr('stroke', '#fbbf24')
+                .attr('stroke-width', 2)
+                .attr('stroke-dasharray', '15,10')
+                .attr('stroke-linecap', 'round');
+
+            // Straight line comparison
+            svg.append('line')
+                .attr('x1', 50)
+                .attr('y1', 170)
+                .attr('x2', 650)
+                .attr('y2', 170)
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('stroke-dasharray', '8,4');
+
+            // Labels
+            svg.append('text')
+                .attr('x', 350)
+                .attr('y', 195)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#60a5fa')
+                .text('"As the crow flies"');
+
+            // Start/End markers
+            svg.append('circle')
+                .attr('cx', 50)
+                .attr('cy', 100)
+                .attr('r', 8)
+                .attr('fill', '#22c55e');
+
+            svg.append('circle')
+                .attr('cx', 650)
+                .attr('cy', 100)
+                .attr('r', 8)
+                .attr('fill', '#e11d48');
+
+            svg.append('text')
+                .attr('x', 50)
+                .attr('y', 75)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#22c55e')
+                .text('Start');
+
+            svg.append('text')
+                .attr('x', 650)
+                .attr('y', 75)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#e11d48')
+                .text('End');
+        }
+
+        // ===== Polygonal Approximation Visualization (Slide 3) =====
+        function drawPolygonalApprox() {
+            const container = document.getElementById('polygonal-viz');
             if (!container || container.querySelector('svg')) return;
 
             const width = 700;
             const height = 400;
-            const margin = { top: 30, right: 30, bottom: 50, left: 60 };
-            const innerWidth = width - margin.left - margin.right;
-            const innerHeight = height - margin.top - margin.bottom;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
 
             const svg = d3.select(container)
                 .append('svg')
@@ -376,123 +914,496 @@
             const g = svg.append('g')
                 .attr('transform', `translate(${margin.left},${margin.top})`);
 
-            const xScale = d3.scaleLinear().domain([0, 3]).range([0, innerWidth]);
-            const yScale = d3.scaleLinear().domain([0, 3]).range([innerHeight, 0]);
+            // Function: y = sin(x) on [0, pi]
+            const a = 0;
+            const b = Math.PI;
+            const f = x => Math.sin(x);
+
+            // Scales
+            const xScale = d3.scaleLinear().domain([a - 0.2, b + 0.2]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-0.2, 1.3]).range([plotHeight, 0]);
+
+            // Grid
+            g.append('g')
+                .attr('class', 'grid')
+                .selectAll('line.h')
+                .data(d3.range(-0.2, 1.4, 0.2))
+                .enter()
+                .append('line')
+                .attr('x1', 0)
+                .attr('x2', plotWidth)
+                .attr('y1', d => yScale(d))
+                .attr('y2', d => yScale(d))
+                .attr('stroke', '#1c2640')
+                .attr('stroke-width', 1);
+
+            g.append('g')
+                .attr('class', 'grid')
+                .selectAll('line.v')
+                .data(d3.range(0, b + 0.5, 0.5))
+                .enter()
+                .append('line')
+                .attr('x1', d => xScale(d))
+                .attr('x2', d => xScale(d))
+                .attr('y1', 0)
+                .attr('y2', plotHeight)
+                .attr('stroke', '#1c2640')
+                .attr('stroke-width', 1);
+
+            // Axes
+            const xAxis = d3.axisBottom(xScale).ticks(5);
+            const yAxis = d3.axisLeft(yScale).ticks(5);
+
+            g.append('g')
+                .attr('transform', `translate(0,${plotHeight})`)
+                .call(xAxis)
+                .selectAll('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6');
+
+            g.append('g')
+                .call(yAxis)
+                .selectAll('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6');
+
+            // Draw the actual curve
+            const curveData = d3.range(a, b + 0.01, 0.01).map(x => ({ x, y: f(x) }));
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y));
+
+            g.append('path')
+                .datum(curveData)
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 3)
+                .attr('d', line);
+
+            // Label
+            g.append('text')
+                .attr('x', xScale(b / 2))
+                .attr('y', yScale(1.1))
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#60a5fa')
+                .text('y = sin(x)');
+
+            // Polygonal approximation group
+            const polyGroup = g.append('g').attr('class', 'poly-approx');
+
+            // Calculate true arc length (approximated)
+            function trueArcLength() {
+                let len = 0;
+                const steps = 1000;
+                const dx = (b - a) / steps;
+                for (let i = 0; i < steps; i++) {
+                    const x = a + i * dx;
+                    const dy = f(x + dx) - f(x);
+                    len += Math.sqrt(dx * dx + dy * dy);
+                }
+                return len;
+            }
+            const trueLen = trueArcLength();
+
+            // Update function
+            function updatePolygon(n) {
+                const points = [];
+                const dx = (b - a) / n;
+                let totalLength = 0;
+
+                for (let i = 0; i <= n; i++) {
+                    const x = a + i * dx;
+                    points.push({ x, y: f(x) });
+                }
+
+                // Calculate total length
+                for (let i = 0; i < n; i++) {
+                    const dx_ = points[i + 1].x - points[i].x;
+                    const dy = points[i + 1].y - points[i].y;
+                    totalLength += Math.sqrt(dx_ * dx_ + dy * dy);
+                }
+
+                // Clear and redraw
+                polyGroup.selectAll('*').remove();
+
+                // Draw segments
+                for (let i = 0; i < n; i++) {
+                    polyGroup.append('line')
+                        .attr('x1', xScale(points[i].x))
+                        .attr('y1', yScale(points[i].y))
+                        .attr('x2', xScale(points[i + 1].x))
+                        .attr('y2', yScale(points[i + 1].y))
+                        .attr('stroke', '#e11d48')
+                        .attr('stroke-width', 2);
+                }
+
+                // Draw points
+                polyGroup.selectAll('circle')
+                    .data(points)
+                    .enter()
+                    .append('circle')
+                    .attr('cx', d => xScale(d.x))
+                    .attr('cy', d => yScale(d.y))
+                    .attr('r', 4)
+                    .attr('fill', '#e11d48');
+
+                // Update display
+                const display = document.getElementById('length-display');
+                if (display) {
+                    display.textContent = `n = ${n}, L ≈ ${totalLength.toFixed(3)} (true: ${trueLen.toFixed(3)})`;
+                }
+            }
+
+            // Initialize
+            updatePolygon(4);
+
+            // Slider event
+            const slider = document.getElementById('segment-slider');
+            if (slider) {
+                slider.addEventListener('input', function(e) {
+                    updatePolygon(parseInt(e.target.value));
+                });
+            }
+        }
+
+        // ===== Pythagorean Triangle Visualization (Slide 4) =====
+        function drawPythagorean() {
+            const container = document.getElementById('pythagorean-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 400;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Draw a small curve segment with zoomed triangle
+            const cx = width / 2;
+            const cy = height / 2;
+
+            // Curve segment
+            const curvePath = d3.path();
+            curvePath.moveTo(150, 300);
+            curvePath.quadraticCurveTo(300, 100, 450, 250);
+
+            svg.append('path')
+                .attr('d', curvePath.toString())
+                .attr('fill', 'none')
+                .attr('stroke', '#60a5fa')
+                .attr('stroke-width', 4);
+
+            // Two points on the curve
+            const p1 = { x: 220, y: 220 };
+            const p2 = { x: 350, y: 160 };
+
+            // Right triangle
+            // Horizontal leg
+            svg.append('line')
+                .attr('x1', p1.x)
+                .attr('y1', p1.y)
+                .attr('x2', p2.x)
+                .attr('y2', p1.y)
+                .attr('stroke', '#fbbf24')
+                .attr('stroke-width', 3);
+
+            // Vertical leg
+            svg.append('line')
+                .attr('x1', p2.x)
+                .attr('y1', p1.y)
+                .attr('x2', p2.x)
+                .attr('y2', p2.y)
+                .attr('stroke', '#22c55e')
+                .attr('stroke-width', 3);
+
+            // Hypotenuse (segment)
+            svg.append('line')
+                .attr('x1', p1.x)
+                .attr('y1', p1.y)
+                .attr('x2', p2.x)
+                .attr('y2', p2.y)
+                .attr('stroke', '#e11d48')
+                .attr('stroke-width', 4);
+
+            // Points
+            svg.append('circle')
+                .attr('cx', p1.x)
+                .attr('cy', p1.y)
+                .attr('r', 8)
+                .attr('fill', '#e11d48');
+
+            svg.append('circle')
+                .attr('cx', p2.x)
+                .attr('cy', p2.y)
+                .attr('r', 8)
+                .attr('fill', '#e11d48');
+
+            // Right angle marker
+            const size = 15;
+            svg.append('path')
+                .attr('d', `M${p2.x - size},${p1.y} L${p2.x - size},${p1.y - size} L${p2.x},${p1.y - size}`)
+                .attr('fill', 'none')
+                .attr('stroke', '#b8c4d6')
+                .attr('stroke-width', 2);
+
+            // Labels
+            svg.append('text')
+                .attr('x', (p1.x + p2.x) / 2)
+                .attr('y', p1.y + 30)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.5rem')
+                .attr('fill', '#fbbf24')
+                .text('Δx');
+
+            svg.append('text')
+                .attr('x', p2.x + 25)
+                .attr('y', (p1.y + p2.y) / 2)
+                .attr('text-anchor', 'start')
+                .attr('font-size', '1.5rem')
+                .attr('fill', '#22c55e')
+                .text('Δy');
+
+            svg.append('text')
+                .attr('x', (p1.x + p2.x) / 2 - 40)
+                .attr('y', (p1.y + p2.y) / 2 - 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#e11d48')
+                .text('segment');
+
+            // Formula at bottom
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', 370)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.5rem')
+                .attr('fill', '#b8c4d6')
+                .text('Length = √((Δx)² + (Δy)²)');
+        }
+
+        // ===== Comparison Visualization (Slide 9) =====
+        function drawComparison() {
+            const container = document.getElementById('comparison-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 700;
+            const height = 350;
+            const margin = { top: 30, right: 40, bottom: 60, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Function: y = sin(x) on [0, pi]
+            const a = 0;
+            const b = Math.PI;
+            const f = x => Math.sin(x);
+
+            // Scales
+            const xScale = d3.scaleLinear().domain([a - 0.3, b + 0.3]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([-0.3, 1.3]).range([plotHeight, 0]);
+
+            // Axes
+            const xAxis = d3.axisBottom(xScale).ticks(5);
+            const yAxis = d3.axisLeft(yScale).ticks(5);
+
+            g.append('g')
+                .attr('transform', `translate(0,${plotHeight})`)
+                .call(xAxis)
+                .selectAll('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6');
+
+            g.append('g')
+                .call(yAxis)
+                .selectAll('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6');
+
+            // Draw the curve
+            const curveData = d3.range(a, b + 0.01, 0.01).map(x => ({ x, y: f(x) }));
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y));
+
+            g.append('path')
+                .datum(curveData)
+                .attr('fill', 'none')
+                .attr('stroke', '#e11d48')
+                .attr('stroke-width', 4)
+                .attr('d', line);
+
+            // Horizontal line
+            g.append('line')
+                .attr('x1', xScale(a))
+                .attr('y1', yScale(0))
+                .attr('x2', xScale(b))
+                .attr('y2', yScale(0))
+                .attr('stroke', '#a78bfa')
+                .attr('stroke-width', 3)
+                .attr('stroke-dasharray', '8,4');
+
+            // Labels
+            g.append('text')
+                .attr('x', xScale(b / 2))
+                .attr('y', yScale(1.15))
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#e11d48')
+                .text('Arc length ≈ 3.82');
+
+            g.append('text')
+                .attr('x', xScale(b / 2))
+                .attr('y', yScale(-0.15))
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#a78bfa')
+                .text('Horizontal = π ≈ 3.14');
+
+            // Start/end points
+            g.append('circle')
+                .attr('cx', xScale(a))
+                .attr('cy', yScale(0))
+                .attr('r', 6)
+                .attr('fill', '#fbbf24');
+
+            g.append('circle')
+                .attr('cx', xScale(b))
+                .attr('cy', yScale(0))
+                .attr('r', 6)
+                .attr('fill', '#fbbf24');
+        }
+
+        // ===== Numerical Viz (Slide 14) =====
+        function drawNumericalViz() {
+            const container = document.getElementById('numerical-viz');
+            if (!container || container.querySelector('svg')) return;
+
+            const width = 600;
+            const height = 300;
+            const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
+
+            const svg = d3.select(container)
+                .append('svg')
+                .attr('viewBox', `0 0 ${width} ${height}`)
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Function: x = (1/3)y^3, so y goes from 0 to 2
+            // Plot as y vs x where x = (1/3)y^3
+            const yMin = 0;
+            const yMax = 2;
+            const f = y => (1/3) * Math.pow(y, 3);
+
+            // Scales - note x depends on y
+            const xScale = d3.scaleLinear().domain([-0.3, 3]).range([0, plotWidth]);
+            const yScale = d3.scaleLinear().domain([yMin - 0.2, yMax + 0.3]).range([plotHeight, 0]);
 
             // Axes
             g.append('g')
-                .attr('transform', `translate(0,${innerHeight})`)
-                .call(d3.axisBottom(xScale))
-                .style('font-size', '1rem');
+                .attr('transform', `translate(0,${plotHeight})`)
+                .call(d3.axisBottom(xScale).ticks(5))
+                .selectAll('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6');
 
             g.append('g')
-                .call(d3.axisLeft(yScale))
-                .style('font-size', '1rem');
-
-            // Function y = sqrt(x)
-            const f = x => Math.sqrt(x);
-            const line = d3.line()
-                .x(d => xScale(d))
-                .y(d => yScale(f(d)));
-
-            const xVals = d3.range(0, 3, 0.02);
+                .call(d3.axisLeft(yScale).ticks(5))
+                .selectAll('text')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6');
 
             // Draw the curve
+            const curveData = d3.range(yMin, yMax + 0.01, 0.01).map(y => ({ x: f(y), y }));
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.y));
+
             g.append('path')
-                .datum(xVals)
+                .datum(curveData)
                 .attr('fill', 'none')
                 .attr('stroke', '#e11d48')
                 .attr('stroke-width', 3)
                 .attr('d', line);
 
-            // Draw line segment approximations
-            const n = 6;
-            const points = d3.range(n + 1).map(i => {
-                const x = i * 3 / n;
-                return { x: x, y: f(x) };
-            });
-
-            // Draw segments
-            for (let i = 0; i < points.length - 1; i++) {
-                g.append('line')
-                    .attr('x1', xScale(points[i].x))
-                    .attr('y1', yScale(points[i].y))
-                    .attr('x2', xScale(points[i+1].x))
-                    .attr('y2', yScale(points[i+1].y))
-                    .attr('stroke', '#059669')
-                    .attr('stroke-width', 2)
-                    .attr('stroke-dasharray', '5,3');
-            }
-
-            // Draw points
-            points.forEach(p => {
-                g.append('circle')
-                    .attr('cx', xScale(p.x))
-                    .attr('cy', yScale(p.y))
-                    .attr('r', 5)
-                    .attr('fill', '#059669');
-            });
-
-            // Draw one small right triangle
-            const i = 2;
-            const dx = points[i+1].x - points[i].x;
-            const dy = points[i+1].y - points[i].y;
-
-            g.append('line')
-                .attr('x1', xScale(points[i].x))
-                .attr('y1', yScale(points[i].y))
-                .attr('x2', xScale(points[i+1].x))
-                .attr('y2', yScale(points[i].y))
-                .attr('stroke', '#64748b')
-                .attr('stroke-width', 1);
-
-            g.append('line')
-                .attr('x1', xScale(points[i+1].x))
-                .attr('y1', yScale(points[i].y))
-                .attr('x2', xScale(points[i+1].x))
-                .attr('y2', yScale(points[i+1].y))
-                .attr('stroke', '#64748b')
-                .attr('stroke-width', 1);
-
-            // Labels
+            // Label
             g.append('text')
-                .attr('x', xScale((points[i].x + points[i+1].x)/2))
-                .attr('y', yScale(points[i].y) + 20)
-                .attr('text-anchor', 'middle')
-                .attr('font-size', '1.25rem')
-                .attr('fill', '#64748b')
-                .text('Δx');
-
-            g.append('text')
-                .attr('x', xScale(points[i+1].x) + 15)
-                .attr('y', yScale((points[i].y + points[i+1].y)/2))
-                .attr('font-size', '1.25rem')
-                .attr('fill', '#64748b')
-                .text('Δy');
-
-            g.append('text')
-                .attr('x', xScale((points[i].x + points[i+1].x)/2) - 20)
-                .attr('y', yScale((points[i].y + points[i+1].y)/2) - 10)
-                .attr('font-size', '1.25rem')
-                .attr('fill', '#059669')
-                .text('Δs');
-
-            // Legend
-            g.append('text')
-                .attr('x', innerWidth - 10)
-                .attr('y', 30)
-                .attr('text-anchor', 'end')
+                .attr('x', xScale(2.5))
+                .attr('y', yScale(1.8))
                 .attr('font-size', '1.25rem')
                 .attr('fill', '#e11d48')
-                .text('y = √x');
+                .text('x = (1/3)y³');
+
+            // Axis labels
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height - 5)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6')
+                .text('x');
+
+            svg.append('text')
+                .attr('x', 15)
+                .attr('y', height / 2)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '1.25rem')
+                .attr('fill', '#b8c4d6')
+                .attr('transform', `rotate(-90, 15, ${height/2})`)
+                .text('y');
         }
 
-        // Trigger visualization
-        const originalGoToSlide = window.Presentation.goToSlide;
-        window.Presentation.goToSlide = function(n) {
-            originalGoToSlide(n);
-            if (n === 4) setTimeout(drawArcViz, 300);
+        // ===== Trigger Visualizations on Slide Entry =====
+        const visualizationSlides = {
+            1: drawWindingRoad,
+            3: drawPolygonalApprox,
+            4: drawPythagorean,
+            9: drawComparison,
+            14: drawNumericalViz
         };
+
+        let lastSlide = -1;
+
+        function checkAndDrawVisualization() {
+            if (!window.Presentation) return;
+
+            const currentSlide = window.Presentation.getCurrentSlide();
+            if (currentSlide !== lastSlide) {
+                lastSlide = currentSlide;
+                if (visualizationSlides[currentSlide]) {
+                    setTimeout(visualizationSlides[currentSlide], 100);
+                }
+            }
+        }
+
+        // Check periodically for slide changes
+        setInterval(checkAndDrawVisualization, 200);
+
+        // Also check on hash changes
+        window.addEventListener('hashchange', () => {
+            setTimeout(checkAndDrawVisualization, 100);
+        });
+
+        // Initial check after DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(checkAndDrawVisualization, 200);
+            });
+        } else {
+            setTimeout(checkAndDrawVisualization, 200);
+        }
     </script>
 </body>
 </html>
